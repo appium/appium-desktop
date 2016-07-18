@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+
 import path from 'path';
 import { ipcMain } from 'electron';
 import { SubProcess } from 'teen_process';
@@ -23,6 +25,7 @@ function connectStartServer (win) {
     server = logServer(LOG_PORT, win);
     try {
       // set up the appium subprocess
+      console.log(`Starting Appium with args: ${JSON.stringify(args)}`);
       proc = new SubProcess("node", args);
 
       // handle out-of-bound exit

@@ -8,12 +8,14 @@ export default class StartServer extends Component {
     port: PropTypes.number.isRequired,
     serverStarting: PropTypes.bool.isRequired,
     startServer: PropTypes.func.isRequired,
-    serverFailMsg: PropTypes.string.isRequired
+    serverFailMsg: PropTypes.string.isRequired,
+    updateAddress: PropTypes.func.isRequired,
+    updatePort: PropTypes.func.isRequired
   }
 
   render () {
     const {address, port, serverStarting, startServer,
-           serverFailMsg} = this.props;
+           serverFailMsg, updateAddress, updatePort} = this.props;
 
     let failureMsg;
     if (serverFailMsg) {
@@ -33,9 +35,9 @@ export default class StartServer extends Component {
           {failureMsg}
           <form>
             <Input ref="address" type="text" defaultValue={address}
-             label="Server Address" />
+             label="Server Address" onChange={updateAddress} />
             <Input ref="port" type="text" defaultValue={port}
-             label="Port" />
+             label="Port" onChange={updatePort} />
             <div className="form-actions">
               <Button form className={styles.startButton} type="submit"
                ptStyle={serverStarting ? "disabled" : "primary"}

@@ -5,6 +5,8 @@ import { serverLogReceived } from './server-monitor';
 export const SERVER_START_REQ = 'SERVER_START_REQ';
 export const SERVER_START_OK = 'SERVER_START_OK';
 export const SERVER_START_FAIL = 'SERVER_START_FAIL';
+export const UPDATE_ADDRESS = 'UPDATE_ADDRESS';
+export const UPDATE_PORT = 'UPDATE_PORT';
 
 export function startServerReq () {
   return {type: SERVER_START_REQ};
@@ -50,5 +52,18 @@ export function startServer () {
     });
 
     ipcRenderer.send('start-server', address, port);
+  };
+}
+
+export function updateAddress (evt) {
+  return (dispatch) => {
+    dispatch({type: UPDATE_ADDRESS, address: evt.target.value});
+  };
+}
+
+export function updatePort (evt) {
+  return (dispatch) => {
+    let port = parseInt(evt.target.value, 10);
+    dispatch({type: UPDATE_PORT, port});
   };
 }
