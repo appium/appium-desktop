@@ -13,18 +13,21 @@ export default class StartServer extends Component {
     const {address, port, startServer} = this.props;
     return (
       <div className={styles.container}>
-        <form>
-          <Input ref="address" type="text" defaultValue={address}
-           label="Server Address" />
-          <Input ref="port" type="text" defaultValue={port}
-           label="Port" />
-          <div className="form-actions">
-            <Button form type="submit"
-             ptStyle="primary" text="Start Server"
-             onClick={startServer}
-            />
-          </div>
-        </form>
+        <div className={styles.form}>
+          <img src={'../images/appium_logo.png'} className={styles.logo} />
+          <form>
+            <Input ref="address" type="text" defaultValue={address}
+             label="Server Address" />
+            <Input ref="port" type="text" defaultValue={port}
+             label="Port" />
+            <div className="form-actions">
+              <Button form className={styles.startButton} type="submit"
+               ptStyle="primary" text="Start Server"
+               onClick={startServer}
+              />
+            </div>
+          </form>
+        </div>
       </div>
     );
   }

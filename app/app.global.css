@@ -1,9 +1,8 @@
-.window {
-  background-color: #414152;
-  color: #fff;
-  width: 100%;
+body {
+  color: #222;
 }
 
-input {
-  color: #000;
+.window {
+  background-color: #cde4f5;
+  width: 100%;
 }
