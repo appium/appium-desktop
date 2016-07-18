@@ -1,0 +1,9 @@
+node_modules
+
+dist
+release
+main.js
+main.js.map
+
+*.log
+.DS_Store
