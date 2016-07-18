@@ -1,5 +1,6 @@
 body {
   color: #222;
+  box-sizing: border-box;
 }
 
 .window {

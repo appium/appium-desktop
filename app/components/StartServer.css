@@ -21,3 +21,13 @@
     padding: 10px;
     font-size: 1.3em;
 }
+
+.failureMsg {
+    width: 100%;
+    padding: 5px;
+    border: 2px solid #e47777;
+    background-color: #d89494;
+    color: #fff;
+    font-weight: bold;
+    margin: 10px 0px;
+}

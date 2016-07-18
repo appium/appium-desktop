@@ -1,4 +1,5 @@
-import { app, BrowserWindow, Menu } from 'electron';
+import { app, BrowserWindow, Menu, ipcMain } from 'electron';
+import { initializeIpc } from './appium';
 import menuTemplates from './menus';
 
 let menu;
@@ -37,8 +38,10 @@ app.on('ready', async () => {
 
   mainWindow = new BrowserWindow({
     show: false,
-    width: 600,
-    height: 600
+    width: 800,
+    height: 700,
+    minWidth: 400,
+    minHeight: 400,
   });
 
   mainWindow.loadURL(`file://${__dirname}/app/index.html`);
@@ -75,4 +78,7 @@ app.on('ready', async () => {
     menu = Menu.buildFromTemplate(template);
     mainWindow.setMenu(menu);
   }
+
+  initializeIpc(mainWindow);
 });
+

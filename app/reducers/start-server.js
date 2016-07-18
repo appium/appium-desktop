@@ -8,7 +8,8 @@ const DEFAULT_PORT = 4723;
 const initialState = {
   port: DEFAULT_PORT,
   address: DEFAULT_ADDRESS,
-  serverStarting: false
+  serverStarting: false,
+  serverFailMsg: ""
 };
 
 export default function startServer (state = initialState, action) {
@@ -16,8 +17,16 @@ export default function startServer (state = initialState, action) {
     case SERVER_START_REQ:
       return {...state, serverStarting: true};
     case SERVER_START_OK:
+      return {
+        ...state,
+        serverStarting: false,
+      };
     case SERVER_START_FAIL:
-      return {...state, serverStarting: false};
+      return {
+        ...state,
+        serverStarting: false,
+        serverFailMsg: action.reason
+      };
     default:
       return state;
   }
