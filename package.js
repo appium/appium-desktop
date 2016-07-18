@@ -28,10 +28,10 @@ const DEFAULT_OPTS = {
     '^/tools($|/)',
     '^/release($|/)',
     '^/main.development.js'
-  ].concat(devDeps.map(name => `/node_modules/${name}($|/)`))
+  ].concat(devDeps.map((name) => `/node_modules/${name}($|/)`))
   .concat(
-    deps.filter(name => !electronCfg.externals.includes(name))
-      .map(name => `/node_modules/${name}($|/)`)
+    deps.filter((name) => !electronCfg.externals.includes(name))
+      .map((name) => `/node_modules/${name}($|/)`)
   )
 };
 
@@ -60,7 +60,7 @@ if (version) {
 }
 
 
-function build(cfg) {
+function build (cfg) {
   return new Promise((resolve, reject) => {
     webpack(cfg, (err, stats) => {
       if (err) return reject(err);
@@ -69,19 +69,19 @@ function build(cfg) {
   });
 }
 
-function startPack() {
+function startPack () {
   console.log('start pack...');
   build(electronCfg)
     .then(() => build(cfg))
     .then(() => del('release'))
-    .then(paths => {
+    .then((paths) => {
       if (shouldBuildAll) {
         // build for all platforms
         const archs = ['ia32', 'x64'];
         const platforms = ['linux', 'win32', 'darwin'];
 
-        platforms.forEach(plat => {
-          archs.forEach(arch => {
+        platforms.forEach((plat) => {
+          archs.forEach((arch) => {
             pack(plat, arch, log(plat, arch));
           });
         });
@@ -90,12 +90,12 @@ function startPack() {
         pack(os.platform(), os.arch(), log(os.platform(), os.arch()));
       }
     })
-    .catch(err => {
+    .catch((err) => {
       console.error(err);
     });
 }
 
-function pack(plat, arch, cb) {
+function pack (plat, arch, cb) {
   // there is no darwin ia32 electron
   if (plat === 'darwin' && arch === 'ia32') return;
 
@@ -123,7 +123,7 @@ function pack(plat, arch, cb) {
 }
 
 
-function log(plat, arch) {
+function log (plat, arch) {
   return (err, filepath) => {
     if (err) return console.error(err);
     console.log(`${plat}-${arch} finished!`);

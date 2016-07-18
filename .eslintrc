@@ -1,7 +1,22 @@
 {
+  "parser": "babel-eslint",
   "extends": "appium",
   "plugins": [
     "import",
     "react"
-  ]
+  ],
+  "env": {
+    "browser": true,
+    "mocha": true,
+    "node": true
+  },
+  "ecmafeatures": {
+    "jsx": true
+  },
+  "settings": {
+    "import/resolver": "webpack"
+  },
+  "rules": {
+    "import/no-unresolved": [2, {"ignore": ["electron"]}]
+  }
 }

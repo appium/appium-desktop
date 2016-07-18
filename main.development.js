@@ -1,4 +1,4 @@
-import { app, BrowserWindow, Menu, shell } from 'electron';
+import { app, BrowserWindow, Menu, shell } from 'electron'; // eslint import/no-unresolved
 
 let menu;
 let template;
@@ -58,7 +58,7 @@ app.on('ready', async () => {
 
       Menu.buildFromTemplate([{
         label: 'Inspect element',
-        click() {
+        click () {
           mainWindow.inspectElement(x, y);
         }
       }]).popup(mainWindow);
@@ -94,7 +94,7 @@ app.on('ready', async () => {
       }, {
         label: 'Quit',
         accelerator: 'Command+Q',
-        click() {
+        click () {
           app.quit();
         }
       }]
@@ -132,25 +132,25 @@ app.on('ready', async () => {
       submenu: (process.env.NODE_ENV === 'development') ? [{
         label: 'Reload',
         accelerator: 'Command+R',
-        click() {
+        click () {
           mainWindow.webContents.reload();
         }
       }, {
         label: 'Toggle Full Screen',
         accelerator: 'Ctrl+Command+F',
-        click() {
+        click () {
           mainWindow.setFullScreen(!mainWindow.isFullScreen());
         }
       }, {
         label: 'Toggle Developer Tools',
         accelerator: 'Alt+Command+I',
-        click() {
+        click () {
           mainWindow.toggleDevTools();
         }
       }] : [{
         label: 'Toggle Full Screen',
         accelerator: 'Ctrl+Command+F',
-        click() {
+        click () {
           mainWindow.setFullScreen(!mainWindow.isFullScreen());
         }
       }]
@@ -174,17 +174,17 @@ app.on('ready', async () => {
       label: 'Help',
       submenu: [{
         label: 'Learn More',
-        click() {
+        click () {
           shell.openExternal('http://appium.io');
         }
       }, {
         label: 'Documentation',
-        click() {
+        click () {
           shell.openExternal('https://appium.io/documentation.html');
         }
       }, {
         label: 'Search Issues',
-        click() {
+        click () {
           shell.openExternal('https://github.com/appium/appium-desktop/issues');
         }
       }]
@@ -201,7 +201,7 @@ app.on('ready', async () => {
       }, {
         label: '&Close',
         accelerator: 'Ctrl+W',
-        click() {
+        click () {
           mainWindow.close();
         }
       }]
@@ -210,25 +210,25 @@ app.on('ready', async () => {
       submenu: (process.env.NODE_ENV === 'development') ? [{
         label: '&Reload',
         accelerator: 'Ctrl+R',
-        click() {
+        click () {
           mainWindow.webContents.reload();
         }
       }, {
         label: 'Toggle &Full Screen',
         accelerator: 'F11',
-        click() {
+        click () {
           mainWindow.setFullScreen(!mainWindow.isFullScreen());
         }
       }, {
         label: 'Toggle &Developer Tools',
         accelerator: 'Alt+Ctrl+I',
-        click() {
+        click () {
           mainWindow.toggleDevTools();
         }
       }] : [{
         label: 'Toggle &Full Screen',
         accelerator: 'F11',
-        click() {
+        click () {
           mainWindow.setFullScreen(!mainWindow.isFullScreen());
         }
       }]
@@ -236,17 +236,17 @@ app.on('ready', async () => {
       label: 'Help',
       submenu: [{
         label: 'Learn More',
-        click() {
+        click () {
           shell.openExternal('http://appium.io');
         }
       }, {
         label: 'Documentation',
-        click() {
+        click () {
           shell.openExternal('https://appium.io/documentation.html');
         }
       }, {
         label: 'Search Issues',
-        click() {
+        click () {
           shell.openExternal('https://github.com/appium/appium-desktop/issues');
         }
       }]
