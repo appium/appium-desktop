@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import { Window, Content } from 'react-photonkit';
 
 export default class App extends Component {
   static propTypes = {
@@ -7,9 +8,11 @@ export default class App extends Component {
 
   render () {
     return (
-      <div>
-        {this.props.children}
-      </div>
+      <Window>
+        <Content>
+          {this.props.children}
+        </Content>
+      </Window>
     );
   }
 }

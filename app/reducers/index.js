@@ -1,9 +1,10 @@
 import { combineReducers } from 'redux';
 import { routerReducer as routing } from 'react-router-redux';
-//import counter from './counter';
+import startServer from './start-server';
 
 const rootReducer = combineReducers({
-  routing
+  routing,
+  startServer
 });
 
 export default rootReducer;

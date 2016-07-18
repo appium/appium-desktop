@@ -39,13 +39,14 @@
     "electron": "./node_modules/.bin/electron"
   },
   "dependencies": {
+    "appium": "^1.5.3",
     "css-modules-require-hook": "^4.0.1",
     "electron-debug": "^1.0.1",
     "font-awesome": "^4.6.3",
     "postcss": "^5.1.0",
     "react": "^15.2.1",
-    "react-desktop": "^0.2.4",
     "react-dom": "^15.2.1",
+    "react-photonkit": "^0.4.1",
     "react-redux": "^4.4.5",
     "react-router": "^2.5.2",
     "react-router-redux": "^4.0.5",
