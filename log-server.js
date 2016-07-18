@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import http from 'http';
 
 export function logServer (port, win) {
@@ -18,7 +19,6 @@ export function logServer (port, win) {
         return;
       }
       let msg = `${logObj.level}: ${decodeURI(logObj.message)}`;
-      console.log(msg);
       win.webContents.send('appium-log-line', msg);
     });
   });

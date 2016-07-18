@@ -1,4 +1,4 @@
-import { app, BrowserWindow, Menu, ipcMain } from 'electron';
+import { app, BrowserWindow, Menu } from 'electron';
 import { initializeIpc } from './appium';
 import menuTemplates from './menus';
 
@@ -38,9 +38,9 @@ app.on('ready', async () => {
 
   mainWindow = new BrowserWindow({
     show: false,
-    width: 800,
-    height: 700,
-    minWidth: 400,
+    width: 600,
+    height: 600,
+    minWidth: 450,
     minHeight: 400,
   });
 
@@ -58,7 +58,7 @@ app.on('ready', async () => {
   if (process.env.NODE_ENV === 'development') {
     mainWindow.openDevTools();
     mainWindow.webContents.on('context-menu', (e, props) => {
-      const { x, y } = props;
+      const {x, y} = props;
 
       Menu.buildFromTemplate([{
         label: 'Inspect element',

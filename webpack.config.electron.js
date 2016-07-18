@@ -41,6 +41,7 @@ export default {
   externals: [
     ...baseConfig.externals,
     'font-awesome',
-    'source-map-support'
+    'source-map-support',
+    'appium'
   ]
 };
