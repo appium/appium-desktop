@@ -16,6 +16,12 @@ export default class ServerMonitor extends Component {
     this.props.beginMonitoring();
   }
 
+  componentDidUpdate () {
+    if (this._term) {
+      this._term.scrollTop = this._term.scrollHeight;
+    }
+  }
+
   render () {
     const {closeMonitor, stopServer, logLines, serverStatus} = this.props;
     let statusIcon, statusMsg;
@@ -50,7 +56,9 @@ export default class ServerMonitor extends Component {
               />
           }
         </div>
-        <div className={`${styles.term} ${serverStatus === STATUS_STOPPED ? styles['term-stopped'] : ""}`}>
+        <div
+         className={`${styles.term} ${serverStatus === STATUS_STOPPED ? styles['term-stopped'] : ""}`}
+         ref={(c) => this._term = c}>
           {logLines.map((line, i) => <div key={i}>{line}</div>)}
         </div>
       </div>
