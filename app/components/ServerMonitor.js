@@ -16,8 +16,16 @@ export default class ServerMonitor extends Component {
     this.props.beginMonitoring();
   }
 
+  componentWillUpdate () {
+    this.shouldScroll = false;
+    let n = this._term
+    if (n) {
+      this.shouldScroll = n.scrollTop + n.offsetHeight === n.scrollHeight;
+    }
+  }
+
   componentDidUpdate () {
-    if (this._term) {
+    if (this._term && this.shouldScroll) {
       this._term.scrollTop = this._term.scrollHeight;
     }
   }

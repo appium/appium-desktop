@@ -18,7 +18,7 @@ export function logServer (port, win) {
         console.error(e);
         return;
       }
-      let msg = `${logObj.level}: ${decodeURI(logObj.message)}`;
+      let msg = `${logObj.level}: ${logObj.message}`;
       win.webContents.send('appium-log-line', msg);
     });
   });

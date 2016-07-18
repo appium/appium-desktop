@@ -13,7 +13,7 @@
   padding: 8px;
   display: flex;
   justify-content: space-between;
-  border-bottom: 1px solid #383f44;
+  border-bottom: 2px solid #383f44;
 }
 
 .bar img {
@@ -50,8 +50,9 @@
   width: 100%;
   flex: 1;
   color: #ccc;
-  padding: 5px;
+  padding: 8px;
   user-select: text;
+  -webkit-user-select: text;
   overflow: scroll;
   font-family: "Inconsolata", "Lucida console", Monaco, monospace;
 }
@@ -62,4 +63,5 @@
 
 .term div {
   user-select: text;
+  -webkit-user-select: text;
 }
