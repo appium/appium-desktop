@@ -4,7 +4,7 @@ import { STATUS_RUNNING, STATUS_STOPPED } from '../reducers/server-monitor';
 import styles from './ServerMonitor.css';
 import AnsiConverter from 'ansi-to-html';
 
-const convert = new AnsiConverter({fg: '#eee'});
+const convert = new AnsiConverter({fg: '#bbb'});
 
 function leveler (level) {
   switch (level) {
