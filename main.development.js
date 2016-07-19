@@ -5,9 +5,10 @@ import menuTemplates from './menus';
 let menu;
 let template;
 let mainWindow = null;
+const isDev = process.env.NODE_ENV === 'development';
 
 
-if (process.env.NODE_ENV === 'development') {
+if (isDev) {
   require('electron-debug')(); // eslint-disable-line global-require
 }
 
@@ -18,7 +19,7 @@ app.on('window-all-closed', () => {
 
 
 const installExtensions = async () => {
-  if (process.env.NODE_ENV === 'development') {
+  if (isDev) {
     const installer = require('electron-devtools-installer'); // eslint-disable-line global-require
     const extensions = [
       'REACT_DEVELOPER_TOOLS',
@@ -38,7 +39,7 @@ app.on('ready', async () => {
 
   mainWindow = new BrowserWindow({
     show: false,
-    width: 600,
+    width: isDev ? 1200 : 600,
     height: 600,
     minWidth: 450,
     minHeight: 400,
@@ -55,19 +56,20 @@ app.on('ready', async () => {
     mainWindow = null;
   });
 
-  if (process.env.NODE_ENV === 'development') {
+  if (isDev) {
     mainWindow.openDevTools();
-    mainWindow.webContents.on('context-menu', (e, props) => {
-      const {x, y} = props;
-
-      Menu.buildFromTemplate([{
-        label: 'Inspect element',
-        click () {
-          mainWindow.inspectElement(x, y);
-        }
-      }]).popup(mainWindow);
-    });
   }
+
+  mainWindow.webContents.on('context-menu', (e, props) => {
+    const {x, y} = props;
+
+    Menu.buildFromTemplate([{
+      label: 'Inspect element',
+      click () {
+        mainWindow.inspectElement(x, y);
+      }
+    }]).popup(mainWindow);
+  });
 
   if (process.platform === 'darwin') {
     template = menuTemplates.mac(mainWindow);

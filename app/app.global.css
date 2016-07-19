@@ -1,9 +1,9 @@
 body {
-  color: #222;
+  color: #222 !important;
   box-sizing: border-box;
 }
 
 .window {
-  background-color: #cde4f5;
+  background-color: #cde4f5 !important;
   width: 100%;
 }

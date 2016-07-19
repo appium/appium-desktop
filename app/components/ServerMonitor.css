@@ -31,7 +31,7 @@
 
 .status {
   color: #eee;
-  font-size: 1.3em;
+  font-size: 1.2em;
   position: relative;
   top: 4px;
 }
@@ -49,10 +49,10 @@
 }
 
 .stopButton {
-  color: #a0a0a0;
-  background-image: none;
-  background-color: #151515;
-  border-color: #a0a0a0;
+  color: #a0a0a0 !important;
+  background-image: none !important;
+  background-color: #151515 !important;
+  border-color: #a0a0a0 !important;
 }
 
 .term {
