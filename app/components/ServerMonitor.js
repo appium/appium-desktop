@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { Button } from 'react-photonkit';
-import { STATUS_RUNNING, STATUS_STOPPED } from '../reducers/server-monitor';
+import { STATUS_RUNNING, STATUS_STOPPING,
+         STATUS_STOPPED } from '../reducers/server-monitor';
 import styles from './ServerMonitor.css';
 import AnsiConverter from 'ansi-to-html';
 
@@ -19,6 +20,26 @@ function leveler (level) {
     case "info":
     default:
       return "info-circled";
+  }
+}
+
+class StopButton extends Component {
+  static propTypes = {
+    serverStatus: PropTypes.string.isRequired,
+  }
+
+  render () {
+    const {serverStatus, stopServer, closeMonitor} = this.props;
+    let btn = <Button className={styles.stopButton} ptStyle="default"
+               text="Stop Server" onClick={stopServer} />;
+    if (serverStatus === STATUS_STOPPED) {
+      btn = <Button className={styles.stopButton} ptStyle="default"
+             text="Close Logs" onClick={closeMonitor} />;
+    } else if (serverStatus === STATUS_STOPPING) {
+      btn = <Button className={styles.stopButton} ptStyle="disabled"
+             text="Stopping..." />;
+    }
+    return btn;
   }
 }
 
@@ -50,7 +71,7 @@ export default class ServerMonitor extends Component {
   }
 
   render () {
-    const {closeMonitor, stopServer, logLines, serverStatus} = this.props;
+    const {logLines, serverStatus} = this.props;
     let statusIcon, statusMsg;
     switch (serverStatus) {
       case STATUS_RUNNING:
@@ -60,6 +81,10 @@ export default class ServerMonitor extends Component {
       case STATUS_STOPPED:
         statusIcon = "icon-block";
         statusMsg = "The server is stopped";
+        break;
+      case STATUS_STOPPING:
+        statusIcon = "icon-hourglass";
+        statusMsg = "The server is waiting for all connections to close";
         break;
       default:
         throw new Error(`Bad status: ${serverStatus}`);
@@ -76,7 +101,7 @@ export default class ServerMonitor extends Component {
     });
 
     let termClass = styles.term;
-    if (serverStatus === STATUS_STOPPED) {
+    if (serverStatus === STATUS_STOPPED || serverStatus === STATUS_STOPPING) {
       termClass += ` ${styles['term-stopped']}`;
     }
 
@@ -84,6 +109,7 @@ export default class ServerMonitor extends Component {
     if (serverStatus === STATUS_STOPPED) {
       lastSection = <div className={styles.last} />;
     }
+
 
     return (
       <div className={styles.container}>
@@ -93,16 +119,7 @@ export default class ServerMonitor extends Component {
             <span className={`icon ${statusIcon}`} />
             {statusMsg}
           </div>
-          {
-            serverStatus === STATUS_STOPPED ?
-              <Button className={styles.stopButton} ptStyle="default"
-               text="Close Logs" onClick={closeMonitor}
-              />
-            :
-              <Button className={styles.stopButton} ptStyle="default"
-               text="Stop Server" onClick={stopServer}
-              />
-          }
+          <StopButton {...this.props} />
         </div>
         <div className={termClass} ref={(c) => this._term = c}>
           {logLineSection}

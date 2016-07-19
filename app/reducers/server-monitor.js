@@ -4,10 +4,10 @@ import { SERVER_STOP_REQ, SERVER_STOP_OK,
 
 export const STATUS_RUNNING = "running";
 export const STATUS_STOPPED = "stopped";
+export const STATUS_STOPPING = "stopping";
 
 const initialState = {
   logLines: [],
-  serverStopping: false,
   serverStatus: STATUS_STOPPED,
   serverFailMsg: ""
 };
@@ -15,11 +15,10 @@ const initialState = {
 export default function serverMonitor (state = initialState, action) {
   switch (action.type) {
     case SERVER_STOP_REQ:
-      return {...state, serverStopping: true};
+      return {...state, serverStatus: STATUS_STOPPING};
     case SERVER_STOP_OK:
       return {
         ...state,
-        serverStopping: false,
         serverStatus: STATUS_STOPPED,
         serverFailMsg: ""
       };
@@ -41,7 +40,6 @@ export default function serverMonitor (state = initialState, action) {
     case SERVER_EXIT:
       return {
         ...state,
-        serverStopping: false,
         serverStatus: STATUS_STOPPED,
         serverFailMsg: `Appium exited unexpectedly. Code: ${action.code}. ` +
                        `Signal: ${action.signal}`

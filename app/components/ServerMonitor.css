@@ -23,6 +23,10 @@
   border-bottom-color: #a0a0a0;
 }
 
+.bar-stopping {
+  border-bottom-color: orange;
+}
+
 .bar img {
   height: 30px;
   position: relative;
@@ -42,6 +46,10 @@
 
 .running {
   color: #009a00;
+}
+
+.stopping {
+  color: orange;
 }
 
 .status span {

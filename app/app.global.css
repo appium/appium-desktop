@@ -7,3 +7,12 @@ body {
   background-color: #cde4f5 !important;
   width: 100%;
 }
+
+::-webkit-scrollbar {
+  width: 14px;
+  background: transparent;
+}
+
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
