@@ -1,48 +1,29 @@
 /* eslint-disable no-console */
 
-import path from 'path';
 import { ipcMain } from 'electron';
-import { SubProcess } from 'teen_process';
-import { logServer } from './log-server';
+import { main as appiumServer } from 'appium';
 
-const BIN_PATH = path.resolve(__dirname, "node_modules", "appium", "build",
-                              "lib", "main.js");
-const LOG_PORT = 9587;
-const LOG_HOST = "127.0.0.1";
-
-var proc = null;
 var server = null;
+
+function logHandler (win) {
+  return (level, message) => {
+    win.webContents.send('appium-log-line', level, message);
+  };
+}
 
 function connectStartServer (win) {
   ipcMain.on('start-server', async (event, address, port) => {
-    const args = [
-      BIN_PATH,
-      '-a', address,
-      '-p', port,
-      '-G', `${LOG_HOST}:${LOG_PORT}`
-    ];
-
-    server = logServer(LOG_PORT, win);
+    let args = {address, port};
+    args.logHandler = logHandler(win);
     try {
       // set up the appium subprocess
-      console.log(`Starting Appium with args: ${JSON.stringify(args)}`);
-      proc = new SubProcess("node", args);
-
-      // handle out-of-bound exit
-      proc.on('exit', (code, signal) => {
-        win.webContents.send('appium-exit', [code, signal]);
-        server.close();
-      });
-
-      // start subproc and wait for log output
-      await proc.start();
-
-      // tell the renderer everything is ok
+      server = await appiumServer(args);
       win.webContents.send('appium-start-ok');
-
     } catch (e) {
       win.webContents.send('appium-start-error', e.message);
-      server.close();
+      try {
+        await server.close();
+      } catch (ign) {}
     }
   });
 }
@@ -50,8 +31,7 @@ function connectStartServer (win) {
 function connectStopServer (win) {
   ipcMain.on('stop-server', async () => {
     try {
-      await proc.stop();
-      server.close();
+      await server.close();
       win.webContents.send('appium-stop-ok');
     } catch (e) {
       win.webContents.send('appium-stop-error', e.message);

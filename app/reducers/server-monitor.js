@@ -32,7 +32,10 @@ export default function serverMonitor (state = initialState, action) {
     case LOG_RECEIVED:
       return {
         ...state,
-        logLines: state.logLines.concat(action.msg),
+        logLines: state.logLines.concat({
+          level: action.level,
+          msg: action.msg
+        }),
         serverStatus: STATUS_RUNNING
       };
     case SERVER_EXIT:

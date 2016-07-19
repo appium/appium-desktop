@@ -20,8 +20,8 @@ export function stopServerFailed (reason) {
   return {type: SERVER_STOP_FAIL, reason};
 }
 
-export function serverLogReceived (msg) {
-  return {type: LOG_RECEIVED, msg};
+export function serverLogReceived (level, msg) {
+  return {type: LOG_RECEIVED, level, msg};
 }
 
 export function serverExit (code, signal) {
@@ -46,7 +46,7 @@ export function beginMonitoring () {
       let msg = `Appium exited unexpectedly. Code: ${code}. ` +
                  `Signal: ${signal}`;
       stopListening();
-      dispatch(serverLogReceived(msg));
+      dispatch(serverLogReceived('error', msg));
       dispatch(serverExit(code, signal));
     });
   };
@@ -64,7 +64,7 @@ export function stopServer () {
     stopListening();
 
     ipcRenderer.once('appium-stop-ok', () => {
-      dispatch(serverLogReceived("Appium server stopped successfully"));
+      dispatch(serverLogReceived('info', "Appium server stopped successfully"));
       setTimeout(() => {
         dispatch(stopServerOK());
       }, 0);

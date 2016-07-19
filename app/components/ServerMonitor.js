@@ -2,6 +2,25 @@ import React, { Component, PropTypes } from 'react';
 import { Button } from 'react-photonkit';
 import { STATUS_RUNNING, STATUS_STOPPED } from '../reducers/server-monitor';
 import styles from './ServerMonitor.css';
+import AnsiConverter from 'ansi-to-html';
+
+const convert = new AnsiConverter({fg: '#eee'});
+
+function leveler (level) {
+  switch (level) {
+    case "debug":
+      return "tools";
+    case "warn":
+      return "attention";
+    case "error":
+      return "cancel-circled";
+    case "silly":
+      return "basket";
+    case "info":
+    default:
+      return "info-circled";
+  }
+}
 
 export default class ServerMonitor extends Component {
   static propTypes = {
@@ -39,16 +58,37 @@ export default class ServerMonitor extends Component {
         statusMsg = "The server is running";
         break;
       case STATUS_STOPPED:
-        statusIcon = "icon-stop";
+        statusIcon = "icon-block";
         statusMsg = "The server is stopped";
         break;
       default:
         throw new Error(`Bad status: ${serverStatus}`);
     }
+
+    let logLineSection = logLines.map((line, i) => {
+      let icn = leveler(line.level);
+      return (
+        <div key={i}>
+          <span className={`${styles.icon} ${styles[`icon-${icn}`]} icon icon-${icn}`} />
+          <span dangerouslySetInnerHTML={{__html: convert.toHtml(line.msg)}} />
+        </div>
+      );
+    });
+
+    let termClass = styles.term;
+    if (serverStatus === STATUS_STOPPED) {
+      termClass += ` ${styles['term-stopped']}`;
+    }
+
+    let lastSection = "";
+    if (serverStatus === STATUS_STOPPED) {
+      lastSection = <div className={styles.last} />;
+    }
+
     return (
       <div className={styles.container}>
-        <div className={styles.bar}>
-          <img src={'../images/appium_small_light.png'} className={styles.logo} />
+        <div className={`${styles.bar} ${styles['bar-'+serverStatus]}`}>
+          <img src={'../images/appium_small_magenta.png'} className={styles.logo} />
           <div className={`${styles.status} ${styles[serverStatus]}`}>
             <span className={`icon ${statusIcon}`} />
             {statusMsg}
@@ -64,10 +104,9 @@ export default class ServerMonitor extends Component {
               />
           }
         </div>
-        <div
-         className={`${styles.term} ${serverStatus === STATUS_STOPPED ? styles['term-stopped'] : ""}`}
-         ref={(c) => this._term = c}>
-          {logLines.map((line, i) => <div key={i}>{line}</div>)}
+        <div className={termClass} ref={(c) => this._term = c}>
+          {logLineSection}
+          {lastSection}
         </div>
       </div>
     );

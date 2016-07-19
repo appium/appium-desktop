@@ -7,13 +7,20 @@
 }
 
 .bar {
-  background-color: #222;
+  background-color: #000;
   width: 100%;
   height: 50px;
   padding: 8px;
   display: flex;
   justify-content: space-between;
-  border-bottom: 2px solid #383f44;
+  border-bottom: 1px solid #009a00;
+}
+
+.bar-running {
+}
+
+.bar-stopped {
+  border-bottom-color: #a0a0a0;
 }
 
 .bar img {
@@ -30,11 +37,11 @@
 }
 
 .stopped {
-  color: #d26d6d;
+  color: #a0a0a0;
 }
 
 .running {
-  color: #8ae2bb;
+  color: #009a00;
 }
 
 .status span {
@@ -42,10 +49,14 @@
 }
 
 .stopButton {
+  color: #a0a0a0;
+  background-image: none;
+  background-color: #151515;
+  border-color: #a0a0a0;
 }
 
 .term {
-  background-color: #222;
+  background-color: #000;
   white-space: pre-wrap;
   width: 100%;
   flex: 1;
@@ -61,7 +72,33 @@
   color: #999;
 }
 
-.term div {
+.term div, .term span {
   user-select: text;
   -webkit-user-select: text;
+}
+
+.term span.icon {
+  margin-right: 8px;
+  font-size: 0.9em;
+}
+
+.term span.icon-info-circled:before {
+  color: #5252bf;
+}
+
+.term span.icon-attention:before {
+  color: yellow;
+}
+
+.term span.icon-cancel-circled:before {
+  color: red;
+}
+
+.term span.icon-tools:before {
+  color: #444;
+}
+
+.term .last {
+  border-bottom: 1px dashed #a0a0a0;
+  margin-top: 10px;
 }

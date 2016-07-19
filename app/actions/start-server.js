@@ -47,8 +47,8 @@ export function startServer () {
       ipcRenderer.removeListener('appium-exit', exitListener);
     });
 
-    ipcRenderer.on('appium-log-line', (event, line) => {
-      dispatch(serverLogReceived(line));
+    ipcRenderer.on('appium-log-line', (event, level, message) => {
+      dispatch(serverLogReceived(level, message));
     });
 
     ipcRenderer.send('start-server', address, port);

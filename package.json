@@ -24,22 +24,22 @@
     "test-watch": "npm test -- --watch",
     "test-e2e": "cross-env NODE_ENV=test mocha --compilers js:babel-register --require ./test/setup.js --require co-mocha ./test/e2e.js",
     "lint": "eslint app test *.js",
-    "hot-server": "node -r babel-register server.js",
-    "build-main": "cross-env NODE_ENV=production node -r babel-register ./node_modules/webpack/bin/webpack --config webpack.config.electron.js --progress --profile --colors",
-    "build-renderer": "cross-env NODE_ENV=production node -r babel-register ./node_modules/webpack/bin/webpack --config webpack.config.production.js --progress --profile --colors",
+    "hot-server": "node -r babel-register server.js --color",
+    "build-main": "cross-env NODE_ENV=production node -r babel-register ./node_modules/webpack/bin/webpack --config webpack.config.electron.js --progress --profile --colors --color",
+    "build-renderer": "cross-env NODE_ENV=production node -r babel-register ./node_modules/webpack/bin/webpack --config webpack.config.production.js --progress --profile --colors --color",
     "build": "npm run build-main && npm run build-renderer",
     "start": "cross-env NODE_ENV=production electron ./",
-    "start-hot": "cross-env HOT=1 NODE_ENV=development electron -r babel-register -r babel-polyfill ./main.development",
+    "start-hot": "cross-env HOT=1 NODE_ENV=development electron -r babel-register -r babel-polyfill ./main.development --color",
     "package": "cross-env NODE_ENV=production node -r babel-register package.js",
     "package-all": "npm run package -- --all",
     "postinstall": "node node_modules/fbjs-scripts/node/check-dev-engines.js package.json",
-    "dev": "concurrently --kill-others \"npm run hot-server\" \"npm run start-hot\""
+    "dev": "concurrently --kill-others \"npm run hot-server\" \"npm run start-hot\" --color"
   },
   "bin": {
     "electron": "./node_modules/.bin/electron"
   },
   "dependencies": {
-    "ansispan": "0.0.4",
+    "ansi-to-html": "^0.4.1",
     "appium": "^1.5.3",
     "css-modules-require-hook": "^4.0.1",
     "electron-debug": "^1.0.1",
