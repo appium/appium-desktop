@@ -4,18 +4,21 @@ import styles from './StartServer.css';
 
 export default class StartServer extends Component {
   static propTypes = {
-    address: PropTypes.string.isRequired,
-    port: PropTypes.number.isRequired,
+    serverArgs: PropTypes.object.isRequired,
     serverStarting: PropTypes.bool.isRequired,
     startServer: PropTypes.func.isRequired,
     serverFailMsg: PropTypes.string.isRequired,
-    updateAddress: PropTypes.func.isRequired,
-    updatePort: PropTypes.func.isRequired
+    updateArgs: PropTypes.func.isRequired,
+  }
+
+  updateArg (evt) {
+    const {updateArgs} = this.props;
+    updateArgs({[evt.target.name]: evt.target.value});
   }
 
   render () {
-    const {address, port, serverStarting, startServer,
-           serverFailMsg, updateAddress, updatePort} = this.props;
+    const {serverArgs, serverStarting, startServer,
+           serverFailMsg} = this.props;
 
     let failureMsg;
     if (serverFailMsg) {
@@ -33,17 +36,18 @@ export default class StartServer extends Component {
         <div className={styles.form}>
           <img src={'../images/appium_logo.png'} className={styles.logo} />
           {failureMsg}
-          <form>
-            <Input ref="address" type="text" defaultValue={address}
-             label="Server Address" onChange={updateAddress} />
-            <Input ref="port" type="text" defaultValue={port}
-             label="Port" onChange={updatePort} />
+          <form onSubmit={startServer} action="foo">
+            <Input ref="address" type="text" defaultValue={serverArgs.address}
+             label="Server Address" name="address" onChange={this.updateArg.bind(this)} />
+            <Input ref="port" type="text" defaultValue={serverArgs.port}
+             label="Port" name="port" onChange={this.updateArg.bind(this)} />
             <div className="form-actions">
-              <Button form className={styles.startButton} type="submit"
+              <Button className={styles.startButton} type="button"
                ptStyle={serverStarting ? "disabled" : "primary"}
                text={serverStarting ? "Starting..." : "Start Server"}
                onClick={startServer}
               />
+              <input type="submit" hidden={true} />
             </div>
           </form>
         </div>

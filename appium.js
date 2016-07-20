@@ -2,6 +2,7 @@
 
 import { ipcMain } from 'electron';
 import { main as appiumServer } from 'appium';
+import { getDefaultArgs } from 'appium/build/lib/parser';
 
 var server = null;
 
@@ -12,8 +13,13 @@ function logHandler (win) {
 }
 
 function connectStartServer (win) {
-  ipcMain.on('start-server', async (event, address, port) => {
-    let args = {address, port};
+  ipcMain.on('start-server', async (event, args) => {
+    // clean up args object for appium log purposes (so it doesn't show in
+    // non-default args list
+    if (args.defaultCapabilities &&
+        Object.keys(args.defaultCapabilities).length === 0) {
+      delete args.defaultCapabilities;
+    }
     args.logHandler = logHandler(win);
     try {
       // set up the appium subprocess
@@ -39,11 +45,18 @@ function connectStopServer (win) {
   });
 }
 
+function connectGetDefaultArgs () {
+  ipcMain.on('get-default-args', (evt) => {
+    evt.returnValue = getDefaultArgs();
+  });
+}
+
 function initializeIpc (win) {
   // listen for 'start-server' from the renderer
   connectStartServer(win);
   // listen for 'stop-server' from the renderer
   connectStopServer(win);
+  connectGetDefaultArgs(win);
 }
 
 export { initializeIpc };

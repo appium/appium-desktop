@@ -5,8 +5,7 @@ import { serverLogReceived } from './server-monitor';
 export const SERVER_START_REQ = 'SERVER_START_REQ';
 export const SERVER_START_OK = 'SERVER_START_OK';
 export const SERVER_START_FAIL = 'SERVER_START_FAIL';
-export const UPDATE_ADDRESS = 'UPDATE_ADDRESS';
-export const UPDATE_PORT = 'UPDATE_PORT';
+export const UPDATE_ARGS = 'UPDATE_ARGS';
 
 export function startServerReq () {
   return {type: SERVER_START_REQ};
@@ -20,11 +19,12 @@ export function startServerFailed (reason) {
   return {type: SERVER_START_FAIL, reason};
 }
 
-export function startServer () {
+export function startServer (evt) {
+  evt.preventDefault();
   return (dispatch, getState) => {
     // signal to the UI that we are beginning our request
     dispatch(startServerReq());
-    const {address, port} = getState().startServer;
+    const {serverArgs} = getState().startServer;
 
     // if we get an error from electron, fail with the message
     ipcRenderer.once('appium-start-error', (event, message) => {
@@ -51,19 +51,12 @@ export function startServer () {
       dispatch(serverLogReceived(level, message));
     });
 
-    ipcRenderer.send('start-server', address, port);
+    ipcRenderer.send('start-server', serverArgs);
   };
 }
 
-export function updateAddress (evt) {
+export function updateArgs (args) {
   return (dispatch) => {
-    dispatch({type: UPDATE_ADDRESS, address: evt.target.value});
-  };
-}
-
-export function updatePort (evt) {
-  return (dispatch) => {
-    let port = parseInt(evt.target.value, 10);
-    dispatch({type: UPDATE_PORT, port});
+    dispatch({type: UPDATE_ARGS, args});
   };
 }

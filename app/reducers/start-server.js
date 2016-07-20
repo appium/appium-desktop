@@ -1,14 +1,12 @@
 import { SERVER_START_REQ, SERVER_START_OK,
-         SERVER_START_FAIL, UPDATE_ADDRESS,
-         UPDATE_PORT} from '../actions/start-server';
+         SERVER_START_FAIL, UPDATE_ARGS } from '../actions/start-server';
 
-// TODO get these from appium package itself!
-const DEFAULT_ADDRESS = "0.0.0.0";
-const DEFAULT_PORT = 4723;
+import { ipcRenderer } from 'electron';
+
+const defaultArgs = ipcRenderer.sendSync('get-default-args');
 
 const initialState = {
-  port: DEFAULT_PORT,
-  address: DEFAULT_ADDRESS,
+  serverArgs: defaultArgs,
   serverStarting: false,
   serverFailMsg: ""
 };
@@ -28,15 +26,10 @@ export default function startServer (state = initialState, action) {
         serverStarting: false,
         serverFailMsg: action.reason
       };
-    case UPDATE_ADDRESS:
+    case UPDATE_ARGS:
       return {
         ...state,
-        address: action.address
-      };
-    case UPDATE_PORT:
-      return {
-        ...state,
-        port: action.port
+        serverArgs: Object.assign({}, state.serverArgs, action.args)
       };
     default:
       return state;
