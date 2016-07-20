@@ -1,6 +1,6 @@
 import { SERVER_STOP_REQ, SERVER_STOP_OK,
          SERVER_STOP_FAIL, LOG_RECEIVED,
-         SERVER_EXIT, MONITOR_CLOSED } from '../actions/server-monitor';
+         LOGS_CLEARED, MONITOR_CLOSED } from '../actions/server-monitor';
 
 export const STATUS_RUNNING = "running";
 export const STATUS_STOPPED = "stopped";
@@ -37,12 +37,10 @@ export default function serverMonitor (state = initialState, action) {
         }),
         serverStatus: STATUS_RUNNING
       };
-    case SERVER_EXIT:
+    case LOGS_CLEARED:
       return {
         ...state,
-        serverStatus: STATUS_STOPPED,
-        serverFailMsg: `Appium exited unexpectedly. Code: ${action.code}. ` +
-                       `Signal: ${action.signal}`
+        logLines: []
       };
     case MONITOR_CLOSED:
       return {...initialState};

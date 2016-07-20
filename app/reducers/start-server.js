@@ -1,5 +1,5 @@
-import { SERVER_START_REQ, SERVER_START_OK,
-         SERVER_START_FAIL, UPDATE_ARGS } from '../actions/start-server';
+import { SERVER_START_REQ, SERVER_START_OK, SERVER_START_ERR,
+         UPDATE_ARGS } from '../actions/start-server';
 
 import { ipcRenderer } from 'electron';
 
@@ -16,15 +16,10 @@ export default function startServer (state = initialState, action) {
     case SERVER_START_REQ:
       return {...state, serverStarting: true};
     case SERVER_START_OK:
+    case SERVER_START_ERR:
       return {
         ...state,
         serverStarting: false,
-      };
-    case SERVER_START_FAIL:
-      return {
-        ...state,
-        serverStarting: false,
-        serverFailMsg: action.reason
       };
     case UPDATE_ARGS:
       return {

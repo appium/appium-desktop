@@ -51,11 +51,6 @@ export default class ServerMonitor extends Component {
     logLines: PropTypes.array.isRequired,
   }
 
-  componentDidMount () {
-    // make sure we listen for unexpected exit
-    this.props.beginMonitoring();
-  }
-
   componentWillUpdate () {
     this.shouldScroll = false;
     let n = this._term;

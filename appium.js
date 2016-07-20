@@ -21,9 +21,12 @@ function connectStartServer (win) {
       delete args.defaultCapabilities;
     }
     args.logHandler = logHandler(win);
+    // make sure if the server barfs on startup, it throws an error rather
+    // than the typical behavior, which is process.exit o_O
+    args.throwInsteadOfExit = true;
     try {
-      // set up the appium subprocess
-      server = await appiumServer(args);
+      // set up the appium server running in this thread
+      server = await appiumServer(args, true);
       win.webContents.send('appium-start-ok');
     } catch (e) {
       win.webContents.send('appium-start-error', e.message);

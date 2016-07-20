@@ -5,7 +5,7 @@ export const SERVER_STOP_REQ = 'SERVER_STOP_REQ';
 export const SERVER_STOP_OK = 'SERVER_STOP_OK';
 export const SERVER_STOP_FAIL = 'SERVER_STOP_FAIL';
 export const LOG_RECEIVED = 'LOG_RECEIVED';
-export const SERVER_EXIT = 'SERVER_EXIT';
+export const LOGS_CLEARED = 'LOGS_CLEARED';
 export const MONITOR_CLOSED = 'MONITOR_CLOSED';
 
 export function stopServerReq () {
@@ -24,32 +24,13 @@ export function serverLogReceived (level, msg) {
   return {type: LOG_RECEIVED, level, msg};
 }
 
-export function serverExit (code, signal) {
-  return {type: SERVER_EXIT, code, signal};
-}
-
 export function monitorClosed () {
   return {type: MONITOR_CLOSED};
 }
 
 function stopListening () {
   ipcRenderer.removeAllListeners('appium-log-line');
-  ipcRenderer.removeAllListeners('appium-exit');
   ipcRenderer.removeAllListeners('appium-stop-error');
-}
-
-export function beginMonitoring () {
-  return (dispatch) => {
-    // rebind the monitor component's exit listener
-    ipcRenderer.once('appium-exit', (event, arg) => {
-      let [code, signal] = arg;
-      let msg = `Appium exited unexpectedly. Code: ${code}. ` +
-                 `Signal: ${signal}`;
-      stopListening();
-      dispatch(serverLogReceived('error', msg));
-      dispatch(serverExit(code, signal));
-    });
-  };
 }
 
 export function stopServer () {
@@ -78,5 +59,11 @@ export function closeMonitor () {
   return (dispatch) => {
     dispatch(monitorClosed());
     dispatch(push("/"));
+  };
+}
+
+export function clearLogs () {
+  return (dispatch) => {
+    dispatch({type: LOGS_CLEARED});
   };
 }

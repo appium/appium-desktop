@@ -7,13 +7,35 @@
     justify-content: center;
 }
 
+.tabs {
+    width: 100%;
+    border-bottom: 1px solid #662d91;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.tabButtons {
+    position: relative;
+    top: 12px;
+}
+
+.formAndLogo {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
 .form {
     width: 300px;
+    margin: 0px auto;
 }
 
 .logo {
     width: 300px;
     margin-bottom: 15px;
+    margin: 0px auto;
 }
 
 .startButton {

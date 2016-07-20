@@ -7,7 +7,6 @@ export default class StartServer extends Component {
     serverArgs: PropTypes.object.isRequired,
     serverStarting: PropTypes.bool.isRequired,
     startServer: PropTypes.func.isRequired,
-    serverFailMsg: PropTypes.string.isRequired,
     updateArgs: PropTypes.func.isRequired,
   }
 
@@ -17,39 +16,35 @@ export default class StartServer extends Component {
   }
 
   render () {
-    const {serverArgs, serverStarting, startServer,
-           serverFailMsg} = this.props;
-
-    let failureMsg;
-    if (serverFailMsg) {
-      failureMsg = (
-        <div className={styles.failureMsg}>
-          {serverFailMsg}
-        </div>
-      );
-    } else {
-      failureMsg = "";
-    }
+    const {serverArgs, serverStarting, startServer} = this.props;
 
     return (
       <div className={styles.container}>
-        <div className={styles.form}>
+        <div className={styles.formAndLogo}>
           <img src={'../images/appium_logo.png'} className={styles.logo} />
-          {failureMsg}
-          <form onSubmit={startServer} action="foo">
-            <Input ref="address" type="text" defaultValue={serverArgs.address}
-             label="Server Address" name="address" onChange={this.updateArg.bind(this)} />
-            <Input ref="port" type="text" defaultValue={serverArgs.port}
-             label="Port" name="port" onChange={this.updateArg.bind(this)} />
-            <div className="form-actions">
-              <Button className={styles.startButton} type="button"
-               ptStyle={serverStarting ? "disabled" : "primary"}
-               text={serverStarting ? "Starting..." : "Start Server"}
-               onClick={startServer}
-              />
-              <input type="submit" hidden={true} />
+          <div className={styles.tabs}>
+            <div className={`btn-group ${styles.tabButtons}`}>
+              <Button text="Simple" ptStyle="primary" />
+              <Button text="Advanced" />
+              <Button text="Presets" />
             </div>
-          </form>
+          </div>
+          <div className={styles.form}>
+            <form onSubmit={startServer} action="foo">
+              <Input ref="address" type="text" defaultValue={serverArgs.address}
+               label="Server Address" name="address" onChange={this.updateArg.bind(this)} />
+              <Input ref="port" type="text" defaultValue={serverArgs.port}
+               label="Port" name="port" onChange={this.updateArg.bind(this)} />
+              <div className="form-actions">
+                <Button className={styles.startButton} type="button"
+                 ptStyle={serverStarting ? "disabled" : "primary"}
+                 text={serverStarting ? "Starting..." : "Start Server"}
+                 onClick={startServer}
+                />
+                <input type="submit" hidden={true} />
+              </div>
+            </form>
+          </div>
         </div>
       </div>
     );
