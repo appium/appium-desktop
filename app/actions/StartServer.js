@@ -1,6 +1,6 @@
 import { ipcRenderer } from 'electron';
 import { push } from 'react-router-redux';
-import { serverLogsReceived, clearLogs } from './server-monitor';
+import { serverLogsReceived, clearLogs } from './ServerMonitor';
 
 export const SERVER_START_REQ = 'SERVER_START_REQ';
 export const SERVER_START_OK = 'SERVER_START_OK';

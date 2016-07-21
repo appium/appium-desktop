@@ -1,6 +1,6 @@
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import * as ServerActions from '../actions/server-monitor';
+import * as ServerActions from '../actions/ServerMonitor';
 import ServerMonitor from '../components/ServerMonitor';
 
 function mapStateToProps (state) {

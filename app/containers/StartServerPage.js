@@ -1,6 +1,6 @@
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import * as StartServerActions from '../actions/start-server';
+import * as StartServerActions from '../actions/StartServer';
 import StartServer from '../components/StartServer';
 
 function mapStateToProps (state) {

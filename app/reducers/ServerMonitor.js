@@ -1,6 +1,6 @@
 import { SERVER_STOP_REQ, SERVER_STOP_OK,
          SERVER_STOP_FAIL, LOGS_RECEIVED,
-         LOGS_CLEARED, MONITOR_CLOSED } from '../actions/server-monitor';
+         LOGS_CLEARED, MONITOR_CLOSED } from '../actions/ServerMonitor';
 
 export const STATUS_RUNNING = "running";
 export const STATUS_STOPPED = "stopped";

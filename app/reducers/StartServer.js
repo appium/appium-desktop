@@ -1,5 +1,5 @@
 import { SERVER_START_REQ, SERVER_START_OK, SERVER_START_ERR,
-         UPDATE_ARGS } from '../actions/start-server';
+         UPDATE_ARGS } from '../actions/StartServer';
 
 import { ipcRenderer } from 'electron';
 
