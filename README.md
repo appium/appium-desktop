@@ -7,7 +7,15 @@ Appium Desktop is an app for Mac, Windows, and Linux which gives you the power o
 
 **This is a work in progress!**
 
-TODO: Add some nice images to show off what you can do with the app.
+## Screenshots
+
+#### Start an Appium server
+
+![Start a server](images/screenshots/start.png)
+
+#### Follow Appium logs
+
+![Follow logs](images/screenshots/console.png)
 
 ## Instructions for Users
 
