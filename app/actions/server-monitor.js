@@ -4,7 +4,7 @@ import { push } from 'react-router-redux';
 export const SERVER_STOP_REQ = 'SERVER_STOP_REQ';
 export const SERVER_STOP_OK = 'SERVER_STOP_OK';
 export const SERVER_STOP_FAIL = 'SERVER_STOP_FAIL';
-export const LOG_RECEIVED = 'LOG_RECEIVED';
+export const LOGS_RECEIVED = 'LOGS_RECEIVED';
 export const LOGS_CLEARED = 'LOGS_CLEARED';
 export const MONITOR_CLOSED = 'MONITOR_CLOSED';
 
@@ -20,8 +20,8 @@ export function stopServerFailed (reason) {
   return {type: SERVER_STOP_FAIL, reason};
 }
 
-export function serverLogReceived (level, msg) {
-  return {type: LOG_RECEIVED, level, msg};
+export function serverLogsReceived (logs) {
+  return {type: LOGS_RECEIVED, logs};
 }
 
 export function monitorClosed () {
@@ -45,7 +45,10 @@ export function stopServer () {
     stopListening();
 
     ipcRenderer.once('appium-stop-ok', () => {
-      dispatch(serverLogReceived('info', "Appium server stopped successfully"));
+      dispatch(serverLogsReceived([{
+        level: 'info',
+        msg: "Appium server stopped successfully"
+      }]));
       setTimeout(() => {
         dispatch(stopServerOK());
       }, 0);

@@ -1,5 +1,5 @@
 import { SERVER_STOP_REQ, SERVER_STOP_OK,
-         SERVER_STOP_FAIL, LOG_RECEIVED,
+         SERVER_STOP_FAIL, LOGS_RECEIVED,
          LOGS_CLEARED, MONITOR_CLOSED } from '../actions/server-monitor';
 
 export const STATUS_RUNNING = "running";
@@ -28,13 +28,10 @@ export default function serverMonitor (state = initialState, action) {
         serverStopping: false,
         serverFailMsg: action.reason
       };
-    case LOG_RECEIVED:
+    case LOGS_RECEIVED:
       return {
         ...state,
-        logLines: state.logLines.concat({
-          level: action.level,
-          msg: action.msg
-        }),
+        logLines: state.logLines.concat(action.logs),
         serverStatus: STATUS_RUNNING
       };
     case LOGS_CLEARED:

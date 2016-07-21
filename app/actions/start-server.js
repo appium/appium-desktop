@@ -1,6 +1,6 @@
 import { ipcRenderer } from 'electron';
 import { push } from 'react-router-redux';
-import { serverLogReceived, clearLogs } from './server-monitor';
+import { serverLogsReceived, clearLogs } from './server-monitor';
 
 export const SERVER_START_REQ = 'SERVER_START_REQ';
 export const SERVER_START_OK = 'SERVER_START_OK';
@@ -31,8 +31,8 @@ export function startServer (evt) {
       dispatch(push('/monitor'));
     });
 
-    ipcRenderer.on('appium-log-line', (event, level, message) => {
-      dispatch(serverLogReceived(level, message));
+    ipcRenderer.on('appium-log-line', (event, logs) => {
+      dispatch(serverLogsReceived(logs));
     });
 
     dispatch(clearLogs());

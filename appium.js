@@ -4,13 +4,11 @@ import { ipcMain } from 'electron';
 import { main as appiumServer } from 'appium';
 import { getDefaultArgs } from 'appium/build/lib/parser';
 
-var server = null;
+const LOG_SEND_INTERVAL_MS = 250;
 
-function logHandler (win) {
-  return (level, message) => {
-    win.webContents.send('appium-log-line', level, message);
-  };
-}
+var server = null;
+var logWatcher = null;
+var batchedLogs = [];
 
 function connectStartServer (win) {
   ipcMain.on('start-server', async (event, args) => {
@@ -20,10 +18,21 @@ function connectStartServer (win) {
         Object.keys(args.defaultCapabilities).length === 0) {
       delete args.defaultCapabilities;
     }
-    args.logHandler = logHandler(win);
+    args.logHandler = (level, msg) => {
+      batchedLogs.push({level, msg});
+    };
     // make sure if the server barfs on startup, it throws an error rather
     // than the typical behavior, which is process.exit o_O
     args.throwInsteadOfExit = true;
+
+    // set up our log watcher
+    logWatcher = setInterval(() => {
+      if (batchedLogs.length) {
+        win.webContents.send('appium-log-line', batchedLogs);
+        batchedLogs = [];
+      }
+    }, LOG_SEND_INTERVAL_MS);
+
     try {
       // set up the appium server running in this thread
       server = await appiumServer(args, true);
@@ -33,6 +42,7 @@ function connectStartServer (win) {
       try {
         await server.close();
       } catch (ign) {}
+      clearInterval(logWatcher);
     }
   });
 }
@@ -45,6 +55,7 @@ function connectStopServer (win) {
     } catch (e) {
       win.webContents.send('appium-stop-error', e.message);
     }
+    clearInterval(logWatcher);
   });
 }
 
