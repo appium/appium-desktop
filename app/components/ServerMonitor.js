@@ -55,7 +55,7 @@ export default class ServerMonitor extends Component {
     this.shouldScroll = false;
     let n = this._term;
     if (n) {
-      this.shouldScroll = n.scrollTop + n.offsetHeight === n.scrollHeight;
+      this.shouldScroll = n.scrollTop + n.offsetHeight >= n.scrollHeight;
     }
   }
 

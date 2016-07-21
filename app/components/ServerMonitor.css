@@ -80,10 +80,6 @@
   color: #999;
 }
 
-.term div {
-  border-bottom: 1px dotted #222;
-}
-
 .term div, .term span {
   user-select: text;
   -webkit-user-select: text;
