@@ -1,30 +1,56 @@
 import React, { Component, PropTypes } from 'react';
 import { Button } from 'react-photonkit';
 
+import { propTypes } from './shared';
 import SimpleTab from './SimpleTab';
+import AdvancedTab from './AdvancedTab';
 import styles from './StartServer.css';
+
+const TAB_SIMPLE = 0, TAB_ADVANCED = 1, TAB_PRESETS = 2;
 
 export default class StartServer extends Component {
   static propTypes = {
-    serverArgs: PropTypes.object.isRequired,
-    serverStarting: PropTypes.bool.isRequired,
-    startServer: PropTypes.func.isRequired,
-    updateArgs: PropTypes.func.isRequired,
+    ...propTypes,
+    tabId: PropTypes.number.isRequired,
+    switchTab: PropTypes.func.isRequired,
+  }
+
+  displayTab () {
+    switch (this.props.tabId) {
+      case TAB_SIMPLE:
+        return <SimpleTab {...this.props} />;
+      case TAB_ADVANCED:
+        return <AdvancedTab {...this.props} />;
+      case TAB_PRESETS:
+        return "";
+      default:
+        throw new Error("Invalid tab id");
+    }
   }
 
   render () {
+    const {tabId, switchTab} = this.props;
     return (
       <div className={styles.container}>
         <div className={styles.formAndLogo}>
           <img src={'../images/appium_logo.png'} className={styles.logo} />
           <div className={styles.tabs}>
             <div className={`btn-group ${styles.tabButtons}`}>
-              <Button text="Simple" ptStyle="primary" />
-              <Button text="Advanced" />
-              <Button text="Presets" />
+              <Button text="Simple"
+                ptStyle={tabId === TAB_SIMPLE ? "primary" : "default" }
+                onClick={() => switchTab(TAB_SIMPLE)}
+              />
+              <Button text="Advanced"
+                ptStyle={tabId === TAB_ADVANCED ? "primary" : "default" }
+                onClick={() => switchTab(TAB_ADVANCED)}
+              />
+              <Button text="Presets"
+                ptStyle={tabId === TAB_PRESETS ? "primary" : "default" }
+                onClick={() => switchTab(TAB_PRESETS)}
+              />
             </div>
           </div>
-          <SimpleTab {...this.props} />
+          {this.displayTab()}
         </div>
       </div>
     );

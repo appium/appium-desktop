@@ -1,14 +1,16 @@
 import { SERVER_START_REQ, SERVER_START_OK, SERVER_START_ERR,
-         UPDATE_ARGS } from '../actions/StartServer';
+         UPDATE_ARGS, SWITCH_TAB } from '../actions/StartServer';
 
 import { ipcRenderer } from 'electron';
 
-const defaultArgs = ipcRenderer.sendSync('get-default-args');
+export const DEFAULT_ARGS = ipcRenderer.sendSync('get-default-args');
+export const ARG_DATA = ipcRenderer.sendSync('get-args-metadata');
 
 const initialState = {
-  serverArgs: defaultArgs,
+  serverArgs: {...DEFAULT_ARGS},
   serverStarting: false,
-  serverFailMsg: ""
+  serverFailMsg: "",
+  tabId: 0,
 };
 
 export default function startServer (state = initialState, action) {
@@ -25,6 +27,11 @@ export default function startServer (state = initialState, action) {
       return {
         ...state,
         serverArgs: Object.assign({}, state.serverArgs, action.args)
+      };
+    case SWITCH_TAB:
+      return {
+        ...state,
+        tabId: action.tabId
       };
     default:
       return state;

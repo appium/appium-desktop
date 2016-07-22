@@ -6,6 +6,7 @@ export const SERVER_START_REQ = 'SERVER_START_REQ';
 export const SERVER_START_OK = 'SERVER_START_OK';
 export const SERVER_START_ERR = 'SERVER_START_ERR';
 export const UPDATE_ARGS = 'UPDATE_ARGS';
+export const SWITCH_TAB = 'SWITCH_TAB';
 
 export function startServer (evt) {
   evt.preventDefault();
@@ -43,5 +44,11 @@ export function startServer (evt) {
 export function updateArgs (args) {
   return (dispatch) => {
     dispatch({type: UPDATE_ARGS, args});
+  };
+}
+
+export function switchTab (tabId) {
+  return (dispatch) => {
+    dispatch({type: SWITCH_TAB, tabId});
   };
 }

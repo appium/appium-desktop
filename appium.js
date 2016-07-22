@@ -2,7 +2,7 @@
 
 import { ipcMain } from 'electron';
 import { main as appiumServer } from 'appium';
-import { getDefaultArgs } from 'appium/build/lib/parser';
+import { getDefaultArgs, getParser } from 'appium/build/lib/parser';
 
 const LOG_SEND_INTERVAL_MS = 250;
 
@@ -60,8 +60,16 @@ function connectStopServer (win) {
 }
 
 function connectGetDefaultArgs () {
+
   ipcMain.on('get-default-args', (evt) => {
     evt.returnValue = getDefaultArgs();
+  });
+
+  ipcMain.on('get-args-metadata', (evt) => {
+    let defArgs = Object.keys(getDefaultArgs());
+    evt.returnValue = getParser().rawArgs
+                        .filter(a => defArgs.indexOf(a[1].dest) !== -1)
+                        .map(a => a[1]);
   });
 }
 
