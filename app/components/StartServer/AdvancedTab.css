@@ -1,5 +1,12 @@
 .advancedForm {
-  padding: 0px 20px;
+  width: 100%;
+  padding: 0px 10px;
+}
+
+.inputSection {
+  height: 350px;
+  border-bottom: 1px solid #662d91;
+  overflow: scroll;
 }
 
 .actions {
@@ -8,5 +15,39 @@
 }
 
 .input {
-  width: 250px;
+  width: 300px;
+  margin: 5px 15px;
+  margin-left: 0px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
 }
+
+.input label, .input input {
+  width: 50%;
+  margin-bottom: 0px;
+}
+
+.input label {
+  position: relative;
+  top: 5px;
+}
+
+.input input[type=checkbox] {
+  height: 1.8em;
+}
+
+.secTitle {
+  font-weight: bold;
+  font-size: 1.2em;
+}
+
+.secBody {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: row;
+  flex-wrap: wrap;
+  flex-flow: row wrap;
+}
+

@@ -21,7 +21,7 @@ const shouldBuildAll = argv.all || false;
 
 const DEFAULT_OPTS = {
   dir: './',
-  name: appName,
+  name: 'Appium',
   asar: shouldUseAsar,
   ignore: [
     '^/test($|/)',

@@ -41,8 +41,8 @@ app.on('ready', async () => {
     show: false,
     width: isDev ? 1200 : 600,
     height: 600,
-    minWidth: 450,
-    minHeight: 400,
+    minWidth: 600,
+    minHeight: 600,
   });
 
   mainWindow.loadURL(`file://${__dirname}/app/index.html`);
