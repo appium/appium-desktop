@@ -40,7 +40,7 @@
   },
   "dependencies": {
     "ansi-to-html": "^0.4.1",
-    "appium": "^1.5.3",
+    "appium": "^1.6.0",
     "css-modules-require-hook": "^4.0.1",
     "electron-debug": "^1.0.1",
     "font-awesome": "^4.6.3",
@@ -58,9 +58,9 @@
     "temp": "^0.8.3"
   },
   "devDependencies": {
-    "asar": "^0.11.0",
+    "asar": "^0.12.0",
     "babel-core": "^6.10.4",
-    "babel-eslint": "^6.1.2",
+    "babel-eslint": "^7.1.0",
     "babel-loader": "^6.2.4",
     "babel-plugin-add-module-exports": "^0.2.1",
     "babel-plugin-dev-expression": "^0.2.1",
@@ -74,27 +74,27 @@
     "babel-preset-react-optimize": "^1.0.1",
     "babel-preset-stage-0": "^6.5.0",
     "babel-register": "^6.9.0",
-    "concurrently": "^2.2.0",
+    "concurrently": "^3.1.0",
     "cross-env": "^2.0.0",
-    "css-loader": "^0.23.1",
+    "css-loader": "^0.25.0",
     "del": "^2.2.1",
     "devtron": "^1.2.1",
-    "electron-devtools-installer": "^1.1.5",
+    "electron-devtools-installer": "^2.0.1",
     "electron-packager": "^7.3.0",
     "electron-prebuilt": "^1.2.7",
     "eslint": "^3.1.0",
-    "eslint-config-appium": "0.0.6",
-    "eslint-import-resolver-webpack": "^0.4.0",
+    "eslint-config-appium": "0.1.0",
+    "eslint-import-resolver-webpack": "^0.7.0",
     "eslint-plugin-babel": "^3.3.0",
     "eslint-plugin-import": "^1.11.0",
     "eslint-plugin-jsx-a11y": "^2.0.1",
     "eslint-plugin-mocha": "^4.0.0",
-    "eslint-plugin-react": "^5.2.2",
+    "eslint-plugin-react": "^6.6.0",
     "express": "^4.14.0",
     "extract-text-webpack-plugin": "^1.0.1",
     "fbjs-scripts": "^0.7.1",
     "file-loader": "^0.9.0",
-    "image-webpack-loader": "^2.0.0",
+    "image-webpack-loader": "^3.0.0",
     "jsdom": "^9.4.1",
     "json-loader": "^0.5.4",
     "minimist": "^1.2.0",
@@ -107,7 +107,7 @@
     "webpack-hot-middleware": "^2.12.1"
   },
   "devEngines": {
-    "node": "6.x",
-    "npm": "3.x"
+    "node": ">=6.x",
+    "npm": ">=3.x"
   }
 }
