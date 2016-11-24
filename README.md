@@ -65,7 +65,7 @@ npm run lint
 Finally, you might want to run the app in a non-development mode in order to make sure that everything works as expected if you were to publish:
 
 ```bash
-npm build  # prepare resources
+npm run build  # prepare resources
 npm start  # start a production version of the app
 ```
 
