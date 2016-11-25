@@ -4,6 +4,7 @@ import { Button } from 'react-photonkit';
 import { propTypes } from './shared';
 import SimpleTab from './SimpleTab';
 import AdvancedTab from './AdvancedTab';
+import PresetsTab from './PresetsTab';
 import styles from './StartServer.css';
 
 const TAB_SIMPLE = 0, TAB_ADVANCED = 1, TAB_PRESETS = 2;
@@ -22,7 +23,7 @@ export default class StartServer extends Component {
       case TAB_ADVANCED:
         return <AdvancedTab {...this.props} />;
       case TAB_PRESETS:
-        return "";
+        return <PresetsTab {...this.props} />;
       default:
         throw new Error("Invalid tab id");
     }

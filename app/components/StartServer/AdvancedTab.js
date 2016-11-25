@@ -55,9 +55,6 @@ export default class AdvancedTab extends Component {
     throw new Error(`Invalid type ${type}`);
   }
 
-  savePreset () {
-  }
-
   render () {
     const {startServer, serverStarting, presetSaving, savePreset} = this.props;
 

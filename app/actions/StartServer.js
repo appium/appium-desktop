@@ -1,6 +1,7 @@
 import { ipcRenderer } from 'electron';
 import { push } from 'react-router-redux';
 import { serverLogsReceived, clearLogs } from './ServerMonitor';
+import settings from 'electron-settings';
 
 export const SERVER_START_REQ = 'SERVER_START_REQ';
 export const SERVER_START_OK = 'SERVER_START_OK';
@@ -9,6 +10,7 @@ export const UPDATE_ARGS = 'UPDATE_ARGS';
 export const SWITCH_TAB = 'SWITCH_TAB';
 export const PRESET_SAVE_REQ = 'PRESET_SAVE_REQ';
 export const PRESET_SAVE_OK = 'PRESET_SAVE_OK';
+export const GET_PRESETS = 'GET_PRESETS';
 
 export function startServer (evt) {
   evt.preventDefault();
@@ -62,5 +64,15 @@ export function savePreset (evt) {
     setTimeout(() => {
       dispatch({type: PRESET_SAVE_OK});
     }, 1000);
+  };
+}
+
+export function getPresets () {
+  return (dispatch) => {
+    settings.get('presets').then((presets) => {
+      dispatch({type: GET_PRESETS, presets});
+    }).catch((e) => {
+      console.error(e);
+    });
   };
 }

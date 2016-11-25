@@ -15,6 +15,9 @@ export default {
         'file?hash=sha512&digest=hex&name=[hash].[ext]',
         'image-webpack?bypassOnDebug&optimizationLevel=7&interlaced=false'
       ]
+    }, {
+      test: [/node_modules[\\\/](?:electron-settings|key-path-helpers)[\\\/]lib[\\\/](?:.+).js/],
+      loaders: ['babel-loader']
     }]
   },
   output: {

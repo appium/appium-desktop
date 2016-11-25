@@ -1,0 +1,27 @@
+.presetsList {
+  width: 50%;
+  border-right: 1px solid #662d91;
+}
+
+.presetsDetail {
+  width: 50%;
+}
+
+.preset {
+  border-top: 1px solid #662d91 !important;
+}
+
+.noPresetsContainer {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+}
+
+.noPresetsMessage {
+  font-size: 2em;
+  font-style: italic;
+  text-align: center;
+  color: #999;
+}

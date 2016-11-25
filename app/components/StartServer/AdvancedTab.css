@@ -1,12 +1,12 @@
 .advancedForm {
   width: 100%;
-  padding: 0px 10px;
 }
 
 .inputSection {
   height: 350px;
   border-bottom: 1px solid #662d91;
   overflow: scroll;
+  padding: 0px 10px;
 }
 
 .actions {
