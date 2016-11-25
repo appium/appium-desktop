@@ -1,5 +1,6 @@
 import { SERVER_START_REQ, SERVER_START_OK, SERVER_START_ERR,
-         UPDATE_ARGS, SWITCH_TAB } from '../actions/StartServer';
+         UPDATE_ARGS, SWITCH_TAB, PRESET_SAVE_REQ, PRESET_SAVE_OK
+       } from '../actions/StartServer';
 
 import { ipcRenderer } from 'electron';
 
@@ -11,6 +12,7 @@ const initialState = {
   serverStarting: false,
   serverFailMsg: "",
   tabId: 0,
+  presetSaving: false,
 };
 
 export default function startServer (state = initialState, action) {
@@ -33,6 +35,10 @@ export default function startServer (state = initialState, action) {
         ...state,
         tabId: action.tabId
       };
+    case PRESET_SAVE_REQ:
+      return {...state, presetSaving: true};
+    case PRESET_SAVE_OK:
+      return {...state, presetSaving: false};
     default:
       return state;
   }

@@ -6,6 +6,8 @@ export const propTypes = {
   serverStarting: PropTypes.bool.isRequired,
   startServer: PropTypes.func.isRequired,
   updateArgs: PropTypes.func.isRequired,
+  savePreset: PropTypes.func.isRequired,
+  presetSaving: PropTypes.bool.isRequired,
 };
 
 export function updateArg (evt) {

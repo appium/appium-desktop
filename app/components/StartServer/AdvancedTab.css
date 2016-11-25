@@ -10,8 +10,17 @@
 }
 
 .actions {
-  width: 300px;
-  margin: 0px auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  flex-wrap: wrap;
+  flex-flow: row wrap;
+}
+
+.actions div {
+  width: 200px;
+  margin: 10px;
 }
 
 .input {

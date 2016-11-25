@@ -7,6 +7,8 @@ export const SERVER_START_OK = 'SERVER_START_OK';
 export const SERVER_START_ERR = 'SERVER_START_ERR';
 export const UPDATE_ARGS = 'UPDATE_ARGS';
 export const SWITCH_TAB = 'SWITCH_TAB';
+export const PRESET_SAVE_REQ = 'PRESET_SAVE_REQ';
+export const PRESET_SAVE_OK = 'PRESET_SAVE_OK';
 
 export function startServer (evt) {
   evt.preventDefault();
@@ -50,5 +52,15 @@ export function updateArgs (args) {
 export function switchTab (tabId) {
   return (dispatch) => {
     dispatch({type: SWITCH_TAB, tabId});
+  };
+}
+
+export function savePreset (evt) {
+  evt.preventDefault();
+  return (dispatch) => {
+    dispatch({type: PRESET_SAVE_REQ});
+    setTimeout(() => {
+      dispatch({type: PRESET_SAVE_OK});
+    }, 1000);
   };
 }

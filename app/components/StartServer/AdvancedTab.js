@@ -1,9 +1,10 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import { Input, CheckBox } from 'react-photonkit';
 
 import { propTypes, updateArg } from './shared';
 import { ARG_DATA } from '../../reducers/StartServer';
 import StartButton from './StartButton';
+import SavePresetButton from './SavePresetButton';
 import styles from './AdvancedTab.css';
 import parentStyles from './StartServer.css';
 
@@ -18,7 +19,7 @@ import parentStyles from './StartServer.css';
 // suppressAdbKillServer, webkitDebugProxyPort, defaultCapabilities
 
 export default class AdvancedTab extends Component {
-  static propTypes = {...propTypes}
+  static propTypes = {...propTypes};
 
   buildInput (argName, type, label) {
     const {serverArgs} = this.props;
@@ -54,8 +55,11 @@ export default class AdvancedTab extends Component {
     throw new Error(`Invalid type ${type}`);
   }
 
+  savePreset () {
+  }
+
   render () {
-    const {startServer, serverStarting} = this.props;
+    const {startServer, serverStarting, presetSaving, savePreset} = this.props;
 
     return (
       <div className={styles.advancedForm}>
@@ -81,6 +85,7 @@ export default class AdvancedTab extends Component {
           </div>
           <div className={styles.actions}>
             <StartButton {...{serverStarting, startServer}} />
+            <SavePresetButton {...{savePreset, presetSaving}} />
           </div>
         </form>
       </div>

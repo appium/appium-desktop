@@ -43,6 +43,7 @@
     "appium": "1.6.0",
     "css-modules-require-hook": "4.x",
     "electron-debug": "1.x",
+    "electron-settings": "2.x",
     "font-awesome": "4.x",
     "postcss": "5.x",
     "react": "15.x",
