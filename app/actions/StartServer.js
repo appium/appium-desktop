@@ -57,13 +57,18 @@ export function switchTab (tabId) {
   };
 }
 
-export function savePreset (evt) {
-  evt.preventDefault();
+export function savePreset (name, args) {
   return (dispatch) => {
     dispatch({type: PRESET_SAVE_REQ});
-    setTimeout(() => {
-      dispatch({type: PRESET_SAVE_OK});
-    }, 1000);
+    settings.get('presets').then((presets) => {
+      presets[name] = args;
+      presets[name]._modified = Date.now();
+      return settings.set('presets', presets);
+    }).then(() => {
+      return settings.get('presets');
+    }).then((presets) => {
+      dispatch({type: PRESET_SAVE_OK, presets});
+    }).catch(console.error);
   };
 }
 

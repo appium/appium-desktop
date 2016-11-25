@@ -1,14 +1,37 @@
+.presetsSection {
+  height: 270px;
+  border-bottom: 1px solid #662d91;
+  padding: 0px 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  align-content: stretch;
+}
+
 .presetsList {
-  width: 50%;
-  border-right: 1px solid #662d91;
+  /*border-right: 1px solid #662d91;*/
+  overflow: scroll;
+  height: 100%;
 }
 
 .presetsDetail {
-  width: 50%;
+  height: 100%;
+  width: 100%;
+  overflow: scroll;
 }
 
-.preset {
+.presetLink {
+  display: block;
   border-top: 1px solid #662d91 !important;
+}
+
+.presetLink:first-child {
+  border-top: 0px !important;
+}
+
+.presetLink:hover {
+  background-color: #dff1ff;
 }
 
 .noPresetsContainer {
@@ -24,4 +47,13 @@
   font-style: italic;
   text-align: center;
   color: #999;
+}
+
+.presetData {
+  color: #777;
+  border-top: 1px solid #ccc;
+}
+
+.presetData:first-child {
+  border-top: 0px;
 }

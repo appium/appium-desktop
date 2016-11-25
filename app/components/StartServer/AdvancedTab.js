@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
-import { Input, CheckBox } from 'react-photonkit';
+import { Input, CheckBox, Button } from 'react-photonkit';
+import Modal from 'react-modal';
 
 import { propTypes, updateArg } from './shared';
 import { ARG_DATA } from '../../reducers/StartServer';
@@ -20,6 +21,11 @@ import parentStyles from './StartServer.css';
 
 export default class AdvancedTab extends Component {
   static propTypes = {...propTypes};
+
+  constructor (props) {
+    super(props);
+    this.state = {modalOpen: false, newPresetName: ""};
+  }
 
   buildInput (argName, type, label) {
     const {serverArgs} = this.props;
@@ -55,8 +61,25 @@ export default class AdvancedTab extends Component {
     throw new Error(`Invalid type ${type}`);
   }
 
+  openPresetModal () {
+    this.setState({modalOpen: true});
+  }
+
+  closePresetModal () {
+    this.setState({modalOpen: false});
+  }
+
+  updatePresetName (evt) {
+    this.setState({newPresetName: evt.target.value});
+  }
+
+  savePreset () {
+    this.props.savePreset(this.state.newPresetName, this.props.serverArgs);
+    this.setState({modalOpen: false});
+  }
+
   render () {
-    const {startServer, serverStarting, presetSaving, savePreset} = this.props;
+    const {startServer, serverStarting, presetSaving} = this.props;
 
     return (
       <div className={styles.advancedForm}>
@@ -82,9 +105,33 @@ export default class AdvancedTab extends Component {
           </div>
           <div className={styles.actions}>
             <StartButton {...{serverStarting, startServer}} />
-            <SavePresetButton {...{savePreset, presetSaving}} />
+            <SavePresetButton {...{savePreset: this.openPresetModal.bind(this), presetSaving}} />
           </div>
         </form>
+        <Modal isOpen={this.state.modalOpen} className={styles.presetModal}>
+          <h3 className={styles.savePresetTitle}>Save Server Arguments Preset</h3>
+          <div className={styles.input}>
+            <label>Preset name:</label>
+            <input className={"form-control"} ref="presetName" type="text"
+              name={"presetName"}
+              onChange={this.updatePresetName.bind(this)}
+            />
+          </div>
+          <div className={styles.presetActions}>
+            <Button
+             type="button"
+             ptStyle="default"
+             text="Cancel"
+             onClick={this.closePresetModal.bind(this)}
+            />
+            <Button
+             type="button"
+             ptStyle="primary"
+             text="Save"
+             onClick={this.savePreset.bind(this)}
+            />
+          </div>
+        </Modal>
       </div>
     );
   }

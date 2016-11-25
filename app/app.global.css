@@ -8,6 +8,10 @@ body {
   width: 100%;
 }
 
+.list-group-item.active {
+  background-color: #662d91 !important;
+}
+
 ::-webkit-scrollbar {
   width: 14px;
   background: transparent;

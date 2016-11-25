@@ -47,7 +47,7 @@ export default function startServer (state = initialState, action) {
     case PRESET_SAVE_REQ:
       return {...state, presetSaving: true};
     case PRESET_SAVE_OK:
-      return {...state, presetSaving: false};
+      return {...state, presetSaving: false, presets: action.presets};
     default:
       return state;
   }

@@ -60,3 +60,40 @@
   flex-flow: row wrap;
 }
 
+.savePresetTitle {
+  border-bottom: 1px solid #ccc;
+  margin-top: 0px;
+}
+
+.presetModal {
+  height: 160px;
+  width: 400px;
+  background: #fff;
+  margin: 40px auto;
+  border: 1px solid #ccc;
+  overflow: auto;
+  outline: none;
+  padding: 20px;
+}
+
+.presetModal label {
+  width: 100px !important;
+  margin-left: 0px;
+  margin-right: 10px;
+}
+
+.presetModal input {
+  width: 250px !important;
+}
+
+.presetActions {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: row;
+  align-content: center;
+  justify-content: center;
+}
+
+.presetActions button {
+  margin: 5px;
+}
