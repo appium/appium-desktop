@@ -26,6 +26,8 @@
   overflow: scroll;
   border-left: 1px solid #662d91;
   padding-top: 15px;
+  background-color: #662d91;
+  color: #fff;
 }
 
 .presetsDetail::-webkit-scrollbar {
@@ -67,9 +69,14 @@
 }
 
 .presetData {
-  color: #777;
+  font-family: "Inconsolata", "Lucida console", Monaco, monospace;
+  color: #ccc;
   border-top: 1px dotted #999;
   padding: 2px 8px;
+}
+
+.presetData b {
+  color: #fff;
 }
 
 .presetData:first-child {
