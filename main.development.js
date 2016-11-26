@@ -39,9 +39,9 @@ app.on('ready', async () => {
 
   mainWindow = new BrowserWindow({
     show: false,
-    width: isDev ? 1200 : 600,
+    width: isDev ? 1200 : 650,
     height: 600,
-    minWidth: 600,
+    minWidth: 650,
     minHeight: 600,
   });
 

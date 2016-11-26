@@ -92,6 +92,7 @@ export default class PresetsTab extends Component {
     if (preset) {
       return (
         <div className={styles.presetsDetail}>
+          <h4>{this.state.selectedPreset}</h4>
           {_.toPairs(preset).map((p) =>
             <div className={styles.presetData}><b>{p[0]}:</b> {JSON.stringify(p[1])}</div>
           )}

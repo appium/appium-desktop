@@ -1,12 +1,12 @@
 .presetsSection {
-  height: 270px;
+  height: 360px;
   border-bottom: 1px solid #662d91;
-  padding: 0px 10px;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: row;
   align-content: stretch;
+  margin-top: -20px;
 }
 
 .presetsList {
@@ -15,15 +15,32 @@
   height: 100%;
 }
 
+.presetsList::-webkit-scrollbar {
+  width: 0px;
+  height: 0px;
+}
+
 .presetsDetail {
   height: 100%;
   width: 100%;
   overflow: scroll;
+  border-left: 1px solid #662d91;
+  padding-top: 15px;
+}
+
+.presetsDetail::-webkit-scrollbar {
+  width: 0px;
+  height: 0px;
+}
+
+.presetsDetail h4 {
+  margin-top: 0px;
+  padding-left: 8px;
 }
 
 .presetLink {
   display: block;
-  border-top: 1px solid #662d91 !important;
+  border-top: 1px dotted #662d91 !important;
 }
 
 .presetLink:first-child {
@@ -51,7 +68,8 @@
 
 .presetData {
   color: #777;
-  border-top: 1px solid #ccc;
+  border-top: 1px dotted #999;
+  padding: 2px 8px;
 }
 
 .presetData:first-child {

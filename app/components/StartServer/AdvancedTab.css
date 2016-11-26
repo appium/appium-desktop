@@ -3,10 +3,15 @@
 }
 
 .inputSection {
-  height: 350px;
+  height: 360px;
   border-bottom: 1px solid #662d91;
   overflow: scroll;
   padding: 0px 10px;
+}
+
+.inputSection::-webkit-scrollbar {
+  height: 0px;
+  width: 0px;
 }
 
 .actions {
