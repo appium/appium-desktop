@@ -1,8 +1,9 @@
 /* eslint-disable no-console */
 
-import { ipcMain } from 'electron';
+import { ipcMain, BrowserWindow } from 'electron';
 import { main as appiumServer } from 'appium';
 import { getDefaultArgs, getParser } from 'appium/build/lib/parser';
+import path from 'path';
 
 const LOG_SEND_INTERVAL_MS = 250;
 
@@ -68,8 +69,17 @@ function connectGetDefaultArgs () {
   ipcMain.on('get-args-metadata', (evt) => {
     let defArgs = Object.keys(getDefaultArgs());
     evt.returnValue = getParser().rawArgs
-                        .filter(a => defArgs.indexOf(a[1].dest) !== -1)
-                        .map(a => a[1]);
+                        .filter((a) => defArgs.indexOf(a[1].dest) !== -1)
+                        .map((a) => a[1]);
+  });
+}
+
+function connectStartSession () {
+  ipcMain.on('start-session', () => {
+    let win = new BrowserWindow({width: 800, height: 600});
+    let sessionHTMLPath = path.resolve(__dirname, 'app', 'session.html');
+    win.loadURL(`file://${sessionHTMLPath}`);
+    win.show();
   });
 }
 
@@ -78,6 +88,8 @@ function initializeIpc (win) {
   connectStartServer(win);
   // listen for 'stop-server' from the renderer
   connectStopServer(win);
+  // listen for 'start-session' from the renderer
+  connectStartSession(win);
   connectGetDefaultArgs(win);
 }
 
