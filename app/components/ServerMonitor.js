@@ -43,12 +43,30 @@ class StopButton extends Component {
   }
 }
 
+class StartSessionButton extends Component {
+  static propTypes = {
+    serverStatus: PropTypes.string.isRequired,
+    startSession: PropTypes.func.isRequired,
+  }
+
+  render () {
+    const {serverStatus, startSession} = this.props;
+    if (serverStatus !== STATUS_STOPPED && serverStatus !== STATUS_STOPPING) {
+      return <Button className={styles.stopButton} ptStyle="default"
+             text="Start New Session" onClick={startSession} />;
+    } else {
+      return null;
+    }
+  }
+}
+
 export default class ServerMonitor extends Component {
   static propTypes = {
     stopServer: PropTypes.func.isRequired,
     closeMonitor: PropTypes.func.isRequired,
     serverStatus: PropTypes.string.isRequired,
     logLines: PropTypes.array.isRequired,
+    startSession: PropTypes.func.isRequired,
   }
 
   componentWillUpdate () {
@@ -114,7 +132,10 @@ export default class ServerMonitor extends Component {
             <span className={`icon ${statusIcon}`} />
             {statusMsg}
           </div>
-          <StopButton {...this.props} />
+          <div className={`${styles['button-container']}`}>
+            <StartSessionButton {...this.props} />
+            <StopButton {...this.props} />
+          </div>
         </div>
         <div className={termClass} ref={(c) => this._term = c}>
           {logLineSection}
