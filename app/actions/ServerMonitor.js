@@ -1,5 +1,8 @@
-import { ipcRenderer } from 'electron';
+import electron from 'electron';
 import { push } from 'react-router-redux';
+
+const ipcRenderer = electron.ipcRenderer;
+const BrowserWindow = electron.remote.BrowserWindow;
 
 export const SERVER_STOP_REQ = 'SERVER_STOP_REQ';
 export const SERVER_STOP_OK = 'SERVER_STOP_OK';
@@ -7,6 +10,7 @@ export const SERVER_STOP_FAIL = 'SERVER_STOP_FAIL';
 export const LOGS_RECEIVED = 'LOGS_RECEIVED';
 export const LOGS_CLEARED = 'LOGS_CLEARED';
 export const MONITOR_CLOSED = 'MONITOR_CLOSED';
+export const START_SESSION_REQUEST = 'START_SESSION';
 
 export function stopServerReq () {
   return {type: SERVER_STOP_REQ};
@@ -18,6 +22,10 @@ export function stopServerOK () {
 
 export function stopServerFailed (reason) {
   return {type: SERVER_STOP_FAIL, reason};
+}
+
+export function startSessionRequest (sessionUUID) {
+  return {type: START_SESSION_REQUEST, sessionUUID};
 }
 
 export function serverLogsReceived (logs) {
@@ -68,5 +76,13 @@ export function closeMonitor () {
 export function clearLogs () {
   return (dispatch) => {
     dispatch({type: LOGS_CLEARED});
+  };
+}
+
+export function startSession () {
+  return (dispatch) => {
+    dispatch({type: START_SESSION_REQUEST});
+    let win = new BrowserWindow({width: 800, height: 600});
+    win.show();
   };
 }

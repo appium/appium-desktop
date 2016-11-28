@@ -1,6 +1,6 @@
-import { SERVER_STOP_REQ, SERVER_STOP_OK,
-         SERVER_STOP_FAIL, LOGS_RECEIVED,
-         LOGS_CLEARED, MONITOR_CLOSED } from '../actions/ServerMonitor';
+import { SERVER_STOP_REQ, SERVER_STOP_OK, SERVER_STOP_FAIL,
+         START_SESSION_REQUEST, 
+         LOGS_RECEIVED, LOGS_CLEARED, MONITOR_CLOSED } from '../actions/ServerMonitor';
 
 export const STATUS_RUNNING = "running";
 export const STATUS_STOPPED = "stopped";
@@ -27,6 +27,12 @@ export default function serverMonitor (state = initialState, action) {
         ...state,
         serverStopping: false,
         serverFailMsg: action.reason
+      };
+    case START_SESSION_REQUEST:
+      return {
+        ...state,
+        sessionStart: true,
+        sessionId: action.sessionUUID,
       };
     case LOGS_RECEIVED:
       return {
