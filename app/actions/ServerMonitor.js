@@ -1,8 +1,5 @@
-import electron from 'electron';
+import { ipcRenderer } from 'electron';
 import { push } from 'react-router-redux';
-
-const ipcRenderer = electron.ipcRenderer;
-const BrowserWindow = electron.remote.BrowserWindow;
 
 export const SERVER_STOP_REQ = 'SERVER_STOP_REQ';
 export const SERVER_STOP_OK = 'SERVER_STOP_OK';
@@ -82,7 +79,6 @@ export function clearLogs () {
 export function startSession () {
   return (dispatch) => {
     dispatch({type: START_SESSION_REQUEST});
-    let win = new BrowserWindow({width: 800, height: 600});
-    win.show();
+    ipcRenderer.send('start-session');
   };
 }
