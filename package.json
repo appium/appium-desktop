@@ -41,6 +41,7 @@
   "dependencies": {
     "ansi-to-html": "0.x",
     "appium": "1.6.0",
+    "appium-base-driver": "^2.1.0",
     "css-modules-require-hook": "4.x",
     "electron-debug": "1.x",
     "electron-settings": "2.x",
