@@ -1,11 +1,12 @@
 /* eslint-disable no-console */
 
-import { ipcMain, BrowserWindow } from 'electron';
+import { ipcMain, BrowserWindow, Menu } from 'electron';
 import { main as appiumServer } from 'appium';
 import { getDefaultArgs, getParser } from 'appium/build/lib/parser';
 import path from 'path';
 
 const LOG_SEND_INTERVAL_MS = 250;
+const isDev = process.env.NODE_ENV === 'development';
 
 var server = null;
 var logWatcher = null;
@@ -76,10 +77,32 @@ function connectGetDefaultArgs () {
 
 function connectStartSession () {
   ipcMain.on('start-session', () => {
-    let win = new BrowserWindow({width: 800, height: 600});
+    let win = new BrowserWindow({width: 800, height: 600, webPreferences: {devTools: true}});
     let sessionHTMLPath = path.resolve(__dirname, 'app', 'index.html#/session');
     win.loadURL(`file://${sessionHTMLPath}`);
     win.show();
+    win.on('closed', () => {
+      win = null;
+    });
+
+    win.on('closed', () => {
+      win = null;
+    });
+
+    if (isDev) {
+      win.openDevTools();
+    }
+
+    win.webContents.on('context-menu', (e, props) => {
+      const {x, y} = props;
+
+      Menu.buildFromTemplate([{
+        label: 'Inspect element',
+        click () {
+          win.inspectElement(x, y);
+        }
+      }]).popup(win);
+    });
   });
 }
 
