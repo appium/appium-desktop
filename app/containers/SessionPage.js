@@ -1,14 +1,14 @@
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import * as ServerActions from '../actions/Session';
+import * as SessionActions from '../actions/Session';
 import Session from '../components/Session';
 
 function mapStateToProps (state) {
-  return state.serverMonitor;
+  return state.session;
 }
 
 function mapDispatchToProps (dispatch) {
-  return bindActionCreators(ServerActions, dispatch);
+  return bindActionCreators(SessionActions, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Session);
