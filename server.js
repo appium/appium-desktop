@@ -1,4 +1,5 @@
 /* eslint no-console: 0 */
+/* eslint-disable promise/prefer-await-to-callbacks */
 
 import express from 'express';
 import webpack from 'webpack';

@@ -1,13 +1,11 @@
-import React, { Component, PropTypes } from 'react';
-import { Input, CheckBox, Button } from 'react-photonkit';
+import React, { Component } from 'react';
+import { Button } from 'react-photonkit';
 import Modal from 'react-modal';
 
 import { propTypes, updateArg } from './shared';
-import { ARG_DATA } from '../../reducers/StartServer';
 import StartButton from './StartButton';
 import SavePresetButton from './SavePresetButton';
 import styles from './AdvancedTab.css';
-import parentStyles from './StartServer.css';
 
 // args we build a UI for:
 // ipa, address, port, callbackAddress, callbackPort,

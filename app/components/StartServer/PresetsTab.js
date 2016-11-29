@@ -1,15 +1,12 @@
 import _ from 'lodash';
 import moment from 'moment';
-import React, { Component, PropTypes } from 'react';
-import { ListGroup, ListItem, Button } from 'react-photonkit';
+import React, { Component } from 'react';
+import { ListGroup, ListItem } from 'react-photonkit';
 
-import { propTypes, updateArg } from './shared';
-import { ARG_DATA } from '../../reducers/StartServer';
+import { propTypes } from './shared';
 import StartButton from './StartButton';
-import SavePresetButton from './SavePresetButton';
 import DeletePresetButton from './DeletePresetButton';
 import advancedStyles from './AdvancedTab.css';
-import parentStyles from './StartServer.css';
 import styles from './PresetsTab.css';
 
 export default class PresetsTab extends Component {
@@ -111,8 +108,7 @@ export default class PresetsTab extends Component {
   }
 
   render () {
-    const {startServer, serverStarting, presets, presetDeleting,
-           deletePreset} = this.props;
+    const {startServer, serverStarting, presetDeleting} = this.props;
 
     return (
       <div className={advancedStyles.advancedForm}>

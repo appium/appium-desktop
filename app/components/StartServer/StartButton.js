@@ -19,7 +19,7 @@ export default class StartButton extends Component {
   }
 
   render () {
-    const {startServer, serverStarting, disabledOverride} = this.props;
+    const {startServer, serverStarting} = this.props;
 
     return (
       <div>

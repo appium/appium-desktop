@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { ipcRenderer } from 'electron';
 import { push } from 'react-router-redux';
 import { serverLogsReceived, clearLogs } from './ServerMonitor';
@@ -60,38 +61,44 @@ export function switchTab (tabId) {
 }
 
 export function savePreset (name, args) {
-  return (dispatch) => {
+  return async (dispatch) => {
     dispatch({type: PRESET_SAVE_REQ});
-    settings.get('presets').then((presets) => {
+    let presets = await settings.get('presets');
+    try {
       presets[name] = args;
       presets[name]._modified = Date.now();
-      return settings.set('presets', presets);
-    }).then(() => {
-      return settings.get('presets');
-    }).then((presets) => {
-      dispatch({type: PRESET_SAVE_OK, presets});
-    }).catch(console.error);
+      await settings.set('presets', presets);
+    } catch (e) {
+      console.error(e);
+      alert(`There was a problem saving preset: ${e.message}`);
+    }
+    dispatch({type: PRESET_SAVE_OK, presets});
   };
 }
 
 export function getPresets () {
-  return (dispatch) => {
-    settings.get('presets').then((presets) => {
+  return async (dispatch) => {
+    try {
+      let presets = await settings.get('presets');
       dispatch({type: GET_PRESETS, presets});
-    }).catch(console.error);
+    } catch (e) {
+      console.error(e);
+      alert(`Error getting presets: ${e.message}`);
+    }
   };
 }
 
 export function deletePreset (name) {
-  return (dispatch) => {
+  return async (dispatch) => {
     dispatch({type: PRESET_DELETE_REQ});
-    settings.get('presets').then((presets) => {
+    let presets = await settings.get('presets');
+    try {
       delete presets[name];
-      return settings.set('presets', presets);
-    }).then(() => {
-      return settings.get('presets');
-    }).then((presets) => {
-      dispatch({type: PRESET_DELETE_OK, presets});
-    }).catch(console.error);
+      await settings.set('presets', presets);
+    } catch (e) {
+      console.error(e);
+      alert(`There was a problem deleting preset: ${e.message}`);
+    }
+    dispatch({type: PRESET_DELETE_OK, presets});
   };
 }
