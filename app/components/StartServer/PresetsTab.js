@@ -1,14 +1,15 @@
 import _ from 'lodash';
 import moment from 'moment';
 import React, { Component, PropTypes } from 'react';
-import { ListGroup, ListItem } from 'react-photonkit';
+import { ListGroup, ListItem, Button } from 'react-photonkit';
 
 import { propTypes, updateArg } from './shared';
 import { ARG_DATA } from '../../reducers/StartServer';
 import StartButton from './StartButton';
 import SavePresetButton from './SavePresetButton';
+import DeletePresetButton from './DeletePresetButton';
 import advancedStyles from './AdvancedTab.css';
-import parentadvancedStyles from './StartServer.css';
+import parentStyles from './StartServer.css';
 import styles from './PresetsTab.css';
 
 export default class PresetsTab extends Component {
@@ -65,6 +66,14 @@ export default class PresetsTab extends Component {
     }
   }
 
+  deletePreset (evt) {
+    evt.preventDefault();
+    if (window.confirm(`Are you sure you want to delete ${this.state.selectedPreset}?`)) {
+      this.props.deletePreset(this.state.selectedPreset);
+      this.setState({selectedPreset: null});
+    }
+  }
+
   presetList () {
     const {presets} = this.props;
     return (
@@ -102,7 +111,8 @@ export default class PresetsTab extends Component {
   }
 
   render () {
-    const {startServer, serverStarting, presets} = this.props;
+    const {startServer, serverStarting, presets, presetDeleting,
+           deletePreset} = this.props;
 
     return (
       <div className={advancedStyles.advancedForm}>
@@ -113,6 +123,9 @@ export default class PresetsTab extends Component {
           </div>
           <div className={advancedStyles.actions}>
             <StartButton {...{serverStarting, startServer, disabledOverride: !this.presetIsSelected()}} />
+            {this.presetIsSelected() &&
+             <DeletePresetButton {...{presetDeleting, deletePreset: this.deletePreset.bind(this)}} />
+            }
           </div>
         </form>
       </div>

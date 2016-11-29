@@ -11,6 +11,8 @@ export const SWITCH_TAB = 'SWITCH_TAB';
 export const PRESET_SAVE_REQ = 'PRESET_SAVE_REQ';
 export const PRESET_SAVE_OK = 'PRESET_SAVE_OK';
 export const GET_PRESETS = 'GET_PRESETS';
+export const PRESET_DELETE_REQ = 'PRESET_DELETE_REQ';
+export const PRESET_DELETE_OK = 'PRESET_DELETE_OK';
 
 export function startServer (evt) {
   evt.preventDefault();
@@ -76,8 +78,20 @@ export function getPresets () {
   return (dispatch) => {
     settings.get('presets').then((presets) => {
       dispatch({type: GET_PRESETS, presets});
-    }).catch((e) => {
-      console.error(e);
-    });
+    }).catch(console.error);
+  };
+}
+
+export function deletePreset (name) {
+  return (dispatch) => {
+    dispatch({type: PRESET_DELETE_REQ});
+    settings.get('presets').then((presets) => {
+      delete presets[name];
+      return settings.set('presets', presets);
+    }).then(() => {
+      return settings.get('presets');
+    }).then((presets) => {
+      dispatch({type: PRESET_DELETE_OK, presets});
+    }).catch(console.error);
   };
 }
