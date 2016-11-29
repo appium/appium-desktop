@@ -77,7 +77,7 @@ function connectGetDefaultArgs () {
 function connectStartSession () {
   ipcMain.on('start-session', () => {
     let win = new BrowserWindow({width: 800, height: 600});
-    let sessionHTMLPath = path.resolve(__dirname, 'app', 'session.html');
+    let sessionHTMLPath = path.resolve(__dirname, 'app', 'index.html#/session');
     win.loadURL(`file://${sessionHTMLPath}`);
     win.show();
   });
