@@ -102,3 +102,11 @@
 .presetActions button {
   margin: 5px;
 }
+
+.savePresetSuccess {
+  width: 100%;
+  font-size: 5em;
+  font-style: italic;
+  text-align: center;
+  color: #999;
+}

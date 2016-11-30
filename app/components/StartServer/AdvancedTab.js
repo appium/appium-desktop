@@ -22,7 +22,11 @@ export default class AdvancedTab extends Component {
 
   constructor (props) {
     super(props);
-    this.state = {modalOpen: false, newPresetName: ""};
+    this.state = {
+      modalOpen: false,
+      newPresetName: "",
+      presetSaveComplete: false,
+    };
   }
 
   buildInput (argName, type, label) {
@@ -60,7 +64,10 @@ export default class AdvancedTab extends Component {
   }
 
   openPresetModal () {
-    this.setState({modalOpen: true});
+    this.setState({
+      modalOpen: true,
+      presetSaveComplete: false,
+    });
   }
 
   closePresetModal () {
@@ -71,9 +78,61 @@ export default class AdvancedTab extends Component {
     this.setState({newPresetName: evt.target.value});
   }
 
-  savePreset () {
+  savePreset (evt) {
+    evt.preventDefault();
+    if (!this.state.newPresetName) {
+      // don't save a preset without a name
+      return;
+    }
     this.props.savePreset(this.state.newPresetName, this.props.serverArgs);
-    this.setState({modalOpen: false});
+    this.setState({presetSaveComplete: true});
+    setTimeout(() => {
+      this.setState({modalOpen: false});
+    }, 1000);
+  }
+
+  modal () {
+    const form = (
+      <div>
+        <h3 className={styles.savePresetTitle}>Save Server Arguments Preset</h3>
+        <form className={styles.input}
+         onSubmit={this.savePreset.bind(this)}>
+          <label>Preset name:</label>
+          <input autoFocus
+            className={"form-control"}
+            ref="presetName"
+            type="text"
+            name={"presetName"}
+            onChange={this.updatePresetName.bind(this)}
+          />
+          <input type="submit" hidden={true} />
+        </form>
+        <div className={styles.presetActions}>
+          <Button
+           type="button"
+           ptStyle="default"
+           text="Cancel"
+           onClick={this.closePresetModal.bind(this)}
+          />
+          <Button
+           type="button"
+           ptStyle="primary"
+           text="Save"
+           onClick={this.savePreset.bind(this)}
+          />
+        </div>
+      </div>
+    );
+
+    const success = (
+      <div className={styles.savePresetSuccess}>Saved</div>
+    );
+
+    return (
+      <Modal isOpen={this.state.modalOpen} className={styles.presetModal}>
+      {this.state.presetSaveComplete ? success : form}
+      </Modal>
+    );
   }
 
   render () {
@@ -106,30 +165,7 @@ export default class AdvancedTab extends Component {
             <SavePresetButton {...{savePreset: this.openPresetModal.bind(this), presetSaving}} />
           </div>
         </form>
-        <Modal isOpen={this.state.modalOpen} className={styles.presetModal}>
-          <h3 className={styles.savePresetTitle}>Save Server Arguments Preset</h3>
-          <div className={styles.input}>
-            <label>Preset name:</label>
-            <input className={"form-control"} ref="presetName" type="text"
-              name={"presetName"}
-              onChange={this.updatePresetName.bind(this)}
-            />
-          </div>
-          <div className={styles.presetActions}>
-            <Button
-             type="button"
-             ptStyle="default"
-             text="Cancel"
-             onClick={this.closePresetModal.bind(this)}
-            />
-            <Button
-             type="button"
-             ptStyle="primary"
-             text="Save"
-             onClick={this.savePreset.bind(this)}
-            />
-          </div>
-        </Modal>
+        {this.modal()}
       </div>
     );
   }
