@@ -1,7 +1,11 @@
-export const UPDATE_DESIRED_CAPABILITIES = 'updateDesiredCapabilities';
+export const NEW_SESSION_REQUESTED = 'newSessionRequested';
 
-export function updateDesiredCapabilities (key, value) {
+export function newSessionRequested (desiredCapabilities) {
+  return {type: NEW_SESSION_REQUESTED, desiredCapabilities};
+}
+
+export function newSession (desiredCapabilities) {
   return (dispatch) => {
-    dispatch({type: UPDATE_DESIRED_CAPABILITIES, key, value});
+    dispatch(newSessionRequested(desiredCapabilities));
   };
 }
