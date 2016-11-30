@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { ipcRenderer } from 'electron';
 import { push } from 'react-router-redux';
 import { serverLogsReceived, clearLogs } from './ServerMonitor';
@@ -11,6 +12,8 @@ export const SWITCH_TAB = 'SWITCH_TAB';
 export const PRESET_SAVE_REQ = 'PRESET_SAVE_REQ';
 export const PRESET_SAVE_OK = 'PRESET_SAVE_OK';
 export const GET_PRESETS = 'GET_PRESETS';
+export const PRESET_DELETE_REQ = 'PRESET_DELETE_REQ';
+export const PRESET_DELETE_OK = 'PRESET_DELETE_OK';
 
 export function startServer (evt) {
   evt.preventDefault();
@@ -58,26 +61,44 @@ export function switchTab (tabId) {
 }
 
 export function savePreset (name, args) {
-  return (dispatch) => {
+  return async (dispatch) => {
     dispatch({type: PRESET_SAVE_REQ});
-    settings.get('presets').then((presets) => {
+    let presets = await settings.get('presets');
+    try {
       presets[name] = args;
       presets[name]._modified = Date.now();
-      return settings.set('presets', presets);
-    }).then(() => {
-      return settings.get('presets');
-    }).then((presets) => {
-      dispatch({type: PRESET_SAVE_OK, presets});
-    }).catch(console.error);
+      await settings.set('presets', presets);
+    } catch (e) {
+      console.error(e);
+      alert(`There was a problem saving preset: ${e.message}`);
+    }
+    dispatch({type: PRESET_SAVE_OK, presets});
   };
 }
 
 export function getPresets () {
-  return (dispatch) => {
-    settings.get('presets').then((presets) => {
+  return async (dispatch) => {
+    try {
+      let presets = await settings.get('presets');
       dispatch({type: GET_PRESETS, presets});
-    }).catch((e) => {
+    } catch (e) {
       console.error(e);
-    });
+      alert(`Error getting presets: ${e.message}`);
+    }
+  };
+}
+
+export function deletePreset (name) {
+  return async (dispatch) => {
+    dispatch({type: PRESET_DELETE_REQ});
+    let presets = await settings.get('presets');
+    try {
+      delete presets[name];
+      await settings.set('presets', presets);
+    } catch (e) {
+      console.error(e);
+      alert(`There was a problem deleting preset: ${e.message}`);
+    }
+    dispatch({type: PRESET_DELETE_OK, presets});
   };
 }

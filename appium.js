@@ -68,8 +68,8 @@ function connectGetDefaultArgs () {
   ipcMain.on('get-args-metadata', (evt) => {
     let defArgs = Object.keys(getDefaultArgs());
     evt.returnValue = getParser().rawArgs
-                        .filter(a => defArgs.indexOf(a[1].dest) !== -1)
-                        .map(a => a[1]);
+                        .filter((a) => defArgs.indexOf(a[1].dest) !== -1)
+                        .map((a) => a[1]);
   });
 }
 

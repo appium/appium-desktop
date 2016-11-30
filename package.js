@@ -1,4 +1,6 @@
 /* eslint strict: 0, no-shadow: 0, no-unused-vars: 0, no-console: 0 */
+/* eslint-disable promise/prefer-await-to-callbacks, promise/no-native,
+   promise/prefer-await-to-then */
 'use strict';
 
 require('babel-polyfill');

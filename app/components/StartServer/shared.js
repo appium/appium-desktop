@@ -8,6 +8,8 @@ export const propTypes = {
   updateArgs: PropTypes.func.isRequired,
   savePreset: PropTypes.func.isRequired,
   presetSaving: PropTypes.bool.isRequired,
+  deletePreset: PropTypes.func.isRequired,
+  presetDeleting: PropTypes.bool.isRequired,
 };
 
 export function updateArg (evt) {
