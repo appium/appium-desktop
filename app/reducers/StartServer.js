@@ -20,6 +20,7 @@ const initialState = {
   serverFailMsg: "",
   tabId: 0,
   presetSaving: false,
+  presetDeleting: false,
   presets: {},
 };
 
