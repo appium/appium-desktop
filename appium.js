@@ -81,7 +81,7 @@ function connectGetDefaultArgs () {
 
 function connectStartSession (win) {
   ipcMain.on('start-session', () => {
-    sessionWin = new BrowserWindow({width: 800, height: 600, webPreferences: {devTools: true}, parent: win});
+    sessionWin = new BrowserWindow({width: 800, height: 600, webPreferences: {devTools: true}});
     let sessionHTMLPath = path.resolve(__dirname, 'app', 'index.html#/session');
     sessionWin.loadURL(`file://${sessionHTMLPath}`);
     sessionWin.show();
@@ -90,6 +90,11 @@ function connectStartSession (win) {
     });
 
     sessionWin.on('closed', () => {
+      sessionWin = null;
+    });
+
+    win.once('closed', () => {
+      sessionWin.close();
       sessionWin = null;
     });
 
