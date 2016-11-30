@@ -22,9 +22,17 @@ function unCamelCase (str) {
 export default class Session extends Component {
   constructor (props) {
     super(props);
-    this.state = {
-      
-    };
+    this.state = {};
+
+    // Set default values for capabilities
+    Object.keys(desiredCapabilityConstraints).map((key) => {
+      let cap = desiredCapabilityConstraints[key];
+
+      // If it's a select, choose the first by default
+      if (cap.inclusionCaseInsensitive || cap.inclusion) {
+        this.state[key] = (cap.inclusionCaseInsensitive || cap.inclusion)[0];
+      }
+    });
   }
 
   static propTypes = {
