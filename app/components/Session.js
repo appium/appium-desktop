@@ -2,7 +2,15 @@ import React, { Component, PropTypes } from 'react';
 import styles from './Session.css';
 import { Button, CheckBox } from 'react-photonkit';
 
-const { desiredCapabilityConstraints } = require('appium-base-driver/build/lib/basedriver/desired-caps');
+let { desiredCapabilityConstraints } = require('appium-base-driver/build/lib/basedriver/desired-caps');
+
+desiredCapabilityConstraints = {
+  app: {
+    isFile: true,
+    presence: true,
+  },
+  ...desiredCapabilityConstraints,
+};
 
 function unCamelCase (str) {
   return str
@@ -59,6 +67,8 @@ export default class Session extends Component {
               </select>;
             } else if (cap.isBoolean) {
               form = <CheckBox id={key} name={key} value={this.state[key]} onChange={this.handleChangeCapability(key)}></CheckBox>;
+            } else if (cap.isFile) {
+              form = form = <input id={key} type='text' name={key} value={this.state[key]} onChange={this.handleChangeCapability(key)}/>; 
             } else {
               let type = cap.isNumber ? 'number' : 'text';
               form = <input id={key} type={type} name={key} value={this.state[key]} onChange={this.handleChangeCapability(key)}/>;

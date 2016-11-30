@@ -4,11 +4,13 @@ import { ipcMain, BrowserWindow, Menu } from 'electron';
 import { main as appiumServer } from 'appium';
 import { getDefaultArgs, getParser } from 'appium/build/lib/parser';
 import path from 'path';
+const webdriverio = require('webdriverio');
 
 const LOG_SEND_INTERVAL_MS = 250;
 const isDev = process.env.NODE_ENV === 'development';
 
 var server = null;
+var serverArgs = null;
 var logWatcher = null;
 var batchedLogs = [];
 
@@ -37,7 +39,8 @@ function connectStartServer (win) {
 
     try {
       // set up the appium server running in this thread
-      server = await appiumServer(args, true);
+      serverArgs = args;
+      server = await appiumServer(serverArgs, true);
       win.webContents.send('appium-start-ok');
     } catch (e) {
       win.webContents.send('appium-start-error', e.message);
@@ -106,6 +109,17 @@ function connectStartSession () {
   });
 }
 
+function connectCreateNewSession () {
+  ipcMain.on('appium-create-new-session', (evt, desiredCapabilities) => {
+    let client = webdriverio.remote({
+      port: serverArgs.port,
+      host: serverArgs.address,
+      desiredCapabilities,
+    });
+    client.init();
+  });
+}
+
 function initializeIpc (win) {
   // listen for 'start-server' from the renderer
   connectStartServer(win);
@@ -114,6 +128,7 @@ function initializeIpc (win) {
   // listen for 'start-session' from the renderer
   connectStartSession(win);
   connectGetDefaultArgs(win);
+  connectCreateNewSession(win);
 }
 
 export { initializeIpc };
