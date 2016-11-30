@@ -13,6 +13,7 @@ var server = null;
 var serverArgs = null;
 var logWatcher = null;
 var batchedLogs = [];
+let sessionWin = null;
 
 function connectStartServer (win) {
   ipcMain.on('start-server', async (event, args) => {
@@ -78,45 +79,50 @@ function connectGetDefaultArgs () {
   });
 }
 
-function connectStartSession () {
+function connectStartSession (win) {
   ipcMain.on('start-session', () => {
-    let win = new BrowserWindow({width: 800, height: 600, webPreferences: {devTools: true}});
+    sessionWin = new BrowserWindow({width: 800, height: 600, webPreferences: {devTools: true}, parent: win});
     let sessionHTMLPath = path.resolve(__dirname, 'app', 'index.html#/session');
-    win.loadURL(`file://${sessionHTMLPath}`);
-    win.show();
-    win.on('closed', () => {
-      win = null;
+    sessionWin.loadURL(`file://${sessionHTMLPath}`);
+    sessionWin.show();
+    sessionWin.on('closed', () => {
+      sessionWin = null;
     });
 
-    win.on('closed', () => {
-      win = null;
+    sessionWin.on('closed', () => {
+      sessionWin = null;
     });
 
     if (isDev) {
-      win.openDevTools();
+      sessionWin.openDevTools();
     }
 
-    win.webContents.on('context-menu', (e, props) => {
+    sessionWin.webContents.on('context-menu', (e, props) => {
       const {x, y} = props;
 
       Menu.buildFromTemplate([{
         label: 'Inspect element',
         click () {
-          win.inspectElement(x, y);
+          sessionWin.inspectElement(x, y);
         }
-      }]).popup(win);
+      }]).popup(sessionWin);
     });
   });
 }
 
 function connectCreateNewSession () {
   ipcMain.on('appium-create-new-session', (evt, desiredCapabilities) => {
-    let client = webdriverio.remote({
-      port: serverArgs.port,
-      host: serverArgs.address,
-      desiredCapabilities,
-    });
-    client.init();
+    try {
+      let client = webdriverio.remote({
+        port: serverArgs.port,
+        host: serverArgs.address,
+        desiredCapabilities,
+      });
+      client.init();
+      sessionWin.webContents.send('appium-new-session-ready');
+    } catch (e) {
+      sessionWin.webContents.send('appium-new-session-failed');
+    }
   });
 }
 
