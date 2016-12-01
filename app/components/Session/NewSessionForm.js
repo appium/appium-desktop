@@ -13,23 +13,12 @@ export default class NewSessionForm extends Component {
     this.state = {};
   }
 
-  static propTypes = {
-    // desiredCapabilities: PropTypes.object,
-    // desiredCapabilityConstraints: PropTypes.object,
-  }
-
   static defaultProps = {
     desiredCapabilities: {},
     desiredCapabilityConstraints: {},
     onCreateNewSession: () => {},
     onChangeCapability: () => {},
   };
-
-  componentWillUpdate () {
-  }
-
-  componentDidUpdate () {
-  }
 
   render () {
     return (
