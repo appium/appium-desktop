@@ -20,9 +20,14 @@ export default class NewSessionForm extends Component {
     onChangeCapability: () => {},
   };
 
+  handleSubmit (e) {
+    e.preventDefault();
+    this.props.onCreateNewSession();
+  }
+
   render () {
     return (
-      <form onSubmit={(e) => e.preventDefault && this.props.onCreateNewSession()}>
+      <form onSubmit={this.handleSubmit.bind(this)}>
         <table>
             <tbody>
             {Object.keys(this.props.desiredCapabilityConstraints).map((key) => {
@@ -35,15 +40,12 @@ export default class NewSessionForm extends Component {
                     { inclusion.map((name) => <option key={name} name={name}>{name}</option>) }
                 </select>;
               } else if (cap.isBoolean) {
-                form = <input type='checkbox' value={this.props.desiredCapabilities[key]}  
-                    onChange={(e) => this.props.onChangeCapability(key, e.target.value)} />;
+                form = <input type='checkbox' checked={this.props.desiredCapabilities[key]} onChange={(e) => this.props.onChangeCapability(key, e.target.checked)} />;
               } else if (cap.isFile) {
-                form = form = <input type='text' value={this.props.desiredCapabilities[key]} 
-                    onChange={(e) => this.props.onChangeCapability(key, e.target.value)}/>; 
+                form = form = <input type='text' value={this.props.desiredCapabilities[key]} onChange={(e) => this.props.onChangeCapability(key, e.target.value)}/>; 
               } else {
                 let type = cap.isNumber ? 'number' : 'text';
-                form = <input type={type} value={this.props.desiredCapabilities[key]} 
-                    onChange={(e) => this.props.onChangeCapability(key, e.target.value)}/>;
+                form = <input type={type} value={this.props.desiredCapabilities[key]} onChange={(e) => this.props.onChangeCapability(key, e.target.value)}/>;
               }
 
               return <tr key={key}>
