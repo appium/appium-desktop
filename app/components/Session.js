@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import styles from './Session.css';
-import { Button, CheckBox } from 'react-photonkit';
+import settings from 'electron-settings';
+import NewSessionForm from './Session/NewSessionForm';
 
 let { desiredCapabilityConstraints } = require('appium-base-driver/build/lib/basedriver/desired-caps');
 
@@ -12,17 +13,13 @@ desiredCapabilityConstraints = {
   ...desiredCapabilityConstraints,
 };
 
-function unCamelCase (str) {
-  return str
-    .replace(/([a-z])([A-Z])/g, '$1 $2')
-    .replace(/\b([A-Z]+)([A-Z])([a-z])/, '$1 $2$3')
-    .replace(/^./, function (str) { return str.toUpperCase(); });
-}
+const MOST_RECENT_DESIRED_CAPABILITIES = 'mostRecentDesiredCapabilities';
 
 export default class Session extends Component {
   constructor (props) {
     super(props);
-    this.state = {};
+
+    let dcaps = {};
 
     // Set default values for capabilities
     Object.keys(desiredCapabilityConstraints).map((key) => {
@@ -30,28 +27,33 @@ export default class Session extends Component {
 
       // If it's a select, choose the first by default
       if (cap.inclusionCaseInsensitive || cap.inclusion) {
-        this.state[key] = (cap.inclusionCaseInsensitive || cap.inclusion)[0];
+        dcaps[key] = (cap.inclusionCaseInsensitive || cap.inclusion)[0];
+      } else if (cap.isBoolean) {
+        dcaps[key] = false;
+      } else {
+        dcaps[key] = '';
       }
     });
+
+    this.state = {
+      desiredCapabilities: dcaps,
+      desiredCapabilityConstraints,
+    };
   }
 
   static propTypes = {
     newSession: PropTypes.func,
   }
 
-  componentWillUpdate () {
+  saveDesiredCaps () {
+    settings.set(MOST_RECENT_DESIRED_CAPABILITIES, this.state);
   }
 
-  componentDidUpdate () {
-  }
-
-  handleChangeCapability (key) {
-    return (evt) => {
-      let state = this.state;
-      let nextState = {...state};
-      nextState[key] = evt.target.value;
-      this.setState(nextState);
-    };
+  handleChangeCapability (key, value) {
+    let state = this.state;
+    let nextState = {...state};
+    nextState.desiredCapabilities[key] = value;
+    this.setState(nextState);
   }
 
   render () {
@@ -60,43 +62,10 @@ export default class Session extends Component {
     return (
       <div className={styles.container}>
         <h2>Start New Session</h2>
-        <form>
-        <table>
-          <tbody>
-          {Object.keys(desiredCapabilityConstraints).map((key) => {
-            let cap = desiredCapabilityConstraints[key];
-            let form;
-
-            if (cap.inclusionCaseInsensitive || cap.inclusion) {
-              let inclusion = cap.inclusionCaseInsensitive || cap.inclusion;
-              form = <select value={this.state[key]} onChange={this.handleChangeCapability(key)}>
-                { inclusion.map((name) => <option key={name} name={name}>{name}</option>) }
-              </select>;
-            } else if (cap.isBoolean) {
-              form = <CheckBox id={key} name={key} value={this.state[key]} onChange={this.handleChangeCapability(key)}></CheckBox>;
-            } else if (cap.isFile) {
-              form = form = <input id={key} type='text' name={key} value={this.state[key]} onChange={this.handleChangeCapability(key)}/>; 
-            } else {
-              let type = cap.isNumber ? 'number' : 'text';
-              form = <input id={key} type={type} name={key} value={this.state[key]} onChange={this.handleChangeCapability(key)}/>;
-            }
-
-            return <tr key={key}>
-              <td>
-                  <label htmlFor={key}>{unCamelCase(key)}</label>
-              </td>
-              <td>{form}</td>
-            </tr>;
-
-          })}
-          <tr>
-            <td colSpan='2'>
-              <Button ptStyle='default' type='button' onClick={() => newSession(this.state)} text='Create New Session' />
-            </td>
-          </tr>
-          </tbody>
-        </table>
-        </form>
+        <NewSessionForm onCreateNewSession={() => newSession(this.state.desiredCapabilities)} 
+          onChangeCapability={this.handleChangeCapability.bind(this)}
+          desiredCapabilities={this.state.desiredCapabilities}
+          desiredCapabilityConstraints={desiredCapabilityConstraints}/>
       </div>
     );
   }
