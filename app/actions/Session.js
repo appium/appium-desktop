@@ -3,39 +3,48 @@ import { push } from 'react-router-redux';
 import settings from 'electron-settings';
 
 export const NEW_SESSION_REQUESTED = 'NEW_SESSION_REQUESTED';
-export const GET_SAVED_CAPABILITIES_REQUEST = 'GET_SAVED_CAPABILITIES_REQUEST';
-export const GET_SAVED_CAPABILITIES_DONE = 'GET_SAVED_CAPABILITIES_DONE';
+export const GET_DEFAULT_CAPS_REQUESTED = 'GET_DEFAULT_CAPS_REQUESTED';
+export const GET_DEFAULT_CAPS_DONE = 'GET_DEFAULT_CAPS_DONE';
 export const CHANGE_CAPABILITY = 'CHANGE_CAPABILITY';
 
-const MOST_RECENT_DESIRED_CAPABILITIES = 'mostRecentDesiredCapabilities';
+const MOST_RECENT_DESIRED_CAPABILITIES = 'MOST_RECENT_DESIRED_CAPABILITIES';
 
-export function requestedSavedCapabilities (desiredCapabilityConstraints) {
+function getDefaultDesiredCapabilities (desiredCapabilityConstraints) {
+  let desiredCapabilities = {};
+
+  // Set default values for capabilities
+  Object.keys(desiredCapabilityConstraints).map((key) => {
+    let cap = desiredCapabilityConstraints[key];
+
+    // If it's a select, choose the first by default
+    if (cap.inclusionCaseInsensitive || cap.inclusion) {
+      desiredCapabilities[key] = (cap.inclusionCaseInsensitive || cap.inclusion)[0];
+    } else if (cap.isBoolean) {
+      desiredCapabilities[key] = false;
+    } else if (cap.isNumber) {
+      desiredCapabilities[key] = null;
+    } else {
+      desiredCapabilities[key] = '';
+    }
+  });
+
+  return desiredCapabilities;
+}
+
+export function getDefaultCaps (desiredCapabilityConstraints) {
   return async (dispatch) => {
-    dispatch({type: GET_SAVED_CAPABILITIES_REQUEST, desiredCapabilityConstraints});
+    dispatch({type: GET_DEFAULT_CAPS_REQUESTED, desiredCapabilityConstraints});
 
     // Get the most recently saved capabilities
     let desiredCapabilities = await settings.get(MOST_RECENT_DESIRED_CAPABILITIES);
+    let defaultDesiredCapabilities = getDefaultDesiredCapabilities(desiredCapabilityConstraints);
 
-    // If there are no saved ones use the defaults
-    if (!desiredCapabilities) {
-      desiredCapabilities = {};
-      // Set default values for capabilities
-      Object.keys(desiredCapabilityConstraints).map((key) => {
-        let cap = desiredCapabilityConstraints[key];
+    desiredCapabilities = {
+      ...defaultDesiredCapabilities,
+      ...desiredCapabilities,
+    };
 
-        // If it's a select, choose the first by default
-        if (cap.inclusionCaseInsensitive || cap.inclusion) {
-          desiredCapabilities[key] = (cap.inclusionCaseInsensitive || cap.inclusion)[0];
-        } else if (cap.isBoolean) {
-          desiredCapabilities[key] = false;
-        } else if (cap.isNumber) {
-          desiredCapabilities[key] = null;
-        } else {
-          desiredCapabilities[key] = '';
-        }
-      });
-    }
-    dispatch({type: GET_SAVED_CAPABILITIES_DONE, desiredCapabilities});
+    dispatch({type: GET_DEFAULT_CAPS_DONE, desiredCapabilities});
   };
 }
 
@@ -48,6 +57,8 @@ export function changeCapability (key, value) {
 export function newSession (desiredCapabilities) {
   return async (dispatch) => {
     dispatch({type: NEW_SESSION_REQUESTED, desiredCapabilities});
+
+    // Save these caps as the most recently used caps
     await settings.set(MOST_RECENT_DESIRED_CAPABILITIES, desiredCapabilities);
 
     ipcRenderer.once('appium-new-session-ready', (event, message) => {

@@ -1,4 +1,13 @@
 import React, { Component } from 'react';
+let { desiredCapabilityConstraints } = require('appium-base-driver/build/lib/basedriver/desired-caps');
+
+desiredCapabilityConstraints = {
+  app: {
+    isFile: true,
+    presence: true,
+  },
+  ...desiredCapabilityConstraints,
+};
 
 function unCamelCase (str) {
   return str
@@ -8,17 +17,16 @@ function unCamelCase (str) {
 }
 
 export default class NewSessionForm extends Component {
-  constructor (props) {
-    super(props);
-    this.state = {};
-  }
 
   static defaultProps = {
     desiredCapabilities: {},
-    desiredCapabilityConstraints: {},
     onCreateNewSession: () => {},
     onChangeCapability: () => {},
   };
+
+  componentWillMount () {
+    this.props.getDefaultCaps(desiredCapabilityConstraints);
+  }
 
   handleSubmit (e) {
     e.preventDefault();
@@ -26,26 +34,28 @@ export default class NewSessionForm extends Component {
   }
 
   render () {
-    return (
-      <form onSubmit={this.handleSubmit.bind(this)}>
+    const { newSession, desiredCapabilities, changeCapability } = this.props;
+
+    return desiredCapabilities && (
+      <form onSubmit={(e) => {e.preventDefault(); newSession(desiredCapabilities); }}>
         <table>
             <tbody>
-            {Object.keys(this.props.desiredCapabilityConstraints).map((key) => {
-              let cap = this.props.desiredCapabilityConstraints[key];
+            {Object.keys(desiredCapabilityConstraints).map((key) => {
+              let capConstraint = desiredCapabilityConstraints[key];
+              let options = capConstraint.inclusionCaseInsensitive || capConstraint.inclusion;
               let form;
 
-              if (cap.inclusionCaseInsensitive || cap.inclusion) {
-                let inclusion = cap.inclusionCaseInsensitive || cap.inclusion;
-                form = <select value={this.props.desiredCapabilities[key]} onChange={(e) => this.props.onChangeCapability(key, e.target.value)} name={key}>
-                    { inclusion.map((name) => <option key={name} name={name}>{name}</option>) }
+              if (options) {
+                form = <select value={desiredCapabilities[key]} onChange={(e) => changeCapability(key, e.target.value)} name={key}>
+                    { options.map((name) => <option key={name} name={name}>{name}</option>) }
                 </select>;
-              } else if (cap.isBoolean) {
-                form = <input type='checkbox' checked={this.props.desiredCapabilities[key]} onChange={(e) => this.props.onChangeCapability(key, e.target.checked)} />;
-              } else if (cap.isFile) {
-                form = form = <input type='text' value={this.props.desiredCapabilities[key]} onChange={(e) => this.props.onChangeCapability(key, e.target.value)}/>; 
+              } else if (capConstraint.isBoolean) {
+                form = <input type='checkbox' checked={desiredCapabilities[key]} onChange={(e) => changeCapability(key, e.target.checked)} />;
+              } else if (capConstraint.isFile) {
+                form = form = <input type='text' value={desiredCapabilities[key]} onChange={(e) => changeCapability(key, e.target.value)}/>; 
               } else {
-                let type = cap.isNumber ? 'number' : 'text';
-                form = <input type={type} value={this.props.desiredCapabilities[key]} onChange={(e) => this.props.onChangeCapability(key, e.target.value)}/>;
+                let type = capConstraint.isNumber ? 'number' : 'text';
+                form = <input type={type} value={desiredCapabilities[key]} onChange={(e) => changeCapability(key, e.target.value)}/>;
               }
 
               return <tr key={key}>
