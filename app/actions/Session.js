@@ -9,9 +9,14 @@ export const CHANGE_CAPABILITY = 'CHANGE_CAPABILITY';
 export const GET_RECENT_SESSIONS_REQUESTED = 'GET_RECENT_SESSIONS_REQUESTED';
 export const GET_RECENT_SESSIONS_DONE = 'GET_RECENT_SESSIONS_DONE';
 export const SET_DESIRED_CAPABILITIES = 'SET_DESIRED_CAPABILITIES';
+export const SAVE_SESSION_REQUESTED = 'SAVE_SESSION_REQUESTED';
+export const SAVE_SESSION_DONE = 'SAVE_SESSION_DONE';
+export const GET_SAVED_SESSIONS_REQUESTED = 'GET_SAVED_SESSIONS_REQUESTED';
+export const GET_SAVED_SESSIONS_DONE = 'GET_SAVED_SESSIONS_DONE';
 
 const MOST_RECENT_DESIRED_CAPABILITIES = 'MOST_RECENT_DESIRED_CAPABILITIES';
 const RECENT_SESSIONS = 'RECENT_SESSIONS';
+const SAVED_SESSIONS = 'SAVED_SESSIONS';
 
 const SAVED_CAPS_LIMIT = 30;
 
@@ -103,7 +108,29 @@ export function newSession (desiredCapabilities) {
 export function getRecentSessions () {
   return async (dispatch) => {
     dispatch({type: GET_RECENT_SESSIONS_REQUESTED});
-    let recentSessions = await settings.get(RECENT_SESSIONS);
+    let recentSessions = await settings.get(RECENT_SESSIONS) || [];
     dispatch({type: GET_RECENT_SESSIONS_DONE, recentSessions});
+  };
+}
+
+export function saveSession (desiredCapabilities) {
+  return async (dispatch) => {
+    dispatch({type: SAVE_SESSION_REQUESTED});
+    let savedSessions = await settings.get(SAVED_SESSIONS) || [];
+    savedSessions.push({
+      date: +(new Date()),
+      desiredCapabilities
+    });
+    await settings.set(SAVED_SESSIONS, savedSessions);
+    dispatch({type: SAVE_SESSION_DONE});
+    getSavedSessions()(dispatch);
+  };
+}
+
+export function getSavedSessions () {
+  return async (dispatch) => {
+    dispatch({type: GET_SAVED_SESSIONS_REQUESTED});
+    let savedSessions = await settings.get(SAVED_SESSIONS) || [];
+    dispatch({type: GET_SAVED_SESSIONS_DONE, savedSessions});
   };
 }

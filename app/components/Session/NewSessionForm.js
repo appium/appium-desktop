@@ -34,7 +34,7 @@ export default class NewSessionForm extends Component {
   }
 
   render () {
-    const { newSession, desiredCapabilities, changeCapability } = this.props;
+    const { newSession, desiredCapabilities, changeCapability, saveSession } = this.props;
 
     return desiredCapabilities && (
       <form onSubmit={(e) => {e.preventDefault(); newSession(desiredCapabilities); }}>
@@ -69,6 +69,7 @@ export default class NewSessionForm extends Component {
             <tr>
             <td colSpan='2'>
                 <button type="submit">Submit</button>
+                <button type="button" onClick={() => saveSession(desiredCapabilities)}>Save Session</button>
             </td>
             </tr>
             </tbody>
