@@ -99,7 +99,10 @@ export default class PresetsTab extends Component {
       return (
         <div className={styles.presetsDetail}>
           {_.toPairs(preset).map((p) =>
-            <div className={styles.presetData}><b>{p[0]}:</b> {JSON.stringify(p[1])}</div>
+            <div className={styles.presetData}>
+              <b>{p[0]}:</b>
+              {typeof p[1] === 'string' ? p[1] : JSON.stringify(p[1])}
+            </div>
           )}
         </div>
       );
