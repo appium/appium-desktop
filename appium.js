@@ -19,12 +19,11 @@ let sessionClients = {};
 /**
  * Kill session associated with session browser window
  */
-function killSession (sessionWin) {
-  let id = sessionWin.webContents.id;
-  if (sessionClients[id]) {
-    sessionClients[id].closeApp();
-    sessionClients[id].end();
-    delete sessionClients[id];
+function killSession (sessionWinID) {
+  if (sessionClients[sessionWinID]) {
+    sessionClients[sessionWinID].closeApp();
+    sessionClients[sessionWinID].end();
+    delete sessionClients[sessionWinID];
   }
 }
 
@@ -100,14 +99,15 @@ function connectStartSession (win) {
     sessionWin.show();
 
     // When you close the session window, kill the associated Appium session
+    let sessionWinID = sessionWin.webContents.id;
     sessionWin.on('closed', () => {
-      killSession(sessionWin);
+      killSession(sessionWinID);
       sessionWin = null;
     });
 
     // When the main window is closed, terminate the appium session and close the session window
     win.once('closed', () => {
-      sessionWin.close();
+      // sessionWin.close();
       sessionWin = null;
     });
 
