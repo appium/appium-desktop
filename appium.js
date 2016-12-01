@@ -13,7 +13,20 @@ var server = null;
 var serverArgs = null;
 var logWatcher = null;
 var batchedLogs = [];
-let sessionWin = null;
+
+let sessionClients = {};
+
+/**
+ * Kill session associated with session browser window
+ */
+function killSession (sessionWin) {
+  let id = sessionWin.webContents.id;
+  if (sessionClients[id]) {
+    sessionClients[id].closeApp();
+    sessionClients[id].end();
+    delete sessionClients[id];
+  }
+}
 
 function connectStartServer (win) {
   ipcMain.on('start-server', async (event, args) => {
@@ -81,18 +94,18 @@ function connectGetDefaultArgs () {
 
 function connectStartSession (win) {
   ipcMain.on('start-session', () => {
-    sessionWin = new BrowserWindow({width: 800, height: 600, webPreferences: {devTools: true}});
+    let sessionWin = new BrowserWindow({width: 800, height: 600, webPreferences: {devTools: true}});
     let sessionHTMLPath = path.resolve(__dirname, 'app', 'index.html#/session');
     sessionWin.loadURL(`file://${sessionHTMLPath}`);
     sessionWin.show();
+
+    // When you close the session window, kill the associated Appium session
     sessionWin.on('closed', () => {
+      killSession(sessionWin);
       sessionWin = null;
     });
 
-    sessionWin.on('closed', () => {
-      sessionWin = null;
-    });
-
+    // When the main window is closed, terminate the appium session and close the session window
     win.once('closed', () => {
       sessionWin.close();
       sessionWin = null;
@@ -116,18 +129,18 @@ function connectStartSession (win) {
 }
 
 function connectCreateNewSession () {
-  ipcMain.on('appium-create-new-session', (evt, desiredCapabilities) => {
-    try {
-      let client = webdriverio.remote({
-        port: serverArgs.port,
-        host: serverArgs.address,
-        desiredCapabilities,
-      });
-      client.init();
-      sessionWin.webContents.send('appium-new-session-ready');
-    } catch (e) {
-      sessionWin.webContents.send('appium-new-session-failed');
-    }
+  ipcMain.on('appium-create-new-session', (event, desiredCapabilities) => {
+    let client = sessionClients[event.sender.id] = webdriverio.remote({
+      port: serverArgs.port,
+      host: serverArgs.address,
+      desiredCapabilities,
+    });
+
+    client.init().then((res) => {
+      event.sender.send('appium-new-session-ready', res);
+    }, () => {
+      event.sender.send('appium-new-session-failed');
+    });
   });
 }
 

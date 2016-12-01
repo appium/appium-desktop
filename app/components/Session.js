@@ -47,7 +47,6 @@ export default class Session extends Component {
 
   handleChangeCapability (key) {
     return (evt) => {
-      console.log(key, evt.target, evt);
       let state = this.state;
       let nextState = {...state};
       nextState[key] = evt.target.value;
