@@ -18,6 +18,13 @@ export default class NewSessionForm extends Component {
     onChangeCapability: () => {},
   };
 
+  getCapsObject () {
+    const { caps } = this.props;
+    let capsObject = {};
+    caps.forEach((cap) => capsObject[cap.name] = cap.value);
+    return capsObject;
+  }
+
   handleSubmit (e) {
     e.preventDefault();
     this.props.onCreateNewSession();
@@ -51,9 +58,9 @@ export default class NewSessionForm extends Component {
   }
 
   render () {
-    const { newSession, desiredCapabilities, setCapabilityParam, caps, addCapability, removeCapability, saveSession } = this.props;
+    const { newSession, setCapabilityParam, caps, addCapability, removeCapability, saveSession } = this.props;
 
-    return desiredCapabilities && (<div>
+    return <div>
       <Row>
       <Col span={12}>
         <form onSubmit={(e) => {e.preventDefault(); newSession(desiredCapabilities); }}>
@@ -90,7 +97,7 @@ export default class NewSessionForm extends Component {
       </Col>
       <Col span={12}>
         <pre>
-          {prettyJSON.render(desiredCapabilities)}
+          {prettyJSON.render(this.getCapsObject(caps))}
         </pre>
       </Col>
       </Row>
@@ -102,6 +109,6 @@ export default class NewSessionForm extends Component {
         onOk={this.saveSession.bind(this)}>
         <Input onChange={(e) => this.setSaveAsText(e.target.value)} placeholder='Name' value={this.state.saveAsText}/>
       </Modal>
-    </div>);
+    </div>;
   }
 }
