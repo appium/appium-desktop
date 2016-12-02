@@ -60,18 +60,27 @@ export function getDefaultCaps (desiredCapabilityConstraints) {
   };
 }
 
+/**
+ * Change the desired capabilities object
+ */
 export function setCaps (desiredCapabilities) {
   return async (dispatch) => {
     dispatch({type: SET_DESIRED_CAPABILITIES, desiredCapabilities});
   };
 }
 
+/**
+ * Change a single desired capability
+ */
 export function changeCapability (key, value) {
   return async (dispatch) => {
     dispatch({type: CHANGE_CAPABILITY, key, value});
   };
 }
 
+/**
+ * Start a new appium session with the given caps 
+ */
 export function newSession (desiredCapabilities) {
   return async (dispatch) => {
     dispatch({type: NEW_SESSION_REQUESTED, desiredCapabilities});
@@ -91,6 +100,7 @@ export function newSession (desiredCapabilities) {
     await settings.set(RECENT_SESSIONS, recentSessions);
     getRecentSessions()(dispatch);
 
+    // Start the session
     ipcRenderer.send('appium-create-new-session', desiredCapabilities);
 
     ipcRenderer.once('appium-new-session-failed', (event, message) => {
@@ -105,6 +115,9 @@ export function newSession (desiredCapabilities) {
   };
 }
 
+/**
+ * Get a list of sessions that the user recently did
+ */
 export function getRecentSessions () {
   return async (dispatch) => {
     dispatch({type: GET_RECENT_SESSIONS_REQUESTED});
@@ -113,6 +126,9 @@ export function getRecentSessions () {
   };
 }
 
+/**
+ * Saves the caps
+ */
 export function saveSession (desiredCapabilities) {
   return async (dispatch) => {
     dispatch({type: SAVE_SESSION_REQUESTED});
@@ -127,6 +143,9 @@ export function saveSession (desiredCapabilities) {
   };
 }
 
+/**
+ * Get the sessions saved by the user
+ */
 export function getSavedSessions () {
   return async (dispatch) => {
     dispatch({type: GET_SAVED_SESSIONS_REQUESTED});

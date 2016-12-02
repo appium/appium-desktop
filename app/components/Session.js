@@ -3,14 +3,13 @@ import styles from './Session.css';
 import NewSessionForm from './Session/NewSessionForm';
 import RecentSessions from './Session/RecentSessions';
 import SavedSessions from './Session/SavedSessions';
-import moment from 'moment';
-window.moment = moment;
+import { Tabs, Row, Col } from 'antd';
+const { TabPane } = Tabs;
 
 export default class Session extends Component {
 
   render () {
     const { newSessionBegan } = this.props;
-
     return (
       <div>
         {
@@ -18,14 +17,17 @@ export default class Session extends Component {
           <div>
             <p>Session In Progress</p>
           </div> : 
-          <div className={styles.container}>
-            <h2>Start New Session</h2>
-            <NewSessionForm {...this.props} />
-            <h2>Recent Sessions</h2>
-            <RecentSessions {...this.props} />
-            <h2>Saved Sessions</h2>
-            <SavedSessions {...this.props} />
-          </div>
+          <Tabs defaultActiveKey="1">
+            <TabPane tab='Start New Session' key='1'>
+              <NewSessionForm {...this.props} />
+            </TabPane>
+            <TabPane tab='Recent Sessions' key='2'>
+                <RecentSessions {...this.props} />
+            </TabPane>
+            <TabPane tab='Saved Sessions' key='3'>
+                <SavedSessions {...this.props} />
+            </TabPane>
+          </Tabs>
         }
         
       </div>

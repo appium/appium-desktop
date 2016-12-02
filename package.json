@@ -64,6 +64,7 @@
     "webdriverio": "^4.4.0"
   },
   "devDependencies": {
+    "antd": "^2.5.0",
     "asar": "0.x",
     "babel-core": "6.x",
     "babel-eslint": "7.x",

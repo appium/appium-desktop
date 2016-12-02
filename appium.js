@@ -138,10 +138,10 @@ function connectCreateNewSession () {
 
     client.init().then((res) => {
       event.sender.send('appium-new-session-successful', res);
-      event.sender.send('appium-new-session-done', res);
+      event.sender.send('appium-new-session-done');
     }, () => {
       event.sender.send('appium-new-session-failed');
-      event.sender.send('appium-new-session-done', res);
+      event.sender.send('appium-new-session-done');
     });
   });
 }
