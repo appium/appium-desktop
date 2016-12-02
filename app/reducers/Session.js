@@ -1,4 +1,4 @@
-import { NEW_SESSION_REQUESTED, GET_DEFAULT_CAPS_REQUESTED, GET_DEFAULT_CAPS_DONE,
+import { NEW_SESSION_REQUESTED, NEW_SESSION_BEGAN, NEW_SESSION_DONE, GET_DEFAULT_CAPS_REQUESTED, GET_DEFAULT_CAPS_DONE,
         CHANGE_CAPABILITY, GET_RECENT_SESSIONS_REQUESTED, GET_RECENT_SESSIONS_DONE, SET_DESIRED_CAPABILITIES,
         SAVE_SESSION_REQUESTED, SAVE_SESSION_DONE, GET_SAVED_SESSIONS_REQUESTED, GET_SAVED_SESSIONS_DONE } from '../actions/Session';
 
@@ -7,7 +7,18 @@ export default function session (state={}, action) {
     case NEW_SESSION_REQUESTED:
       return {
         ...state,
-        newSession: action.desiredCapabilities
+        newSessionRequested: true
+      };
+    case NEW_SESSION_BEGAN:
+      return {
+        ...state,
+        newSessionRequested: false,
+        newSessionBegan: true
+      };
+    case NEW_SESSION_DONE:
+      return {
+        ...state,
+        newSessionBegan: false,
       };
     case GET_DEFAULT_CAPS_REQUESTED:
       return {

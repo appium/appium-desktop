@@ -1,8 +1,9 @@
 import { ipcRenderer } from 'electron';
-import { push } from 'react-router-redux';
 import settings from 'electron-settings';
 
 export const NEW_SESSION_REQUESTED = 'NEW_SESSION_REQUESTED';
+export const NEW_SESSION_BEGAN = 'NEW_SESSION_BEGAN';
+export const NEW_SESSION_DONE = 'NEW_SESSION_DONE';
 export const GET_DEFAULT_CAPS_REQUESTED = 'GET_DEFAULT_CAPS_REQUESTED';
 export const GET_DEFAULT_CAPS_DONE = 'GET_DEFAULT_CAPS_DONE';
 export const CHANGE_CAPABILITY = 'CHANGE_CAPABILITY';
@@ -90,18 +91,17 @@ export function newSession (desiredCapabilities) {
     await settings.set(RECENT_SESSIONS, recentSessions);
     getRecentSessions()(dispatch);
 
-    ipcRenderer.once('appium-new-session-ready', (event, message) => {
-      alert('Successfully started session');
-    });
+    ipcRenderer.send('appium-create-new-session', desiredCapabilities);
 
     ipcRenderer.once('appium-new-session-failed', (event, message) => {
-      ipcRenderer.removeAllListeners('appium-log-line');
       alert('Error starting session');
     });
 
-    ipcRenderer.send('appium-create-new-session', desiredCapabilities, () => {
-      dispatch(push('/inspector'));
+    ipcRenderer.once('appium-new-session-done', () => {
+      dispatch({type: NEW_SESSION_DONE});
     });
+
+    dispatch({type: NEW_SESSION_BEGAN});
   };
 }
 
