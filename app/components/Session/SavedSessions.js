@@ -4,10 +4,6 @@ window.moment = moment;
 
 export default class SavedSessions extends Component {
 
-  componentDidMount () {
-    this.props.getSavedSessions();
-  }
-
   render () {
     const {savedSessions, setCaps} = this.props;
 

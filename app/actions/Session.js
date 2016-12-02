@@ -13,6 +13,8 @@ export const GET_SAVED_SESSIONS_DONE = 'GET_SAVED_SESSIONS_DONE';
 export const SET_CAPABILITY_PARAM = 'SET_CAPABILITY_PARAM';
 export const ADD_CAPABILITY = 'ADD_CAPABILITY';
 export const REMOVE_CAPABILITY = 'REMOVE_CAPABILITY';
+export const SWITCHED_TABS = 'SWITCHED_TABS';
+export const SET_CAPS = 'SET_CAPS';
 
 const SAVED_SESSIONS = 'SAVED_SESSIONS';
 
@@ -25,9 +27,10 @@ function getCapsObject (caps) {
 /**
  * Change the desired capabilities object
  */
-export function setCaps (desiredCapabilities) {
+export function setCaps (caps) {
   return async (dispatch) => {
-    dispatch({type: SET_DESIRED_CAPABILITIES, desiredCapabilities});
+    dispatch({type: SET_CAPS, caps});
+    switchTabs('new')(dispatch);
   };
 }
 
@@ -109,5 +112,14 @@ export function getSavedSessions () {
     dispatch({type: GET_SAVED_SESSIONS_REQUESTED});
     let savedSessions = await settings.get(SAVED_SESSIONS) || [];
     dispatch({type: GET_SAVED_SESSIONS_DONE, savedSessions});
+  };
+}
+
+/**
+ * Switch to a different tab
+ */
+export function switchTabs (key) {
+  return async (dispatch) => {
+    dispatch({type: SWITCHED_TABS, key});
   };
 }

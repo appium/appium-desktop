@@ -1,13 +1,17 @@
 import React, { Component } from 'react';
 import NewSessionForm from './Session/NewSessionForm';
 import SavedSessions from './Session/SavedSessions';
-import { Tabs, Row, Col } from 'antd';
+import { Tabs } from 'antd';
 const { TabPane } = Tabs;
 
 export default class Session extends Component {
 
+  componentWillMount () {
+    this.props.getSavedSessions();
+  }
+
   render () {
-    const { newSessionBegan } = this.props;
+    const { newSessionBegan, savedSessions, tabKey, switchTabs } = this.props;
     return (
       <div style={{width: '100%', padding: '1em'}}>
         {
@@ -15,11 +19,11 @@ export default class Session extends Component {
           <div>
             <p>Session In Progress</p>
           </div> : 
-          <Tabs defaultActiveKey="1">
-            <TabPane tab='Start New Session' key='1'>
+          <Tabs activeKey={tabKey} onChange={(key) => switchTabs(key)}>
+            <TabPane tab='Start New Session' key='new'>
               <NewSessionForm {...this.props} />
             </TabPane>
-            <TabPane tab='Saved Sessions' key='3'>
+            <TabPane tab={`Saved Sessions (${savedSessions.length})`} key='saved'>
                 <SavedSessions {...this.props} />
             </TabPane>
           </Tabs>

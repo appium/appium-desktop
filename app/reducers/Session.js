@@ -1,15 +1,17 @@
-import { NEW_SESSION_REQUESTED, NEW_SESSION_BEGAN, NEW_SESSION_DONE, GET_DEFAULT_CAPS_REQUESTED, GET_DEFAULT_CAPS_DONE,
-        CHANGE_CAPABILITY, SET_DESIRED_CAPABILITIES,
+import { NEW_SESSION_REQUESTED, NEW_SESSION_BEGAN, NEW_SESSION_DONE,
         SAVE_SESSION_REQUESTED, SAVE_SESSION_DONE, GET_SAVED_SESSIONS_REQUESTED, GET_SAVED_SESSIONS_DONE,
-        SET_CAPABILITY_PARAM, ADD_CAPABILITY, REMOVE_CAPABILITY } from '../actions/Session';
+        SET_CAPABILITY_PARAM, ADD_CAPABILITY, REMOVE_CAPABILITY, SET_CAPS,
+        SWITCHED_TABS } from '../actions/Session';
 
 let caps;
 
 // Make sure there's always at least one cap
 const INITIAL_STATE = {
+  savedSessions: [],
+  tabKey: 'new',
   caps: [{
     type: 'text',
-  }]
+  }],
 };
 
 export default function session (state=INITIAL_STATE, action) {
@@ -59,26 +61,11 @@ export default function session (state=INITIAL_STATE, action) {
         ...state,
         caps
       };
-    case GET_DEFAULT_CAPS_REQUESTED:
+    case SET_CAPS:
       return {
         ...state,
-        getDefaultCapsRequested: true,
+        caps: action.caps
       };
-    case GET_DEFAULT_CAPS_DONE: 
-      return {
-        ...state,
-        desiredCapabilities: action.desiredCapabilities,
-      };
-    case CHANGE_CAPABILITY:
-      var dcaps = state.desiredCapabilities;
-      var nextState = {
-        ...state
-      };
-      nextState.desiredCapabilities = {
-        ...dcaps
-      };
-      nextState.desiredCapabilities[action.key] = action.value;
-      return nextState;
     case SAVE_SESSION_REQUESTED:
       return {
         ...state,
@@ -100,10 +87,10 @@ export default function session (state=INITIAL_STATE, action) {
         getSavedSessionsRequested: false,
         savedSessions: action.savedSessions
       };
-    case SET_DESIRED_CAPABILITIES:
+    case SWITCHED_TABS:
       return {
         ...state,
-        desiredCapabilities: action.desiredCapabilities
+        tabKey: action.key,
       };
     default:
       return {...state};
