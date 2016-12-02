@@ -1,8 +1,18 @@
 import { NEW_SESSION_REQUESTED, NEW_SESSION_BEGAN, NEW_SESSION_DONE, GET_DEFAULT_CAPS_REQUESTED, GET_DEFAULT_CAPS_DONE,
-        CHANGE_CAPABILITY, GET_RECENT_SESSIONS_REQUESTED, GET_RECENT_SESSIONS_DONE, SET_DESIRED_CAPABILITIES,
-        SAVE_SESSION_REQUESTED, SAVE_SESSION_DONE, GET_SAVED_SESSIONS_REQUESTED, GET_SAVED_SESSIONS_DONE } from '../actions/Session';
+        CHANGE_CAPABILITY, SET_DESIRED_CAPABILITIES,
+        SAVE_SESSION_REQUESTED, SAVE_SESSION_DONE, GET_SAVED_SESSIONS_REQUESTED, GET_SAVED_SESSIONS_DONE,
+        SET_CAPABILITY_PARAM, ADD_CAPABILITY, REMOVE_CAPABILITY } from '../actions/Session';
 
-export default function session (state={}, action) {
+let caps;
+
+// Make sure there's always at least one cap
+const INITIAL_STATE = {
+  caps: [{
+    type: 'text',
+  }]
+};
+
+export default function session (state=INITIAL_STATE, action) {
   switch (action.type) {
     case NEW_SESSION_REQUESTED:
       return {
@@ -19,6 +29,35 @@ export default function session (state={}, action) {
       return {
         ...state,
         newSessionBegan: false,
+      };
+    case ADD_CAPABILITY:
+      caps = state.caps || [];
+      caps = [...caps];
+      caps.push({
+        type: 'text',
+      });
+      return {
+        ...state,
+        caps,
+      };
+    case REMOVE_CAPABILITY:
+      caps = state.caps || [];
+      if (caps.length === 1) {
+        return {...state};
+      }
+      caps = [...caps];
+      caps.splice(action.index, 1);
+      return {
+        ...state,
+        caps,
+      };
+    case SET_CAPABILITY_PARAM:
+      caps = state.caps || [];
+      caps = [...caps];
+      caps[action.index][action.name] = action.value;
+      return {
+        ...state,
+        caps
       };
     case GET_DEFAULT_CAPS_REQUESTED:
       return {
