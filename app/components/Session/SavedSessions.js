@@ -17,8 +17,9 @@ export default class SavedSessions extends Component {
           let dcaps = session.desiredCapabilities || {};
           return <li key={index}>
             <a href='#' onClick={(e) => {e.preventDefault(); setCaps(dcaps);} }>
-              {moment(session.date).format('YYYY-MM-DD')}&nbsp;&nbsp;
-              {dcaps.platformName}
+              {session.name || 'Untitled'}
+              &nbsp;&nbsp;
+              {`(${moment(session.date).format('YYYY-MM-DD')})`}
             </a>
           </li>;
         })}
