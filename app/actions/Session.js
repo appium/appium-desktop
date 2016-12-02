@@ -15,6 +15,9 @@ export const ADD_CAPABILITY = 'ADD_CAPABILITY';
 export const REMOVE_CAPABILITY = 'REMOVE_CAPABILITY';
 export const SWITCHED_TABS = 'SWITCHED_TABS';
 export const SET_CAPS = 'SET_CAPS';
+export const SAVE_AS_MODAL_REQUESTED = 'SAVE_AS_MODAL_REQUESTED';
+export const HIDE_SAVE_AS_MODAL_REQUESTED = 'HIDE_SAVE_AS_MODAL_REQUESTED';
+export const SET_SAVE_AS_TEXT = 'SET_SAVE_AS_TEXT';
 
 const SAVED_SESSIONS = 'SAVED_SESSIONS';
 
@@ -89,14 +92,14 @@ export function newSession (caps) {
 /**
  * Saves the caps
  */
-export function saveSession (name, desiredCapabilities) {
+export function saveSession (name, caps) {
   return async (dispatch) => {
     dispatch({type: SAVE_SESSION_REQUESTED});
     let savedSessions = await settings.get(SAVED_SESSIONS) || [];
     savedSessions.push({
       date: +(new Date()),
       name,
-      desiredCapabilities,
+      caps,
     });
     await settings.set(SAVED_SESSIONS, savedSessions);
     dispatch({type: SAVE_SESSION_DONE});
@@ -121,5 +124,23 @@ export function getSavedSessions () {
 export function switchTabs (key) {
   return async (dispatch) => {
     dispatch({type: SWITCHED_TABS, key});
+  };
+}
+
+export function requestSaveAsModal () {
+  return async (dispatch) => {
+    dispatch({type: SAVE_AS_MODAL_REQUESTED});
+  };
+}
+
+export function hideSaveAsModal () {
+  return async (dispatch) => {
+    dispatch({type: HIDE_SAVE_AS_MODAL_REQUESTED});
+  };
+}
+
+export function setSaveAsText (saveAsText) {
+  return async (dispatch) => {
+    dispatch({type: SET_SAVE_AS_TEXT, saveAsText});
   };
 }

@@ -10,9 +10,8 @@ export default class SavedSessions extends Component {
     return (
       <ul>
         {savedSessions && [...savedSessions].reverse().map((session, index) => {
-          let dcaps = session.desiredCapabilities || {};
           return <li key={index}>
-            <a href='#' onClick={(e) => {e.preventDefault(); setCaps(dcaps);} }>
+            <a href='#' onClick={(e) => {e.preventDefault(); setCaps(session.caps);} }>
               {session.name || 'Untitled'}
               &nbsp;&nbsp;
               {`(${moment(session.date).format('YYYY-MM-DD')})`}

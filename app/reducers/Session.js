@@ -1,7 +1,7 @@
 import { NEW_SESSION_REQUESTED, NEW_SESSION_BEGAN, NEW_SESSION_DONE,
         SAVE_SESSION_REQUESTED, SAVE_SESSION_DONE, GET_SAVED_SESSIONS_REQUESTED, GET_SAVED_SESSIONS_DONE,
         SET_CAPABILITY_PARAM, ADD_CAPABILITY, REMOVE_CAPABILITY, SET_CAPS,
-        SWITCHED_TABS } from '../actions/Session';
+        SWITCHED_TABS, SAVE_AS_MODAL_REQUESTED, HIDE_SAVE_AS_MODAL_REQUESTED, SET_SAVE_AS_TEXT } from '../actions/Session';
 
 let caps;
 
@@ -69,7 +69,8 @@ export default function session (state=INITIAL_STATE, action) {
     case SAVE_SESSION_REQUESTED:
       return {
         ...state,
-        saveSessionRequested: true
+        saveSessionRequested: true,
+        showSaveAsModal: false,
       };
     case SAVE_SESSION_DONE:
       return {
@@ -91,6 +92,22 @@ export default function session (state=INITIAL_STATE, action) {
       return {
         ...state,
         tabKey: action.key,
+      };
+    case SAVE_AS_MODAL_REQUESTED: 
+      return {
+        ...state,
+        showSaveAsModal: true,
+      };
+    case HIDE_SAVE_AS_MODAL_REQUESTED: 
+      return {
+        ...state,
+        saveAsText: '',
+        showSaveAsModal: false,
+      };
+    case SET_SAVE_AS_TEXT:
+      return {
+        ...state,
+        saveAsText: action.saveAsText,
       };
     default:
       return {...state};

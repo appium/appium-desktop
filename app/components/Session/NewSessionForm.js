@@ -25,45 +25,14 @@ export default class NewSessionForm extends Component {
     return capsObject;
   }
 
-  handleSubmit (e) {
-    e.preventDefault();
-    this.props.onCreateNewSession();
-  }
-
-  showSaveAsModal () {
-    let state = this.state;
-    state = {...state};
-    state.showSaveAsModal = true;
-    this.setState(state);
-  }
-
-  hideSaveAsModal () {
-    let state = this.state;
-    state = {...state};
-    state.showSaveAsModal = false;
-    this.setState(state);
-  }
-
-  saveSession () {
-    const { props, saveSession, caps } = this.props;
-    saveSession(this.state.saveAsText, caps);
-    this.hideSaveAsModal();
-  }
-
-  setSaveAsText (saveAsText) {
-    let state = this.state;
-    state = {...state};
-    state.saveAsText = saveAsText;
-    this.setState(state);
-  }
-
   render () {
-    const { newSession, setCapabilityParam, caps, addCapability, removeCapability, saveSession } = this.props;
+    const { newSession, setCapabilityParam, caps, addCapability, removeCapability, saveSession,
+      requestSaveAsModal, hideSaveAsModal, saveAsText, showSaveAsModal, setSaveAsText } = this.props;
 
     return <div>
       <Row>
       <Col span={12}>
-        <form onSubmit={(e) => {e.preventDefault(); newSession(desiredCapabilities); }}>
+        <form onSubmit={(e) => {e.preventDefault(); newSession(caps); }}>
           {caps.map((cap, index) => {
             return <Row key={index}>
               <Col span={6}>
@@ -90,7 +59,7 @@ export default class NewSessionForm extends Component {
           <Row>
             <Col span={24}>
               <Button type="submit" onClick={() => newSession(caps)}>Start Session</Button>
-              <Button type="button" onClick={this.showSaveAsModal.bind(this)}>Save As</Button>
+              <Button type="button" onClick={requestSaveAsModal}>Save As</Button>
             </Col>
           </Row>
         </form>
@@ -101,13 +70,13 @@ export default class NewSessionForm extends Component {
         </pre>
       </Col>
       </Row>
-      <Modal visible={this.state.showSaveAsModal}
+      <Modal visible={showSaveAsModal}
         title='Save Session As'
         okText='Save'
         cancelText='Cancel' 
-        onCancel={this.hideSaveAsModal.bind(this)} 
-        onOk={this.saveSession.bind(this)}>
-        <Input onChange={(e) => this.setSaveAsText(e.target.value)} placeholder='Name' value={this.state.saveAsText}/>
+        onCancel={hideSaveAsModal} 
+        onOk={() => saveSession(saveAsText, caps)}>
+        <Input onChange={(e) => setSaveAsText(e.target.value)} placeholder='Name' value={saveAsText}/>
       </Modal>
     </div>;
   }
