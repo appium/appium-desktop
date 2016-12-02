@@ -1,15 +1,6 @@
 import React, { Component } from 'react';
-let { desiredCapabilityConstraints } = require('appium-base-driver/build/lib/basedriver/desired-caps');
-import { Row, Col, Button, Switch } from 'antd';
+import { Row, Col, Button, Switch, Input, InputNumber, Dropdown, Menu } from 'antd';
 import prettyJSON from 'prettyjson';
-
-desiredCapabilityConstraints = {
-  app: {
-    isFile: true,
-    presence: true,
-  },
-  ...desiredCapabilityConstraints,
-};
 
 function unCamelCase (str) {
   return str
@@ -20,15 +11,15 @@ function unCamelCase (str) {
 
 export default class NewSessionForm extends Component {
 
+  constructor (props) {
+    super(props);
+  }
+
   static defaultProps = {
     desiredCapabilities: {},
     onCreateNewSession: () => {},
     onChangeCapability: () => {},
   };
-
-  componentWillMount () {
-    this.props.getDefaultCaps(desiredCapabilityConstraints);
-  }
 
   handleSubmit (e) {
     e.preventDefault();
@@ -36,38 +27,31 @@ export default class NewSessionForm extends Component {
   }
 
   render () {
-    const { newSession, desiredCapabilities, changeCapability, saveSession } = this.props;
+    const { newSession, desiredCapabilities, changeCapability } = this.props;
+
+    let typeMenu = <Menu>
+                    <Menu.Item key="1">1st menu item</Menu.Item>
+                    <Menu.Item key="2">2nd menu item</Menu.Item>
+                    <Menu.Item key="3">3d menu item</Menu.Item>
+                  </Menu>;
 
     return desiredCapabilities && (
       <Row>
       <Col span={12}>
         <form onSubmit={(e) => {e.preventDefault(); newSession(desiredCapabilities); }}>
-          {Object.keys(desiredCapabilityConstraints).map((key) => {
-            let capConstraint = desiredCapabilityConstraints[key];
-            let options = capConstraint.inclusionCaseInsensitive || capConstraint.inclusion;
-            let form;
-
-            if (options) {
-              form = <select value={desiredCapabilities[key]} onChange={(e) => changeCapability(key, e.target.value)} name={key}>
-                  { options.map((name) => <option key={name} name={name}>{name}</option>) }
-              </select>;
-            } else if (capConstraint.isBoolean) {
-              form = <Switch checked={desiredCapabilities[key]} onChange={(checked) => changeCapability(key, checked)} />;
-            } else if (capConstraint.isFile) {
-              form = form = <input type='text' value={desiredCapabilities[key]} onChange={(e) => changeCapability(key, e.target.value)}/>; 
-            } else {
-              let type = capConstraint.isNumber ? 'number' : 'text';
-              form = <input type={type} value={desiredCapabilities[key]} onChange={(e) => changeCapability(key, e.target.value)}/>;
-            }
-
-            return <Row key={key}>
-              <Col span={12}>
-                  <label htmlFor={key}>{unCamelCase(key)}</label>
+          {
+            <Row>
+              <Col span={8}>
+                <Input placeholder='Name'/>
               </Col>
-              <Col span={12}>{form}</Col>
-            </Row>;
-
-          })}
+              <Col span={8}>
+                <Dropdown.Button overlay={typeMenu}>Data Type</Dropdown.Button>
+              </Col>
+              <Col span={8}>
+                <Input placeholder='Value' />
+              </Col>
+            </Row>
+          }
           <Row>
             <Col span={24}>
               <Button type="submit" onClick={() => newSession(desiredCapabilities)}>Start Session</Button>

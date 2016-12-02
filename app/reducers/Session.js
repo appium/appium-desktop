@@ -66,16 +66,6 @@ export default function session (state={}, action) {
         ...state,
         desiredCapabilities: action.desiredCapabilities
       };
-    case GET_RECENT_SESSIONS_REQUESTED:
-      return {
-        ...state,
-        getRecentSessionsRequested: true
-      };
-    case GET_RECENT_SESSIONS_DONE:
-      return {
-        ...state,
-        recentSessions: action.recentSessions
-      };
     default:
       return {...state};
   }

@@ -7,16 +7,12 @@ export const NEW_SESSION_DONE = 'NEW_SESSION_DONE';
 export const GET_DEFAULT_CAPS_REQUESTED = 'GET_DEFAULT_CAPS_REQUESTED';
 export const GET_DEFAULT_CAPS_DONE = 'GET_DEFAULT_CAPS_DONE';
 export const CHANGE_CAPABILITY = 'CHANGE_CAPABILITY';
-export const GET_RECENT_SESSIONS_REQUESTED = 'GET_RECENT_SESSIONS_REQUESTED';
-export const GET_RECENT_SESSIONS_DONE = 'GET_RECENT_SESSIONS_DONE';
 export const SET_DESIRED_CAPABILITIES = 'SET_DESIRED_CAPABILITIES';
 export const SAVE_SESSION_REQUESTED = 'SAVE_SESSION_REQUESTED';
 export const SAVE_SESSION_DONE = 'SAVE_SESSION_DONE';
 export const GET_SAVED_SESSIONS_REQUESTED = 'GET_SAVED_SESSIONS_REQUESTED';
 export const GET_SAVED_SESSIONS_DONE = 'GET_SAVED_SESSIONS_DONE';
 
-const MOST_RECENT_DESIRED_CAPABILITIES = 'MOST_RECENT_DESIRED_CAPABILITIES';
-const RECENT_SESSIONS = 'RECENT_SESSIONS';
 const SAVED_SESSIONS = 'SAVED_SESSIONS';
 
 const SAVED_CAPS_LIMIT = 30;
@@ -41,23 +37,6 @@ function getDefaultDesiredCapabilities (desiredCapabilityConstraints) {
   });
 
   return desiredCapabilities;
-}
-
-export function getDefaultCaps (desiredCapabilityConstraints) {
-  return async (dispatch) => {
-    dispatch({type: GET_DEFAULT_CAPS_REQUESTED, desiredCapabilityConstraints});
-
-    // Get the most recently saved capabilities
-    let desiredCapabilities = await settings.get(MOST_RECENT_DESIRED_CAPABILITIES);
-    let defaultDesiredCapabilities = getDefaultDesiredCapabilities(desiredCapabilityConstraints);
-
-    desiredCapabilities = {
-      ...defaultDesiredCapabilities,
-      ...desiredCapabilities,
-    };
-
-    dispatch({type: GET_DEFAULT_CAPS_DONE, desiredCapabilities});
-  };
 }
 
 /**
@@ -88,18 +67,6 @@ export function newSession (desiredCapabilities) {
     // Save these caps as the most recently used caps
     await settings.set(MOST_RECENT_DESIRED_CAPABILITIES, desiredCapabilities);
 
-    // Save these to an array of recent sessions
-    let recentSessions = await settings.get(RECENT_SESSIONS) || [];
-    if (recentSessions.length > SAVED_CAPS_LIMIT) {
-      recentSessions.splice(0, 1);
-    }
-    recentSessions.push({
-      date: +(new Date()),
-      desiredCapabilities,
-    });
-    await settings.set(RECENT_SESSIONS, recentSessions);
-    getRecentSessions()(dispatch);
-
     // Start the session
     ipcRenderer.send('appium-create-new-session', desiredCapabilities);
 
@@ -115,16 +82,6 @@ export function newSession (desiredCapabilities) {
   };
 }
 
-/**
- * Get a list of sessions that the user recently did
- */
-export function getRecentSessions () {
-  return async (dispatch) => {
-    dispatch({type: GET_RECENT_SESSIONS_REQUESTED});
-    let recentSessions = await settings.get(RECENT_SESSIONS) || [];
-    dispatch({type: GET_RECENT_SESSIONS_DONE, recentSessions});
-  };
-}
 
 /**
  * Saves the caps
