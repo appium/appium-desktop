@@ -16,6 +16,12 @@ export const REMOVE_CAPABILITY = 'REMOVE_CAPABILITY';
 
 const SAVED_SESSIONS = 'SAVED_SESSIONS';
 
+function getCapsObject (caps) {
+  let capsObject = {};
+  caps.forEach((cap) => capsObject[cap.name] = cap.value);
+  return capsObject;
+}
+
 /**
  * Change the desired capabilities object
  */
@@ -55,12 +61,14 @@ export function removeCapability (index) {
 /**
  * Start a new appium session with the given caps 
  */
-export function newSession (desiredCapabilities) {
+export function newSession (caps) {
   return async (dispatch) => {
-    dispatch({type: NEW_SESSION_REQUESTED, desiredCapabilities});
+    dispatch({type: NEW_SESSION_REQUESTED, caps});
+
+    let desiredCapabilitiesObj = getCapsObject(caps);
 
     // Start the session
-    ipcRenderer.send('appium-create-new-session', desiredCapabilities);
+    ipcRenderer.send('appium-create-new-session', desiredCapabilitiesObj);
 
     ipcRenderer.once('appium-new-session-failed', (event, message) => {
       alert('Error starting session');
@@ -78,13 +86,14 @@ export function newSession (desiredCapabilities) {
 /**
  * Saves the caps
  */
-export function saveSession (desiredCapabilities) {
+export function saveSession (name, desiredCapabilities) {
   return async (dispatch) => {
     dispatch({type: SAVE_SESSION_REQUESTED});
     let savedSessions = await settings.get(SAVED_SESSIONS) || [];
     savedSessions.push({
       date: +(new Date()),
-      desiredCapabilities
+      name,
+      desiredCapabilities,
     });
     await settings.set(SAVED_SESSIONS, savedSessions);
     dispatch({type: SAVE_SESSION_DONE});
