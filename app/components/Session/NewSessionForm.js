@@ -4,20 +4,6 @@ import prettyJSON from 'prettyjson';
 
 export default class NewSessionForm extends Component {
 
-  constructor (props) {
-    super(props);
-
-    this.state = {
-      showSaveAsModal: false,
-    };
-  }
-
-  static defaultProps = {
-    desiredCapabilities: {},
-    onCreateNewSession: () => {},
-    onChangeCapability: () => {},
-  };
-
   getCapsObject () {
     const { caps } = this.props;
     let capsObject = {};

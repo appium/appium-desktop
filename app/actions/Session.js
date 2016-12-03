@@ -5,7 +5,6 @@ export const NEW_SESSION_REQUESTED = 'NEW_SESSION_REQUESTED';
 export const NEW_SESSION_BEGAN = 'NEW_SESSION_BEGAN';
 export const NEW_SESSION_DONE = 'NEW_SESSION_DONE';
 export const CHANGE_CAPABILITY = 'CHANGE_CAPABILITY';
-export const SET_DESIRED_CAPABILITIES = 'SET_DESIRED_CAPABILITIES';
 export const SAVE_SESSION_REQUESTED = 'SAVE_SESSION_REQUESTED';
 export const SAVE_SESSION_DONE = 'SAVE_SESSION_DONE';
 export const GET_SAVED_SESSIONS_REQUESTED = 'GET_SAVED_SESSIONS_REQUESTED';
@@ -30,7 +29,7 @@ function getCapsObject (caps) {
 }
 
 /**
- * Change the desired capabilities object
+ * Change the caps object and then go back to the new session tab
  */
 export function setCaps (caps) {
   return async (dispatch) => {
