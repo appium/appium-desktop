@@ -52,7 +52,7 @@ export default class NewSessionForm extends Component {
               </Col>
               <Col span={6}>
                 <Button icon='plus' onClick={addCapability}/>
-                <Button icon='minus' onClick={() => removeCapability(index)}/>
+                <Button icon='cancel' onClick={() => removeCapability(index)}/>
               </Col>
             </Row>;
           })}

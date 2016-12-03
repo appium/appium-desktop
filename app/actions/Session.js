@@ -18,6 +18,8 @@ export const SET_CAPS = 'SET_CAPS';
 export const SAVE_AS_MODAL_REQUESTED = 'SAVE_AS_MODAL_REQUESTED';
 export const HIDE_SAVE_AS_MODAL_REQUESTED = 'HIDE_SAVE_AS_MODAL_REQUESTED';
 export const SET_SAVE_AS_TEXT = 'SET_SAVE_AS_TEXT';
+export const DELETE_SAVED_SESSION_REQUESTED = 'DELETE_SAVED_SESSION_REQUESTED';
+export const DELETE_SAVED_SESSION_DONE = 'DELETE_SAVED_SESSION_DONE';
 
 const SAVED_SESSIONS = 'SAVED_SESSIONS';
 
@@ -142,5 +144,15 @@ export function hideSaveAsModal () {
 export function setSaveAsText (saveAsText) {
   return async (dispatch) => {
     dispatch({type: SET_SAVE_AS_TEXT, saveAsText});
+  };
+}
+
+export function deleteSavedSession (index) {
+  return async (dispatch) => {
+    dispatch({type: DELETE_SAVED_SESSION_REQUESTED, index});
+    let savedSessions = await settings.get(SAVED_SESSIONS) || [];
+    savedSessions.splice(index, 1);
+    await settings.set(SAVED_SESSIONS, savedSessions);
+    dispatch({type: GET_SAVED_SESSIONS_DONE, savedSessions});
   };
 }
