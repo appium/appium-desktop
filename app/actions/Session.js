@@ -165,7 +165,16 @@ export function changeServerType (serverType) {
 }
 
 export function setServerParam (name, value) {
+  return async (dispatch, getState) => {
+    dispatch({type: SET_SERVER_PARAM, serverType: getState().serverType, name, value});
+  };
+}
+
+export function setLocalServerParams () {
   return async (dispatch) => {
-    dispatch({type: SET_SERVER_PARAM, name, value});
+    let port = await settings.get('SERVER_PORT');
+    let host = await settings.get('SERVER_HOST');
+    dispatch({type: SET_SERVER_PARAM, serverType: 'local', name: 'port', value: port});
+    dispatch({type: SET_SERVER_PARAM, serverType: 'local', name: 'hostname', value: host});
   };
 }

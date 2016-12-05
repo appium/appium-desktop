@@ -6,8 +6,6 @@ import { NEW_SESSION_REQUESTED, NEW_SESSION_BEGAN, NEW_SESSION_DONE,
         SWITCHED_TABS, SAVE_AS_MODAL_REQUESTED, HIDE_SAVE_AS_MODAL_REQUESTED, SET_SAVE_AS_TEXT,
         DELETE_SAVED_SESSION_REQUESTED, CHANGE_SERVER_TYPE, SET_SERVER_PARAM } from '../actions/Session';
 
-let caps;
-
 // Make sure there's always at least one cap
 const INITIAL_STATE = {
   savedSessions: [],
@@ -129,7 +127,7 @@ export default function session (state=INITIAL_STATE, action) {
 
     case SET_SERVER_PARAM:
       return Immutable.fromJS(state)
-        .setIn(['server', state.serverType, action.name], action.value)
+        .setIn(['server', action.serverType, action.name], action.value)
         .toJS();
 
     default:

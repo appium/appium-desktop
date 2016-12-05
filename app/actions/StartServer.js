@@ -31,12 +31,14 @@ export function startServer (evt) {
       dispatch({type: SERVER_START_ERR});
     });
 
-    ipcRenderer.once('appium-start-ok', () => {
+    ipcRenderer.once('appium-start-ok', async () => {
       // don't listen for subsequent server start failures later in the
       // lifetime of this app instance
       ipcRenderer.removeAllListeners('appium-start-error');
       dispatch({type: SERVER_START_OK});
       dispatch(push('/monitor'));
+      await settings.set('SERVER_PORT', serverArgs.port);
+      await settings.set('SERVER_HOST', serverArgs.address);
     });
 
     ipcRenderer.on('appium-log-line', (event, logs) => {
