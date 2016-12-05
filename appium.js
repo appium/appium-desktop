@@ -129,16 +129,15 @@ function connectStartSession (win) {
 }
 
 function connectCreateNewSession () {
-  ipcMain.on('appium-create-new-session', async (event, desiredCapabilities) => {
-    let client = sessionClients[event.sender.id] = wd.remote({
-      port: serverArgs.port,
-      host: serverArgs.address,
-    });
+  ipcMain.on('appium-create-new-session', async (event, args) => {
+    const { desiredCapabilities, port, host } = args;
+
+    let client = sessionClients[event.sender.id] = wd.remote({port, host});
 
     try {
       let res = await client.init(desiredCapabilities);
       event.sender.send('appium-new-session-successful', res);
-      event.sender.send('appium-new-session-done');
+      event.sender.send('appium-new-session-done')
     } catch (e) {
       event.sender.send('appium-new-session-failed');
       event.sender.send('appium-new-session-done');

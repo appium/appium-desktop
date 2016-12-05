@@ -71,15 +71,33 @@ export function removeCapability (index) {
  * Start a new appium session with the given caps 
  */
 export function newSession (caps) {
-  return async (dispatch) => {
+  return async (dispatch, getState) => {
     dispatch({type: NEW_SESSION_REQUESTED, caps});
 
-    let desiredCapabilitiesObj = getCapsObject(caps);
+    let desiredCapabilities = getCapsObject(caps);
+    let session = getState().session;
+
+    let host, port;
+    switch (session.serverType) {
+      case 'local':
+        host = session.server.local.hostname;
+        port = session.server.local.port;
+        break;
+      case 'remote':
+        host = session.server.remote.hostname;
+        port = session.server.remote.port;
+        break;
+      case 'sauce':
+        break;
+      default: 
+        break;
+    }
+    console.log('host, port', session);
 
     // Start the session
-    ipcRenderer.send('appium-create-new-session', desiredCapabilitiesObj);
+    ipcRenderer.send('appium-create-new-session', {desiredCapabilities, host, port});
 
-    ipcRenderer.once('appium-new-session-failed', (event, message) => {
+    ipcRenderer.once('appium-new-session-failed', () => {
       alert('Error starting session');
     });
 
