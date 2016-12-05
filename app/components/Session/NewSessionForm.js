@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
-import { Row, Col, Button, Switch, Input, InputNumber, Dropdown, Menu, Icon, Modal } from 'antd';
+import { Row, Col, Button, Switch, Input, InputNumber, Dropdown, Menu, Icon, Modal, Form } from 'antd';
 import prettyJSON from 'prettyjson';
+
+const FormItem = Form.Item;
 
 export default class NewSessionForm extends Component {
 
@@ -15,47 +17,48 @@ export default class NewSessionForm extends Component {
     const { newSession, setCapabilityParam, caps, addCapability, removeCapability, saveSession,
       requestSaveAsModal, hideSaveAsModal, saveAsText, showSaveAsModal, setSaveAsText } = this.props;
 
-    return <div>
-      <Row>
-      <Col span={12}>
-        <form onSubmit={(e) => {e.preventDefault(); newSession(caps); }}>
-          {caps.map((cap, index) => {
-            return <Row key={index}>
-              <Col span={6}>
-                <Input placeholder='Name' value={cap.name} onChange={(e) => setCapabilityParam(index, 'name', e.target.value)}/>
-              </Col>
-              <Col span={6}>
-                <select onChange={(e) => setCapabilityParam(index, 'type', e.target.value)}>
-                  <option name='text'>text</option>
-                  <option name='boolean'>boolean</option>
-                  <option name='number'>number</option>
-                  <option name='json_object'>JSON object</option>
-                  <option name='file'>file</option>
-                </select>
-              </Col>
-              <Col span={6}>
-                <Input placeholder='Value' value={cap.value} onChange={(e) => setCapabilityParam(index, 'value', e.target.value)}/>
-              </Col>
-              <Col span={6}>
-                <Button icon='plus' onClick={addCapability}/>
-                <Button icon='cancel' onClick={() => removeCapability(index)}/>
-              </Col>
-            </Row>;
-          })}
-          <Row>
-            <Col span={24}>
-              <Button type="submit" onClick={() => newSession(caps)}>Start Session</Button>
-              <Button type="button" onClick={requestSaveAsModal}>Save As</Button>
-            </Col>
-          </Row>
-        </form>
-      </Col>
-      <Col span={12}>
+    return <Form inline className="ant-advanced-search-form"  onSubmit={(e) => {e.preventDefault(); newSession(caps); }}>
+        {caps.map((cap, index) => {
+          return <div key={index}>
+            <FormItem>
+              <Input placeholder='Name' value={cap.name} onChange={(e) => setCapabilityParam(index, 'name', e.target.value)}/>
+            </FormItem>
+            <FormItem>
+              <select onChange={(e) => setCapabilityParam(index, 'type', e.target.value)} value={cap.type}>
+                <option value='text'>text</option>
+                <option value='boolean'>boolean</option>
+                <option value='number'>number</option>
+                <option value='json_object'>JSON object</option>
+                <option value='file'>file</option>
+              </select>
+            </FormItem>
+            <FormItem>
+              {
+                function () {
+                  switch (cap.type) {
+                    case 'text': return <Input placeholder='Value' value={cap.value} onChange={(e) => setCapabilityParam(index, 'value', e.target.value)}/>;
+                    case 'boolean': return <Switch checkedChildren={'true'} unCheckedChildren={'false'} 
+                            placeholder='Value' value={cap.value} onChange={(e) => setCapabilityParam(index, 'value', e.target.value)}/>;
+                    case 'number': return <InputNumber placeholder='Value' value={cap.value} onChange={(e) => setCapabilityParam(index, 'value', e.target.value)}/>; 
+                    case 'json_object': return <Input type='textarea' rows={4} placeholder='Value' value={cap.value} 
+                      onChange={(e) => setCapabilityParam(index, 'value', e.target.value)}/>;
+                    case 'file': return <Input type='file' placeholder='Value' value={cap.value} onChange={(e) => setCapabilityParam(index, 'value', e.target.value)}/>;
+                    default: break;
+                  }
+                }()
+              }
+            </FormItem>
+            <FormItem>
+              <Button icon='plus' onClick={addCapability}/>
+              <Button icon='delete' onClick={() => removeCapability(index)}/>
+            </FormItem>
+          </div>;
+        })}
+            <Button type="submit" onClick={() => newSession(caps)}>Start Session</Button>
+            <Button type="button" onClick={requestSaveAsModal}>Save As</Button>
         <pre>
           {prettyJSON.render(this.getCapsObject(caps))}
         </pre>
-      </Col>
-      </Row>
       <Modal visible={showSaveAsModal}
         title='Save Session As'
         okText='Save'
@@ -64,6 +67,6 @@ export default class NewSessionForm extends Component {
         onOk={() => saveSession(saveAsText, caps)}>
         <Input onChange={(e) => setSaveAsText(e.target.value)} placeholder='Name' value={saveAsText}/>
       </Modal>
-    </div>;
+    </Form>;
   }
 }
