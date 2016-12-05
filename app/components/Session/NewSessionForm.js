@@ -17,9 +17,9 @@ export default class NewSessionForm extends Component {
     const { newSession, setCapabilityParam, caps, addCapability, removeCapability, saveSession,
       requestSaveAsModal, hideSaveAsModal, saveAsText, showSaveAsModal, setSaveAsText } = this.props;
 
-    return <Form inline className="ant-advanced-search-form"  onSubmit={(e) => {e.preventDefault(); newSession(caps); }}>
+    return <Form inline onSubmit={(e) => {e.preventDefault(); newSession(caps); }}>
         {caps.map((cap, index) => {
-          return <div key={index}>
+          return <div key={index} style={{marginBottom: '1em'}}>
             <FormItem>
               <Input placeholder='Name' value={cap.name} onChange={(e) => setCapabilityParam(index, 'name', e.target.value)}/>
             </FormItem>
@@ -38,8 +38,8 @@ export default class NewSessionForm extends Component {
                   switch (cap.type) {
                     case 'text': return <Input placeholder='Value' value={cap.value} onChange={(e) => setCapabilityParam(index, 'value', e.target.value)}/>;
                     case 'boolean': return <Switch checkedChildren={'true'} unCheckedChildren={'false'} 
-                            placeholder='Value' value={cap.value} onChange={(e) => setCapabilityParam(index, 'value', e.target.value)}/>;
-                    case 'number': return <InputNumber placeholder='Value' value={cap.value} onChange={(e) => setCapabilityParam(index, 'value', e.target.value)}/>; 
+                      placeholder='Value' value={cap.value} onChange={(e) => setCapabilityParam(index, 'value', e.target.value)}/>;
+                    case 'number': return <Input placeholder='Value' value={cap.value} onChange={(e) => setCapabilityParam(index, 'value', e.target.value)}/>; 
                     case 'json_object': return <Input type='textarea' rows={4} placeholder='Value' value={cap.value} 
                       onChange={(e) => setCapabilityParam(index, 'value', e.target.value)}/>;
                     case 'file': return <Input type='file' placeholder='Value' value={cap.value} onChange={(e) => setCapabilityParam(index, 'value', e.target.value)}/>;
@@ -49,13 +49,15 @@ export default class NewSessionForm extends Component {
               }
             </FormItem>
             <FormItem>
-              <Button icon='plus' onClick={addCapability}/>
-              <Button icon='delete' onClick={() => removeCapability(index)}/>
+              <Button icon='plus' onClick={addCapability} style={{marginRight: '1em'}}/>
+              { caps.length > 1 && <Button icon='delete' onClick={() => removeCapability(index)}/> }
             </FormItem>
           </div>;
         })}
-            <Button type="submit" onClick={() => newSession(caps)}>Start Session</Button>
-            <Button type="button" onClick={requestSaveAsModal}>Save As</Button>
+
+        <Button type="submit" onClick={() => newSession(caps)} style={{marginRight: '1em'}}>Start Session</Button>
+        <Button type="button" onClick={requestSaveAsModal}>Save As</Button>
+        
         <pre>
           {prettyJSON.render(this.getCapsObject(caps))}
         </pre>
