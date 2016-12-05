@@ -46,6 +46,7 @@
     "electron-debug": "1.x",
     "electron-settings": "2.x",
     "font-awesome": "4.x",
+    "immutable": "^3.8.1",
     "lodash": "4.x",
     "moment": "2.x",
     "postcss": "5.x",

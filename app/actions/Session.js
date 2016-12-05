@@ -20,6 +20,7 @@ export const SET_SAVE_AS_TEXT = 'SET_SAVE_AS_TEXT';
 export const DELETE_SAVED_SESSION_REQUESTED = 'DELETE_SAVED_SESSION_REQUESTED';
 export const DELETE_SAVED_SESSION_DONE = 'DELETE_SAVED_SESSION_DONE';
 export const CHANGE_SERVER_TYPE = 'CHANGE_SERVER_TYPE';
+export const SET_SERVER_PARAM = 'SET_SERVER_PARAM';
 
 const SAVED_SESSIONS = 'SAVED_SESSIONS';
 
@@ -160,5 +161,11 @@ export function deleteSavedSession (index) {
 export function changeServerType (serverType) {
   return async (dispatch) => {
     dispatch({type: CHANGE_SERVER_TYPE, serverType});
+  };
+}
+
+export function setServerParam (name, value) {
+  return async (dispatch) => {
+    dispatch({type: SET_SERVER_PARAM, name, value});
   };
 }
