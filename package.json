@@ -62,7 +62,7 @@
     "source-map-support": "0.x",
     "teen_process": "1.x",
     "temp": "0.x",
-    "webdriverio": "^4.4.0"
+    "wd": "^1.0.0"
   },
   "devDependencies": {
     "antd": "^2.5.0",

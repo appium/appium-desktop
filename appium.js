@@ -4,7 +4,7 @@ import { ipcMain, BrowserWindow, Menu } from 'electron';
 import { main as appiumServer } from 'appium';
 import { getDefaultArgs, getParser } from 'appium/build/lib/parser';
 import path from 'path';
-const webdriverio = require('webdriverio');
+import wd from 'wd';
 
 const LOG_SEND_INTERVAL_MS = 250;
 const isDev = process.env.NODE_ENV === 'development';
@@ -129,20 +129,21 @@ function connectStartSession (win) {
 }
 
 function connectCreateNewSession () {
-  ipcMain.on('appium-create-new-session', (event, desiredCapabilities) => {
-    let client = sessionClients[event.sender.id] = webdriverio.remote({
+  ipcMain.on('appium-create-new-session', async (event, desiredCapabilities) => {
+    let client = sessionClients[event.sender.id] = wd.remote({
       port: serverArgs.port,
       host: serverArgs.address,
-      desiredCapabilities,
     });
 
-    client.init().then((res) => {
+    try {
+      let res = await client.init(desiredCapabilities);
       event.sender.send('appium-new-session-successful', res);
       event.sender.send('appium-new-session-done');
-    }, () => {
+    } catch (e) {
       event.sender.send('appium-new-session-failed');
       event.sender.send('appium-new-session-done');
-    });
+    }
+
   });
 }
 
