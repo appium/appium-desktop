@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import moment from 'moment';
-import { Button } from 'antd';
+import { Button, Row, Col } from 'antd';
+import FormattedCaps from './FormattedCaps';
 
 export default class SavedSessions extends Component {
 
@@ -15,21 +16,32 @@ export default class SavedSessions extends Component {
   render () {
     const {savedSessions, setCaps} = this.props;
 
-    return (
-      <ul>
-        {savedSessions && [...savedSessions].reverse().map((session, index) => {
-          index = savedSessions.length - index - 1;
-          let anchorStyle = {display: 'block'};
-          return <li key={index}>
-            <a href='#' style={anchorStyle} onClick={(e) => {e.preventDefault(); setCaps(session.caps);} }>
-              {session.name || 'Untitled'}
-              &nbsp;&nbsp;
-              {`(${moment(session.date).format('YYYY-MM-DD')})`}
-            </a>
-            <Button icon='delete' onClick={this.handleDelete(index)}/>
-          </li>;
-        })}
-        </ul>
-    );
+    return (<Row>
+      <Col span={12}>
+        <table style={{width: '40em', maxWidth: '100%'}}>
+          <tbody>
+            {savedSessions && [...savedSessions].reverse().map((session, index) => {
+              index = savedSessions.length - index - 1;
+              let anchorStyle = {display: 'block'};
+              return <tr key={index}> 
+                <td>
+                  <a href='#' style={anchorStyle} onClick={(e) => {e.preventDefault(); setCaps(session.caps);} }>
+                  {session.name || 'Untitled'}
+                  &nbsp;&nbsp;
+                  {`(${moment(session.date).format('YYYY-MM-DD')})`}
+                  </a>
+                </td>
+                <td style={{float: 'right'}}>
+                  <Button icon='delete' onClick={this.handleDelete(index)}/>
+                </td>
+              </tr>;
+            })}
+          </tbody>
+        </table>
+      </Col>
+      <Col span={12}>
+        <FormattedCaps {...this.props} />
+      </Col>
+    </Row>);
   }
 }

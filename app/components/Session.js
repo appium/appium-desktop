@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import NewSessionForm from './Session/NewSessionForm';
 import SavedSessions from './Session/SavedSessions';
-import { Tabs, Form, Input } from 'antd';
+import { Tabs, Form, Input, Button } from 'antd';
 const { TabPane } = Tabs;
 const FormItem = Form.Item;
 
@@ -14,7 +14,7 @@ export default class Session extends Component {
   }
 
   render () {
-    const { newSessionBegan, savedSessions, tabKey, switchTabs, changeServerType, serverType, setServerParam, server } = this.props;
+    const { newSessionBegan, savedSessions, tabKey, switchTabs, changeServerType, serverType, setServerParam, server, requestSaveAsModal, newSession, caps } = this.props;
 
     return (
       <div style={{width: '100%', padding: '1em'}}>
@@ -63,6 +63,10 @@ export default class Session extends Component {
               <SavedSessions {...this.props} />
           </TabPane>
         </Tabs>}
+        <div style={{float: 'right'}}>
+          <Button type="button" onClick={requestSaveAsModal}>Save As</Button>
+          <Button type="submit" onClick={() => newSession(caps)} style={{marginLeft: '1em'}}>Start Session</Button>
+        </div>
       </div>
     );
   }
