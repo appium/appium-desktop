@@ -19,6 +19,7 @@ const INITIAL_STATE = {
   caps: [{
     type: 'text',
   }],
+  isCapsDirty: true,
 };
 
 export default function session (state=INITIAL_STATE, action) {
@@ -55,20 +56,21 @@ export default function session (state=INITIAL_STATE, action) {
     case SET_CAPABILITY_PARAM:
       return Immutable.fromJS(state)
         .setIn(['caps', action.index, action.name], action.value)
+        .set('isCapsDirty', true)
         .toJS();
 
     case SET_CAPS:
       return Immutable.fromJS(state)
         .set('caps', action.caps)
         .set('capsUUID', action.uuid)
+        .delete('isCapsDirty')
         .toJS();
 
     case SAVE_SESSION_REQUESTED:
-      return {
-        ...state,
-        saveSessionRequested: true,
-        showSaveAsModal: false,
-      };
+      return Immutable.fromJS(state)
+        .set('saveSessionRequested', true)
+        .delete('showSaveAsModal')
+        .toJS();
 
     case SAVE_SESSION_DONE:
       return {

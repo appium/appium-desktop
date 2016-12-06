@@ -1,6 +1,6 @@
 import { ipcRenderer } from 'electron';
 import settings from 'electron-settings';
-import { v4 as uuid } from 'uuid';
+import { v4 as UUID } from 'uuid';
 
 export const NEW_SESSION_REQUESTED = 'NEW_SESSION_REQUESTED';
 export const NEW_SESSION_BEGAN = 'NEW_SESSION_BEGAN';
@@ -124,19 +124,33 @@ export function newSession (caps) {
 /**
  * Saves the caps
  */
-export function saveSession (name, caps) {
+export function saveSession (caps, params) {
   return async (dispatch) => {
+    let { name, uuid } = params;
     dispatch({type: SAVE_SESSION_REQUESTED});
     let savedSessions = await settings.get(SAVED_SESSIONS) || [];
-    let newSavedSession = {
-      date: +(new Date()),
-      name,
-      uuid: uuid(),
-      caps,
-    };
-    savedSessions.push(newSavedSession);
+    if (!uuid) {
+
+      // If it's a new session, add it to the list
+      uuid = UUID();
+      let newSavedSession = {
+        date: +(new Date()),
+        name,
+        uuid,
+        caps,
+      };
+      savedSessions.push(newSavedSession);
+    } else {
+
+      // If it's an existing session, overwrite it
+      savedSessions.forEach((session, index) => {
+        if (session.uuid === uuid) {
+          savedSessions[index].caps = caps;
+        }
+      });
+    }
     await settings.set(SAVED_SESSIONS, savedSessions);
-    dispatch({type: SET_CAPS, caps, uuid: newSavedSession.uuid});
+    dispatch({type: SET_CAPS, caps, uuid});
     dispatch({type: SAVE_SESSION_DONE});
     getSavedSessions()(dispatch);
   };

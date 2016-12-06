@@ -80,7 +80,7 @@ export default class NewSessionForm extends Component {
           okText='Save'
           cancelText='Cancel' 
           onCancel={hideSaveAsModal} 
-          onOk={() => saveSession(saveAsText, caps)}>
+          onOk={() => saveSession(caps, {name: saveAsText})}>
           <Input onChange={(e) => setSaveAsText(e.target.value)} placeholder='Name' value={saveAsText}/>
         </Modal>
       </Col>

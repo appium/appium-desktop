@@ -14,7 +14,8 @@ export default class Session extends Component {
   }
 
   render () {
-    const { newSessionBegan, savedSessions, tabKey, switchTabs, changeServerType, serverType, setServerParam, server, requestSaveAsModal, newSession, caps } = this.props;
+    const { newSessionBegan, savedSessions, tabKey, switchTabs, changeServerType, serverType, setServerParam, server, 
+      requestSaveAsModal, newSession, caps, capsUUID, saveSession, isCapsDirty } = this.props;
 
     return (
       <div style={{width: '100%', padding: '1em'}}>
@@ -64,7 +65,8 @@ export default class Session extends Component {
           </TabPane>
         </Tabs>}
         <div style={{float: 'right'}}>
-          <Button type="button" onClick={requestSaveAsModal}>Save As</Button>
+          { capsUUID && <Button type="primary" onClick={() => saveSession(caps, {uuid: capsUUID})} disabled={!isCapsDirty}>Save</Button> }
+          <Button type="button" onClick={requestSaveAsModal} style={{marginLeft: '1em'}}>Save As</Button>
           <Button type="submit" onClick={() => newSession(caps)} style={{marginLeft: '1em'}}>Start Session</Button>
         </div>
       </div>
