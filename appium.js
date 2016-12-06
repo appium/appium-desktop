@@ -137,7 +137,7 @@ function connectCreateNewSession () {
     try {
       let res = await client.init(desiredCapabilities);
       event.sender.send('appium-new-session-successful', res);
-      event.sender.send('appium-new-session-done')
+      event.sender.send('appium-new-session-done');
     } catch (e) {
       event.sender.send('appium-new-session-failed');
       event.sender.send('appium-new-session-done');

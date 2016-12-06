@@ -92,7 +92,6 @@ export function newSession (caps) {
       default: 
         break;
     }
-    console.log('host, port', session);
 
     // Start the session
     ipcRenderer.send('appium-create-new-session', {desiredCapabilities, host, port});
@@ -184,7 +183,7 @@ export function changeServerType (serverType) {
 
 export function setServerParam (name, value) {
   return async (dispatch, getState) => {
-    dispatch({type: SET_SERVER_PARAM, serverType: getState().serverType, name, value});
+    dispatch({type: SET_SERVER_PARAM, serverType: getState().session.serverType, name, value});
   };
 }
 

@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import NewSessionForm from './Session/NewSessionForm';
 import SavedSessions from './Session/SavedSessions';
-import { Tabs, Form, Input, InputNumber } from 'antd';
+import { Tabs, Form, Input } from 'antd';
+import { ipcRenderer } from 'electron';
 const { TabPane } = Tabs;
 const FormItem = Form.Item;
 
