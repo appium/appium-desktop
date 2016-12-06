@@ -14,7 +14,7 @@ export default class SavedSessions extends Component {
   }
 
   render () {
-    const {savedSessions, setCaps} = this.props;
+    const {savedSessions, setCaps, capsUUID} = this.props;
 
     return (<Row>
       <Col span={12}>
@@ -23,9 +23,9 @@ export default class SavedSessions extends Component {
             {savedSessions && [...savedSessions].reverse().map((session, index) => {
               index = savedSessions.length - index - 1;
               let anchorStyle = {display: 'block'};
-              return <tr key={index}> 
+              return <tr key={index} style={{backgroundColor: session.uuid === capsUUID ? 'blue' : ''}}> 
                 <td>
-                  <a href='#' style={anchorStyle} onClick={(e) => {e.preventDefault(); setCaps(session.caps);} }>
+                  <a href='#' style={anchorStyle} onClick={(e) => {e.preventDefault(); setCaps(session.caps, session.uuid);} }>
                   {session.name || 'Untitled'}
                   &nbsp;&nbsp;
                   {`(${moment(session.date).format('YYYY-MM-DD')})`}

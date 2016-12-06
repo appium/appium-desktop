@@ -1,10 +1,11 @@
 import { ipcRenderer } from 'electron';
 import settings from 'electron-settings';
+import { v4 as uuid } from 'uuid';
 
 export const NEW_SESSION_REQUESTED = 'NEW_SESSION_REQUESTED';
 export const NEW_SESSION_BEGAN = 'NEW_SESSION_BEGAN';
 export const NEW_SESSION_DONE = 'NEW_SESSION_DONE';
-export const CHANGE_CAPABILITY = 'CHANGE_CAPABILITY';
+export const CHANGE_CAPABILITY = 'CHANGE_CAPABILITY'
 export const SAVE_SESSION_REQUESTED = 'SAVE_SESSION_REQUESTED';
 export const SAVE_SESSION_DONE = 'SAVE_SESSION_DONE';
 export const GET_SAVED_SESSIONS_REQUESTED = 'GET_SAVED_SESSIONS_REQUESTED';
@@ -36,10 +37,9 @@ function getCapsObject (caps) {
 /**
  * Change the caps object and then go back to the new session tab
  */
-export function setCaps (caps) {
+export function setCaps (caps, uuid) {
   return async (dispatch) => {
-    dispatch({type: SET_CAPS, caps});
-    switchTabs('new')(dispatch);
+    dispatch({type: SET_CAPS, caps, uuid});
   };
 }
 
@@ -128,12 +128,15 @@ export function saveSession (name, caps) {
   return async (dispatch) => {
     dispatch({type: SAVE_SESSION_REQUESTED});
     let savedSessions = await settings.get(SAVED_SESSIONS) || [];
-    savedSessions.push({
+    let newSavedSession = {
       date: +(new Date()),
       name,
+      uuid: uuid(),
       caps,
-    });
+    };
+    savedSessions.push(newSavedSession);
     await settings.set(SAVED_SESSIONS, savedSessions);
+    dispatch({type: SET_CAPS, caps, uuid: newSavedSession.uuid});
     dispatch({type: SAVE_SESSION_DONE});
     getSavedSessions()(dispatch);
   };

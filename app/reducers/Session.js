@@ -58,10 +58,10 @@ export default function session (state=INITIAL_STATE, action) {
         .toJS();
 
     case SET_CAPS:
-      return {
-        ...state,
-        caps: action.caps
-      };
+      return Immutable.fromJS(state)
+        .set('caps', action.caps)
+        .set('capsUUID', action.uuid)
+        .toJS();
 
     case SAVE_SESSION_REQUESTED:
       return {
