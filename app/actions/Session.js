@@ -28,6 +28,12 @@ const SAVED_SESSIONS = 'SAVED_SESSIONS';
 const SESSION_SERVER_PARAMS = 'SESSION_SERVER_PARAMS';
 const SESSION_SERVER_TYPE = 'SESSION_SERVER_TYPE';
 
+export const ServerTypes = {
+  local: 'local',
+  remote: 'remote',
+  sauce: 'sauce',
+};
+
 function getCapsObject (caps) {
   let capsObject = {};
   caps.forEach((cap) => capsObject[cap.name] = cap.value);
@@ -82,15 +88,15 @@ export function newSession (caps) {
 
     let host, port, username, accessKey, https;
     switch (session.serverType) {
-      case 'local':
+      case ServerTypes.local:
         host = session.server.local.hostname;
         port = session.server.local.port;
         break;
-      case 'remote':
+      case ServerTypes.remote:
         host = session.server.remote.hostname;
         port = session.server.remote.port;
         break;
-      case 'sauce':
+      case ServerTypes.sauce:
         host = `ondemand.saucelabs.com`;
         port = 443;
         username = session.server.sauce.username;
@@ -220,8 +226,8 @@ export function setLocalServerParams () {
   return async (dispatch) => {
     let port = await settings.get('SERVER_PORT');
     let host = await settings.get('SERVER_HOST');
-    dispatch({type: SET_SERVER_PARAM, serverType: 'local', name: 'port', value: port});
-    dispatch({type: SET_SERVER_PARAM, serverType: 'local', name: 'hostname', value: host});
+    dispatch({type: SET_SERVER_PARAM, serverType: ServerTypes.local, name: 'port', value: port});
+    dispatch({type: SET_SERVER_PARAM, serverType: ServerTypes.local, name: 'hostname', value: host});
   };
 }
 

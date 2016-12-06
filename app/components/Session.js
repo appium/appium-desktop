@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import NewSessionForm from './Session/NewSessionForm';
 import SavedSessions from './Session/SavedSessions';
 import { Tabs, Form, Input, Button } from 'antd';
+import { ServerTypes } from '../actions/Session';
+
 const { TabPane } = Tabs;
 const FormItem = Form.Item;
 
@@ -20,7 +22,7 @@ export default class Session extends Component {
     return (
       <div style={{width: '100%', padding: '1em'}}>
         <Tabs activeKey={serverType} onChange={changeServerType}>
-          <TabPane tab='Local Server' key='local'>
+          <TabPane tab='Local Server' key={ServerTypes.local}>
             <Form>
               <FormItem>
                 <Input placeholder='Hostname' value={server.local.hostname} onChange={(e) => setServerParam('hostname', e.target.value)} />
@@ -30,7 +32,7 @@ export default class Session extends Component {
               </FormItem>
             </Form>
           </TabPane>
-          <TabPane tab='Remote Server' key='remote'>
+          <TabPane tab='Remote Server' key={ServerTypes.remote}>
             <Form>
               <FormItem>
                 <Input placeholder='Hostname' value={server.remote.hostname} onChange={(e) => setServerParam('hostname', e.target.value)} />
@@ -40,7 +42,7 @@ export default class Session extends Component {
               </FormItem>
             </Form>
           </TabPane>
-          <TabPane tab='SauceLabs Server' key='sauce'>
+          <TabPane tab='SauceLabs Server' key={ServerTypes.sauce}>
             <Form>
               <FormItem>
                 <Input placeholder='Sauce Username' value={server.sauce.username} onChange={(e) => setServerParam('username', e.target.value)} />
