@@ -1,19 +1,20 @@
 import React, { Component } from 'react';
-import prettyJSON from 'prettyjson';
+import formatJSON from 'format-json';
 
 export default class NewSessionForm extends Component {
 
-  getCapsObject () {
-    const { caps } = this.props;
+  getCapsObject (caps) {
     let capsObject = {};
     caps.forEach((cap) => capsObject[cap.name] = cap.value);
     return capsObject;
   }
 
+  getFormattedJSON (caps) {
+    return formatJSON.plain(this.getCapsObject(caps));
+  }
+
   render () {
     const { caps } = this.props;
-    return <pre>
-        {prettyJSON.render(this.getCapsObject(caps))}
-    </pre>;
+    return caps && <textarea rows={15} style={{padding: '4px', width: '100%', backgroundColor: '#d3d3d3'}} onChange={() => {}} value={ this.getFormattedJSON(caps) } />
   }
 }

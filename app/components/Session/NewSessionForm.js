@@ -26,10 +26,11 @@ export default class NewSessionForm extends Component {
   render () {
     const { setCapabilityParam, caps, addCapability, removeCapability, saveSession, hideSaveAsModal, saveAsText, showSaveAsModal, setSaveAsText } = this.props;
 
-    return <Row> 
+    return <div>
+      <h4>Desired Capabilities</h4> 
+      <Row> 
       <Col span={12}>
         <Form inline>
-          <h4>Desired Capabilities</h4>
           {caps.map((cap, index) => {
             const buttonAfter = <Icon style={{cursor: 'pointer'}} type="file" onClick={() => this.getLocalFilePath((filepath) => setCapabilityParam(index, 'value', filepath))} />;
             return <div key={index} style={{marginBottom: '1em'}}>
@@ -83,6 +84,7 @@ export default class NewSessionForm extends Component {
           <Input onChange={(e) => setSaveAsText(e.target.value)} placeholder='Name' value={saveAsText}/>
         </Modal>
       </Col>
-    </Row>;
+      </Row>
+    </div>;
   }
 }
