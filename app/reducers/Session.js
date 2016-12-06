@@ -4,7 +4,8 @@ import { NEW_SESSION_REQUESTED, NEW_SESSION_BEGAN, NEW_SESSION_DONE,
         SAVE_SESSION_REQUESTED, SAVE_SESSION_DONE, GET_SAVED_SESSIONS_REQUESTED, GET_SAVED_SESSIONS_DONE,
         SET_CAPABILITY_PARAM, ADD_CAPABILITY, REMOVE_CAPABILITY, SET_CAPS,
         SWITCHED_TABS, SAVE_AS_MODAL_REQUESTED, HIDE_SAVE_AS_MODAL_REQUESTED, SET_SAVE_AS_TEXT,
-        DELETE_SAVED_SESSION_REQUESTED, CHANGE_SERVER_TYPE, SET_SERVER_PARAM, SET_SERVER } from '../actions/Session';
+        DELETE_SAVED_SESSION_REQUESTED, DELETE_SAVED_SESSION_DONE, 
+        CHANGE_SERVER_TYPE, SET_SERVER_PARAM, SET_SERVER } from '../actions/Session';
 
 // Make sure there's always at least one cap
 const INITIAL_STATE = {
@@ -20,28 +21,26 @@ const INITIAL_STATE = {
     type: 'text',
   }],
   isCapsDirty: true,
+  saveAsText: '',
 };
 
 export default function session (state=INITIAL_STATE, action) {
   switch (action.type) {
     case NEW_SESSION_REQUESTED:
-      return {
-        ...state,
-        newSessionRequested: true
-      };
+      return Immutable.fromJS(state)
+        .set('newSessionRequested', true)
+        .toJS();
 
     case NEW_SESSION_BEGAN:
-      return {
-        ...state,
-        newSessionRequested: false,
-        newSessionBegan: true
-      };
+      return Immutable.fromJS(state)
+        .set('newSessionBegan', true)
+        .delete('newSessionRequested')
+        .toJS();
 
     case NEW_SESSION_DONE:
-      return {
-        ...state,
-        newSessionBegan: false,
-      };
+      return Immutable.fromJS(state)
+        .delete('newSessionBegan')
+        .toJS();
 
     case ADD_CAPABILITY:
       return Immutable.fromJS(state)
@@ -73,59 +72,56 @@ export default function session (state=INITIAL_STATE, action) {
         .toJS();
 
     case SAVE_SESSION_DONE:
-      return {
-        ...state,
-        saveSessionRequested: false,
-      };
+      return Immutable.fromJS(state)
+        .delete('saveSessionRequested')
+        .toJS();
 
     case GET_SAVED_SESSIONS_REQUESTED:
-      return {
-        ...state,
-        getSavedSessionsRequested: true
-      };
+      return Immutable.fromJS(state)
+        .set('getSavedSessionsRequested', true)
+        .toJS();
 
     case GET_SAVED_SESSIONS_DONE:
-      return {
-        ...state,
-        getSavedSessionsRequested: false,
-        savedSessions: action.savedSessions
-      };
+      return Immutable.fromJS(state)
+        .delete('getSavedSessionsRequested')
+        .set('savedSessions', action.savedSessions)
+        .toJS();
 
     case DELETE_SAVED_SESSION_REQUESTED:
-      return {
-        ...state,
-        deletingSession: true,
-      };
+      return Immutable.fromJS(state)
+        .set('deletingSession', true)
+        .toJS();
+
+    case DELETE_SAVED_SESSION_DONE:
+      return Immutable.fromJS(state)
+        .delete('deletingSession')
+        .toJS();
 
     case SWITCHED_TABS:
-      return {
-        ...state,
-        tabKey: action.key,
-      };
+      return Immutable.fromJS(state)
+        .set('tabKey', action.key)
+        .toJS();
 
     case SAVE_AS_MODAL_REQUESTED: 
-      return {
-        ...state,
-        showSaveAsModal: true,
-      };
+      return Immutable.fromJS(state)
+        .set('showSaveAsModal', true)
+        .toJS();
 
     case HIDE_SAVE_AS_MODAL_REQUESTED: 
-      return {
-        ...state,
-        saveAsText: '',
-        showSaveAsModal: false,
-      };
+      return Immutable.fromJS(state)
+        .set('saveAsText', '')
+        .delete('showSaveAsModal')
+        .toJS();
 
     case SET_SAVE_AS_TEXT:
-      return {
-        ...state,
-        saveAsText: action.saveAsText,
-      };
+      return Immutable.fromJS(state)
+        .set('saveAsText', action.saveAsText)
+        .toJS();
+
     case CHANGE_SERVER_TYPE:
-      return {
-        ...state,
-        serverType: action.serverType,
-      };
+      return Immutable.fromJS(state)
+        .set('serverType', action.serverType)
+        .toJS();
 
     case SET_SERVER_PARAM:
       return Immutable.fromJS(state)
