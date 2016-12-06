@@ -9,6 +9,7 @@ export default class Session extends Component {
 
   componentWillMount () {
     this.props.getSavedSessions();
+    this.props.setSavedServerParams();
     this.props.setLocalServerParams();
   }
 

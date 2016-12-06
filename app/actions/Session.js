@@ -21,8 +21,11 @@ export const DELETE_SAVED_SESSION_REQUESTED = 'DELETE_SAVED_SESSION_REQUESTED';
 export const DELETE_SAVED_SESSION_DONE = 'DELETE_SAVED_SESSION_DONE';
 export const CHANGE_SERVER_TYPE = 'CHANGE_SERVER_TYPE';
 export const SET_SERVER_PARAM = 'SET_SERVER_PARAM';
+export const SET_SERVER = 'SET_SERVER';
 
 const SAVED_SESSIONS = 'SAVED_SESSIONS';
+const SESSION_SERVER_PARAMS = 'SESSION_SERVER_PARAMS';
+const SESSION_SERVER_TYPE = 'SESSION_SERVER_TYPE';
 
 function getCapsObject (caps) {
   let capsObject = {};
@@ -110,6 +113,10 @@ export function newSession (caps) {
     });
 
     dispatch({type: NEW_SESSION_BEGAN});
+
+    // Save the current server settings
+    await settings.set(SESSION_SERVER_PARAMS, session.server);
+    await settings.set(SESSION_SERVER_TYPE, session.serverType);
   };
 }
 
@@ -198,5 +205,15 @@ export function setLocalServerParams () {
     let host = await settings.get('SERVER_HOST');
     dispatch({type: SET_SERVER_PARAM, serverType: 'local', name: 'port', value: port});
     dispatch({type: SET_SERVER_PARAM, serverType: 'local', name: 'hostname', value: host});
+  };
+}
+
+export function setSavedServerParams () {
+  return async (dispatch) => {
+    let server = await settings.get(SESSION_SERVER_PARAMS);
+    let serverType = await settings.get(SESSION_SERVER_TYPE);
+    if (server) {
+      dispatch({type: SET_SERVER, server, serverType});
+    }   
   };
 }
