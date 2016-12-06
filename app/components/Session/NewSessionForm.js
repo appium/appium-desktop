@@ -1,10 +1,20 @@
 import React, { Component } from 'react';
-import { Row, Col, Button, Switch, Input, InputNumber, Dropdown, Menu, Icon, Modal, Form } from 'antd';
+import { Button, Switch, Input, Modal, Form, Icon } from 'antd';
 import prettyJSON from 'prettyjson';
+import { remote } from 'electron';
 
+const { dialog } = remote;
 const FormItem = Form.Item;
 
 export default class NewSessionForm extends Component {
+
+  getLocalFilePath (success) {
+    dialog.showOpenDialog((filepath) => {
+      if (filepath) {
+        success(filepath);
+      }
+    });
+  }
 
   getCapsObject () {
     const { caps } = this.props;
@@ -16,6 +26,8 @@ export default class NewSessionForm extends Component {
   render () {
     const { newSession, setCapabilityParam, caps, addCapability, removeCapability, saveSession,
       requestSaveAsModal, hideSaveAsModal, saveAsText, showSaveAsModal, setSaveAsText } = this.props;
+
+    const buttonAfter = <Icon style={{cursor: 'pointer'}} type="file" onClick={() => this.getLocalFilePath((filepath) => setCapabilityParam(index, 'value', filepath))} />;
 
     return <Form inline onSubmit={(e) => {e.preventDefault(); newSession(caps); }}>
         {caps.map((cap, index) => {
@@ -29,7 +41,7 @@ export default class NewSessionForm extends Component {
                 <option value='boolean'>boolean</option>
                 <option value='number'>number</option>
                 <option value='json_object'>JSON object</option>
-                <option value='file'>file</option>
+                <option value='file'>filepath</option>
               </select>
             </FormItem>
             <FormItem>
@@ -42,10 +54,12 @@ export default class NewSessionForm extends Component {
                     case 'number': return <Input placeholder='Value' value={cap.value} onChange={(e) => setCapabilityParam(index, 'value', e.target.value)}/>; 
                     case 'json_object': return <Input type='textarea' rows={4} placeholder='Value' value={cap.value} 
                       onChange={(e) => setCapabilityParam(index, 'value', e.target.value)}/>;
-                    case 'file': return <Input type='file' placeholder='Value' value={cap.value} onChange={(e) => setCapabilityParam(index, 'value', e.target.value)}/>;
+                    case 'file': return <div>
+                      <Input placeholder='Value' value={cap.value} addonAfter={buttonAfter}/>
+                    </div>;
                     default: break;
                   }
-                }()
+                }.bind(this)()
               }
             </FormItem>
             <FormItem>
