@@ -77,7 +77,7 @@ export function newSession (caps) {
     let desiredCapabilities = getCapsObject(caps);
     let session = getState().session;
 
-    let host, port;
+    let host, port, username, accessKey, https;
     switch (session.serverType) {
       case 'local':
         host = session.server.local.hostname;
@@ -88,13 +88,18 @@ export function newSession (caps) {
         port = session.server.remote.port;
         break;
       case 'sauce':
+        host = `ondemand.saucelabs.com`;
+        port = 443;
+        username = session.server.sauce.username;
+        accessKey = session.server.sauce.accessKey;
+        https = true;
         break;
       default: 
         break;
     }
 
     // Start the session
-    ipcRenderer.send('appium-create-new-session', {desiredCapabilities, host, port});
+    ipcRenderer.send('appium-create-new-session', {desiredCapabilities, host, port, username, accessKey, https});
 
     ipcRenderer.once('appium-new-session-failed', () => {
       alert('Error starting session');

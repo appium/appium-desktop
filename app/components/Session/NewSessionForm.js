@@ -30,6 +30,7 @@ export default class NewSessionForm extends Component {
     const buttonAfter = <Icon style={{cursor: 'pointer'}} type="file" onClick={() => this.getLocalFilePath((filepath) => setCapabilityParam(index, 'value', filepath))} />;
 
     return <Form inline onSubmit={(e) => {e.preventDefault(); newSession(caps); }}>
+        <h4>Desired Capabilities</h4>
         {caps.map((cap, index) => {
           return <div key={index} style={{marginBottom: '1em'}}>
             <FormItem>

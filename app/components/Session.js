@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import NewSessionForm from './Session/NewSessionForm';
 import SavedSessions from './Session/SavedSessions';
 import { Tabs, Form, Input } from 'antd';
-import { ipcRenderer } from 'electron';
 const { TabPane } = Tabs;
 const FormItem = Form.Item;
 
@@ -45,7 +44,7 @@ export default class Session extends Component {
                 <Input placeholder='Sauce Username' value={server.sauce.username} onChange={(e) => setServerParam('username', e.target.value)} />
               </FormItem>
               <FormItem>
-                <Input placeholder='Sauce Password' value={server.sauce.password} onChange={(e) => setServerParam('password', e.target.value)} />
+                <Input type='password' placeholder='Sauce Access Key' value={server.sauce.accessKey} onChange={(e) => setServerParam('accessKey', e.target.value)} />
               </FormItem>
             </Form>
           </TabPane>
