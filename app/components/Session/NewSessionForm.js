@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Button, Switch, Input, Modal, Form, Icon, Row, Col } from 'antd';
 import { remote } from 'electron';
 import FormattedCaps from './FormattedCaps';
-import { SessionCSS } from '../Session.css';
 
 const { dialog } = remote;
 const FormItem = Form.Item;

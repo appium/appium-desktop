@@ -35,10 +35,10 @@ export default class SavedSessions extends Component {
                   {`(${moment(session.date).format('YYYY-MM-DD')})`}
                   </p>
                 </td>
-                <td style={{float: 'right'}}>
+                <td>
                   {
                     session.uuid === capsUUID &&
-                    <div>
+                    <div style={{float: 'right'}}>
                       <Button icon='edit' onClick={() => switchTabs('new')} style={{marginRight: '1em'}}/>
                       <Button icon='delete' onClick={this.handleDelete(index)}/>
                     </div>

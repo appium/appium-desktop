@@ -4,10 +4,25 @@
 }
 
 .saved-sessions {
-    width: 40em;
-    max-width: 100%;
+    padding-right: 1em;
 }
 
 .saved-sessions tr {
     height: 3em;
+}
+
+.saved-sessions tr td {
+    border: 1px solid black;
+    border-bottom: none;
+    border-right: none;
+    cursor: pointer !important;
+}
+
+.saved-sessions tr td:last-child {
+    border-right: 1px solid black;
+    width: 4em;
+}
+
+.saved-sessions tr:last-child td {
+    border-bottom: 1px solid black;
 }

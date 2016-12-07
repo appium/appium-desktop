@@ -44,7 +44,7 @@ export default function session (state=INITIAL_STATE, action) {
 
     case ADD_CAPABILITY:
       return Immutable.fromJS(state)
-        .updateIn(['caps'], (caps) => caps.push({type: 'text'}))
+        .update('caps', (caps) => caps.push({type: 'text'}))
         .toJS();
 
     case REMOVE_CAPABILITY:
