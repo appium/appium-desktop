@@ -1,0 +1,13 @@
+.active-session {
+    background-color: #662d91;
+    color: white;
+}
+
+.saved-sessions {
+    width: 40em;
+    max-width: 100%;
+}
+
+.saved-sessions tr {
+    height: 3em;
+}

@@ -3,6 +3,7 @@ import NewSessionForm from './Session/NewSessionForm';
 import SavedSessions from './Session/SavedSessions';
 import { Tabs, Form, Input, Button } from 'antd';
 import { ServerTypes } from '../actions/Session';
+import './Session.css';
 
 const { TabPane } = Tabs;
 const FormItem = Form.Item;
