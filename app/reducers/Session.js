@@ -12,7 +12,7 @@ import { NEW_SESSION_REQUESTED, NEW_SESSION_BEGAN, NEW_SESSION_DONE,
 const INITIAL_STATE = {
   savedSessions: [],
   tabKey: 'new',
-  serverType: 'local',
+  serverType: ServerTypes.local,
   server: {
     local: {},
     remote: {},
@@ -22,7 +22,6 @@ const INITIAL_STATE = {
     type: 'text',
   }],
   isCapsDirty: true,
-  saveAsText: '',
 };
 
 export default function session (state=INITIAL_STATE, action) {
@@ -75,6 +74,7 @@ export default function session (state=INITIAL_STATE, action) {
     case SAVE_SESSION_DONE:
       return Immutable.fromJS(state)
         .delete('saveSessionRequested')
+        .delete('saveAsText')
         .toJS();
 
     case GET_SAVED_SESSIONS_REQUESTED:
@@ -110,7 +110,7 @@ export default function session (state=INITIAL_STATE, action) {
 
     case HIDE_SAVE_AS_MODAL_REQUESTED: 
       return Immutable.fromJS(state)
-        .set('saveAsText', '')
+        .delete('saveAsText')
         .delete('showSaveAsModal')
         .toJS();
 
