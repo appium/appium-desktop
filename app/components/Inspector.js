@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Row, Col } from 'antd';
+import { Button, Row, Col, Spin } from 'antd';
 import styles from './Session.css';
 
 export default class Inspector extends Component {
@@ -13,9 +13,9 @@ export default class Inspector extends Component {
   }
 
   render () {
-    const { goBackToNewSessionPage, source, screenshot } = this.props;
+    const { quitSession, source, screenshot, isQuittingSession } = this.props;
 
-    return (
+    return (<Spin spinning={!!isQuittingSession}>
       <Row>
         <Col span={12}>
           <p>{source}</p>
@@ -24,6 +24,11 @@ export default class Inspector extends Component {
           <img style={{width:'100%'}} src={this.getDataURI(screenshot)} />
         </Col>
       </Row>
-    );
+      <Row>
+        <Col span={24}>
+          <Button onClick={quitSession} icon='cancel'>Quit</Button>
+        </Col>
+      </Row>
+    </Spin>);
   }
 }

@@ -148,12 +148,15 @@ function connectCreateNewSession () {
 
       ipcMain.on('appium-client-command-request', async (evt, data) => {
         const { methodName, args } = data;
+        let source, screenshot;
         try {
           if (methodName !== 'source') {
             await driver[methodName].apply(driver, args);
           }
-          let source = await driver.source();
-          let screenshot = await driver.takeScreenshot();
+          if (methodName !== 'quit') {
+            source = await driver.source();
+            screenshot = await driver.takeScreenshot();
+          }
           event.sender.send('appium-client-command-response', {source, screenshot});
         } catch (e) {
           event.sender.send('appium-client-command-response-error', e);

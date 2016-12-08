@@ -3,6 +3,8 @@ import settings from 'electron-settings';
 import { push } from 'react-router-redux';
 
 export const SET_SOURCE_AND_SCREENSHOT = 'SET_SOURCE';
+export const QUIT_SESSION_REQUESTED = 'QUIT_SESSION_REQUESTED';
+export const QUIT_SESSION_DONE = 'QUIT_SESSION_DONE';
 
 /**
  * Send a command to 'wd'. 
@@ -21,9 +23,13 @@ export function applyClientMethod (methodName, args) {
   };
 }
 
-export function goBackToNewSessionPage () {
+export function quitSession () {
   return async (dispatch) => {
-    // TODO: Kill the session and then when it's dead go back to /session
-    dispatch(push('/session'));
+    dispatch({type: QUIT_SESSION_REQUESTED});
+    ipcRenderer.send('appium-client-command-request', {methodName: 'quit'});
+    ipcRenderer.once('appium-client-command-response', (evt, resp) => {
+      dispatch({type: QUIT_SESSION_DONE});
+      dispatch(push('/session'));
+    });
   };
 }
