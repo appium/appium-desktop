@@ -146,12 +146,14 @@ function connectCreateNewSession () {
       await p;
       event.sender.send('appium-new-session-ready');
 
-      // Listen for command requests
-      ipcMain.on('appium-client-command-request', async () => {
-        let type = 'source';
+      ipcMain.on('appium-client-command-request', async (evt, data) => {
+        const { methodName, args } = data;
         try {
-          let response = await driver[type]();
-          event.sender.send('appium-client-command-response', response);
+          if (methodName !== 'source') {
+            await driver[methodName].apply(driver, args);
+          }
+          let source = await driver.source();
+          event.sender.send('appium-client-command-response', source);
         } catch (e) {
           event.sender.send('appium-client-command-response-error', e);
         }
