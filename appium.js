@@ -92,16 +92,20 @@ function connectGetDefaultArgs () {
   });
 }
 
-function connectStartSession (win) {
-  // TODO: Rename this 'new-session-window'
-  ipcMain.on('start-session', () => {
+/**
+ * Opens a new window for creating new sessions
+ */
+function connectCreateNewSessionWindow (win) {
+  ipcMain.on('create-new-session-window', () => {
+
+    // Create and open the Browser Window
     let sessionWin = new BrowserWindow({width: 1500, height: 600, webPreferences: {devTools: true}});
     let sessionHTMLPath = path.resolve(__dirname, 'app', 'index.html#/session');
     sessionWin.loadURL(`file://${sessionHTMLPath}`);
     sessionWin.show();
-    let sessionID = sessionWin.webContents.id;
 
-    // When you close the session window, kill it's' associated Appium session
+    // When you close the session window, kill it's associated Appium session (if there is one)
+    let sessionID = sessionWin.webContents.id;
     sessionWin.on('closed', () => {
       if (sessionDrivers[sessionID]) {
         sessionDrivers[sessionID].quit();
@@ -110,29 +114,31 @@ function connectStartSession (win) {
       sessionWin = null; 
     });
 
-    // When the main window is closed, terminate the appium session and close the session window
+    // When the main window is closed, close the session window too
     win.once('closed', () => {
-      // sessionWin.close();
       sessionWin = null;
     });
 
+    // If it's dev, include devTools and 'inspect element' context menu option
     if (isDev) {
       sessionWin.openDevTools();
+      sessionWin.webContents.on('context-menu', (e, props) => {
+        const {x, y} = props;
+
+        Menu.buildFromTemplate([{
+          label: 'Inspect element',
+          click () {
+            sessionWin.inspectElement(x, y);
+          }
+        }]).popup(sessionWin);
+      });
     }
-
-    sessionWin.webContents.on('context-menu', (e, props) => {
-      const {x, y} = props;
-
-      Menu.buildFromTemplate([{
-        label: 'Inspect element',
-        click () {
-          sessionWin.inspectElement(x, y);
-        }
-      }]).popup(sessionWin);
-    });
   });
 }
 
+/**
+ * Creates a new WD client session
+ */
 function connectCreateNewSession () {
   ipcMain.on('appium-create-new-session', async (event, args) => {
     const { desiredCapabilities, host, port, username, accessKey, https } = args;
@@ -167,7 +173,7 @@ function connectCreateNewSession () {
 }
 
 /**
- * When windowo makes method request, find corresponding driver and then execute method
+ * When a Session Window makes method request, find it's corresponding driver, execute requested method
  * and send back the result
  */
 function connectClientMethodListener () {
@@ -198,8 +204,8 @@ function initializeIpc (win) {
   connectStartServer(win);
   // listen for 'stop-server' from the renderer
   connectStopServer(win);
-  // listen for 'start-session' from the renderer
-  connectStartSession(win);
+  // listen for 'create-new-session-window' from the renderer
+  connectCreateNewSessionWindow(win);
   connectGetDefaultArgs(win);
   connectCreateNewSession(win);
   connectClientMethodListener(win);
