@@ -93,15 +93,20 @@ function connectGetDefaultArgs () {
 }
 
 function connectStartSession (win) {
+  // TODO: Rename this 'new-session-window'
   ipcMain.on('start-session', () => {
-    let sessionWin = new BrowserWindow({width: 800, height: 600, webPreferences: {devTools: true}});
+    let sessionWin = new BrowserWindow({width: 1500, height: 600, webPreferences: {devTools: true}});
     let sessionHTMLPath = path.resolve(__dirname, 'app', 'index.html#/session');
     sessionWin.loadURL(`file://${sessionHTMLPath}`);
     sessionWin.show();
+    let sessionID = sessionWin.webContents.id;
 
     // When you close the session window, kill it's' associated Appium session
     sessionWin.on('closed', () => {
-      killSession(sessionWin.webContents);
+      if (sessionDrivers[sessionID]) {
+        sessionDrivers[sessionID].quit();
+        delete sessionDrivers[sessionID];
+      }
       sessionWin = null; 
     });
 
@@ -132,9 +137,9 @@ function connectCreateNewSession () {
   ipcMain.on('appium-create-new-session', async (event, args) => {
     const { desiredCapabilities, host, port, username, accessKey, https } = args;
 
-    // Kill any active sessions. Limit one session per window.
+    // If there is an already active session, kill it. Limit one session per window.
     if (sessionDrivers[event.sender.id]) {
-      killSession(event.sender);
+      await killSession(event.sender);
     }
 
     // Create the driver and cache it by the sender ID
@@ -156,7 +161,6 @@ function connectCreateNewSession () {
       // If the session failed, delete it from the cache
       killSession(event.sender);
       event.sender.send('appium-new-session-failed');
-      event.sender.send('appium-session-done');
     }
 
   });
