@@ -1,6 +1,7 @@
 import { ipcRenderer } from 'electron';
 import settings from 'electron-settings';
 import { v4 as UUID } from 'uuid';
+import { push } from 'react-router-redux';
 
 export const NEW_SESSION_REQUESTED = 'NEW_SESSION_REQUESTED';
 export const NEW_SESSION_BEGAN = 'NEW_SESSION_BEGAN';
@@ -23,6 +24,8 @@ export const DELETE_SAVED_SESSION_DONE = 'DELETE_SAVED_SESSION_DONE';
 export const CHANGE_SERVER_TYPE = 'CHANGE_SERVER_TYPE';
 export const SET_SERVER_PARAM = 'SET_SERVER_PARAM';
 export const SET_SERVER = 'SET_SERVER';
+export const SESSION_LOADING = 'SESSION_LOADING';
+export const SESSION_LOADING_DONE = 'SESSION_LOADING_DONE';
 
 const SAVED_SESSIONS = 'SAVED_SESSIONS';
 const SESSION_SERVER_PARAMS = 'SESSION_SERVER_PARAMS';
@@ -90,6 +93,7 @@ export function removeCapability (index) {
  */
 export function newSession (caps) {
   return async (dispatch, getState) => {
+
     dispatch({type: NEW_SESSION_REQUESTED, caps});
 
     let desiredCapabilities = getCapsObject(caps);
@@ -119,15 +123,18 @@ export function newSession (caps) {
     // Start the session
     ipcRenderer.send('appium-create-new-session', {desiredCapabilities, host, port, username, accessKey, https});
 
+    dispatch({type: SESSION_LOADING});
+
+    // If it failed, show an alert saying it failed
     ipcRenderer.once('appium-new-session-failed', () => {
-      alert('Error starting session');
+      dispatch({type: SESSION_LOADING_DONE});
+      alert('Could not create new session');
     });
 
-    ipcRenderer.once('appium-new-session-done', () => {
-      dispatch({type: NEW_SESSION_DONE});
+    ipcRenderer.once('appium-new-session-ready', () => {
+      dispatch({type: SESSION_LOADING_DONE});
+      dispatch(push('/inspector'));
     });
-
-    dispatch({type: NEW_SESSION_BEGAN});
 
     // Save the current server settings
     await settings.set(SESSION_SERVER_PARAMS, session.server);

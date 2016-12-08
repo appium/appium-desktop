@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import NewSessionForm from './Session/NewSessionForm';
 import SavedSessions from './Session/SavedSessions';
-import { Tabs, Form, Input, Button } from 'antd';
+import { Tabs, Form, Input, Button, Spin } from 'antd';
 import { ServerTypes } from '../actions/Session';
 import './Session.css';
 
@@ -18,9 +18,9 @@ export default class Session extends Component {
 
   render () {
     const { newSessionBegan, savedSessions, tabKey, switchTabs, changeServerType, serverType, setServerParam, server, 
-      requestSaveAsModal, newSession, caps, capsUUID, saveSession, isCapsDirty } = this.props;
+      requestSaveAsModal, newSession, caps, capsUUID, saveSession, isCapsDirty, sessionLoading } = this.props;
 
-    return (
+    return (<Spin spinning={!!sessionLoading}>
       <div style={{width: '100%', padding: '1em'}}>
         <Tabs activeKey={serverType} onChange={changeServerType}>
           <TabPane tab='Local Server' key={ServerTypes.local}>
@@ -73,6 +73,6 @@ export default class Session extends Component {
           <Button type="submit" onClick={() => newSession(caps)} style={{marginLeft: '1em'}}>Start Session</Button>
         </div>
       </div>
-    );
+    </Spin>);
   }
 }

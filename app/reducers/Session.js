@@ -2,6 +2,7 @@ import Immutable from 'immutable';
 
 import { NEW_SESSION_REQUESTED, NEW_SESSION_BEGAN, NEW_SESSION_DONE,
         SAVE_SESSION_REQUESTED, SAVE_SESSION_DONE, GET_SAVED_SESSIONS_REQUESTED, GET_SAVED_SESSIONS_DONE,
+        SESSION_LOADING, SESSION_LOADING_DONE,
         SET_CAPABILITY_PARAM, ADD_CAPABILITY, REMOVE_CAPABILITY, SET_CAPS,
         SWITCHED_TABS, SAVE_AS_MODAL_REQUESTED, HIDE_SAVE_AS_MODAL_REQUESTED, SET_SAVE_AS_TEXT,
         DELETE_SAVED_SESSION_REQUESTED, DELETE_SAVED_SESSION_DONE, 
@@ -133,6 +134,16 @@ export default function session (state=INITIAL_STATE, action) {
       return Immutable.fromJS(state)
         .set('server', action.server || {})
         .set('serverType', action.serverType || ServerTypes.local)
+        .toJS();
+
+    case SESSION_LOADING:
+      return Immutable.fromJS(state)
+        .set('sessionLoading', true)
+        .toJS();
+
+    case SESSION_LOADING_DONE:
+      return Immutable.fromJS(state)
+        .delete('sessionLoading')
         .toJS();
 
     default:

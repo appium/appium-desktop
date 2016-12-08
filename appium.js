@@ -14,16 +14,16 @@ var serverArgs = null;
 var logWatcher = null;
 var batchedLogs = [];
 
-let sessionClients = {};
+let sessionDrivers = {};
 
 /**
  * Kill session associated with session browser window
  */
 function killSession (sessionWinID) {
-  if (sessionClients[sessionWinID]) {
-    sessionClients[sessionWinID].closeApp();
-    sessionClients[sessionWinID].end();
-    delete sessionClients[sessionWinID];
+  if (sessionDrivers[sessionWinID]) {
+    sessionDrivers[sessionWinID].closeApp();
+    sessionDrivers[sessionWinID].end();
+    delete sessionDrivers[sessionWinID];
   }
 }
 
@@ -132,7 +132,7 @@ function connectCreateNewSession () {
   ipcMain.on('appium-create-new-session', async (event, args) => {
     const { desiredCapabilities, host, port, username, accessKey, https } = args;
 
-    let client = sessionClients[event.sender.id] = await wd.promiseChainRemote({
+    let driver = sessionDrivers[event.sender.id] = wd.promiseChainRemote({
       hostname: host,
       port,
       username,
@@ -141,12 +141,27 @@ function connectCreateNewSession () {
     });
 
     try {
-      let res = await client.init(desiredCapabilities);
-      event.sender.send('appium-new-session-successful', res);
-      event.sender.send('appium-new-session-done');
+      let p = driver.init(desiredCapabilities);
+      event.sender.send('appium-new-session-successful');
+      await p;
+      event.sender.send('appium-new-session-ready');
+
+      // Listen for command requests
+      ipcMain.on('appium-client-command-request', async () => {
+        let type = 'source';
+        try {
+          let response = await driver[type]();
+          event.sender.send('appium-client-command-response', response);
+        } catch (e) {
+          event.sender.send('appium-client-command-response-error', e);
+        }
+      });
+
     } catch (e) {
+
+      // If the session failed, delete it from the cache
+      delete sessionDrivers[event.sender.id];
       event.sender.send('appium-new-session-failed');
-      event.sender.send('appium-new-session-done'); 
     }
 
   });
