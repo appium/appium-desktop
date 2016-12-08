@@ -153,7 +153,8 @@ function connectCreateNewSession () {
             await driver[methodName].apply(driver, args);
           }
           let source = await driver.source();
-          event.sender.send('appium-client-command-response', source);
+          let screenshot = await driver.takeScreenshot();
+          event.sender.send('appium-client-command-response', {source, screenshot});
         } catch (e) {
           event.sender.send('appium-client-command-response-error', e);
         }

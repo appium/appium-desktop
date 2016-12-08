@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button } from 'antd';
+import { Button, Row, Col } from 'antd';
 import styles from './Session.css';
 
 export default class Inspector extends Component {
@@ -8,14 +8,22 @@ export default class Inspector extends Component {
     this.props.applyClientMethod('source');
   }
 
+  getDataURI (base64) {
+    return `data:image/gif;base64,${base64}`;
+  }
+
   render () {
-    const { goBackToNewSessionPage, source } = this.props;
+    const { goBackToNewSessionPage, source, screenshot } = this.props;
 
     return (
-      <div className={styles.container}>
-        <pre>{source}</pre>
-        <Button onClick={goBackToNewSessionPage}>Go Back</Button>
-      </div>
+      <Row>
+        <Col span={12}>
+          <p>{source}</p>
+        </Col>
+        <Col span={12}>
+          <img style={{width:'100%'}} src={this.getDataURI(screenshot)} />
+        </Col>
+      </Row>
     );
   }
 }
