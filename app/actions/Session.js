@@ -127,6 +127,8 @@ export function newSession (caps) {
 
     // If it failed, show an alert saying it failed
     ipcRenderer.once('appium-new-session-failed', () => {
+      ipcRenderer.removeAllListeners('appium-new-session-ready');
+      ipcRenderer.removeAllListeners('appium-new-session-failed');
       dispatch({type: SESSION_LOADING_DONE});
       alert('Could not create new session');
     });

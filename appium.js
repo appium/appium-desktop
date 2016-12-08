@@ -132,11 +132,12 @@ function connectCreateNewSession () {
   ipcMain.on('appium-create-new-session', async (event, args) => {
     const { desiredCapabilities, host, port, username, accessKey, https } = args;
 
-    // Kill any active sessions. Can only have one per window
+    // Kill any active sessions. Limit one session per window.
     if (sessionDrivers[event.sender.id]) {
-      sessionDrivers[event.sender.id].quit();
+      killSession(event.sender);
     }
 
+    // Create the driver and cache it by the sender ID
     let driver = sessionDrivers[event.sender.id] = wd.promiseChainRemote({
       hostname: host,
       port,
@@ -145,40 +146,46 @@ function connectCreateNewSession () {
       https,
     });
 
+    // Try initializing it. If it fails, kill it and send error message to sender
     try {
       let p = driver.init(desiredCapabilities);
       event.sender.send('appium-new-session-successful');
       await p;
       event.sender.send('appium-new-session-ready');
-
-      ipcMain.on('appium-client-command-request', async (evt, data) => {
-        const { methodName, args } = data;
-        let source, screenshot;
-        try {
-          if (methodName === 'quit') {
-            await killSession(evt.sender);
-          } else {
-            if (methodName !== 'source') {
-              await driver[methodName].apply(driver, args);
-            }
-            source = await driver.source();
-            screenshot = await driver.takeScreenshot();
-            evt.sender.send('appium-client-command-response', {source, screenshot});
-          }
-
-        } catch (e) {
-          evt.sender.send('appium-client-command-response-error', e);
-        }
-      });
-
     } catch (e) {
-
       // If the session failed, delete it from the cache
-      delete sessionDrivers[event.sender.id];
+      killSession(event.sender);
       event.sender.send('appium-new-session-failed');
       event.sender.send('appium-session-done');
     }
 
+  });
+}
+
+/**
+ * When windowo makes method request, find corresponding driver and then execute method
+ * and send back the result
+ */
+function connectClientMethodListener () {
+  ipcMain.on('appium-client-command-request', async (evt, data) => {
+    const { methodName, args } = data;
+    let driver = sessionDrivers[evt.sender.id];
+    let source, screenshot;
+    try {
+      if (methodName === 'quit') {
+        await killSession(evt.sender);
+      } else {
+        if (methodName !== 'source') {
+          await driver[methodName].apply(driver, args);
+        }
+        source = await driver.source();
+        screenshot = await driver.takeScreenshot();
+        evt.sender.send('appium-client-command-response', {source, screenshot});
+      }
+
+    } catch (e) {
+      evt.sender.send('appium-client-command-response-error', e);
+    }
   });
 }
 
@@ -191,6 +198,7 @@ function initializeIpc (win) {
   connectStartSession(win);
   connectGetDefaultArgs(win);
   connectCreateNewSession(win);
+  connectClientMethodListener(win);
 }
 
 export { initializeIpc };
