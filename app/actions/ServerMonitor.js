@@ -7,6 +7,7 @@ export const SERVER_STOP_FAIL = 'SERVER_STOP_FAIL';
 export const LOGS_RECEIVED = 'LOGS_RECEIVED';
 export const LOGS_CLEARED = 'LOGS_CLEARED';
 export const MONITOR_CLOSED = 'MONITOR_CLOSED';
+export const SET_SERVER_ARGS = 'SET_SERVER_ARGS';
 
 export function stopServerReq () {
   return {type: SERVER_STOP_REQ};
@@ -22,6 +23,10 @@ export function stopServerFailed (reason) {
 
 export function serverLogsReceived (logs) {
   return {type: LOGS_RECEIVED, logs};
+}
+
+export function setServerArgs (args) {
+  return {type: SET_SERVER_ARGS, args};
 }
 
 export function monitorClosed () {

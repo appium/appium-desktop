@@ -1,4 +1,4 @@
-import { SERVER_STOP_REQ, SERVER_STOP_OK,
+import { SERVER_STOP_REQ, SERVER_STOP_OK, SET_SERVER_ARGS,
          SERVER_STOP_FAIL, LOGS_RECEIVED,
          LOGS_CLEARED, MONITOR_CLOSED } from '../actions/ServerMonitor';
 
@@ -9,7 +9,8 @@ export const STATUS_STOPPING = "stopping";
 const initialState = {
   logLines: [],
   serverStatus: STATUS_STOPPED,
-  serverFailMsg: ""
+  serverFailMsg: "",
+  serverArgs: {},
 };
 
 export default function serverMonitor (state = initialState, action) {
@@ -38,6 +39,11 @@ export default function serverMonitor (state = initialState, action) {
       return {
         ...state,
         logLines: []
+      };
+    case SET_SERVER_ARGS:
+      return {
+        ...state,
+        serverArgs: action.args
       };
     case MONITOR_CLOSED:
       return {...initialState};

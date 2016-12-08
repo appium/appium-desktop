@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import { ipcRenderer } from 'electron';
 import { push } from 'react-router-redux';
-import { serverLogsReceived, clearLogs } from './ServerMonitor';
+import { serverLogsReceived, clearLogs, setServerArgs } from './ServerMonitor';
 import settings from 'electron-settings';
 
 export const SERVER_START_REQ = 'SERVER_START_REQ';
@@ -36,6 +36,7 @@ export function startServer (evt) {
       // lifetime of this app instance
       ipcRenderer.removeAllListeners('appium-start-error');
       dispatch({type: SERVER_START_OK});
+      dispatch(setServerArgs(serverArgs));
       dispatch(push('/monitor'));
     });
 

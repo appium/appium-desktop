@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import moment from 'moment';
 import { Button } from 'react-photonkit';
 import { STATUS_RUNNING, STATUS_STOPPING,
          STATUS_STOPPED } from '../reducers/ServerMonitor';
@@ -49,6 +50,7 @@ export default class ServerMonitor extends Component {
     closeMonitor: PropTypes.func.isRequired,
     serverStatus: PropTypes.string.isRequired,
     logLines: PropTypes.array.isRequired,
+    serverArgs: PropTypes.object.isRequired,
   }
 
   componentWillUpdate () {
@@ -66,7 +68,7 @@ export default class ServerMonitor extends Component {
   }
 
   render () {
-    const {logLines, serverStatus} = this.props;
+    const {logLines, serverStatus, serverArgs} = this.props;
     let statusIcon, statusMsg;
     switch (serverStatus) {
       case STATUS_RUNNING:
@@ -90,6 +92,12 @@ export default class ServerMonitor extends Component {
       return (
         <div key={i}>
           <span className={`${styles.icon} ${styles[`icon-${icn}`]} icon icon-${icn}`} />
+          {
+            serverArgs.logTimestamp &&
+            <span className={styles.timestamp}>
+              [{moment().format('YYYY-MM-DD hh:mm:ss')}]
+            </span>
+          }
           <span dangerouslySetInnerHTML={{__html: convert.toHtml(line.msg)}} />
         </div>
       );
