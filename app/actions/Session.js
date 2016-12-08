@@ -132,6 +132,8 @@ export function newSession (caps) {
     });
 
     ipcRenderer.once('appium-new-session-ready', () => {
+      ipcRenderer.removeAllListeners('appium-new-session-ready');
+      ipcRenderer.removeAllListeners('appium-new-session-failed');
       dispatch({type: SESSION_LOADING_DONE});
       dispatch(push('/inspector'));
     });

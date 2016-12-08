@@ -6,6 +6,7 @@ export default class Inspector extends Component {
 
   componentWillMount () {
     this.props.applyClientMethod('source');
+    this.props.bindSessionDone();
   }
 
   getDataURI (base64) {
@@ -21,7 +22,7 @@ export default class Inspector extends Component {
           <p>{source}</p>
         </Col>
         <Col span={12}>
-          <img style={{width:'100%'}} src={this.getDataURI(screenshot)} />
+          {screenshot && <img style={{width:'100%'}} src={this.getDataURI(screenshot)} />}
         </Col>
       </Row>
       <Row>

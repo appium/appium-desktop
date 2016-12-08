@@ -19,11 +19,12 @@ let sessionDrivers = {};
 /**
  * Kill session associated with session browser window
  */
-function killSession (sessionWinID) {
+async function killSession (sender) {
+  let sessionWinID = sender.id;
   if (sessionDrivers[sessionWinID]) {
-    sessionDrivers[sessionWinID].closeApp();
-    sessionDrivers[sessionWinID].end();
+    await sessionDrivers[sessionWinID].quit();
     delete sessionDrivers[sessionWinID];
+    sender.send('appium-session-done');
   }
 }
 
@@ -98,11 +99,10 @@ function connectStartSession (win) {
     sessionWin.loadURL(`file://${sessionHTMLPath}`);
     sessionWin.show();
 
-    // When you close the session window, kill the associated Appium session
-    let sessionWinID = sessionWin.webContents.id;
+    // When you close the session window, kill it's' associated Appium session
     sessionWin.on('closed', () => {
-      killSession(sessionWinID);
-      sessionWin = null;
+      killSession(sessionWin.webContents);
+      sessionWin = null; 
     });
 
     // When the main window is closed, terminate the appium session and close the session window
@@ -132,6 +132,11 @@ function connectCreateNewSession () {
   ipcMain.on('appium-create-new-session', async (event, args) => {
     const { desiredCapabilities, host, port, username, accessKey, https } = args;
 
+    // Kill any active sessions. Can only have one per window
+    if (sessionDrivers[event.sender.id]) {
+      sessionDrivers[event.sender.id].quit();
+    }
+
     let driver = sessionDrivers[event.sender.id] = wd.promiseChainRemote({
       hostname: host,
       port,
@@ -150,16 +155,19 @@ function connectCreateNewSession () {
         const { methodName, args } = data;
         let source, screenshot;
         try {
-          if (methodName !== 'source') {
-            await driver[methodName].apply(driver, args);
-          }
-          if (methodName !== 'quit') {
+          if (methodName === 'quit') {
+            await killSession(evt.sender);
+          } else {
+            if (methodName !== 'source') {
+              await driver[methodName].apply(driver, args);
+            }
             source = await driver.source();
             screenshot = await driver.takeScreenshot();
+            evt.sender.send('appium-client-command-response', {source, screenshot});
           }
-          event.sender.send('appium-client-command-response', {source, screenshot});
+
         } catch (e) {
-          event.sender.send('appium-client-command-response-error', e);
+          evt.sender.send('appium-client-command-response-error', e);
         }
       });
 
@@ -168,6 +176,7 @@ function connectCreateNewSession () {
       // If the session failed, delete it from the cache
       delete sessionDrivers[event.sender.id];
       event.sender.send('appium-new-session-failed');
+      event.sender.send('appium-session-done');
     }
 
   });
