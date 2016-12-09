@@ -29,7 +29,8 @@ export function applyClientMethod (methodName, args) {
     });
 
     ipcRenderer.once('appium-client-command-response-error', () => {
-      alert('error occurred');
+      quitSession()(dispatch);
+      dispatch(push('/session'));
     });
   };
 }
