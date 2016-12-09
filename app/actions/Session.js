@@ -40,6 +40,9 @@ export const ServerTypes = {
 function getCapsObject (caps) {
   let capsObject = {};
   caps.forEach((cap) => capsObject[cap.name] = cap.value);
+  if (!caps.newCommandTimeout) {
+    caps.newCommandTimeout = 0;
+  }
   return capsObject;
 }
 
