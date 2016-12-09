@@ -178,15 +178,20 @@ function connectCreateNewSession () {
  */
 function connectClientMethodListener () {
   ipcMain.on('appium-client-command-request', async (evt, data) => {
-    const { methodName, args } = data;
+    const { methodName, args, xpath } = data;
     let driver = sessionDrivers[evt.sender.id];
+
     let source, screenshot;
     try {
       if (methodName === 'quit') {
         await killSession(evt.sender);
       } else {
         if (methodName !== 'source') {
-          await driver[methodName].apply(driver, args);
+          if (xpath) {
+            await driver.elementByXPath(xpath)[methodName]();
+          } else {
+            await driver[methodName].apply(driver, args);
+          }
         }
         source = await driver.source();
         screenshot = await driver.takeScreenshot();

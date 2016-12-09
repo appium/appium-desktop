@@ -6,7 +6,7 @@ import styles from './Session.css';
 export default class Inspector extends Component {
 
   componentWillMount () {
-    this.props.applyClientMethod('source');
+    this.props.applyClientMethod({methodName: 'source'});
     this.props.bindSessionDone();
   }
 
@@ -15,25 +15,28 @@ export default class Inspector extends Component {
   }
 
   render () {
-    const { quitSession, screenshot, isQuittingSession, applyClientMethod, selectedXPath } = this.props;
+    const { source, isQuittingSession, applyClientMethod, selectedXPath } = this.props;
 
-    return (<Spin spinning={!!isQuittingSession}>
+    return (<div style={{width: '100%'}}>
+      <Spin spinning={!!isQuittingSession}>
       <Row>
         <Col span={12}>
-          <div style={{overflow: 'scroll'}}>
-            <Source {...this.props} />
-          </div>
+          <Source {...this.props} />
         </Col>
-        <Col span={12}>
-          {screenshot && <img style={{width:'100%'}} src={this.getDataURI(screenshot)} />}
-        </Col>
+        {selectedXPath && <Col span={12}>
+          <Row>
+            <Col span={24}>
+              <Button onClick={() => applyClientMethod({methodName: 'tap', xpath: selectedXPath})}>Click Element</Button>
+            </Col>
+          </Row>
+        </Col>}
       </Row>
       <Row>
-        <Col span={24}>
-          <Button onClick={quitSession} icon='cancel'>Quit</Button>
+        <Col span={12}>
+
         </Col>
       </Row>
-      <Button onClick={() => applyClientMethod({methodName: 'click', xpath: selectedXPath})} />
-    </Spin>);
+      </Spin>
+    </div>);
   }
 }

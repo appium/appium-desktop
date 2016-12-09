@@ -21,7 +21,7 @@ export default class Source extends Component {
   }
 
   getXPath (el, parentXPath = '', index = 0) {
-    return `${parentXPath}/${el.tagName}[${index + 1}`;
+    return `${parentXPath}/*[${index + 1}]`;
   }
 
   render () {
