@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Tree } from 'antd';
+import './Inspector.css';
 
 const { TreeNode } = Tree;
 
@@ -19,25 +20,31 @@ export default class Source extends Component {
     return `<${el.tagName}${attrString}>`;
   }
 
+  getXPath (el, parentXPath = '', index = 0) {
+    return `${parentXPath}/${el.tagName}[${index + 1}`;
+  }
+
   render () {
-    const { source } = this.props;
+    const { source, selectElementByXPath } = this.props;
 
     if (!source) return <div>Loading</div>;
 
     let sourceXML = (new DOMParser()).parseFromString(source, 'text/xml');
 
-    let recursive = (elem, parentLocatorArr=[]) => {
+    let recursive = (elem, parentXPath = '') => {
       if (!elem) return null;
 
-      return [...elem.children].map((el, i) => {
-        let locatorArr = [...parentLocatorArr, i];
-        return <TreeNode title={this.getFormattedTag(el)} key={locatorArr}>
-          {recursive(el, locatorArr)}
+      return [...elem.children].map((el, index) => {
+        let xpath = this.getXPath(el, parentXPath, index);
+
+        return <TreeNode title={this.getFormattedTag(el)} 
+          key={xpath} >
+          {recursive(el, xpath)}
         </TreeNode>;
       });
     };
 
-    return <Tree>
+    return <Tree onSelect={(args) => selectElementByXPath(args[0])}>
       {recursive(sourceXML)}
     </Tree>;
   }

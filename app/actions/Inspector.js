@@ -5,6 +5,7 @@ import { push } from 'react-router-redux';
 export const SET_SOURCE_AND_SCREENSHOT = 'SET_SOURCE';
 export const QUIT_SESSION_REQUESTED = 'QUIT_SESSION_REQUESTED';
 export const QUIT_SESSION_DONE = 'QUIT_SESSION_DONE';
+export const SELECT_ELEMENT_BY_XPATH = 'SELECT_ELEMENT_BY_XPATH';
 
 export function bindSessionDone () {
   return async (dispatch) => {
@@ -14,6 +15,12 @@ export function bindSessionDone () {
       dispatch({type: QUIT_SESSION_DONE});
       dispatch(push('/session'));
     });
+  };
+}
+
+export function selectElementByXPath (xpath) {
+  return async (dispatch) => {
+    dispatch({type: SELECT_ELEMENT_BY_XPATH, xpath});
   };
 }
 

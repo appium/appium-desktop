@@ -15,12 +15,14 @@ export default class Inspector extends Component {
   }
 
   render () {
-    const { quitSession, source, screenshot, isQuittingSession } = this.props;
+    const { quitSession, screenshot, isQuittingSession, applyClientMethod, selectedXPath } = this.props;
 
     return (<Spin spinning={!!isQuittingSession}>
       <Row>
         <Col span={12}>
-          <Source {...this.props} />
+          <div style={{overflow: 'scroll'}}>
+            <Source {...this.props} />
+          </div>
         </Col>
         <Col span={12}>
           {screenshot && <img style={{width:'100%'}} src={this.getDataURI(screenshot)} />}
@@ -31,6 +33,7 @@ export default class Inspector extends Component {
           <Button onClick={quitSession} icon='cancel'>Quit</Button>
         </Col>
       </Row>
+      <Button onClick={() => applyClientMethod({methodName: 'click', xpath: selectedXPath})} />
     </Spin>);
   }
 }
