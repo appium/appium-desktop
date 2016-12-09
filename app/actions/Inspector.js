@@ -1,5 +1,4 @@
 import { ipcRenderer } from 'electron';
-import settings from 'electron-settings';
 import { push } from 'react-router-redux';
 
 export const SET_SOURCE_AND_SCREENSHOT = 'SET_SOURCE';
@@ -15,6 +14,15 @@ export function bindSessionDone () {
       dispatch({type: QUIT_SESSION_DONE});
       dispatch(push('/session'));
     });
+
+    ipcRenderer.on('appium-client-command-response', (evt, resp) => {
+      const { source, screenshot } = resp;
+      dispatch({type: SET_SOURCE_AND_SCREENSHOT, source, screenshot});
+    });
+
+    ipcRenderer.once('appium-client-command-response-error', (e) => {
+      alert('Could not complete command');
+    });
   };
 }
 
@@ -27,18 +35,9 @@ export function selectElementByXPath (xpath) {
 /**
  * Send a command to 'wd'. 
  */
-export function applyClientMethod (methodName, args) {
+export function applyClientMethod (params) {
   return async (dispatch) => {
-    ipcRenderer.send('appium-client-command-request', {methodName, args});
-    ipcRenderer.once('appium-client-command-response', (evt, resp) => {
-      const { source, screenshot } = resp;
-      dispatch({type: SET_SOURCE_AND_SCREENSHOT, source, screenshot});
-    });
-
-    ipcRenderer.once('appium-client-command-response-error', () => {
-      quitSession()(dispatch);
-      dispatch(push('/session'));
-    });
+    ipcRenderer.send('appium-client-command-request', params);
   };
 }
 
