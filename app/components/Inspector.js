@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Button, Row, Col, Spin } from 'antd';
+import Source from './Inspector/Source';
 import styles from './Session.css';
 
 export default class Inspector extends Component {
@@ -19,7 +20,7 @@ export default class Inspector extends Component {
     return (<Spin spinning={!!isQuittingSession}>
       <Row>
         <Col span={12}>
-          <p>{source}</p>
+          <Source {...this.props} />
         </Col>
         <Col span={12}>
           {screenshot && <img style={{width:'100%'}} src={this.getDataURI(screenshot)} />}
