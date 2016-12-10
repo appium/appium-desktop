@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { Tree } from 'antd';
-import './Inspector.css';
+import { Tree, Spin } from 'antd';
 
 const { TreeNode } = Tree;
 
@@ -18,14 +17,14 @@ export default class Source extends Component {
         (this.isIgnoredAttr(attrMap)) ? '' : base + ` ${attrMap.name}="${attrMap.value}"`, ''
     );
     return `<${el.tagName}${attrString}>`;
-  }
+  }i
 
   getXPath (el, parentXPath = '', index = 0) {
     return `${parentXPath}/*[${index + 1}]`;
   }
 
   render () {
-    const { source, selectElementByXPath } = this.props;
+    const { source, selectElementByXPath, methodCallRequested } = this.props;
 
     if (!source) return <div>Loading</div>;
 
@@ -37,8 +36,7 @@ export default class Source extends Component {
       return [...elem.children].map((el, index) => {
         let xpath = this.getXPath(el, parentXPath, index);
 
-        return <TreeNode title={this.getFormattedTag(el)} 
-          key={xpath} >
+        return <TreeNode title={this.getFormattedTag(el)} key={xpath}>
           {recursive(el, xpath)}
         </TreeNode>;
       });
