@@ -15,18 +15,20 @@ export default class Inspector extends Component {
   }
 
   render () {
-    const { source, isQuittingSession, applyClientMethod, selectedXPath } = this.props;
+    const { source, isQuittingSession, applyClientMethod, selectedXPath, methodCallRequested} = this.props;
 
     return (<div style={{width: '100%'}}>
-      <Spin spinning={!!isQuittingSession}>
       <Row>
         <Col span={12}>
-          <Source {...this.props} />
+          <Spin spinning={!!methodCallRequested}>
+            <Button icon='reload' onClick={() => applyClientMethod({methodName: 'source'})}></Button>
+            <Source {...this.props} />
+          </Spin>
         </Col>
         {selectedXPath && <Col span={12}>
           <Row>
             <Col span={24}>
-              <Button onClick={() => applyClientMethod({methodName: 'tap', xpath: selectedXPath})}>Click Element</Button>
+              <Button onClick={() => applyClientMethod({methodName: 'tap', xpath: selectedXPath})}>Tap Element</Button>
             </Col>
           </Row>
         </Col>}
@@ -36,7 +38,6 @@ export default class Inspector extends Component {
 
         </Col>
       </Row>
-      </Spin>
     </div>);
   }
 }
