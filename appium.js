@@ -178,7 +178,7 @@ function connectCreateNewSession () {
  */
 function connectClientMethodListener () {
   ipcMain.on('appium-client-command-request', async (evt, data) => {
-    const { methodName, args, xpath } = data;
+    const { methodName, args = [], xpath } = data;
     let driver = sessionDrivers[evt.sender.id];
 
     let source, screenshot;
@@ -188,14 +188,16 @@ function connectClientMethodListener () {
       } else {
         if (methodName !== 'source') {
           if (xpath) {
-            await driver.elementByXPath(xpath)[methodName]();
+            await driver.elementByXPath(xpath)[methodName](...args);
           } else {
             await driver[methodName].apply(driver, args);
           }
         }
-        source = await driver.source();
-        screenshot = await driver.takeScreenshot();
-        evt.sender.send('appium-client-command-response', {source, screenshot});
+        setTimeout(async () => {
+          source = await driver.source();
+          screenshot = await driver.takeScreenshot();
+          evt.sender.send('appium-client-command-response', {source, screenshot});
+        }, 500);
       }
 
     } catch (e) {
