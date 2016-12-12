@@ -1,5 +1,4 @@
 import { ipcRenderer } from 'electron';
-import { push } from 'react-router-redux';
 
 export const SET_SOURCE_AND_SCREENSHOT = 'SET_SOURCE';
 export const QUIT_SESSION_REQUESTED = 'QUIT_SESSION_REQUESTED';
@@ -8,6 +7,7 @@ export const SELECT_ELEMENT_BY_XPATH = 'SELECT_ELEMENT_BY_XPATH';
 export const METHOD_CALL_REQUESTED = 'METHOD_CALL_REQUESTED';
 export const METHOD_CALL_DONE = 'METHOD_CALL_DONE';
 export const SET_INPUT_VALUE = 'SET_INPUT_VALUE';
+export const SET_EXPANDED_XPATHS = 'SET_EXPANDED_XPATHS';
 
 export function bindSessionDone () {
   return async (dispatch) => {
@@ -56,5 +56,11 @@ export function quitSession () {
 export function setInputValue (name, value) {
   return async (dispatch) => {
     dispatch({type: SET_INPUT_VALUE, name, value});
+  };
+}
+
+export function setExpandedXPaths (xpaths) {
+  return async (dispatch) => {
+    dispatch({type: SET_EXPANDED_XPATHS, xpaths});
   };
 }

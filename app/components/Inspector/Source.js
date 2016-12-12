@@ -24,7 +24,7 @@ export default class Source extends Component {
   }
 
   render () {
-    const { source, selectElementByXPath, methodCallRequested } = this.props;
+    const { source, selectElementByXPath, selectedXPath, setExpandedXPaths, expandedXPaths } = this.props;
 
     if (!source) return <div>Loading</div>;
 
@@ -42,7 +42,9 @@ export default class Source extends Component {
       });
     };
 
-    return <Tree onSelect={(args) => selectElementByXPath(args[0])}>
+    return <Tree onSelect={(args) => selectElementByXPath(args[0])}  
+      onExpand={setExpandedXPaths} autoExpandParent={false} expandedKeys={expandedXPaths}
+      onSelect={(selectedXPaths) => selectElementByXPath(selectedXPaths[0])} selectedKeys={[selectedXPath]}>
       {recursive(sourceXML)}
     </Tree>;
   }
