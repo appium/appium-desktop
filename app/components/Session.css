@@ -35,3 +35,9 @@
 .pull-right {
     float: right;
 }
+
+.formatted-caps {
+    padding: 4px;
+    width: 100%;
+    background-color: #d3d3d3;
+}

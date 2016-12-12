@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 import formatJSON from 'format-json';
+import SessionCSS from '../Session.css';
 
 export default class NewSessionForm extends Component {
 
   getCapsObject (caps) {
-    let capsObject = {};
-    caps.forEach((cap) => cap.name ? capsObject[cap.name] = cap.value : '');
-    return capsObject;
+    let capsObj = caps.filter((cap) => cap.name).map((cap) => {
+      return {[cap.name]: cap.value};
+    });
+    return Object.assign({}, ...capsObj);
   }
 
   getFormattedJSON (caps) {
@@ -15,6 +17,10 @@ export default class NewSessionForm extends Component {
 
   render () {
     const {caps} = this.props;
-    return caps && <textarea rows={15} style={{padding: '4px', width: '100%', backgroundColor: '#d3d3d3'}} onChange={() => {}} value={ this.getFormattedJSON(caps) } />
+    return caps && <textarea rows={15} 
+      className={SessionCSS['formatted-caps']}
+      onChange={() => {}} 
+      value={this.getFormattedJSON(caps)} 
+    />;
   }
 }
