@@ -130,7 +130,7 @@ function connectStartSession (win) {
 
 function connectCreateNewSession () {
   ipcMain.on('appium-create-new-session', async (event, args) => {
-    const { desiredCapabilities, host, port, username, accessKey, https } = args;
+    const {desiredCapabilities, host, port, username, accessKey, https} = args;
 
     let driver = sessionDrivers[event.sender.id] = wd.promiseChainRemote({
       hostname: host,

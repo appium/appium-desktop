@@ -20,8 +20,6 @@ export default class Inspector extends Component {
   }
 
   render () {
-    // const { } = this.props;
-
     return (
       <div className={styles.container}>
         <div>Hello!</div>

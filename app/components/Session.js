@@ -5,7 +5,7 @@ import { Tabs, Form, Input, Button, Spin } from 'antd';
 import { ServerTypes } from '../actions/Session';
 import './Session.css';
 
-const { TabPane } = Tabs;
+const {TabPane} = Tabs;
 const FormItem = Form.Item;
 
 export default class Session extends Component {
@@ -17,8 +17,8 @@ export default class Session extends Component {
   }
 
   render () {
-    const { newSessionBegan, savedSessions, tabKey, switchTabs, changeServerType, serverType, setServerParam, server, 
-      requestSaveAsModal, newSession, caps, capsUUID, saveSession, isCapsDirty, sessionLoading } = this.props;
+    const {newSessionBegan, savedSessions, tabKey, switchTabs, changeServerType, serverType, setServerParam, server, 
+      requestSaveAsModal, newSession, caps, capsUUID, saveSession, isCapsDirty, sessionLoading} = this.props;
 
     return (<Spin spinning={!!sessionLoading}>
       <div style={{width: '100%', padding: '1em'}}>
