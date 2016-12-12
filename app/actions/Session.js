@@ -2,6 +2,7 @@ import { ipcRenderer } from 'electron';
 import settings from 'electron-settings';
 import { v4 as UUID } from 'uuid';
 import { push } from 'react-router-redux';
+import { message } from 'antd';
 
 export const NEW_SESSION_REQUESTED = 'NEW_SESSION_REQUESTED';
 export const NEW_SESSION_BEGAN = 'NEW_SESSION_BEGAN';
@@ -38,16 +39,16 @@ export const ServerTypes = {
 };
 
 function getCapsObject (caps) {
-  let capsObject = {};
-  caps.forEach((cap) => capsObject[cap.name] = cap.value);
-  return capsObject;
+  return Object.assign({}, ...(caps.map((cap) => { 
+    return {[cap.name]: cap.value}; 
+  })));
 }
 
 /**
  * Change the caps object and then go back to the new session tab
  */
 export function setCaps (caps, uuid) {
-  return async (dispatch) => {
+  return (dispatch) => {
     dispatch({type: SET_CAPS, caps, uuid});
   };
 }
@@ -56,7 +57,7 @@ export function setCaps (caps, uuid) {
  * Change a single desired capability
  */
 export function changeCapability (key, value) {
-  return async (dispatch) => {
+  return (dispatch) => {
     dispatch({type: CHANGE_CAPABILITY, key, value});
   };
 }
@@ -65,7 +66,7 @@ export function changeCapability (key, value) {
  * Push a capability to the list
  */
 export function addCapability () {
-  return async (dispatch) => {
+  return (dispatch) => {
     dispatch({type: ADD_CAPABILITY});
   };
 }
@@ -74,7 +75,7 @@ export function addCapability () {
  * Update value of a capability parameter
  */
 export function setCapabilityParam (index, name, value) {
-  return async (dispatch) => {
+  return (dispatch) => {
     dispatch({type: SET_CAPABILITY_PARAM, index, name, value});
   };
 }
@@ -83,7 +84,7 @@ export function setCapabilityParam (index, name, value) {
  * Delete a capability from the list
  */
 export function removeCapability (index) {
-  return async (dispatch) => {
+  return (dispatch) => {
     dispatch({type: REMOVE_CAPABILITY, index});
   };
 }
@@ -126,9 +127,9 @@ export function newSession (caps) {
     dispatch({type: SESSION_LOADING});
 
     // If it failed, show an alert saying it failed
-    ipcRenderer.once('appium-new-session-failed', () => {
+    ipcRenderer.once('appium-new-session-failed', (evt, errorMessage) => {
       dispatch({type: SESSION_LOADING_DONE});
-      alert('Could not create new session');
+      message.error(errorMessage, 10000);
     });
 
     ipcRenderer.once('appium-new-session-ready', () => {
@@ -148,7 +149,7 @@ export function newSession (caps) {
  */
 export function saveSession (caps, params) {
   return async (dispatch) => {
-    let { name, uuid } = params;
+    let {name, uuid} = params;
     dispatch({type: SAVE_SESSION_REQUESTED});
     let savedSessions = await settings.get(SAVED_SESSIONS) || [];
     if (!uuid) {
@@ -165,11 +166,11 @@ export function saveSession (caps, params) {
     } else {
 
       // If it's an existing session, overwrite it
-      savedSessions.forEach((session, index) => {
+      for (let session of savedSessions) {
         if (session.uuid === uuid) {
-          savedSessions[index].caps = caps;
+          session.caps = caps;
         }
-      });
+      }
     }
     await settings.set(SAVED_SESSIONS, savedSessions);
     dispatch({type: SET_CAPS, caps, uuid});
@@ -193,7 +194,7 @@ export function getSavedSessions () {
  * Switch to a different tab
  */
 export function switchTabs (key) {
-  return async (dispatch) => {
+  return (dispatch) => {
     dispatch({type: SWITCHED_TABS, key});
   };
 }
@@ -202,7 +203,7 @@ export function switchTabs (key) {
  * Open a 'Save As' modal
  */
 export function requestSaveAsModal () {
-  return async (dispatch) => {
+  return (dispatch) => {
     dispatch({type: SAVE_AS_MODAL_REQUESTED});
   };
 }
@@ -211,7 +212,7 @@ export function requestSaveAsModal () {
  * Hide the 'Save As' modal
  */
 export function hideSaveAsModal () {
-  return async (dispatch) => {
+  return (dispatch) => {
     dispatch({type: HIDE_SAVE_AS_MODAL_REQUESTED});
   };
 }
@@ -220,7 +221,7 @@ export function hideSaveAsModal () {
  * Set the text to save capabilities as
  */
 export function setSaveAsText (saveAsText) {
-  return async (dispatch) => {
+  return (dispatch) => {
     dispatch({type: SET_SAVE_AS_TEXT, saveAsText});
   };
 }
@@ -242,7 +243,7 @@ export function deleteSavedSession (index) {
  * Change the server type
  */
 export function changeServerType (serverType) {
-  return async (dispatch) => {
+  return (dispatch) => {
     dispatch({type: CHANGE_SERVER_TYPE, serverType});
   };
 }
@@ -251,7 +252,7 @@ export function changeServerType (serverType) {
  * Set a server parameter (host, port, etc...)
  */
 export function setServerParam (name, value) {
-  return async (dispatch, getState) => {
+  return (dispatch, getState) => {
     dispatch({type: SET_SERVER_PARAM, serverType: getState().session.serverType, name, value});
   };
 }

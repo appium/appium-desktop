@@ -161,7 +161,7 @@ function connectCreateNewSession () {
 
       // If the session failed, delete it from the cache
       delete sessionDrivers[event.sender.id];
-      event.sender.send('appium-new-session-failed');
+      event.sender.send('appium-new-session-failed', JSON.parse(e.data).value.message);
     }
 
   });
