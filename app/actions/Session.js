@@ -175,7 +175,7 @@ export function saveSession (caps, params) {
     await settings.set(SAVED_SESSIONS, savedSessions);
     dispatch({type: SET_CAPS, caps, uuid});
     dispatch({type: SAVE_SESSION_DONE});
-    getSavedSessions()(dispatch);
+    await getSavedSessions()(dispatch);
   };
 }
 
