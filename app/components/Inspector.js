@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Row, Col, Spin } from 'antd';
+import { Button, Row, Col, Spin, Input } from 'antd';
 import Source from './Inspector/Source';
 import styles from './Session.css';
 
@@ -15,7 +15,7 @@ export default class Inspector extends Component {
   }
 
   render () {
-    const { source, isQuittingSession, applyClientMethod, selectedXPath, methodCallRequested} = this.props;
+    const { source, isQuittingSession, applyClientMethod, selectedXPath, methodCallRequested, setInputValue, sendKeys } = this.props;
 
     return (<div style={{width: '100%'}}>
       <Row>
@@ -27,8 +27,12 @@ export default class Inspector extends Component {
         </Col>
         {selectedXPath && <Col span={12}>
           <Row>
-            <Col span={24}>
+            <Col span={12}>
               <Button onClick={() => applyClientMethod({methodName: 'tap', xpath: selectedXPath})}>Tap Element</Button>
+            </Col>
+            <Col span={12}>
+              <Input placeholder='Hostname' value={sendKeys} onChange={(e) => setInputValue('sendKeys', e.target.value)} />
+              <Button onClick={() => applyClientMethod({methodName: 'sendKeys', xpath: selectedXPath})}>Send Keys</Button>
             </Col>
           </Row>
         </Col>}

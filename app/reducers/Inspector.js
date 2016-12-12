@@ -1,7 +1,7 @@
 import Immutable from 'immutable';
 
 import { SET_SOURCE_AND_SCREENSHOT, QUIT_SESSION_REQUESTED, QUIT_SESSION_DONE, SELECT_ELEMENT_BY_XPATH,
-  METHOD_CALL_REQUESTED, METHOD_CALL_DONE } from '../actions/Inspector';
+  METHOD_CALL_REQUESTED, METHOD_CALL_DONE, SET_INPUT_VALUE } from '../actions/Inspector';
 
 // Make sure there's always at least one cap
 const INITIAL_STATE = {
@@ -38,6 +38,11 @@ export default function inspector (state=INITIAL_STATE, action) {
     case METHOD_CALL_DONE:
       return Immutable.fromJS(state)
         .delete('methodCallRequested')
+        .toJS();
+
+    case SET_INPUT_VALUE:
+      return Immutable.fromJS(state)
+        .set(action.name, action.value)
         .toJS();
 
     default:
