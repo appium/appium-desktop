@@ -16,7 +16,7 @@ export default class Inspector extends Component {
 
   render () {
     const { applyClientMethod, selectedNode, methodCallRequested, setInputValue, sendKeys } = this.props;
-    const { selectedXPath } = selectedNode || {};
+    const { xpath } = selectedNode || {};
 
     return (<div style={{width: '100%', padding: '1em'}}>
       <Row gutter={16}>
@@ -30,13 +30,13 @@ export default class Inspector extends Component {
           <Row>
             <Col span={24}>
             <Card style={{minHeight: 800}}>
-              {selectedXPath && <Row>
+              {xpath && <Row>
                 <Col span={12}>
-                  <Button onClick={() => applyClientMethod({methodName: 'tap', xpath: selectedXPath})}>Tap Element</Button>
+                  <Button onClick={() => applyClientMethod({methodName: 'tap', xpath})}>Tap Element</Button>
                 </Col>
                 <Col span={12}>
                   <Input placeholder='Hostname' value={sendKeys} onChange={(e) => setInputValue('sendKeys', e.target.value)} />
-                  <Button onClick={() => applyClientMethod({methodName: 'sendKeys', xpath: selectedXPath})}>Send Keys</Button>
+                  <Button onClick={() => applyClientMethod({methodName: 'sendKeys', xpath})}>Send Keys</Button>
                 </Col>
               </Row>}
             </Card>
