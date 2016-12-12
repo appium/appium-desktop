@@ -1,11 +1,11 @@
 import Immutable from 'immutable';
 
-import { SET_SOURCE_AND_SCREENSHOT, QUIT_SESSION_REQUESTED, QUIT_SESSION_DONE, SELECT_ELEMENT_BY_XPATH,
+import { SET_SOURCE_AND_SCREENSHOT, QUIT_SESSION_REQUESTED, QUIT_SESSION_DONE, SELECT_ELEMENT, UNSELECT_ELEMENT,
   METHOD_CALL_REQUESTED, METHOD_CALL_DONE, SET_INPUT_VALUE, SET_EXPANDED_XPATHS } from '../actions/Inspector';
 
 // Make sure there's always at least one cap
 const INITIAL_STATE = {
-  expandedXPaths: [],
+  expandedXPaths: []
 };
 
 export default function inspector (state=INITIAL_STATE, action) {
@@ -26,10 +26,17 @@ export default function inspector (state=INITIAL_STATE, action) {
         .delete('isQuittingSession')
         .toJS();
       
-    case SELECT_ELEMENT_BY_XPATH:
+    case SELECT_ELEMENT:
       return Immutable.fromJS(state)
-        .set('selectedXPath', action.xpath)
+        .setIn(['selectedNode', 'xpath'], action.xpath)
+        .setIn(['selectedNode', 'attributes'], action.attributes)
+        .setIn(['selectedNode', 'tagName'], action.tagName)
         .toJS();
+
+    case UNSELECT_ELEMENT:
+      return Immutable.fromJS(state)
+      .delete('selectedNode')
+      .toJS();
 
     case METHOD_CALL_REQUESTED:
       return Immutable.fromJS(state)
