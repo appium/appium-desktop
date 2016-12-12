@@ -16,13 +16,6 @@ export default class NewSessionForm extends Component {
     });
   }
 
-  getCapsObject () {
-    const {caps} = this.props;
-    let capsObject = {};
-    caps.forEach((cap) => capsObject[cap.name] = cap.value);
-    return capsObject;
-  }
-
   render () {
     const {setCapabilityParam, caps, addCapability, removeCapability, saveSession, hideSaveAsModal, saveAsText, showSaveAsModal, setSaveAsText} = this.props;
 

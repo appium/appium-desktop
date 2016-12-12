@@ -38,7 +38,7 @@ export const ServerTypes = {
   sauce: 'sauce',
 };
 
-function getCapsObject (caps) {
+export function getCapsObject (caps) {
   return Object.assign({}, ...(caps.map((cap) => { 
     return {[cap.name]: cap.value}; 
   })));
