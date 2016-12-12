@@ -3,7 +3,7 @@ import NewSessionForm from './Session/NewSessionForm';
 import SavedSessions from './Session/SavedSessions';
 import { Tabs, Form, Input, Button, Spin } from 'antd';
 import { ServerTypes } from '../actions/Session';
-import './Session.css';
+import SessionStyles from './Session.css';
 
 const {TabPane} = Tabs;
 const FormItem = Form.Item;
@@ -21,7 +21,7 @@ export default class Session extends Component {
       requestSaveAsModal, newSession, caps, capsUUID, saveSession, isCapsDirty, sessionLoading} = this.props;
 
     return (<Spin spinning={!!sessionLoading}>
-      <div style={{width: '100%', padding: '1em'}}>
+      <div className={SessionStyles['session-container']}>
         <Tabs activeKey={serverType} onChange={changeServerType}>
           <TabPane tab='Local Server' key={ServerTypes.local}>
             <Form>
@@ -43,7 +43,7 @@ export default class Session extends Component {
               </FormItem>
             </Form>
           </TabPane>
-          <TabPane tab='SauceLabs Server' key={ServerTypes.sauce}>
+          <TabPane tab='Sauce Labs' key={ServerTypes.sauce}>
             <Form>
               <FormItem>
                 <Input placeholder='Sauce Username' value={server.sauce.username} onChange={(e) => setServerParam('username', e.target.value)} />
@@ -55,11 +55,11 @@ export default class Session extends Component {
           </TabPane>
         </Tabs>
 
-        {newSessionBegan ?  
-        <div key={2}>
+        {newSessionBegan && <div key={2}>
           <p>Session In Progress</p>
-        </div> : 
-        <Tabs activeKey={tabKey} onChange={(key) => switchTabs(key)}>
+        </div>}
+        
+        {!newSessionBegan && <Tabs activeKey={tabKey} onChange={(key) => switchTabs(key)}>
           <TabPane tab='Start New Session' key='new'>
             <NewSessionForm {...this.props} />
           </TabPane>
@@ -67,11 +67,12 @@ export default class Session extends Component {
               <SavedSessions {...this.props} />
           </TabPane>
         </Tabs>}
-        <div style={{float: 'right'}}>
+        <div className={SessionStyles['pull-right']}>
           { capsUUID && <Button type="primary" onClick={() => saveSession(caps, {uuid: capsUUID})} disabled={!isCapsDirty}>Save</Button> }
           <Button type="button" onClick={requestSaveAsModal} style={{marginLeft: '1em'}}>Save As</Button>
           <Button type="submit" onClick={() => newSession(caps)} style={{marginLeft: '1em'}}>Start Session</Button>
-        </div>
+        </div>}
+
       </div>
     </Spin>);
   }

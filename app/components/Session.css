@@ -26,3 +26,12 @@
 .saved-sessions tr:last-child td {
     border-bottom: 1px solid black;
 }
+
+.session-container {
+    width: 100%;
+    padding: 1em;
+}
+
+.pull-right {
+    float: right;
+}
