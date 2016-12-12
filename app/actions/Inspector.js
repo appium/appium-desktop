@@ -3,7 +3,8 @@ import { ipcRenderer } from 'electron';
 export const SET_SOURCE_AND_SCREENSHOT = 'SET_SOURCE';
 export const QUIT_SESSION_REQUESTED = 'QUIT_SESSION_REQUESTED';
 export const QUIT_SESSION_DONE = 'QUIT_SESSION_DONE';
-export const SELECT_ELEMENT_BY_XPATH = 'SELECT_ELEMENT_BY_XPATH';
+export const SELECT_ELEMENT = 'SELECT_ELEMENT';
+export const UNSELECT_ELEMENT = 'UNSELECT_ELEMENT';
 export const METHOD_CALL_REQUESTED = 'METHOD_CALL_REQUESTED';
 export const METHOD_CALL_DONE = 'METHOD_CALL_DONE';
 export const SET_INPUT_VALUE = 'SET_INPUT_VALUE';
@@ -23,16 +24,22 @@ export function bindSessionDone () {
       dispatch({type: METHOD_CALL_DONE});
     });
 
-    ipcRenderer.once('appium-client-command-response-error', (e) => {
+    ipcRenderer.once('appium-client-command-response-error', () => {
       alert('Could not complete command');
       dispatch({type: METHOD_CALL_DONE});
     });
   };
 }
 
-export function selectElementByXPath (xpath) {
+export function selectElement (tagName, attributes, xpath) {
   return async (dispatch) => {
-    dispatch({type: SELECT_ELEMENT_BY_XPATH, xpath});
+    dispatch({type: SELECT_ELEMENT, tagName, attributes, xpath});
+  };
+}
+
+export function unselectElement () {
+  return async (dispatch) => {
+    dispatch({type: UNSELECT_ELEMENT});
   };
 }
 

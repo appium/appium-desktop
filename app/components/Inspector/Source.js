@@ -23,8 +23,31 @@ export default class Source extends Component {
     return `${parentXPath}/*[${index + 1}]`;
   }
 
+  handleSelectElement (xpath) {
+    const { source, selectElement, unselectElement } = this.props;
+
+    if (!xpath) {
+      return unselectElement();
+    }
+
+    // Using xpath determine what XML node was selected
+    let sourceXML = (new DOMParser()).parseFromString(source, 'text/xml');
+    let selectedNode = document.evaluate('//*/*', sourceXML, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+
+    // Translate the attributes NamedNodeMap to an object
+    let { attributes, tagName } = selectedNode;
+    let attrObject = {};
+    [...attributes].forEach((attribute) => attrObject[attribute.name] = attribute.value);
+
+    // Dispatch the selectElement event
+    selectElement(tagName, attrObject, xpath);
+  }
+
   render () {
-    const { source, selectElementByXPath, selectedXPath, setExpandedXPaths, expandedXPaths } = this.props;
+    const { source, selectedNode, setExpandedXPaths, expandedXPaths } = this.props;
+    const { xpath } = selectedNode || {};
+
+    let selectedXPath = [xpath];
 
     if (!source) return <div>Loading</div>;
 
@@ -42,9 +65,9 @@ export default class Source extends Component {
       });
     };
 
-    return <Tree onSelect={(args) => selectElementByXPath(args[0])}  
+    return <Tree 
       onExpand={setExpandedXPaths} autoExpandParent={false} expandedKeys={expandedXPaths}
-      onSelect={(selectedXPaths) => selectElementByXPath(selectedXPaths[0])} selectedKeys={[selectedXPath]}>
+      onSelect={(selectedXPaths) => this.handleSelectElement(selectedXPaths[0])} selectedKeys={selectedXPath}>
       {recursive(sourceXML)}
     </Tree>;
   }

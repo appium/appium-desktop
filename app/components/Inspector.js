@@ -15,10 +15,11 @@ export default class Inspector extends Component {
   }
 
   render () {
-    const { source, isQuittingSession, applyClientMethod, selectedXPath, methodCallRequested, setInputValue, sendKeys } = this.props;
+    const { applyClientMethod, selectedNode, methodCallRequested, setInputValue, sendKeys } = this.props;
+    const { selectedXPath } = selectedNode || {};
 
     return (<div style={{width: '100%', padding: '1em'}}>
-      <Row>
+      <Row gutter={16}>
         <Col span={12}>
           <Card style={{minHeight: 800}} loading={!!methodCallRequested} title='Source'>
             <Button icon='reload' onClick={() => applyClientMethod({methodName: 'source'})}></Button>
