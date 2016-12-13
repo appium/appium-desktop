@@ -11,64 +11,40 @@ export default class Source extends Component {
   }
 
   getFormattedTag (el) {
-    let attributes = el.attributes ? [...el.attributes] : [];
-
-    let attrString = attributes.reduce((base, attrMap) =>
-        (this.isIgnoredAttr(attrMap)) ? '' : base + ` ${attrMap.name}="${attrMap.value}"`, ''
-    );
-    return `<${el.tagName}${attrString}>`;
+    const {tagName} = el;
+    return `<${tagName}>`;
   }i
 
-  getXPath (el, parentXPath = '', index = 0) {
-    return `${parentXPath}/*[${index + 1}]`;
-  }
+  handleSelectElement (path) {
+    const {selectElement, unselectElement} = this.props;
 
-  handleSelectElement (xpath) {
-    const { source, selectElement, unselectElement } = this.props;
-
-    if (!xpath) {
+    if (!path) {
       return unselectElement();
     }
 
-    // Using xpath determine what XML node was selected
-    let sourceXML = (new DOMParser()).parseFromString(source, 'text/xml');
-    let selectedNode = document.evaluate('//*/*', sourceXML, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
-
-    // Translate the attributes NamedNodeMap to an object
-    let { attributes, tagName } = selectedNode;
-    let attrObject = {};
-    [...attributes].forEach((attribute) => attrObject[attribute.name] = attribute.value);
-
     // Dispatch the selectElement event
-    selectElement(tagName, attrObject, xpath);
+    selectElement(path);
   }
 
   render () {
-    const { source, selectedNode, setExpandedXPaths, expandedXPaths } = this.props;
-    const { xpath } = selectedNode || {};
+    const { source, setExpandedPaths, expandedPaths, selectedPath } = this.props;
 
-    let selectedXPath = [xpath];
+    const selectedPathArr = [selectedPath];
 
-    if (!source) return <div>Loading</div>;
+    let recursive = (elemObj) => {
+      if (!elemObj) return null;
 
-    let sourceXML = (new DOMParser()).parseFromString(source, 'text/xml');
-
-    let recursive = (elem, parentXPath = '') => {
-      if (!elem) return null;
-
-      return [...elem.children].map((el, index) => {
-        let xpath = this.getXPath(el, parentXPath, index);
-
-        return <TreeNode title={this.getFormattedTag(el)} key={xpath}>
-          {recursive(el, xpath)}
+      return elemObj.children.map((el) => {
+        return <TreeNode title={this.getFormattedTag(el)} key={el.path}>
+          {recursive(el)}
         </TreeNode>;
       });
     };
 
     return <Tree 
-      onExpand={setExpandedXPaths} autoExpandParent={false} expandedKeys={expandedXPaths}
-      onSelect={(selectedXPaths) => this.handleSelectElement(selectedXPaths[0])} selectedKeys={selectedXPath}>
-      {recursive(sourceXML)}
+      onExpand={setExpandedPaths} autoExpandParent={false} expandedKeys={expandedPaths}
+      onSelect={(selectedPaths) => this.handleSelectElement(selectedPaths[0])} selectedKeys={selectedPathArr}>
+      {recursive(source)}
     </Tree>;
   }
 }

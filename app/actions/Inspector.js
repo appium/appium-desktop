@@ -8,7 +8,7 @@ export const UNSELECT_ELEMENT = 'UNSELECT_ELEMENT';
 export const METHOD_CALL_REQUESTED = 'METHOD_CALL_REQUESTED';
 export const METHOD_CALL_DONE = 'METHOD_CALL_DONE';
 export const SET_INPUT_VALUE = 'SET_INPUT_VALUE';
-export const SET_EXPANDED_XPATHS = 'SET_EXPANDED_XPATHS';
+export const SET_EXPANDED_PATHS = 'SET_EXPANDED_PATHS';
 
 export function bindSessionDone () {
   return async (dispatch) => {
@@ -20,7 +20,25 @@ export function bindSessionDone () {
 
     ipcRenderer.on('appium-client-command-response', (evt, resp) => {
       const { source, screenshot } = resp;
-      dispatch({type: SET_SOURCE_AND_SCREENSHOT, source, screenshot});
+
+      // Convert the sourceXML to JSON
+      let recursive = (xmlNode, parentPath, index) => {
+        let path = (index !== undefined) && `${!parentPath ? '' : parentPath + '.'}${index}`;
+        let attrObject = {};
+        [...(xmlNode.attributes || [])].forEach((attribute) => attrObject[attribute.name] = attribute.value);
+
+        return {
+          children: [...xmlNode.children].map((childNode, childIndex) => recursive(childNode, path, childIndex)),
+          tagName: xmlNode.tagName,
+          attributes: attrObject,
+          path,
+        };
+      };
+
+      let sourceXML = (new DOMParser()).parseFromString(source, 'text/xml');
+      let sourceJSON = recursive(sourceXML);
+
+      dispatch({type: SET_SOURCE_AND_SCREENSHOT, source: sourceJSON, screenshot});
       dispatch({type: METHOD_CALL_DONE});
     });
 
@@ -31,9 +49,9 @@ export function bindSessionDone () {
   };
 }
 
-export function selectElement (tagName, attributes, xpath) {
+export function selectElement (path) {
   return async (dispatch) => {
-    dispatch({type: SELECT_ELEMENT, tagName, attributes, xpath});
+    dispatch({type: SELECT_ELEMENT, path});
   };
 }
 
@@ -66,8 +84,8 @@ export function setInputValue (name, value) {
   };
 }
 
-export function setExpandedXPaths (xpaths) {
+export function setExpandedPaths (paths) {
   return async (dispatch) => {
-    dispatch({type: SET_EXPANDED_XPATHS, xpaths});
+    dispatch({type: SET_EXPANDED_PATHS, paths});
   };
 }

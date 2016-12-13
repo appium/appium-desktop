@@ -1,11 +1,11 @@
 import _ from 'lodash';
 
 import { SET_SOURCE_AND_SCREENSHOT, QUIT_SESSION_REQUESTED, QUIT_SESSION_DONE, SELECT_ELEMENT, UNSELECT_ELEMENT,
-  METHOD_CALL_REQUESTED, METHOD_CALL_DONE, SET_INPUT_VALUE, SET_EXPANDED_XPATHS } from '../actions/Inspector';
+  METHOD_CALL_REQUESTED, METHOD_CALL_DONE, SET_INPUT_VALUE, SET_EXPANDED_PATHS } from '../actions/Inspector';
 
 // Make sure there's always at least one cap
 const INITIAL_STATE = {
-  expandedXPaths: []
+  expandedPaths: []
 };
 
 export default function inspector (state=INITIAL_STATE, action) {
@@ -27,17 +27,21 @@ export default function inspector (state=INITIAL_STATE, action) {
       return _.omit(state, 'isQuittingSession');
 
     case SELECT_ELEMENT:
+      var {path} = action;
+      var pathArr = path.split('.');
+      var selectedNode = state.source;
+      for (let index of pathArr) {
+        selectedNode = selectedNode.children[index];
+      }
+
       return {
         ...state,
-        selectedNode: {
-          xpath: action.xpath,
-          attributes: action.attributes,
-          tagName: action.tagName,
-        }
+        selectedPath: path,
+        selectedNode: {...selectedNode},
       };
 
     case UNSELECT_ELEMENT:
-      return _.omit(state, 'selectedNode');
+      return _.omit(state, ['selectedNode', 'selectedPath']);
 
     case METHOD_CALL_REQUESTED:
       return {
@@ -54,10 +58,10 @@ export default function inspector (state=INITIAL_STATE, action) {
         [action.name]: action.value,
       };
 
-    case SET_EXPANDED_XPATHS:
+    case SET_EXPANDED_PATHS:
       return {
         ...state,
-        expandedXPaths: action.xpaths,
+        expandedPaths: action.paths,
       };
 
     default:
