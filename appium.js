@@ -10,7 +10,6 @@ const LOG_SEND_INTERVAL_MS = 250;
 const isDev = process.env.NODE_ENV === 'development';
 
 var server = null;
-var serverArgs = null;
 var logWatcher = null;
 var batchedLogs = [];
 
@@ -19,10 +18,9 @@ let sessionDrivers = {};
 /**
  * Kill session associated with session browser window
  */
-function killSession (sessionWinID) {
+async function killSession (sessionWinID) {
   if (sessionDrivers[sessionWinID]) {
-    sessionDrivers[sessionWinID].closeApp();
-    sessionDrivers[sessionWinID].end();
+    await sessionDrivers[sessionWinID].quit();
     delete sessionDrivers[sessionWinID];
   }
 }
@@ -52,8 +50,7 @@ function connectStartServer (win) {
 
     try {
       // set up the appium server running in this thread
-      serverArgs = args;
-      server = await appiumServer(serverArgs, true);
+      server = await appiumServer(args, true);
       win.webContents.send('appium-start-ok');
     } catch (e) {
       win.webContents.send('appium-start-error', e.message);
@@ -100,14 +97,8 @@ function connectStartSession (win) {
 
     // When you close the session window, kill the associated Appium session
     let sessionWinID = sessionWin.webContents.id;
-    sessionWin.on('closed', () => {
-      killSession(sessionWinID);
-      sessionWin = null;
-    });
-
-    // When the main window is closed, terminate the appium session and close the session window
-    win.once('closed', () => {
-      // sessionWin.close();
+    sessionWin.on('closed', async () => {
+      await killSession(sessionWinID);
       sessionWin = null;
     });
 
@@ -145,17 +136,6 @@ function connectCreateNewSession () {
       event.sender.send('appium-new-session-successful');
       await p;
       event.sender.send('appium-new-session-ready');
-
-      // Listen for command requests
-      ipcMain.on('appium-client-command-request', async () => {
-        let type = 'source';
-        try {
-          let response = await driver[type]();
-          event.sender.send('appium-client-command-response', response);
-        } catch (e) {
-          event.sender.send('appium-client-command-response-error', e);
-        }
-      });
 
     } catch (e) {
 
