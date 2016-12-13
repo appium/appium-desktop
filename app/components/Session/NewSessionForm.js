@@ -16,7 +16,7 @@ export default class NewSessionForm extends Component {
     });
   }
 
-  getCapsControl (cap) {
+  getCapsControl (cap, index) {
     const {setCapabilityParam} = this.props;
 
     const buttonAfter = <Icon style={{cursor: 'pointer'}} 
@@ -61,7 +61,7 @@ export default class NewSessionForm extends Component {
                 </select>
               </FormItem>
               <FormItem>
-                {this.getCapsControl(cap)}
+                {this.getCapsControl(cap, index)}
               </FormItem>
               <FormItem>
                 { (caps.length > 1) && <Button icon='delete' onClick={() => removeCapability(index)}/> }
