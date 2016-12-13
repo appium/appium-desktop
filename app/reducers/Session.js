@@ -9,7 +9,6 @@ import { NEW_SESSION_REQUESTED, NEW_SESSION_BEGAN, NEW_SESSION_DONE,
         CHANGE_SERVER_TYPE, SET_SERVER_PARAM, SET_SERVER,
         ServerTypes } from '../actions/Session';
 
-// Make sure there's always at least one cap
 const INITIAL_STATE = {
   savedSessions: [],
   tabKey: 'new',
@@ -19,13 +18,16 @@ const INITIAL_STATE = {
     remote: {},
     sauce: {},
   },
+
+  // Make sure there's always at least one cap
   caps: [{
     type: 'text',
   }],
+
   isCapsDirty: true,
 };
 
-export default function session (state=INITIAL_STATE, action) {
+export default function session (state = INITIAL_STATE, action) {
   switch (action.type) {
     case NEW_SESSION_REQUESTED:
       return Immutable.fromJS(state)
