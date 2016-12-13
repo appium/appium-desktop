@@ -26,20 +26,19 @@ export default class SavedSessions extends Component {
           <tbody>
             {savedSessions && [...savedSessions].reverse().map((session, index) => {
               index = savedSessions.length - index - 1;
-              let anchorStyle = {display: 'block'};
               return <tr key={index} className={session.uuid === capsUUID ? SessionCSS['active-session'] : ''} onClick={() => setCaps(session.caps, session.uuid)}> 
                 <td>
-                  <p style={anchorStyle}>
+                  <p>
                   {session.name || 'Untitled'}
                   &nbsp;&nbsp;
-                  {`(${moment(session.date).format('YYYY-MM-DD')})`}
+                  {moment(session.date).format('YYYY-MM-DD')}
                   </p>
                 </td>
                 <td>
                   {
                     session.uuid === capsUUID &&
-                    <div style={{float: 'right'}}>
-                      <Button icon='edit' onClick={() => switchTabs('new')} style={{marginRight: '1em'}}/>
+                    <div className={SessionCSS['pull-right']}>
+                      <Button icon='edit' onClick={() => switchTabs('new')} className={SessionCSS['edit-session']}/>
                       <Button icon='delete' onClick={this.handleDelete(index)}/>
                     </div>
                   }
