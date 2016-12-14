@@ -62,7 +62,7 @@
     "teen_process": "1.x",
     "temp": "0.x",
     "wd": "1.x",
-    "antd": "^2.5.0"
+    "antd": "2.x"
   },
   "devDependencies": {
     "asar": "0.x",
