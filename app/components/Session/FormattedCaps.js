@@ -14,7 +14,7 @@ export default class NewSessionForm extends Component {
   }
 
   render () {
-    const { caps } = this.props;
+    const {caps} = this.props;
     return caps && <textarea rows={15} style={{padding: '4px', width: '100%', backgroundColor: '#d3d3d3'}} onChange={() => {}} value={ this.getFormattedJSON(caps) } />
   }
 }

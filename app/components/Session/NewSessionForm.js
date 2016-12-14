@@ -3,7 +3,7 @@ import { Button, Switch, Input, Modal, Form, Icon, Row, Col } from 'antd';
 import { remote } from 'electron';
 import FormattedCaps from './FormattedCaps';
 
-const { dialog } = remote;
+const {dialog} = remote;
 const FormItem = Form.Item;
 
 export default class NewSessionForm extends Component {
@@ -17,14 +17,14 @@ export default class NewSessionForm extends Component {
   }
 
   getCapsObject () {
-    const { caps } = this.props;
+    const {caps} = this.props;
     let capsObject = {};
     caps.forEach((cap) => capsObject[cap.name] = cap.value);
     return capsObject;
   }
 
   render () {
-    const { setCapabilityParam, caps, addCapability, removeCapability, saveSession, hideSaveAsModal, saveAsText, showSaveAsModal, setSaveAsText } = this.props;
+    const {setCapabilityParam, caps, addCapability, removeCapability, saveSession, hideSaveAsModal, saveAsText, showSaveAsModal, setSaveAsText} = this.props;
 
     return <div>
       <h4>Desired Capabilities</h4> 

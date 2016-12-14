@@ -1,0 +1,22 @@
+.highlighter-box {
+    position: absolute;
+    opacity: 0.5;
+    cursor: pointer;
+}
+
+.highlighter-box.inspected-element-box div {
+    background-color: blue;
+    visibility: hidden;
+}
+
+.highlighter-box.hovered-element-box div {
+    background-color: yellow;
+    visibility: hidden;
+}
+
+.highlighter-box.hovered-element-box div, .highlighter-box.inspected-element-box div {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    visibility: visible;
+} 

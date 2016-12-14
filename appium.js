@@ -141,7 +141,7 @@ function connectCreateNewSessionWindow (win) {
  */
 function connectCreateNewSession () {
   ipcMain.on('appium-create-new-session', async (event, args) => {
-    const { desiredCapabilities, host, port, username, accessKey, https } = args;
+    const {desiredCapabilities, host, port, username, accessKey, https} = args;
 
     // If there is an already active session, kill it. Limit one session per window.
     if (sessionDrivers[event.sender.id]) {
@@ -178,7 +178,7 @@ function connectCreateNewSession () {
  */
 function connectClientMethodListener () {
   ipcMain.on('appium-client-command-request', async (evt, data) => {
-    const { methodName, args = [], xpath } = data;
+    const {methodName, args = [], xpath} = data;
     let driver = sessionDrivers[evt.sender.id];
 
     let source, screenshot;

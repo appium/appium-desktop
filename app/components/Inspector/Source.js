@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Tree, Spin } from 'antd';
 
-const { TreeNode } = Tree;
+const {TreeNode} = Tree;
 
 export default class Source extends Component {
 
@@ -27,7 +27,7 @@ export default class Source extends Component {
   }
 
   render () {
-    const { source, setExpandedPaths, expandedPaths, selectedPath } = this.props;
+    const {source, setExpandedPaths, expandedPaths, selectedPath} = this.props;
 
     const selectedPathArr = [selectedPath];
 

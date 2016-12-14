@@ -21,7 +21,7 @@ export function bindSessionDone () {
     });
 
     ipcRenderer.on('appium-client-command-response', (evt, resp) => {
-      const { source, screenshot } = resp;
+      const {source, screenshot} = resp;
 
       // Convert the sourceXML to JSON
       let recursive = (xmlNode, parentPath, index) => {
@@ -55,16 +55,16 @@ export function selectElement (path) {
   return async (dispatch, getState) => {
     dispatch({type: SELECT_ELEMENT, path});
 
-    // Expand all of this element's descends so that it's visible in the tree
+    // Expand all of this element's ascendants so that it's visible in the tree
     let { expandedPaths } = getState().inspector;
     let pathArr = path.split('.').slice(0, path.length - 1);
     while (pathArr.length > 1) {
       pathArr.splice(pathArr.length - 1);
-      expandedPaths.push(pathArr.join('.'));
+      let path = pathArr.join('.');
+      if (expandedPaths.indexOf(path) < 0) {
+        expandedPaths.push(path);
+      }
     }
-
-    // Dedupe the xpaths
-    expandedPaths = expandedPaths.filter((path, index) => expandedPaths.indexOf(path) === index);
     
     dispatch({type: SET_EXPANDED_PATHS, paths: expandedPaths});
   };

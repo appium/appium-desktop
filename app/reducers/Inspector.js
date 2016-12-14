@@ -5,7 +5,7 @@ import { SET_SOURCE_AND_SCREENSHOT, QUIT_SESSION_REQUESTED, QUIT_SESSION_DONE, S
 
 // Make sure there's always at least one cap
 const INITIAL_STATE = {
-  expandedPaths: []
+  expandedPaths: ['0']
 };
 
 export default function inspector (state=INITIAL_STATE, action) {

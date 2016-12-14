@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { debounce } from 'lodash';
+import InspectorCSS from '../Inspector.css';
 
 export default class Screenshot extends Component {
 
@@ -46,20 +47,18 @@ export default class Screenshot extends Component {
         let top = bounds[1] / scaleRatio;
         let width = (bounds[2] - bounds[0]) / scaleRatio;
         let height = (bounds[3] - bounds[1]) / scaleRatio;
-        let backgroundColor = hoveredPath === node.path ? 'yellow' : (selectedPath === node.path ? 'blue' : '');
-        let visibility = (selectedPath === node.path || hoveredPath === node.path) ? '' : 'hidden';
-        let position = 'absolute';
-        let cursor = 'pointer';
-        let opacity = 0.5;
 
-        let containerStyle = {zIndex, left, top, width, height, opacity, position, cursor};
-        let style = {backgroundColor, position: 'relative', width: '100%', height: '100%', visibility};
+        let highlighterClasses = [InspectorCSS['highlighter-box']];
+        hoveredPath === node.path && highlighterClasses.push(InspectorCSS['hovered-element-box']);
+        selectedPath === node.path && highlighterClasses.push(InspectorCSS['inspected-element-box']);
 
-        highlighterRects.push(<div onMouseOver={() => setHoveredElement(node.path)}
+        highlighterRects.push(<div className={highlighterClasses.join(' ')} 
+          onMouseOver={() => setHoveredElement(node.path)}
           onMouseOut={unsetHoveredElement} 
           onClick={() => selectElement(node.path)}
-          style={containerStyle}>
-          <div style={style}></div>
+          key={node.path}
+          style={{zIndex, left, top, width, height}}>
+          <div></div>
         </div>);
       }
 
