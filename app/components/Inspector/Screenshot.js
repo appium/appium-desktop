@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { debounce } from 'lodash';
-import InspectorCSS from '../Inspector.css';
+import HighlighterRect from './HighlighterRect';
 
 export default class Screenshot extends Component {
 
@@ -31,37 +31,12 @@ export default class Screenshot extends Component {
 
   render () {
     const highlighterRects = [];
-    const {selectedPath, source, setHoveredElement, unsetHoveredElement, hoveredPath, selectElement, screenshot} = this.props;
+    const {source, screenshot} = this.props;
     const {scaleRatio} = this.state;
 
     let recursive = (node, zIndex = 0) => {
       if (!node) return;
-
-      let {bounds} = node.attributes || {};
-      if (bounds) {
-        // Parse the bounds from string to array
-        bounds = bounds.split(/\[|\]|,/).filter((str) => str !== '');
-
-        // Calculate style (coordinates, backgroundColor, etc...)
-        let left = bounds[0] / scaleRatio;
-        let top = bounds[1] / scaleRatio;
-        let width = (bounds[2] - bounds[0]) / scaleRatio;
-        let height = (bounds[3] - bounds[1]) / scaleRatio;
-
-        let highlighterClasses = [InspectorCSS['highlighter-box']];
-        hoveredPath === node.path && highlighterClasses.push(InspectorCSS['hovered-element-box']);
-        selectedPath === node.path && highlighterClasses.push(InspectorCSS['inspected-element-box']);
-
-        highlighterRects.push(<div className={highlighterClasses.join(' ')} 
-          onMouseOver={() => setHoveredElement(node.path)}
-          onMouseOut={unsetHoveredElement} 
-          onClick={() => selectElement(node.path)}
-          key={node.path}
-          style={{zIndex, left, top, width, height}}>
-          <div></div>
-        </div>);
-      }
-
+      highlighterRects.push(<HighlighterRect {...this.props} node={node} zIndex={zIndex} scaleRatio={scaleRatio} />);
       node.children.forEach((childNode) => recursive(childNode, zIndex + 1));
     };
 
