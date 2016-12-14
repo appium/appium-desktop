@@ -88,6 +88,8 @@
 .term span.icon {
   margin-right: 8px;
   font-size: 0.9em;
+  display: inline-block;
+  width: 10px;
 }
 
 .term span.icon-info-circled:before {
@@ -114,4 +116,9 @@
 .button-container button {
   padding: 8px;
   margin-right: 8px;
+}
+
+.term .timestamp {
+  color: #666;
+  margin-right: 0.6em;
 }

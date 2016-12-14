@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Button, Switch, Input, Modal, Form, Icon, Row, Col } from 'antd';
 import { remote } from 'electron';
 import FormattedCaps from './FormattedCaps';
-
+import SessionStyles from '../Session.css';
 const {dialog} = remote;
 const FormItem = Form.Item;
 
@@ -16,14 +16,30 @@ export default class NewSessionForm extends Component {
     });
   }
 
-  getCapsObject () {
-    const {caps} = this.props;
-    let capsObject = {};
-    caps.forEach((cap) => capsObject[cap.name] = cap.value);
-    return capsObject;
+  getCapsControl (cap, index) {
+    const {setCapabilityParam} = this.props;
+
+    const buttonAfter = <Icon className={SessionStyles['filepath-button']}
+      type="file" 
+      onClick={() => this.getLocalFilePath((filepath) => setCapabilityParam(index, 'value', filepath))} />;
+
+    switch (cap.type) {
+      case 'text': return <Input placeholder='Value' value={cap.value} onChange={(e) => setCapabilityParam(index, 'value', e.target.value)}/>;
+      case 'boolean': return <Switch checkedChildren={'true'} unCheckedChildren={'false'} 
+        placeholder='Value' value={cap.value} onChange={(e) => setCapabilityParam(index, 'value', e.target.value)}/>;
+      case 'number': return <Input placeholder='Value' value={cap.value} onChange={(e) => setCapabilityParam(index, 'value', e.target.value)}/>; 
+      case 'json_object': return <Input type='textarea' rows={4} placeholder='Value' value={cap.value} 
+        onChange={(e) => setCapabilityParam(index, 'value', e.target.value)}/>;
+      case 'file': return <div>
+        <Input placeholder='Value' value={cap.value} addonAfter={buttonAfter}/>
+      </div>;
+      default: 
+        throw `Invalid cap type: ${cap.type}`;
+    }
   }
 
   render () {
+    console.log(SessionStyles);
     const {setCapabilityParam, caps, addCapability, removeCapability, saveSession, hideSaveAsModal, saveAsText, showSaveAsModal, setSaveAsText} = this.props;
 
     return <div>
@@ -32,8 +48,7 @@ export default class NewSessionForm extends Component {
       <Col span={12}>
         <Form inline>
           {caps.map((cap, index) => {
-            const buttonAfter = <Icon style={{cursor: 'pointer'}} type="file" onClick={() => this.getLocalFilePath((filepath) => setCapabilityParam(index, 'value', filepath))} />;
-            return <div key={index} style={{marginBottom: '1em'}}>
+            return <div key={index} className={SessionStyles['desired-capabilities-form-container']}>
               <FormItem>
                 <Input placeholder='Name' value={cap.name} onChange={(e) => setCapabilityParam(index, 'name', e.target.value)}/>
               </FormItem>
@@ -47,26 +62,11 @@ export default class NewSessionForm extends Component {
                 </select>
               </FormItem>
               <FormItem>
-                {
-                  function () {
-                    switch (cap.type) {
-                      case 'text': return <Input placeholder='Value' value={cap.value} onChange={(e) => setCapabilityParam(index, 'value', e.target.value)}/>;
-                      case 'boolean': return <Switch checkedChildren={'true'} unCheckedChildren={'false'} 
-                        placeholder='Value' value={cap.value} onChange={(e) => setCapabilityParam(index, 'value', e.target.value)}/>;
-                      case 'number': return <Input placeholder='Value' value={cap.value} onChange={(e) => setCapabilityParam(index, 'value', e.target.value)}/>; 
-                      case 'json_object': return <Input type='textarea' rows={4} placeholder='Value' value={cap.value} 
-                        onChange={(e) => setCapabilityParam(index, 'value', e.target.value)}/>;
-                      case 'file': return <div>
-                        <Input placeholder='Value' value={cap.value} addonAfter={buttonAfter}/>
-                      </div>;
-                      default: break;
-                    }
-                  }.bind(this)()
-                }
+                {this.getCapsControl(cap, index)}
               </FormItem>
               <FormItem>
                 { (caps.length > 1) && <Button icon='delete' onClick={() => removeCapability(index)}/> }
-                { (index === caps.length - 1) && <Button icon='plus' onClick={addCapability} style={{marginLeft: '4px'}}/> }
+                <Button icon='plus' onClick={addCapability} className={SessionStyles['add-desired-capability-button']} />
               </FormItem>
             </div>;
           })}

@@ -19,12 +19,17 @@ let sessionDrivers = {};
 /**
  * Kill session associated with session browser window
  */
-async function killSession (sender) {
-  let sessionWinID = sender.id;
-  if (sessionDrivers[sessionWinID]) {
-    await sessionDrivers[sessionWinID].quit();
+async function killSession (sessionWinID) {
+  let driver = sessionDrivers[sessionWinID];
+  if (driver) {
+    let sessionID;
+    try {
+      await driver.getSessionId();
+      await driver.quit();
+    } catch (e) {
+      console.log(`Couldn't close session: ${sessionID || 'unknown session ID'}`);
+    }
     delete sessionDrivers[sessionWinID];
-    sender.send('appium-session-done');
   }
 }
 
@@ -99,7 +104,7 @@ function connectCreateNewSessionWindow (win) {
   ipcMain.on('create-new-session-window', () => {
 
     // Create and open the Browser Window
-    let sessionWin = new BrowserWindow({width: 1500, height: 600, webPreferences: {devTools: true}});
+    let sessionWin = new BrowserWindow({width: 1500, height: 1000, webPreferences: {devTools: true}});
     let sessionHTMLPath = path.resolve(__dirname, 'app', 'index.html#/session');
     sessionWin.loadURL(`file://${sessionHTMLPath}`);
     sessionWin.show();
@@ -136,9 +141,6 @@ function connectCreateNewSessionWindow (win) {
   });
 }
 
-/**
- * Creates a new WD client session
- */
 function connectCreateNewSession () {
   ipcMain.on('appium-create-new-session', async (event, args) => {
     const {desiredCapabilities, host, port, username, accessKey, https} = args;
