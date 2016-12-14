@@ -19,8 +19,15 @@ let sessionDrivers = {};
  * Kill session associated with session browser window
  */
 async function killSession (sessionWinID) {
-  if (sessionDrivers[sessionWinID]) {
-    await sessionDrivers[sessionWinID].quit();
+  let driver = sessionDrivers[sessionWinID];
+  if (driver) {
+    let sessionID;
+    try {
+      await driver.getSessionId();
+      await driver.quit();
+    } catch (e) {
+      console.log(`Couldn't close session: ${sessionID || 'unknown session ID'}`);
+    }
     delete sessionDrivers[sessionWinID];
   }
 }

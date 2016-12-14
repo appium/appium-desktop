@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Button, Switch, Input, Modal, Form, Icon, Row, Col } from 'antd';
 import { remote } from 'electron';
 import FormattedCaps from './FormattedCaps';
-
+import SessionStyles from '../Session.css';
 const {dialog} = remote;
 const FormItem = Form.Item;
 
@@ -19,7 +19,7 @@ export default class NewSessionForm extends Component {
   getCapsControl (cap, index) {
     const {setCapabilityParam} = this.props;
 
-    const buttonAfter = <Icon style={{cursor: 'pointer'}} 
+    const buttonAfter = <Icon className={SessionStyles['filepath-button']}
       type="file" 
       onClick={() => this.getLocalFilePath((filepath) => setCapabilityParam(index, 'value', filepath))} />;
 
@@ -39,6 +39,7 @@ export default class NewSessionForm extends Component {
   }
 
   render () {
+    console.log(SessionStyles);
     const {setCapabilityParam, caps, addCapability, removeCapability, saveSession, hideSaveAsModal, saveAsText, showSaveAsModal, setSaveAsText} = this.props;
 
     return <div>
@@ -47,7 +48,7 @@ export default class NewSessionForm extends Component {
       <Col span={12}>
         <Form inline>
           {caps.map((cap, index) => {
-            return <div key={index} style={{marginBottom: '1em'}}>
+            return <div key={index} className={SessionStyles['desired-capabilities-form-container']}>
               <FormItem>
                 <Input placeholder='Name' value={cap.name} onChange={(e) => setCapabilityParam(index, 'name', e.target.value)}/>
               </FormItem>
@@ -65,7 +66,7 @@ export default class NewSessionForm extends Component {
               </FormItem>
               <FormItem>
                 { (caps.length > 1) && <Button icon='delete' onClick={() => removeCapability(index)}/> }
-                { (index === caps.length - 1) && <Button icon='plus' onClick={addCapability} style={{marginLeft: '4px'}}/> }
+                <Button icon='plus' onClick={addCapability} className={SessionStyles['add-desired-capability-button']} />
               </FormItem>
             </div>;
           })}

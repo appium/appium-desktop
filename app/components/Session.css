@@ -49,3 +49,27 @@
     width: 100%;
     background-color: #d3d3d3;
 }
+
+.start-session-button {
+    margin-left: 1em;
+}
+
+.filepath-button {
+    cursor: pointer;
+}
+
+.desired-capabilities-form-container {
+    margin-bottom: 1em;
+}
+
+.desired-capabilities-form-container .add-desired-capability-button {
+    display: none;
+}
+
+.desired-capabilities-form-container:last-child .add-desired-capability-button {
+    display: initial;
+}
+
+.add-desired-capability-button {
+    margin-left: 4px;
+}

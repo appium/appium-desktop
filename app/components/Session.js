@@ -59,7 +59,7 @@ export default class Session extends Component {
           <p>Session In Progress</p>
         </div>}
         
-        {!newSessionBegan && <Tabs activeKey={tabKey} onChange={(key) => switchTabs(key)}>
+        {!newSessionBegan && <Tabs activeKey={tabKey} onChange={switchTabs}>
           <TabPane tab='Start New Session' key='new'>
             <NewSessionForm {...this.props} />
           </TabPane>
@@ -69,9 +69,9 @@ export default class Session extends Component {
         </Tabs>}
         <div className={SessionStyles['pull-right']}>
           { capsUUID && <Button type="primary" onClick={() => saveSession(caps, {uuid: capsUUID})} disabled={!isCapsDirty}>Save</Button> }
-          <Button type="button" onClick={requestSaveAsModal} style={{marginLeft: '1em'}}>Save As</Button>
-          <Button type="submit" onClick={() => newSession(caps)} style={{marginLeft: '1em'}}>Start Session</Button>
-        </div>}
+          <Button type="button" onClick={requestSaveAsModal}>Save As</Button>
+          <Button type="submit" onClick={() => newSession(caps)} className={SessionStyles['start-session-button']}>Start Session</Button>
+        </div>
 
       </div>
     </Spin>);
