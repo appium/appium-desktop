@@ -7,6 +7,7 @@ export const SERVER_STOP_FAIL = 'SERVER_STOP_FAIL';
 export const LOGS_RECEIVED = 'LOGS_RECEIVED';
 export const LOGS_CLEARED = 'LOGS_CLEARED';
 export const MONITOR_CLOSED = 'MONITOR_CLOSED';
+export const START_SESSION_REQUEST = 'START_SESSION';
 export const SET_SERVER_ARGS = 'SET_SERVER_ARGS';
 
 export function stopServerReq () {
@@ -19,6 +20,10 @@ export function stopServerOK () {
 
 export function stopServerFailed (reason) {
   return {type: SERVER_STOP_FAIL, reason};
+}
+
+export function startSessionRequest (sessionUUID) {
+  return {type: START_SESSION_REQUEST, sessionUUID};
 }
 
 export function serverLogsReceived (logs) {
@@ -73,5 +78,12 @@ export function closeMonitor () {
 export function clearLogs () {
   return (dispatch) => {
     dispatch({type: LOGS_CLEARED});
+  };
+}
+
+export function startSession () {
+  return (dispatch) => {
+    dispatch({type: START_SESSION_REQUEST});
+    ipcRenderer.send('start-session');
   };
 }
