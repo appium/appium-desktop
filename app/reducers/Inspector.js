@@ -1,6 +1,6 @@
 import _ from 'lodash';
 
-import { SET_SOURCE_AND_SCREENSHOT, QUIT_SESSION_REQUESTED, QUIT_SESSION_DONE, SELECT_ELEMENT, UNSELECT_ELEMENT,
+import { SET_SOURCE_AND_SCREENSHOT, QUIT_SESSION_REQUESTED, QUIT_SESSION_DONE, SELECT_ELEMENT, UNSELECT_ELEMENT, SET_HOVERED_ELEMENT, UNSET_HOVERED_ELEMENT,
   METHOD_CALL_REQUESTED, METHOD_CALL_DONE, SET_INPUT_VALUE, SET_EXPANDED_PATHS } from '../actions/Inspector';
 
 // Make sure there's always at least one cap
@@ -63,6 +63,15 @@ export default function inspector (state=INITIAL_STATE, action) {
         ...state,
         expandedPaths: action.paths,
       };
+
+    case SET_HOVERED_ELEMENT:
+      return {
+        ...state,
+        hoveredPath: action.path,
+      };
+
+    case UNSET_HOVERED_ELEMENT:
+      return _.omit(state, 'hoveredPath');
 
     default:
       return {...state};

@@ -9,6 +9,8 @@ export const METHOD_CALL_REQUESTED = 'METHOD_CALL_REQUESTED';
 export const METHOD_CALL_DONE = 'METHOD_CALL_DONE';
 export const SET_INPUT_VALUE = 'SET_INPUT_VALUE';
 export const SET_EXPANDED_PATHS = 'SET_EXPANDED_PATHS';
+export const SET_HOVERED_ELEMENT = 'SET_HOVERED_ELEMENT';
+export const UNSET_HOVERED_ELEMENT = 'UNSET_HOVERED_ELEMENT';
 
 export function bindSessionDone () {
   return async (dispatch) => {
@@ -87,5 +89,17 @@ export function setInputValue (name, value) {
 export function setExpandedPaths (paths) {
   return async (dispatch) => {
     dispatch({type: SET_EXPANDED_PATHS, paths});
+  };
+}
+
+export function setHoveredElement (path) {
+  return async (dispatch) => {
+    dispatch({type: SET_HOVERED_ELEMENT, path});
+  };
+}
+
+export function unsetHoveredElement (path) {
+  return async (dispatch) => {
+    dispatch({type: UNSET_HOVERED_ELEMENT, path});
   };
 }

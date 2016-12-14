@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import { Button, Row, Col, Spin, Input, Card } from 'antd';
+import { Button, Row, Col, Input, Card } from 'antd';
 import Source from './Inspector/Source';
 
 export default class Inspector extends Component {
@@ -11,24 +11,42 @@ export default class Inspector extends Component {
   }
 
   renderHighlighterRects () {
-    const {selectedNode} = this.props;
-    if (selectedNode) {
-      let {bounds} = selectedNode.attributes;
-      if (!bounds) return;
-      // Parse the bounds from string to array
-      bounds = bounds.split(/\[|\]|,/).filter((str) => str !== '')
+    const highlighterRects = [];
+    const {selectedPath, source, setHoveredElement, unsetHoveredElement, hoveredPath, selectElement} = this.props;
 
-      // Calculate top, height and width
-      let left = bounds[0] / this.scaleRatio;
-      let top = bounds[1] / this.scaleRatio;
-      let width = (bounds[2] - bounds[0]) / this.scaleRatio;
-      let height = (bounds[3] - bounds[1]) / this.scaleRatio;
+    let recursive = (node, zIndex = 0) => {
+      let {bounds} = node.attributes || {};
+      if (bounds) {
+        // Parse the bounds from string to array
+        bounds = bounds.split(/\[|\]|,/).filter((str) => str !== '');
 
-      return <div style={{position: 'absolute', backgroundColor: 'blue', height, width, top, left}}>
-      </div>;
-    } else {
-      return null;
-    }
+        // Calculate top, height and width
+        let left = bounds[0] / this.scaleRatio;
+        let top = bounds[1] / this.scaleRatio;
+        let width = (bounds[2] - bounds[0]) / this.scaleRatio;
+        let height = (bounds[3] - bounds[1]) / this.scaleRatio;
+        let backgroundColor = hoveredPath === node.path ? 'yellow' : (selectedPath === node.path ? 'blue' : '');
+        let visibility = (selectedPath === node.path || hoveredPath === node.path) ? '' : 'hidden';
+        let position = 'absolute';
+        let cursor = 'pointer';
+        let opacity = 0.5;
+
+        let containerStyle = {zIndex, left, top, width, height, opacity, position, cursor};
+        let style = {backgroundColor, position: 'relative', width: '100%', height: '100%', visibility};
+
+        highlighterRects.push(<div onMouseOver={() => setHoveredElement(node.path)}
+          onMouseOut={unsetHoveredElement} 
+          onClick={() => selectElement(node.path)}
+          style={containerStyle}>
+          <div style={style}></div>
+        </div>);
+      }
+
+      node.children.forEach((childNode) => recursive(childNode, zIndex + 1));
+    };
+
+    recursive(source);
+    return highlighterRects;
   }
 
   componentDidUpdate () {
