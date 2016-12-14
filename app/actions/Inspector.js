@@ -52,8 +52,21 @@ export function bindSessionDone () {
 }
 
 export function selectElement (path) {
-  return async (dispatch) => {
+  return async (dispatch, getState) => {
     dispatch({type: SELECT_ELEMENT, path});
+
+    // Expand all of this element's descends so that it's visible in the tree
+    let { expandedPaths } = getState().inspector;
+    let pathArr = path.split('.').slice(0, path.length - 1);
+    while (pathArr.length > 1) {
+      pathArr.splice(pathArr.length - 1);
+      expandedPaths.push(pathArr.join('.'));
+    }
+
+    // Dedupe the xpaths
+    expandedPaths = expandedPaths.filter((path, index) => expandedPaths.indexOf(path) === index);
+    
+    dispatch({type: SET_EXPANDED_PATHS, paths: expandedPaths});
   };
 }
 

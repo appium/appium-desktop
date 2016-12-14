@@ -109,8 +109,8 @@ export default class Inspector extends Component {
         <Col span={12}>
           <Card style={{height: 800}} loading={!!methodCallRequested}>
             <div style={{position: 'relative'}}>
-              <img id='appium-screenshot' style={{width: '100%'}} src={`data:image/gif;base64,${screenshot}`} />
-              {this.renderHighlighterRects(attributes)}
+              {screenshot && <img id='appium-screenshot' style={{width: '100%'}} src={`data:image/gif;base64,${screenshot}`} />}
+              {screenshot && this.renderHighlighterRects()}
             </div>
           </Card>
         </Col>
