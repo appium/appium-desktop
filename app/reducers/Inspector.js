@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import { omit } from 'lodash';
 
 import { SET_SOURCE_AND_SCREENSHOT, QUIT_SESSION_REQUESTED, QUIT_SESSION_DONE, SELECT_ELEMENT, UNSELECT_ELEMENT, SET_HOVERED_ELEMENT, UNSET_HOVERED_ELEMENT,
   METHOD_CALL_REQUESTED, METHOD_CALL_DONE, SET_INPUT_VALUE, SET_EXPANDED_PATHS } from '../actions/Inspector';
@@ -24,7 +24,7 @@ export default function inspector (state=INITIAL_STATE, action) {
       };
       
     case QUIT_SESSION_DONE:
-      return _.omit(state, 'isQuittingSession');
+      return omit(state, 'isQuittingSession');
 
     case SELECT_ELEMENT:
       var {path} = action;
@@ -41,7 +41,7 @@ export default function inspector (state=INITIAL_STATE, action) {
       };
 
     case UNSELECT_ELEMENT:
-      return _.omit(state, ['selectedNode', 'selectedPath']);
+      return omit(state, ['selectedNode', 'selectedPath']);
 
     case METHOD_CALL_REQUESTED:
       return {
@@ -50,7 +50,7 @@ export default function inspector (state=INITIAL_STATE, action) {
       };
 
     case METHOD_CALL_DONE:
-      return _.omit(state, 'methodCallRequested');
+      return omit(state, 'methodCallRequested');
 
     case SET_INPUT_VALUE:
       return {
@@ -71,7 +71,7 @@ export default function inspector (state=INITIAL_STATE, action) {
       };
 
     case UNSET_HOVERED_ELEMENT:
-      return _.omit(state, 'hoveredPath');
+      return omit(state, 'hoveredPath');
 
     default:
       return {...state};
