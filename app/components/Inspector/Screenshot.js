@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { debounce } from 'lodash';
 import HighlighterRect from './HighlighterRect';
+import { Spin } from 'antd';
 
 export default class Screenshot extends Component {
 
@@ -31,19 +32,21 @@ export default class Screenshot extends Component {
 
   render () {
     const highlighterRects = [];
-    const {source, screenshot} = this.props;
+    const {source, screenshot, methodCallRequested} = this.props;
     const {scaleRatio} = this.state;
 
     let recursive = (node, zIndex = 0) => {
       if (!node) return;
-      highlighterRects.push(<HighlighterRect {...this.props} node={node} zIndex={zIndex} scaleRatio={scaleRatio} />);
+      highlighterRects.push(<HighlighterRect {...this.props} node={node} zIndex={zIndex} scaleRatio={scaleRatio} key={node.path} />);
       node.children.forEach((childNode) => recursive(childNode, zIndex + 1));
     };
 
     recursive(source);
-    return <div ref={(containerEl) => this.containerEl = containerEl}>
+    return <Spin size='large' spinning={!!methodCallRequested}>
+      <div ref={(containerEl) => this.containerEl = containerEl}>
         <img id='appium-screenshot' style={{width: '100%'}} src={`data:image/gif;base64,${screenshot}`} />
         {highlighterRects}
-    </div>;
+      </div>
+    </Spin>;
   }
 }

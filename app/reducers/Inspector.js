@@ -1,6 +1,6 @@
 import { omit } from 'lodash';
 
-import { SET_SOURCE_AND_SCREENSHOT, QUIT_SESSION_REQUESTED, QUIT_SESSION_DONE, SELECT_ELEMENT, UNSELECT_ELEMENT, SET_HOVERED_ELEMENT, UNSET_HOVERED_ELEMENT,
+import { SET_SOURCE_AND_SCREENSHOT, QUIT_SESSION_REQUESTED, SESSION_DONE, SELECT_ELEMENT, UNSELECT_ELEMENT, SET_HOVERED_ELEMENT, UNSET_HOVERED_ELEMENT,
   METHOD_CALL_REQUESTED, METHOD_CALL_DONE, SET_INPUT_VALUE, SET_EXPANDED_PATHS } from '../actions/Inspector';
 
 // Make sure there's always at least one cap
@@ -23,8 +23,12 @@ export default function inspector (state=INITIAL_STATE, action) {
         isQuittingSession: true,
       };
       
-    case QUIT_SESSION_DONE:
-      return omit(state, 'isQuittingSession');
+    case SESSION_DONE:
+      return {
+        ...state,
+        isSessionDone: true, 
+        methodCallRequested: false,
+      };
 
     case SELECT_ELEMENT:
       var {path} = action;

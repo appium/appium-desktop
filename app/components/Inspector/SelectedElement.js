@@ -37,7 +37,7 @@ export default class SelectedElement extends Component {
         <Col span={12}>
           <Button onClick={() => applyClientMethod({methodName: 'tap', xpath})}>Tap Element</Button>
           <Input placeholder='Enter keys' value={sendKeys} onChange={(e) => setInputValue('sendKeys', e.target.value)} />
-          <Button onClick={() => applyClientMethod({methodName: 'sendKeys', xpath})}>Send Keys</Button>
+          <Button onClick={() => applyClientMethod({methodName: 'sendKeys', xpath, args: [sendKeys]})}>Send Keys</Button>
         </Col>
       </Row>
     </div>;

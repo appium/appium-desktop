@@ -5,6 +5,7 @@ import { main as appiumServer } from 'appium';
 import { getDefaultArgs, getParser } from 'appium/build/lib/parser';
 import path from 'path';
 import wd from 'wd';
+import Bluebird from 'bluebird';
 
 const LOG_SEND_INTERVAL_MS = 250;
 const isDev = process.env.NODE_ENV === 'development';
@@ -167,7 +168,7 @@ function connectCreateNewSession () {
       event.sender.send('appium-new-session-ready');
     } catch (e) {
       // If the session failed, delete it from the cache
-      killSession(event.sender);
+      await killSession(event.sender);
       event.sender.send('appium-new-session-failed');
     }
 
@@ -186,25 +187,33 @@ function connectClientMethodListener () {
     let source, screenshot;
     try {
       if (methodName === 'quit') {
+        evt.sender.send('appium-session-done');
         await killSession(evt.sender);
       } else {
         if (methodName !== 'source') {
           if (xpath) {
+            console.log('args', args);
             await driver.elementByXPath(xpath)[methodName](...args);
           } else {
             await driver[methodName].apply(driver, args);
           }
         }
-        setTimeout(async () => {
-          source = await driver.source();
-          screenshot = await driver.takeScreenshot();
-          evt.sender.send('appium-client-command-response', {source, screenshot});
-        }, 500);
+        await Bluebird.delay(500);
+        source = await driver.source();
+        screenshot = await driver.takeScreenshot();
+        evt.sender.send('appium-client-command-response', {source, screenshot});
       }
 
     } catch (e) {
+      // If the status is '6' that means the session has been terminated
+      if (e.status === 6) {
+        evt.sender.send('appium-session-done', e);
+      } 
+        
       evt.sender.send('appium-client-command-response-error', e);
     }
+
+
   });
 }
 

@@ -1,8 +1,9 @@
 import { ipcRenderer } from 'electron';
+import { message } from 'antd';
 
 export const SET_SOURCE_AND_SCREENSHOT = 'SET_SOURCE';
 export const QUIT_SESSION_REQUESTED = 'QUIT_SESSION_REQUESTED';
-export const QUIT_SESSION_DONE = 'QUIT_SESSION_DONE';
+export const SESSION_DONE = 'SESSION_DONE';
 export const SELECT_ELEMENT = 'SELECT_ELEMENT';
 export const UNSELECT_ELEMENT = 'UNSELECT_ELEMENT';
 export const METHOD_CALL_REQUESTED = 'METHOD_CALL_REQUESTED';
@@ -12,12 +13,13 @@ export const SET_EXPANDED_PATHS = 'SET_EXPANDED_PATHS';
 export const SET_HOVERED_ELEMENT = 'SET_HOVERED_ELEMENT';
 export const UNSET_HOVERED_ELEMENT = 'UNSET_HOVERED_ELEMENT';
 
-export function bindSessionDone () {
+export function bindAppium () {
   return async (dispatch) => {
     ipcRenderer.on('appium-session-done', () => {
+      message.error('Session has been terminated', 100000);
       ipcRenderer.removeAllListeners('appium-client-command-response');
       ipcRenderer.removeAllListeners('appium-client-command-response-error');
-      dispatch({type: QUIT_SESSION_DONE});
+      dispatch({type: SESSION_DONE});
     });
 
     ipcRenderer.on('appium-client-command-response', (evt, resp) => {
@@ -44,8 +46,8 @@ export function bindSessionDone () {
       dispatch({type: METHOD_CALL_DONE});
     });
 
-    ipcRenderer.once('appium-client-command-response-error', () => {
-      alert('Could not complete command');
+    ipcRenderer.once('appium-client-command-response-error', (e, reason) => {
+      message.error(`Could not complete method: ${reason.message}`, 10);
       dispatch({type: METHOD_CALL_DONE});
     });
   };
