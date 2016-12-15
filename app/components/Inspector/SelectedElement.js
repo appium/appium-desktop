@@ -29,7 +29,7 @@ export default class SelectedElement extends Component {
     return <div>
       <h4>Attributes</h4>
       <Row>
-        <Col span={12} style={{overflow: 'scroll'}}>
+        <Col span={12}>
         {attrArray.map((attr) => [
           <div>{attr.name}:  {attr.value}</div>,
         ])}

@@ -1,3 +1,31 @@
+.inspector-container {
+    display: flex;
+    padding: 1em 1em 0 1em;
+}
+
+.inspector-container .screenshot-container {
+    overflow: scroll;
+    width: 40%;
+}
+
+.inspector-container .screenshot-container img {
+    width: 100%;
+}
+
+.inspector-container .source-tree-container {
+    width: 60%;
+    padding-bottom: 1em;
+}
+
+.inspector-container .tree-container {
+    overflow: scroll;
+    border-bottom: 1px solid black;
+}
+
+.inspector-container .source-tree-container .source-tree-card {
+    height: 100%;
+}
+
 .highlighter-box {
     position: absolute;
     opacity: 0.5;

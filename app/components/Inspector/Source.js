@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Tree, Button } from 'antd';
+import InspectorStyles from '../Inspector.css';
 
 const {TreeNode} = Tree;
 
@@ -37,7 +38,7 @@ export default class Source extends Component {
     };
 
     return <div>
-      <div style={{height: selectedPath ? 400 : 800, overflow: 'scroll', borderBottom: '1px solid black'}}>
+      <div className={InspectorStyles['tree-container']} style={{height: selectedPath ? 400 : 800}}>
         <Button icon='reload' onClick={() => applyClientMethod({methodName: 'source'})}></Button>
         <Tree   
           onExpand={setExpandedPaths} autoExpandParent={false} expandedKeys={expandedPaths}

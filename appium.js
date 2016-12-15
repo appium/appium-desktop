@@ -192,7 +192,6 @@ function connectClientMethodListener () {
       } else {
         if (methodName !== 'source') {
           if (xpath) {
-            console.log('args', args);
             await driver.elementByXPath(xpath)[methodName](...args);
           } else {
             await driver[methodName].apply(driver, args);

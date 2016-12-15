@@ -4,6 +4,7 @@ import { Row, Col, Card } from 'antd';
 import Screenshot from './Inspector/Screenshot';
 import SelectedElement from './Inspector/SelectedElement';
 import Source from './Inspector/Source';
+import InspectorStyles from './Inspector.css';
 
 export default class Inspector extends Component {
 
@@ -15,18 +16,18 @@ export default class Inspector extends Component {
   render () {
     const {methodCallRequested, screenshot, selectedPath} = this.props;
 
-    return <Row gutter={16}>
-      <Col span={12}>
-          <div style={{position: 'relative'}}>
+    return <div className={InspectorStyles['inspector-container']}>
+      <div className={InspectorStyles['screenshot-container']}>
+          <div>
             {screenshot && <Screenshot {...this.props} />}
           </div>
-      </Col>
-      <Col span={12}>
-        <Card style={{height: '98vh'}} loading={!!methodCallRequested} title='Source'>
+      </div>
+      <div className={InspectorStyles['source-tree-container']}>
+        <Card loading={!!methodCallRequested} title='Source' className={InspectorStyles['source-tree-card']}>
           <Source {...this.props} />
           {selectedPath && <SelectedElement {...this.props}/>}
         </Card>
-      </Col>
-    </Row>;
+      </div>
+    </div>;
   }
 }
