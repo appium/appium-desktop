@@ -6,7 +6,7 @@ export default class HighlighterRect extends Component {
 
   render () {
     const highlighterRects = [];
-    const {selectedPath, setHoveredElement, unsetHoveredElement, hoveredPath, selectElement, node, zIndex, scaleRatio} = this.props;
+    const {selectedPath, setHoveredElement, unsetHoveredElement, hoveredPath, selectElement, unselectElement, node, zIndex, scaleRatio} = this.props;
 
     let {bounds} = node.attributes || {};
     if (bounds) {
@@ -28,7 +28,7 @@ export default class HighlighterRect extends Component {
       return <div className={highlighterClasses.join(' ')} 
         onMouseOver={() => setHoveredElement(node.path)}
         onMouseOut={unsetHoveredElement} 
-        onClick={() => selectElement(node.path)}
+        onClick={() => node.path === selectedPath ? unselectElement() : selectElement(node.path)}
         key={node.path}
         style={{zIndex, left, top, width, height}}>
         <div></div>
