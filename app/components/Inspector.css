@@ -14,6 +14,10 @@
     visibility: hidden;
 }
 
+.highlighter-box.inspected-element-box.hovered-element-box div {
+    background-color: green;
+}
+
 .highlighter-box.hovered-element-box div, .highlighter-box.inspected-element-box div {
     position: relative;
     height: 100%;
