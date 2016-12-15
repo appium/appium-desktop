@@ -9,26 +9,24 @@ export default class Inspector extends Component {
 
   componentWillMount () {
     this.props.applyClientMethod({methodName: 'source'});
-    this.props.bindSessionDone();
+    this.props.bindAppium();
   }
 
   render () {
     const {methodCallRequested, screenshot, selectedPath} = this.props;
 
-    return <div style={{width: '100%', padding: '1em'}}>
-      <Row gutter={16}>
-        <Col span={12}>
-            <div style={{position: 'relative'}}>
-              {screenshot && <Screenshot {...this.props} />}
-            </div>
-        </Col>
-        <Col span={12}>
-          <Card style={{height: 800}} loading={!!methodCallRequested} title='Source'>
-            <Source {...this.props} />
-            {selectedPath && <SelectedElement {...this.props}/>}
-          </Card>
-        </Col>
-      </Row>
-    </div>;
+    return <Row gutter={16}>
+      <Col span={12}>
+          <div style={{position: 'relative'}}>
+            {screenshot && <Screenshot {...this.props} />}
+          </div>
+      </Col>
+      <Col span={12}>
+        <Card style={{height: '98vh'}} loading={!!methodCallRequested} title='Source'>
+          <Source {...this.props} />
+          {selectedPath && <SelectedElement {...this.props}/>}
+        </Card>
+      </Col>
+    </Row>;
   }
 }
