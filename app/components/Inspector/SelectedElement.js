@@ -13,7 +13,7 @@ export default class SelectedElement extends Component {
     let xpath = '';
     if (selectedPath) {
       for (let index of selectedPath.split('.')) {
-        xpath += `//*[${parseInt(index) + 1}]`;
+        xpath += `//*[${parseInt(index, 10) + 1}]`;
       }
     }
 
@@ -26,19 +26,20 @@ export default class SelectedElement extends Component {
       };
     });
 
-    return <Row style={{paddingTop: '1em'}}>
-      <Col span={12}>
-        <Button onClick={() => applyClientMethod({methodName: 'tap', xpath})}>Tap Element</Button>
-      </Col>
-      <Col span={12} style={{height: 400}}>
-        <table>
-            <tbody>
-            {attrArray.map((attr) => <td>{attr.name}: {attr.value}</td> )}
-            </tbody>
-        </table>
-        <Input placeholder='Hostname' value={sendKeys} onChange={(e) => setInputValue('sendKeys', e.target.value)} />
-        <Button onClick={() => applyClientMethod({methodName: 'sendKeys', xpath})}>Send Keys</Button>
-      </Col>
-    </Row>;
+    return <div>
+      <h4>Attributes</h4>
+      <Row>
+        <Col span={12} style={{overflow: 'scroll'}}>
+        {attrArray.map((attr) => [
+          <div>{attr.name}:  {attr.value}</div>,
+        ])}
+        </Col>
+        <Col span={12}>
+          <Button onClick={() => applyClientMethod({methodName: 'tap', xpath})}>Tap Element</Button>
+          <Input placeholder='Enter keys' value={sendKeys} onChange={(e) => setInputValue('sendKeys', e.target.value)} />
+          <Button onClick={() => applyClientMethod({methodName: 'sendKeys', xpath})}>Send Keys</Button>
+        </Col>
+      </Row>
+    </div>;
   }
 }

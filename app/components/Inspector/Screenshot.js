@@ -42,7 +42,7 @@ export default class Screenshot extends Component {
 
     recursive(source);
     return <div ref={(containerEl) => this.containerEl = containerEl}>
-        <img id='appium-screenshot' style={{width: '100%'}} src={`data:image/gif;base64,${screenshot}`} />}
+        <img id='appium-screenshot' style={{width: '100%'}} src={`data:image/gif;base64,${screenshot}`} />
         {highlighterRects}
     </div>;
   }

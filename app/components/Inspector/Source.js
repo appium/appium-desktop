@@ -1,14 +1,9 @@
 import React, { Component } from 'react';
-import { Tree, Spin } from 'antd';
+import { Tree, Button } from 'antd';
 
 const {TreeNode} = Tree;
 
 export default class Source extends Component {
-
-  isIgnoredAttr (attrMap) {
-    let name = attrMap.name;
-    return name === 'class' || name === 'text' || name === 'package';
-  }
 
   getFormattedTag (el) {
     const {tagName} = el;
@@ -27,7 +22,7 @@ export default class Source extends Component {
   }
 
   render () {
-    const {source, setExpandedPaths, expandedPaths, selectedPath} = this.props;
+    const {source, setExpandedPaths, expandedPaths, selectedPath, applyClientMethod} = this.props;
 
     const selectedPathArr = [selectedPath];
 
@@ -41,10 +36,15 @@ export default class Source extends Component {
       });
     };
 
-    return <Tree 
-      onExpand={setExpandedPaths} autoExpandParent={false} expandedKeys={expandedPaths}
-      onSelect={(selectedPaths) => this.handleSelectElement(selectedPaths[0])} selectedKeys={selectedPathArr}>
-      {recursive(source)}
-    </Tree>;
+    return <div>
+      <div style={{height: selectedPath ? 400 : 800, overflow: 'scroll', borderBottom: '1px solid black'}}>
+        <Button icon='reload' onClick={() => applyClientMethod({methodName: 'source'})}></Button>
+        <Tree   
+          onExpand={setExpandedPaths} autoExpandParent={false} expandedKeys={expandedPaths}
+          onSelect={(selectedPaths) => this.handleSelectElement(selectedPaths[0])} selectedKeys={selectedPathArr}>
+          {recursive(source)}
+        </Tree>
+      </div>
+    </div>;
   }
 }
