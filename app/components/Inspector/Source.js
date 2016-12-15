@@ -23,7 +23,7 @@ export default class Source extends Component {
   }
 
   render () {
-    const {source, setExpandedPaths, expandedPaths, selectedPath, applyClientMethod} = this.props;
+    const {source, setExpandedPaths, expandedPaths, selectedPath, applyClientMethod, methodCallRequested} = this.props;
 
     const selectedPathArr = [selectedPath];
 
@@ -37,15 +37,14 @@ export default class Source extends Component {
       });
     };
 
-    return <div>
-      <div className={InspectorStyles['tree-container']} style={{height: selectedPath ? 400 : 800}}>
-        <Button icon='reload' onClick={() => applyClientMethod({methodName: 'source'})}></Button>
+    return <div className={InspectorStyles['tree-container']} style={{height: selectedPath ? 400 : 800}}>
+      <Button icon='arrow-left' onClick={() => applyClientMethod({methodName: 'back'})}></Button>
+      <Button icon='reload' onClick={() => applyClientMethod({methodName: 'source'})}></Button>
         <Tree   
           onExpand={setExpandedPaths} autoExpandParent={false} expandedKeys={expandedPaths}
           onSelect={(selectedPaths) => this.handleSelectElement(selectedPaths[0])} selectedKeys={selectedPathArr}>
           {recursive(source)}
         </Tree>
-      </div>
     </div>;
   }
 }

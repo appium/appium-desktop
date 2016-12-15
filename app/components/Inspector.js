@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import { Row, Col, Card } from 'antd';
+import { Card } from 'antd';
 import Screenshot from './Inspector/Screenshot';
 import SelectedElement from './Inspector/SelectedElement';
 import Source from './Inspector/Source';
@@ -23,7 +23,7 @@ export default class Inspector extends Component {
           </div>
       </div>
       <div className={InspectorStyles['source-tree-container']}>
-        <Card loading={!!methodCallRequested} title='Source' className={InspectorStyles['source-tree-card']}>
+        <Card title='Source' className={InspectorStyles['source-tree-card']}>
           <Source {...this.props} />
           {selectedPath && <SelectedElement {...this.props}/>}
         </Card>

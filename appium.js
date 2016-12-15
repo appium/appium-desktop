@@ -194,7 +194,7 @@ function connectClientMethodListener () {
           if (xpath) {
             await driver.elementByXPath(xpath)[methodName](...args);
           } else {
-            await driver[methodName].apply(driver, args);
+            await driver[methodName](...args);
           }
         }
         await Bluebird.delay(500);
