@@ -214,7 +214,7 @@ function connectClientMethodListener () {
       if (e.status === 6) {
         renderer.send('appium-session-done', e);
       } 
-      console.log('sending an error back', {e, uuid});
+      console.log('reporting error', {e, uuid});
       renderer.send('appium-client-command-response-error', {e, uuid});
     }
 
