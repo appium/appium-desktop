@@ -1,5 +1,7 @@
 import { ipcRenderer } from 'electron';
 import { message } from 'antd';
+import UUID from 'uuid';
+import Promise from 'bluebird';
 
 export const SET_SOURCE_AND_SCREENSHOT = 'SET_SOURCE';
 export const QUIT_SESSION_REQUESTED = 'QUIT_SESSION_REQUESTED';
@@ -12,53 +14,83 @@ export const SET_FIELD_VALUE = 'SET_FIELD_VALUE';
 export const SET_EXPANDED_PATHS = 'SET_EXPANDED_PATHS';
 export const SELECT_HOVERED_ELEMENT = 'SELECT_HOVERED_ELEMENT';
 export const UNSELECT_HOVERED_ELEMENT = 'UNSELECT_HOVERED_ELEMENT';
+export const SCROLL = 'SCROLL';
+
+const clientMethodPromises = {};
+
+/**
+ * Calls a client method on the main process
+ */
+function callClientMethod (methodName, args, xpath) {
+  let uuid = UUID.v4();
+  let promise = new Promise((resolve, reject) => {
+    clientMethodPromises[uuid] = {resolve, reject};
+  });
+  ipcRenderer.send('appium-client-command-request', {methodName, args, xpath, uuid});
+  return promise;
+}
+
+/**
+ * When we hear back from the main process, resolve the promise
+ */
+ipcRenderer.on('appium-client-command-response', (evt, resp) => {
+  const {source, screenshot, result, uuid} = resp;
+  let promise = clientMethodPromises[uuid];
+  if (promise) {
+    promise.resolve({source, screenshot, result});
+    delete clientMethodPromises[uuid];
+  }
+});
+
+/**
+ * If we hear back with an error, reject the promise
+ */
+ipcRenderer.on('appium-client-command-response-error', (evt, resp) => {
+  const {e, uuid} = resp;
+  let promise = clientMethodPromises[uuid];
+  if (promise) {
+    promise.reject({e});
+    delete clientMethodPromises[uuid];
+  }
+});
+
+/**
+ * Translates sourceXML to JSON
+ */
+function xmlToJSON (source) {
+  let recursive = (xmlNode, parentPath, index) => {
+
+    // Get a dot separated path (root doesn't have a path)
+    let path = (index !== undefined) && `${!parentPath ? '' : parentPath + '.'}${index}`;
+
+    // Get an xpath for this element as well to use for Appium calls
+    let xpath = path && path.split('.').map((index) => `//*[${parseInt(index, 10) + 1}]`).join('');
+
+    // Translate attributes array to an object
+    let attrObject = {};
+    [...(xmlNode.attributes || [])].forEach((attribute) => attrObject[attribute.name] = attribute.value);
+
+    return {
+      children: [...xmlNode.children].map((childNode, childIndex) => recursive(childNode, path, childIndex)),
+      tagName: xmlNode.tagName,
+      attributes: attrObject,
+      path,
+      xpath,
+    };
+  };
+
+  let sourceXML = (new DOMParser()).parseFromString(source, 'text/xml');
+  return recursive(sourceXML);
+}
+
 
 export function bindAppium () {
-  return (dispatch) => {
+  return async (dispatch) => {
     ipcRenderer.on('appium-session-done', () => {
       message.error('Session has been terminated', 100000);
       ipcRenderer.removeAllListeners('appium-client-command-response');
       ipcRenderer.removeAllListeners('appium-client-command-response-error');
       dispatch({type: SESSION_DONE});
-    });
-
-    ipcRenderer.on('appium-client-command-response', (evt, resp) => {
-      const {source, screenshot} = resp;
-
-      // Convert the sourceXML to JSON
-      let recursive = (xmlNode, parentPath, index) => {
-
-        // Get a dot separated path (root doesn't have a path)
-        let path = (index !== undefined) && `${!parentPath ? '' : parentPath + '.'}${index}`;
-
-        // Get an xpath for this element as well to use for Appium calls
-        let xpath = path && path.split('.').map((index) => `${path.length === 0 ? '/' : '//'}*[${parseInt(index, 10) + 1}]`).join('');
-
-        // Translate attributes array to an object
-        let attrObject = {};
-        for (let attribute of xmlNode.attributes || []) {
-          attrObject[attribute.name] = attribute.value;
-        }
-
-        return {
-          children: [...xmlNode.children].map((childNode, childIndex) => recursive(childNode, path, childIndex)),
-          tagName: xmlNode.tagName,
-          attributes: attrObject,
-          path,
-          xpath,
-        };
-      };
-
-      let sourceXML = (new DOMParser()).parseFromString(source, 'text/xml');
-      let sourceJSON = recursive(sourceXML);
-
-      dispatch({type: SET_SOURCE_AND_SCREENSHOT, source: sourceJSON, screenshot});
-      dispatch({type: METHOD_CALL_DONE});
-    });
-
-    ipcRenderer.once('appium-client-command-response-error', (e, reason) => {
-      message.error(`Could not complete method: ${reason.message}`, 10);
-      dispatch({type: METHOD_CALL_DONE});
     });
   };
 }
@@ -104,9 +136,17 @@ export function unselectHoveredElement (path) {
  * Requests a method call on appium 
  */
 export function applyClientMethod (params) {
-  return (dispatch) => {
-    ipcRenderer.send('appium-client-command-request', params);
-    dispatch({type: METHOD_CALL_REQUESTED});
+  return async (dispatch) => {
+    try {
+      dispatch({type: METHOD_CALL_REQUESTED});
+      let {source, screenshot, result} = await callClientMethod(params.methodName, params.args, params.xpath);
+      dispatch({type: METHOD_CALL_DONE});
+      dispatch({type: SET_SOURCE_AND_SCREENSHOT, source: xmlToJSON(source), screenshot});
+      return result;
+    } catch (error) {
+      message.error(error, 10);
+      dispatch({type: METHOD_CALL_DONE});
+    }
   };
 }
 
