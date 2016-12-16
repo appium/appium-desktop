@@ -32,13 +32,7 @@ export function bindAppium () {
         let path = (index !== undefined) && `${!parentPath ? '' : parentPath + '.'}${index}`;
 
         // Get an xpath for this element as well to use for Appium calls
-        let xpath;
-        if (path) {
-          xpath = '';
-          for (let index of path.split('.')) {
-            xpath += `//*[${parseInt(index, 10) + 1}]`;
-          }
-        }
+        let xpath = path && path.split('.').map((index) => `//*[${parseInt(index, 10) + 1}]`).join('');
 
         // Translate attributes array to an object
         let attrObject = {};
