@@ -1,11 +1,22 @@
 import { omit } from 'lodash';
 
-import { SET_SOURCE_AND_SCREENSHOT, QUIT_SESSION_REQUESTED, SESSION_DONE, SELECT_ELEMENT, UNSELECT_ELEMENT, SET_HOVERED_ELEMENT, UNSET_HOVERED_ELEMENT,
+import { SET_SOURCE_AND_SCREENSHOT, QUIT_SESSION_REQUESTED, SESSION_DONE, SELECT_ELEMENT, UNSELECT_ELEMENT, SELECT_HOVERED_ELEMENT, UNSELECT_HOVERED_ELEMENT,
   METHOD_CALL_REQUESTED, METHOD_CALL_DONE, SET_FIELD_VALUE, SET_EXPANDED_PATHS } from '../actions/Inspector';
 
 const INITIAL_STATE = {
   expandedPaths: ['0']
 };
+
+/**
+ * Look up an element in the source with the provided path
+ */
+function findElementByPath (path, source) {
+  let selectedElement = source;
+  for (let index of path.split('.')) {
+    selectedElement = selectedElement.children[index];
+  }
+  return {...selectedElement};
+}
 
 export default function inspector (state=INITIAL_STATE, action) {
   switch (action.type) {
@@ -30,21 +41,22 @@ export default function inspector (state=INITIAL_STATE, action) {
       };
 
     case SELECT_ELEMENT:
-      var {path} = action;
-
-      // Look up the element that has this path
-      var selectedElement = state.source;
-      for (let index of path.split('.')) {
-        selectedElement = selectedElement.children[index];
-      }
-
       return {
         ...state,
-        selectedElement: {...selectedElement},
+        selectedElement: findElementByPath(action.path, state.source),
       };
 
     case UNSELECT_ELEMENT:
       return omit(state, 'selectedElement');
+
+    case SELECT_HOVERED_ELEMENT:
+      return {
+        ...state,
+        hoveredElement: findElementByPath(action.path, state.source),
+      };
+
+    case UNSELECT_HOVERED_ELEMENT:
+      return omit(state, 'hoveredElement');
 
     case METHOD_CALL_REQUESTED:
       return {
@@ -65,16 +77,7 @@ export default function inspector (state=INITIAL_STATE, action) {
       return {
         ...state,
         expandedPaths: action.paths,
-      };
-
-    case SET_HOVERED_ELEMENT:
-      return {
-        ...state,
-        hoveredPath: action.path,
-      };
-
-    case UNSET_HOVERED_ELEMENT:
-      return omit(state, 'hoveredPath');
+      };    
 
     default:
       return {...state};
