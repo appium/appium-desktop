@@ -31,6 +31,15 @@ export function bindAppium () {
         // Get a dot separated path (root doesn't have a path)
         let path = (index !== undefined) && `${!parentPath ? '' : parentPath + '.'}${index}`;
 
+        // Get an xpath for this element as well to use for Appium calls
+        let xpath;
+        if (path) {
+          xpath = '';
+          for (let index of path.split('.')) {
+            xpath += `//*[${parseInt(index, 10) + 1}]`;
+          }
+        }
+
         // Translate attributes array to an object
         let attrObject = {};
         [...(xmlNode.attributes || [])].forEach((attribute) => attrObject[attribute.name] = attribute.value);
@@ -40,6 +49,7 @@ export function bindAppium () {
           tagName: xmlNode.tagName,
           attributes: attrObject,
           path,
+          xpath,
         };
       };
 

@@ -32,13 +32,12 @@ export default function inspector (state=INITIAL_STATE, action) {
     case SELECT_ELEMENT:
       var {path} = action;
 
-      // Look up the element that his this path
+      // Look up the element that has this path
       var selectedElement = state.source;
       for (let index of path.split('.')) {
         selectedElement = selectedElement.children[index];
       }
 
-      // Set the selectedPath and selectedElement
       return {
         ...state,
         selectedPath: path,
@@ -46,7 +45,7 @@ export default function inspector (state=INITIAL_STATE, action) {
       };
 
     case UNSELECT_ELEMENT:
-      return omit(state, ['selectedElement', 'selectedPath']);
+      return omit(state, ['selectedElement', 'selectedPath', 'selectedXPath']);
 
     case METHOD_CALL_REQUESTED:
       return {

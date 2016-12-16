@@ -9,16 +9,8 @@ import { Button, Row, Col, Input } from 'antd';
 export default class SelectedElement extends Component {
 
   render () {
-    const {applyClientMethod, setFieldValue, sendKeys, selectedPath, selectedElement} = this.props;
-    const {attributes} = selectedElement;
-
-    // Translate dot separated path to xpath
-    let xpath = '';
-    if (selectedPath) {
-      for (let index of selectedPath.split('.')) {
-        xpath += `//*[${parseInt(index, 10) + 1}]`;
-      }
-    }
+    const {applyClientMethod, setFieldValue, sendKeys, selectedElement} = this.props;
+    const {attributes, xpath} = selectedElement;
 
     // Translate attributes into an array so we can iterate over them
     let attrArray = Object.keys(attributes || {}).map((attrName) => {
