@@ -40,12 +40,11 @@ export default function inspector (state=INITIAL_STATE, action) {
 
       return {
         ...state,
-        selectedPath: path,
         selectedElement: {...selectedElement},
       };
 
     case UNSELECT_ELEMENT:
-      return omit(state, ['selectedElement', 'selectedPath', 'selectedXPath']);
+      return omit(state, 'selectedElement');
 
     case METHOD_CALL_REQUESTED:
       return {

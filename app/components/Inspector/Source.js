@@ -29,7 +29,8 @@ export default class Source extends Component {
   }
 
   render () {
-    const {source, setExpandedPaths, expandedPaths, selectedPath, applyClientMethod} = this.props;
+    const {source, setExpandedPaths, expandedPaths, selectedElement = {}, applyClientMethod} = this.props;
+    const {path} = selectedElement;
 
     // Recursives through the source and renders a TreeNode for an element
     let recursive = (elemObj) => {
@@ -42,14 +43,16 @@ export default class Source extends Component {
       });
     };
 
-    return <div className={InspectorStyles['tree-container']} style={{height: selectedPath ? 400 : 800}}>
+    return <div className={InspectorStyles['tree-container']} style={{height: path ? 400 : 800}}>
       <Button icon='arrow-left' onClick={() => applyClientMethod({methodName: 'back'})}></Button>
       <Button icon='reload' onClick={() => applyClientMethod({methodName: 'source'})}></Button>
-        <Tree   
-          onExpand={setExpandedPaths} autoExpandParent={false} expandedKeys={expandedPaths}
-          onSelect={(selectedPaths) => this.handleSelectElement(selectedPaths[0])} selectedKeys={[selectedPath]}>
-          {recursive(source)}
-        </Tree>
+      <Tree onExpand={setExpandedPaths} 
+        autoExpandParent={false} 
+        expandedKeys={expandedPaths}
+        onSelect={(selectedPaths) => this.handleSelectElement(selectedPaths[0])} 
+        selectedKeys={[path]}>
+        {recursive(source)}
+      </Tree>
     </div>;
   }
 }

@@ -14,7 +14,8 @@ export default class Inspector extends Component {
   }
 
   render () {
-    const {screenshot, selectedPath} = this.props;
+    const {screenshot, selectedElement = {}} = this.props;
+    const {path} = selectedElement;
 
     return <div className={InspectorStyles['inspector-container']}>
       <div className={InspectorStyles['screenshot-container']}>
@@ -25,7 +26,7 @@ export default class Inspector extends Component {
       <div className={InspectorStyles['source-tree-container']}>
         <Card title='Source' className={InspectorStyles['source-tree-card']}>
           <Source {...this.props} />
-          {selectedPath && <SelectedElement {...this.props}/>}
+          {path && <SelectedElement {...this.props}/>}
         </Card>
       </div>
     </div>;
