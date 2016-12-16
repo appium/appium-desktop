@@ -86,13 +86,13 @@ export function unselectElement () {
   };
 }
 
-export function setHoveredElement (path) {
+export function selectHoveredElement (path) {
   return async (dispatch) => {
     dispatch({type: SELECT_HOVERED_ELEMENT, path});
   };
 }
 
-export function unsetHoveredElement (path) {
+export function unselectHoveredElement (path) {
   return async (dispatch) => {
     dispatch({type: UNSELECT_HOVERED_ELEMENT, path});
   };

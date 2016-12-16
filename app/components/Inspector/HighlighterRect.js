@@ -9,7 +9,7 @@ import InspectorCSS from '../Inspector.css';
 export default class HighlighterRect extends Component {
 
   render () {
-    const {selectedElement = {}, setHoveredElement, unsetHoveredElement, hoveredElement = {}, selectElement, unselectElement, node, zIndex, scaleRatio} = this.props;
+    const {selectedElement = {}, selectHoveredElement, unselectHoveredElement, hoveredElement = {}, selectElement, unselectElement, node, zIndex, scaleRatio} = this.props;
     const {path: hoveredPath} = hoveredElement;
     const {path: selectedPath} = selectedElement;
 
@@ -31,8 +31,8 @@ export default class HighlighterRect extends Component {
       selectedPath === node.path && highlighterClasses.push(InspectorCSS['inspected-element-box']);
 
       return <div className={highlighterClasses.join(' ').trim()} 
-        onMouseOver={() => setHoveredElement(node.path)}
-        onMouseOut={unsetHoveredElement} 
+        onMouseOver={() => selectHoveredElement(node.path)}
+        onMouseOut={unselectHoveredElement} 
         onClick={() => node.path === selectedPath ? unselectElement() : selectElement(node.path)}
         key={node.path}
         style={{zIndex, left, top, width, height}}>
