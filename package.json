@@ -42,14 +42,12 @@
     "ansi-to-html": "0.x",
     "antd": "2.x",
     "appium": "1.6.0",
-    "appium-base-driver": "^2.1.0",
-    "bluebird": "^3.4.6",
+    "bluebird": "^3.x",
     "css-modules-require-hook": "4.x",
     "electron-debug": "1.x",
     "electron-settings": "2.x",
     "font-awesome": "4.x",
     "format-json": "1.x",
-    "immutable": "^3.8.1",
     "lodash": "4.x",
     "moment": "2.x",
     "postcss": "5.x",
@@ -65,10 +63,10 @@
     "source-map-support": "0.x",
     "teen_process": "1.x",
     "temp": "0.x",
-    "wd": "1.x"
+    "wd": "1.x",
+    "antd": "2.x"
   },
   "devDependencies": {
-    "antd": "^2.5.0",
     "asar": "0.x",
     "babel-core": "6.x",
     "babel-eslint": "7.x",

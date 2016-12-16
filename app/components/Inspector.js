@@ -19,9 +19,7 @@ export default class Inspector extends Component {
 
     return <div className={InspectorStyles['inspector-container']}>
       <div className={InspectorStyles['screenshot-container']}>
-          <div>
-            {screenshot && <Screenshot {...this.props} />}
-          </div>
+          {screenshot && <Screenshot {...this.props} />}
       </div>
       <div className={InspectorStyles['source-tree-container']}>
         <Card title='Source' className={InspectorStyles['source-tree-card']}>
