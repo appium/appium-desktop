@@ -29,9 +29,7 @@ export default class HighlighterRect extends Component {
       hoveredPath === node.path && highlighterClasses.push(InspectorCSS['hovered-element-box']);
       selectedPath === node.path && highlighterClasses.push(InspectorCSS['inspected-element-box']);
 
-      highlighterRects.push();
-
-      return <div className={highlighterClasses.join(' ')} 
+      return <div className={highlighterClasses.join(' ').trim()} 
         onMouseOver={() => setHoveredElement(node.path)}
         onMouseOut={unsetHoveredElement} 
         onClick={() => node.path === selectedPath ? unselectElement() : selectElement(node.path)}
