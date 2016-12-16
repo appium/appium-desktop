@@ -2,12 +2,15 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { Button, Row, Col, Input } from 'antd';
 
+/**
+ * Shows details of the currently selected element and shows methods that can
+ * be called on the elements (tap, sendKeys)
+ */
 export default class SelectedElement extends Component {
 
   render () {
-    const {applyClientMethod, setInputValue, sendKeys, selectedPath} = this.props;
-
-    const {attributes} = this.props.selectedNode || {};
+    const {applyClientMethod, setFieldValue, sendKeys, selectedPath, selectedElement} = this.props;
+    const {attributes} = selectedElement;
 
     // Translate dot separated path to xpath
     let xpath = '';
@@ -17,8 +20,7 @@ export default class SelectedElement extends Component {
       }
     }
 
-
-    // Translate attributes into an array so we can iterate over it
+    // Translate attributes into an array so we can iterate over them
     let attrArray = Object.keys(attributes || {}).map((attrName) => {
       return {
         name: attrName,
@@ -36,7 +38,7 @@ export default class SelectedElement extends Component {
         </Col>
         <Col span={12}>
           <Button onClick={() => applyClientMethod({methodName: 'tap', xpath})}>Tap Element</Button>
-          <Input placeholder='Enter keys' value={sendKeys} onChange={(e) => setInputValue('sendKeys', e.target.value)} />
+          <Input placeholder='Enter keys' value={sendKeys} onChange={(e) => setFieldValue('sendKeys', e.target.value)} />
           <Button onClick={() => applyClientMethod({methodName: 'sendKeys', xpath, args: [sendKeys]})}>Send Keys</Button>
         </Col>
       </Row>

@@ -11,7 +11,6 @@ const LOG_SEND_INTERVAL_MS = 250;
 const isDev = process.env.NODE_ENV === 'development';
 
 var server = null;
-var serverArgs = null;
 var logWatcher = null;
 var batchedLogs = [];
 
@@ -59,8 +58,7 @@ function connectStartServer (win) {
 
     try {
       // set up the appium server running in this thread
-      serverArgs = args;
-      server = await appiumServer(serverArgs, true);
+      server = await appiumServer(args, true);
       win.webContents.send('appium-start-ok');
     } catch (e) {
       win.webContents.send('appium-start-error', e.message);
@@ -190,6 +188,8 @@ function connectClientMethodListener () {
         evt.sender.send('appium-session-done');
         await killSession(evt.sender);
       } else {
+
+        // Execute the requested method
         if (methodName !== 'source') {
           if (xpath) {
             await driver.elementByXPath(xpath)[methodName](...args);
@@ -198,6 +198,8 @@ function connectClientMethodListener () {
           }
         }
         await Bluebird.delay(500);
+
+        // Send back the new source and screenshot
         source = await driver.source();
         screenshot = await driver.takeScreenshot();
         evt.sender.send('appium-client-command-response', {source, screenshot});

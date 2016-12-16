@@ -8,7 +8,7 @@ export const SELECT_ELEMENT = 'SELECT_ELEMENT';
 export const UNSELECT_ELEMENT = 'UNSELECT_ELEMENT';
 export const METHOD_CALL_REQUESTED = 'METHOD_CALL_REQUESTED';
 export const METHOD_CALL_DONE = 'METHOD_CALL_DONE';
-export const SET_INPUT_VALUE = 'SET_INPUT_VALUE';
+export const SET_FIELD_VALUE = 'SET_FIELD_VALUE';
 export const SET_EXPANDED_PATHS = 'SET_EXPANDED_PATHS';
 export const SET_HOVERED_ELEMENT = 'SET_HOVERED_ELEMENT';
 export const UNSET_HOVERED_ELEMENT = 'UNSET_HOVERED_ELEMENT';
@@ -27,7 +27,11 @@ export function bindAppium () {
 
       // Convert the sourceXML to JSON
       let recursive = (xmlNode, parentPath, index) => {
+
+        // Get a dot separated path (root doesn't have a path)
         let path = (index !== undefined) && `${!parentPath ? '' : parentPath + '.'}${index}`;
+
+        // Translate attributes array to an object
         let attrObject = {};
         [...(xmlNode.attributes || [])].forEach((attribute) => attrObject[attribute.name] = attribute.value);
 
@@ -79,7 +83,7 @@ export function unselectElement () {
 }
 
 /**
- * Send a command to 'wd'. 
+ * Requests a method call on appium 
  */
 export function applyClientMethod (params) {
   return async (dispatch) => {
@@ -88,16 +92,12 @@ export function applyClientMethod (params) {
   };
 }
 
-export function quitSession () {
+/**
+ * Set a value of an arbitrarily named field
+ */
+export function setFieldValue (name, value) {
   return async (dispatch) => {
-    dispatch({type: QUIT_SESSION_REQUESTED});
-    ipcRenderer.send('appium-client-command-request', {methodName: 'quit'});
-  };
-}
-
-export function setInputValue (name, value) {
-  return async (dispatch) => {
-    dispatch({type: SET_INPUT_VALUE, name, value});
+    dispatch({type: SET_FIELD_VALUE, name, value});
   };
 }
 

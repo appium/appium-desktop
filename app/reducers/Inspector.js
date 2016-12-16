@@ -1,9 +1,8 @@
 import { omit } from 'lodash';
 
 import { SET_SOURCE_AND_SCREENSHOT, QUIT_SESSION_REQUESTED, SESSION_DONE, SELECT_ELEMENT, UNSELECT_ELEMENT, SET_HOVERED_ELEMENT, UNSET_HOVERED_ELEMENT,
-  METHOD_CALL_REQUESTED, METHOD_CALL_DONE, SET_INPUT_VALUE, SET_EXPANDED_PATHS } from '../actions/Inspector';
+  METHOD_CALL_REQUESTED, METHOD_CALL_DONE, SET_FIELD_VALUE, SET_EXPANDED_PATHS } from '../actions/Inspector';
 
-// Make sure there's always at least one cap
 const INITIAL_STATE = {
   expandedPaths: ['0']
 };
@@ -27,36 +26,38 @@ export default function inspector (state=INITIAL_STATE, action) {
       return {
         ...state,
         isSessionDone: true, 
-        methodCallRequested: false,
+        methodCallInProgress: false,
       };
 
     case SELECT_ELEMENT:
       var {path} = action;
-      var pathArr = path.split('.');
-      var selectedNode = state.source;
-      for (let index of pathArr) {
-        selectedNode = selectedNode.children[index];
+
+      // Look up the element that his this path
+      var selectedElement = state.source;
+      for (let index of path.split('.')) {
+        selectedElement = selectedElement.children[index];
       }
 
+      // Set the selectedPath and selectedElement
       return {
         ...state,
         selectedPath: path,
-        selectedNode: {...selectedNode},
+        selectedElement: {...selectedElement},
       };
 
     case UNSELECT_ELEMENT:
-      return omit(state, ['selectedNode', 'selectedPath']);
+      return omit(state, ['selectedElement', 'selectedPath']);
 
     case METHOD_CALL_REQUESTED:
       return {
         ...state,
-        methodCallRequested: true,
+        methodCallInProgress: true,
       };
 
     case METHOD_CALL_DONE:
-      return omit(state, 'methodCallRequested');
+      return omit(state, 'methodCallInProgress');
 
-    case SET_INPUT_VALUE:
+    case SET_FIELD_VALUE:
       return {
         ...state,
         [action.name]: action.value,

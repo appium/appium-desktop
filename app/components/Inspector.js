@@ -14,7 +14,7 @@ export default class Inspector extends Component {
   }
 
   render () {
-    const {methodCallRequested, screenshot, selectedPath} = this.props;
+    const {screenshot, selectedPath} = this.props;
 
     return <div className={InspectorStyles['inspector-container']}>
       <div className={InspectorStyles['screenshot-container']}>

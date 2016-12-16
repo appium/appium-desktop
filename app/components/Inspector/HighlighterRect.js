@@ -2,6 +2,10 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import InspectorCSS from '../Inspector.css';
 
+/**
+ * Absolute positioned divs that overlay the app screenshot and highlight the bounding
+ * boxes of the elements in the app
+ */
 export default class HighlighterRect extends Component {
 
   render () {
@@ -10,15 +14,17 @@ export default class HighlighterRect extends Component {
 
     let {bounds} = node.attributes || {};
     if (bounds) {
+
       // Parse the bounds from string to array
-      bounds = bounds.split(/\[|\]|,/).filter((str) => str !== '');
+      let [x1, y1, x2, y2] = bounds.split(/\[|\]|,/).filter((str) => str !== '');
 
-      // Calculate style (coordinates, backgroundColor, etc...)
-      let left = bounds[0] / scaleRatio;
-      let top = bounds[1] / scaleRatio;
-      let width = (bounds[2] - bounds[0]) / scaleRatio;
-      let height = (bounds[3] - bounds[1]) / scaleRatio;
+      // Calculate left, top, width and height coordinates
+      let left = x1 / scaleRatio;
+      let top = y1 / scaleRatio;
+      let width = (x2 - x1) / scaleRatio;
+      let height = (y2 - y1) / scaleRatio;
 
+      // Add class + special classes to hovered and selected elements
       let highlighterClasses = [InspectorCSS['highlighter-box']];
       hoveredPath === node.path && highlighterClasses.push(InspectorCSS['hovered-element-box']);
       selectedPath === node.path && highlighterClasses.push(InspectorCSS['inspected-element-box']);
