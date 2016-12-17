@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { debounce } from 'lodash';
 import HighlighterRect from './HighlighterRect';
 import { Spin } from 'antd';
-
+import { parseCoordinates } from './shared';
 
 /**
  * Shows screenshot of running application and divs that highlight the elements' bounding boxes
@@ -22,9 +22,10 @@ export default class Screenshot extends Component {
    * Calculates the ratio that the image is being scaled by
    */
   updateScaleRatio () {
-    let screenshotEl = this.containerEl.querySelector('img');
+    const screenshotEl = this.containerEl.querySelector('img');
+    const {x1, y1, x2, y2} = parseCoordinates(this.props.source.children[0].children[0]);
     this.setState({
-      scaleRatio: screenshotEl.naturalHeight / screenshotEl.offsetHeight
+      scaleRatio: (x2 - x1) / screenshotEl.offsetWidth
     });
   }
 
@@ -45,17 +46,17 @@ export default class Screenshot extends Component {
     // Recurse through the 'source' JSON and render a highlighter rect for each element
     const highlighterRects = [];
 
-    let recursive = (node, zIndex = 0) => {
-      if (!node) return;
+    let recursive = (element, zIndex = 0) => {
+      if (!element) return;
       highlighterRects.push(<HighlighterRect {...this.props} 
-        node={node} 
+        element={element} 
         zIndex={zIndex} 
         scaleRatio={scaleRatio} 
-        key={node.path} 
+        key={element.path} 
       />);
 
-      for (let childNode of node.children) {
-        recursive(childNode, zIndex + 1);
+      for (let childEl of element.children) {
+        recursive(childEl, zIndex + 1);
       }
     };
 
