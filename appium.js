@@ -167,7 +167,7 @@ function connectCreateNewSession () {
     } catch (e) {
       // If the session failed, delete it from the cache
       await killSession(event.sender);
-      event.sender.send('appium-new-session-failed');
+      event.sender.send('appium-new-session-failed', e);
     }
 
   });
@@ -214,8 +214,8 @@ function connectClientMethodListener () {
       if (e.status === 6) {
         renderer.send('appium-session-done', e);
       } 
-        
-      renderer.send('appium-client-command-response-error', {e, uuid});
+      console.log('sending an error back', {e, uuid});
+      evt.sender.send('appium-client-command-response-error', {e, uuid});
     }
 
 

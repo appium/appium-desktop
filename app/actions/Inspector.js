@@ -4,7 +4,6 @@ import UUID from 'uuid';
 import Promise from 'bluebird';
 
 export const SET_SOURCE_AND_SCREENSHOT = 'SET_SOURCE';
-export const QUIT_SESSION_REQUESTED = 'QUIT_SESSION_REQUESTED';
 export const SESSION_DONE = 'SESSION_DONE';
 export const SELECT_ELEMENT = 'SELECT_ELEMENT';
 export const UNSELECT_ELEMENT = 'UNSELECT_ELEMENT';
@@ -23,9 +22,7 @@ const clientMethodPromises = {};
  */
 function callClientMethod (methodName, args, xpath) {
   let uuid = UUID.v4();
-  let promise = new Promise((resolve, reject) => {
-    clientMethodPromises[uuid] = {resolve, reject};
-  });
+  let promise = new Promise((resolve, reject) => clientMethodPromises[uuid] = {resolve, reject});
   ipcRenderer.send('appium-client-command-request', {methodName, args, xpath, uuid});
   return promise;
 }
@@ -49,7 +46,7 @@ ipcRenderer.on('appium-client-command-response-error', (evt, resp) => {
   const {e, uuid} = resp;
   let promise = clientMethodPromises[uuid];
   if (promise) {
-    promise.reject({e});
+    promise.reject(e.message);
     delete clientMethodPromises[uuid];
   }
 });

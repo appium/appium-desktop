@@ -127,9 +127,9 @@ export function newSession (caps) {
     dispatch({type: SESSION_LOADING});
 
     // If it failed, show an alert saying it failed
-    ipcRenderer.once('appium-new-session-failed', (evt, errorMessage) => {
+    ipcRenderer.once('appium-new-session-failed', (evt, e) => {
       dispatch({type: SESSION_LOADING_DONE});
-      message.error(errorMessage, 10000);
+      message.error(e.message, 10000);
     });
 
     ipcRenderer.once('appium-new-session-ready', () => {
