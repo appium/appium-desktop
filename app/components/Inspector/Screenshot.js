@@ -23,7 +23,7 @@ export default class Screenshot extends Component {
    */
   updateScaleRatio () {
     const screenshotEl = this.containerEl.querySelector('img');
-    const {x1, y1, x2, y2} = parseCoordinates(this.props.source.children[0].children[0]);
+    const {x1, x2} = parseCoordinates(this.props.source.children[0].children[0]);
     this.setState({
       scaleRatio: (x2 - x1) / screenshotEl.offsetWidth
     });
@@ -47,7 +47,9 @@ export default class Screenshot extends Component {
     const highlighterRects = [];
 
     let recursive = (element, zIndex = 0) => {
-      if (!element) return;
+      if (!element) {
+        return;
+      }
       highlighterRects.push(<HighlighterRect {...this.props} 
         element={element} 
         zIndex={zIndex} 
