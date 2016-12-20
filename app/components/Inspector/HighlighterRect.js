@@ -24,7 +24,7 @@ export default class HighlighterRect extends Component {
     // Add class + special classes to hovered and selected elements
     const highlighterClasses = [InspectorCSS['highlighter-box']];
     if (hoveredPath === element.path) {
-     highlighterClasses.push(InspectorCSS['hovered-element-box']);
+      highlighterClasses.push(InspectorCSS['hovered-element-box']);
     }
     if (selectedPath === element.path) {
       highlighterClasses.push(InspectorCSS['inspected-element-box']);
