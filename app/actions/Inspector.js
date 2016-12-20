@@ -15,21 +15,7 @@ export const SELECT_HOVERED_ELEMENT = 'SELECT_HOVERED_ELEMENT';
 export const UNSELECT_HOVERED_ELEMENT = 'UNSELECT_HOVERED_ELEMENT';
 export const SCROLL = 'SCROLL';
 
-<<<<<<< 249e15b53f88db1afb48602eeb4e35b36090f0ac
 const clientMethodPromises = {};
-=======
-export function bindAppium () {
-  return (dispatch) => {
-    ipcRenderer.on('appium-session-done', () => {
-      message.error('Session has been terminated', 100000);
-      ipcRenderer.removeAllListeners('appium-client-command-response');
-      ipcRenderer.removeAllListeners('appium-client-command-response-error');
-      dispatch({type: SESSION_DONE});
-    });
-
-    ipcRenderer.on('appium-client-command-response', (evt, resp) => {
-      const {source, screenshot} = resp;
->>>>>>> Added 'require-await' to eslint rules
 
 /**
  * Calls a client method on the main process

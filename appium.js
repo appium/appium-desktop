@@ -123,7 +123,7 @@ function connectCreateNewSessionWindow (win) {
       sessionWin = null;
     });
 
-    // If it's dev, include devTools and 'inspect element' context menu option
+    // If its dev, include devTools and 'inspect element' context menu option
     if (isDev) {
       sessionWin.openDevTools();
       sessionWin.webContents.on('context-menu', (e, props) => {
@@ -215,7 +215,7 @@ function connectClientMethodListener () {
         renderer.send('appium-session-done', e);
       } 
       console.log('sending an error back', {e, uuid});
-      evt.sender.send('appium-client-command-response-error', {e, uuid});
+      renderer.send('appium-client-command-response-error', {e, uuid});
     }
 
 
