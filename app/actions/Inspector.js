@@ -64,7 +64,9 @@ function xmlToJSON (source) {
 
     // Translate attributes array to an object
     let attrObject = {};
-    [...(xmlNode.attributes || [])].forEach((attribute) => attrObject[attribute.name] = attribute.value);
+    for (let attribute of xmlNode.attributes || []) {
+      attrObject[attribute.name] = attribute.value;
+    }
 
     return {
       children: [...xmlNode.children].map((childNode, childIndex) => recursive(childNode, path, childIndex)),
