@@ -56,7 +56,7 @@ export default class Screenshot extends Component {
         scaleRatio={scaleRatio} 
         key={element.path} 
       />);
-
+      
       for (let childEl of element.children) {
         recursive(childEl, zIndex + 1);
       }
