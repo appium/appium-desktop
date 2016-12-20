@@ -123,7 +123,7 @@ function connectCreateNewSessionWindow (win) {
       sessionWin = null;
     });
 
-    // If its dev, include devTools and 'inspect element' context menu option
+    // If it's dev, include devTools and 'inspect element' context menu option
     if (isDev) {
       sessionWin.openDevTools();
       sessionWin.webContents.on('context-menu', (e, props) => {
