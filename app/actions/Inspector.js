@@ -61,7 +61,7 @@ function xmlToJSON (source) {
     let path = (index !== undefined) && `${!parentPath ? '' : parentPath + '.'}${index}`;
 
     // Get an xpath for this element as well to use for Appium calls
-    let xpath = path && path.split('.').map((index) => `//*[${parseInt(index, 10) + 1}]`).join('');
+    let xpath = path && path.split('.').map((index) => `${path.length === 0 ? '/' : '//'}*[${parseInt(index, 10) + 1}]`).join('');
 
     // Translate attributes array to an object
     let attrObject = {};
