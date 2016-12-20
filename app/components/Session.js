@@ -55,6 +55,7 @@ export default class Session extends Component {
           </TabPane>
         </Tabs>
 
+
         {newSessionBegan && <div key={2}>
           <p>Session In Progress</p>
         </div>}
@@ -72,7 +73,6 @@ export default class Session extends Component {
           <Button type="button" onClick={requestSaveAsModal}>Save As</Button>
           <Button type="submit" onClick={() => newSession(caps)} className={SessionStyles['start-session-button']}>Start Session</Button>
         </div>
-
       </div>
     </Spin>);
   }

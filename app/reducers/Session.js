@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import {omit} from 'lodash';
 
 import { NEW_SESSION_REQUESTED, NEW_SESSION_BEGAN, NEW_SESSION_DONE,
         SAVE_SESSION_REQUESTED, SAVE_SESSION_DONE, GET_SAVED_SESSIONS_REQUESTED, GET_SAVED_SESSIONS_DONE,
@@ -9,6 +9,7 @@ import { NEW_SESSION_REQUESTED, NEW_SESSION_BEGAN, NEW_SESSION_DONE,
         CHANGE_SERVER_TYPE, SET_SERVER_PARAM, SET_SERVER,
         ServerTypes } from '../actions/Session';
 
+// Make sure there's always at least one cap
 const INITIAL_STATE = {
   savedSessions: [],
   tabKey: 'new',
@@ -42,10 +43,10 @@ export default function session (state = INITIAL_STATE, action) {
         ...state,
         newSessionBegan: true,
       };
-      return _.omit(nextState, 'newSessionRequested');
+      return omit(nextState, 'newSessionRequested');
 
     case NEW_SESSION_DONE:
-      return _.omit(state, 'newSessionBegan');
+      return omit(state, 'newSessionBegan');
 
 
     case ADD_CAPABILITY:
@@ -79,17 +80,17 @@ export default function session (state = INITIAL_STATE, action) {
         caps: action.caps,
         capsUUID: action.uuid,
       };
-      return _.omit(nextState, 'isCapsDirty');
+      return omit(nextState, 'isCapsDirty');
 
     case SAVE_SESSION_REQUESTED:
       nextState = {
         ...state,
         saveSessionRequested: true,  
       };
-      return _.omit(nextState, 'showSaveAsModal');
+      return omit(nextState, 'showSaveAsModal');
 
     case SAVE_SESSION_DONE:
-      return _.omit(state, ['saveSessionRequested', 'saveAsText']);
+      return omit(state, ['saveSessionRequested', 'saveAsText']);
 
     case GET_SAVED_SESSIONS_REQUESTED:
       return {
@@ -102,7 +103,7 @@ export default function session (state = INITIAL_STATE, action) {
         ...state,
         savedSessions: action.savedSessions
       };
-      return _.omit(nextState, 'getSavedSessionsRequested');
+      return omit(nextState, 'getSavedSessionsRequested');
 
     case DELETE_SAVED_SESSION_REQUESTED:
       return {
@@ -111,7 +112,7 @@ export default function session (state = INITIAL_STATE, action) {
       };
 
     case DELETE_SAVED_SESSION_DONE:
-      return _.omit(state, 'deletingSession');
+      return omit(state, 'deletingSession');
 
     case SWITCHED_TABS:
       return {
@@ -126,7 +127,7 @@ export default function session (state = INITIAL_STATE, action) {
       };
 
     case HIDE_SAVE_AS_MODAL_REQUESTED:
-      return _.omit(state, ['saveAsText', 'showSaveAsModal']);
+      return omit(state, ['saveAsText', 'showSaveAsModal']);
 
     case SET_SAVE_AS_TEXT:
       return {
@@ -166,7 +167,7 @@ export default function session (state = INITIAL_STATE, action) {
       };
 
     case SESSION_LOADING_DONE:
-      return _.omit(state, 'sessionLoading');
+      return omit(state, 'sessionLoading');
 
     default:
       return {...state};

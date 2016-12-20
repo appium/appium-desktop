@@ -4,7 +4,7 @@ import * as InspectorActions from '../actions/Inspector';
 import InspectorPage from '../components/Inspector';
 
 function mapStateToProps (state) {
-  return state.session;
+  return state.inspector;
 }
 
 function mapDispatchToProps (dispatch) {

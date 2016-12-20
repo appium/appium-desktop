@@ -84,6 +84,6 @@ export function clearLogs () {
 export function startSession () {
   return (dispatch) => {
     dispatch({type: START_SESSION_REQUEST});
-    ipcRenderer.send('start-session');
+    ipcRenderer.send('create-new-session-window');
   };
 }

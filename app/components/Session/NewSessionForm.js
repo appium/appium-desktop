@@ -39,7 +39,6 @@ export default class NewSessionForm extends Component {
   }
 
   render () {
-    console.log(SessionStyles);
     const {setCapabilityParam, caps, addCapability, removeCapability, saveSession, hideSaveAsModal, saveAsText, showSaveAsModal, setSaveAsText} = this.props;
 
     return <div>
