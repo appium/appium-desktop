@@ -82,7 +82,7 @@ function xmlToJSON (source) {
 
 
 export function bindAppium () {
-  return async (dispatch) => {
+  return (dispatch) => {
     ipcRenderer.on('appium-session-done', () => {
       message.error('Session has been terminated', 100000);
       ipcRenderer.removeAllListeners('appium-client-command-response');
