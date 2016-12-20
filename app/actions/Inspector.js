@@ -14,7 +14,7 @@ export const SELECT_HOVERED_ELEMENT = 'SELECT_HOVERED_ELEMENT';
 export const UNSELECT_HOVERED_ELEMENT = 'UNSELECT_HOVERED_ELEMENT';
 
 export function bindAppium () {
-  return async (dispatch) => {
+  return (dispatch) => {
     ipcRenderer.on('appium-session-done', () => {
       message.error('Session has been terminated', 100000);
       ipcRenderer.removeAllListeners('appium-client-command-response');
@@ -62,7 +62,7 @@ export function bindAppium () {
 }
 
 export function selectElement (path) {
-  return async (dispatch, getState) => {
+  return (dispatch, getState) => {
     dispatch({type: SELECT_ELEMENT, path});
 
     // Expand all of this element's ascendants so that it's visible in the tree
@@ -81,19 +81,19 @@ export function selectElement (path) {
 }
 
 export function unselectElement () {
-  return async (dispatch) => {
+  return (dispatch) => {
     dispatch({type: UNSELECT_ELEMENT});
   };
 }
 
 export function selectHoveredElement (path) {
-  return async (dispatch) => {
+  return (dispatch) => {
     dispatch({type: SELECT_HOVERED_ELEMENT, path});
   };
 }
 
 export function unselectHoveredElement (path) {
-  return async (dispatch) => {
+  return (dispatch) => {
     dispatch({type: UNSELECT_HOVERED_ELEMENT, path});
   };
 }
@@ -102,7 +102,7 @@ export function unselectHoveredElement (path) {
  * Requests a method call on appium 
  */
 export function applyClientMethod (params) {
-  return async (dispatch) => {
+  return (dispatch) => {
     ipcRenderer.send('appium-client-command-request', params);
     dispatch({type: METHOD_CALL_REQUESTED});
   };
@@ -112,13 +112,13 @@ export function applyClientMethod (params) {
  * Set a value of an arbitrarily named field
  */
 export function setFieldValue (name, value) {
-  return async (dispatch) => {
+  return (dispatch) => {
     dispatch({type: SET_FIELD_VALUE, name, value});
   };
 }
 
 export function setExpandedPaths (paths) {
-  return async (dispatch) => {
+  return (dispatch) => {
     dispatch({type: SET_EXPANDED_PATHS, paths});
   };
 }
