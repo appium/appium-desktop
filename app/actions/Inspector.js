@@ -76,7 +76,7 @@ function xmlToJSON (source) {
     };
   };
 
-  let sourceXML = (new DOMParser()).parseFromString(source, 'text/xml');
+  let sourceXML = (new DOMParser()).parseFromString(source, 'text/xml').children[0];
   return recursive(sourceXML);
 }
 
