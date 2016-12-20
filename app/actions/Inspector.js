@@ -32,11 +32,13 @@ export function bindAppium () {
         let path = (index !== undefined) && `${!parentPath ? '' : parentPath + '.'}${index}`;
 
         // Get an xpath for this element as well to use for Appium calls
-        let xpath = path && path.split('.').map((index) => `//*[${parseInt(index, 10) + 1}]`).join('');
+        let xpath = path && path.split('.').map((index) => `/*[${parseInt(index, 10) + 1}]`).join('');
 
         // Translate attributes array to an object
         let attrObject = {};
-        [...(xmlNode.attributes || [])].forEach((attribute) => attrObject[attribute.name] = attribute.value);
+        for (let attribute of xmlNode.attributes || []) {
+          attrObject[attribute.name] = attribute.value;
+        }
 
         return {
           children: [...xmlNode.children].map((childNode, childIndex) => recursive(childNode, path, childIndex)),
@@ -65,8 +67,8 @@ export function selectElement (path) {
   return (dispatch, getState) => {
     dispatch({type: SELECT_ELEMENT, path});
 
-    // Expand all of this element's ascendants so that it's visible in the tree
-    let { expandedPaths } = getState().inspector;
+    // Expand all of this element's ancestors so that it's visible in the tree
+    let {expandedPaths} = getState().inspector;
     let pathArr = path.split('.').slice(0, path.length - 1);
     while (pathArr.length > 1) {
       pathArr.splice(pathArr.length - 1);

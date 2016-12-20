@@ -27,8 +27,10 @@ export default class HighlighterRect extends Component {
 
       // Add class + special classes to hovered and selected elements
       let highlighterClasses = [InspectorCSS['highlighter-box']];
-      hoveredPath === node.path && highlighterClasses.push(InspectorCSS['hovered-element-box']);
-      selectedPath === node.path && highlighterClasses.push(InspectorCSS['inspected-element-box']);
+      if (hoveredPath === node.path)
+        highlighterClasses.push(InspectorCSS['hovered-element-box']);
+      if (selectedPath === node.path)
+        highlighterClasses.push(InspectorCSS['inspected-element-box']);
 
       return <div className={highlighterClasses.join(' ').trim()} 
         onMouseOver={() => selectHoveredElement(node.path)}

@@ -103,16 +103,16 @@ function connectCreateNewSessionWindow (win) {
   ipcMain.on('create-new-session-window', () => {
 
     // Create and open the Browser Window
-    let sessionWin = new BrowserWindow({width: 1500, height: 1000, webPreferences: {devTools: true}});
+    let sessionWin = new BrowserWindow({width: 1200, height: 800, webPreferences: {devTools: true}});
     let sessionHTMLPath = path.resolve(__dirname, 'app', 'index.html#/session');
     sessionWin.loadURL(`file://${sessionHTMLPath}`);
     sessionWin.show();
 
-    // When you close the session window, kill it's associated Appium session (if there is one)
+    // When you close the session window, kill its associated Appium session (if there is one)
     let sessionID = sessionWin.webContents.id;
-    sessionWin.on('closed', () => {
+    sessionWin.on('closed', async () => {
       if (sessionDrivers[sessionID]) {
-        sessionDrivers[sessionID].quit();
+        await sessionDrivers[sessionID].quit();
         delete sessionDrivers[sessionID];
       }
       sessionWin = null; 
@@ -123,7 +123,7 @@ function connectCreateNewSessionWindow (win) {
       sessionWin = null;
     });
 
-    // If it's dev, include devTools and 'inspect element' context menu option
+    // If its dev, include devTools and 'inspect element' context menu option
     if (isDev) {
       sessionWin.openDevTools();
       sessionWin.webContents.on('context-menu', (e, props) => {
@@ -180,13 +180,14 @@ function connectCreateNewSession () {
 function connectClientMethodListener () {
   ipcMain.on('appium-client-command-request', async (evt, data) => {
     const {methodName, args = [], xpath} = data;
-    let driver = sessionDrivers[evt.sender.id];
-
+    let renderer = evt.sender;
+    let driver = sessionDrivers[renderer.id];
     let source, screenshot;
+
     try {
       if (methodName === 'quit') {
-        evt.sender.send('appium-session-done');
-        await killSession(evt.sender);
+        renderer.send('appium-session-done');
+        await killSession(renderer);
       } else {
 
         // Execute the requested method
@@ -197,21 +198,23 @@ function connectClientMethodListener () {
             await driver[methodName](...args);
           }
         }
+
+        // Give method time to finish altering the source before getting source and screenshot
         await Bluebird.delay(500);
 
         // Send back the new source and screenshot
         source = await driver.source();
         screenshot = await driver.takeScreenshot();
-        evt.sender.send('appium-client-command-response', {source, screenshot});
+        renderer.send('appium-client-command-response', {source, screenshot});
       }
 
     } catch (e) {
       // If the status is '6' that means the session has been terminated
       if (e.status === 6) {
-        evt.sender.send('appium-session-done', e);
+        renderer.send('appium-session-done', e);
       } 
         
-      evt.sender.send('appium-client-command-response-error', e);
+      renderer.send('appium-client-command-response-error', e);
     }
 
 

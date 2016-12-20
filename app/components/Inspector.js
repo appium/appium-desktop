@@ -9,8 +9,8 @@ import InspectorStyles from './Inspector.css';
 export default class Inspector extends Component {
 
   componentWillMount () {
-    this.props.applyClientMethod({methodName: 'source'});
     this.props.bindAppium();
+    this.props.applyClientMethod({methodName: 'source'});
   }
 
   render () {
