@@ -13,7 +13,6 @@ export const SET_FIELD_VALUE = 'SET_FIELD_VALUE';
 export const SET_EXPANDED_PATHS = 'SET_EXPANDED_PATHS';
 export const SELECT_HOVERED_ELEMENT = 'SELECT_HOVERED_ELEMENT';
 export const UNSELECT_HOVERED_ELEMENT = 'UNSELECT_HOVERED_ELEMENT';
-export const SCROLL = 'SCROLL';
 
 const clientMethodPromises = {};
 
