@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Switch, Input, Modal, Form, Icon, Row, Col } from 'antd';
+import { Button, Switch, Input, InputNumber, Modal, Form, Icon, Row, Col } from 'antd';
 import { remote } from 'electron';
 import FormattedCaps from './FormattedCaps';
 import SessionStyles from '../Session.css';
@@ -14,6 +14,7 @@ export default class NewSessionForm extends Component {
         success(filepath);
       }
     });
+    this.handleSetType = this.handleSetType.bind(this);
   }
 
   getCapsControl (cap, index) {
@@ -26,8 +27,9 @@ export default class NewSessionForm extends Component {
     switch (cap.type) {
       case 'text': return <Input placeholder='Value' value={cap.value} onChange={(e) => setCapabilityParam(index, 'value', e.target.value)}/>;
       case 'boolean': return <Switch checkedChildren={'true'} unCheckedChildren={'false'} 
-        placeholder='Value' value={cap.value} onChange={(e) => setCapabilityParam(index, 'value', e.target.value)}/>;
-      case 'number': return <Input placeholder='Value' value={cap.value} onChange={(e) => setCapabilityParam(index, 'value', e.target.value)}/>; 
+        placeholder='Value' checked={cap.value} onChange={(value) => setCapabilityParam(index, 'value', value)}/>;
+      case 'number': return <Input placeholder='Value' value={cap.value} 
+        onChange={(e) => !isNaN(parseInt(e.target.value, 10)) ? setCapabilityParam(index, 'value', parseInt(e.target.value, 10)) : setCapabilityParam(index, 'value', undefined)}/>; 
       case 'json_object': return <Input type='textarea' rows={4} placeholder='Value' value={cap.value} 
         onChange={(e) => setCapabilityParam(index, 'value', e.target.value)}/>;
       case 'file': return <div>
@@ -36,6 +38,44 @@ export default class NewSessionForm extends Component {
       default: 
         throw `Invalid cap type: ${cap.type}`;
     }
+  }
+
+  /**
+   * Callback when the type of a dcap is changed
+   */
+  handleSetType (index, type) {
+    let {setCapabilityParam, caps} = this.props;
+    setCapabilityParam(index, 'type', type);
+
+    // Translate the current value to the new type
+    let translatedValue = caps[index].value;
+    typeof('');
+    switch (type) {
+      case 'text':
+        translatedValue = translatedValue + '';
+        break;
+      case 'boolean':
+        if (translatedValue === 'true') {
+          translatedValue = true;
+        } else if (translatedValue === 'false') {
+          translatedValue = false;
+        } else {
+          translatedValue = !!translatedValue;
+        }
+        break;
+      case 'number':
+        translatedValue = parseInt(translatedValue, 10) || 0;
+        break;
+      case 'json_object':
+        translatedValue = translatedValue + '';
+        break;
+      case 'file':
+        translatedValue = '';
+        break;
+      default:
+        break;
+    }
+    setCapabilityParam(index, 'value', translatedValue);
   }
 
   render () {
@@ -52,7 +92,7 @@ export default class NewSessionForm extends Component {
                 <Input placeholder='Name' value={cap.name} onChange={(e) => setCapabilityParam(index, 'name', e.target.value)}/>
               </FormItem>
               <FormItem>
-                <select onChange={(e) => setCapabilityParam(index, 'type', e.target.value)} value={cap.type}>
+                <select onChange={(e) => this.handleSetType(index, e.target.value)} value={cap.type}>
                   <option value='text'>text</option>
                   <option value='boolean'>boolean</option>
                   <option value='number'>number</option>
