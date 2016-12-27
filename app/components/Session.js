@@ -20,8 +20,8 @@ export default class Session extends Component {
     const {newSessionBegan, savedSessions, tabKey, switchTabs, changeServerType, serverType, setServerParam, server, 
       requestSaveAsModal, newSession, caps, capsUUID, saveSession, isCapsDirty, sessionLoading} = this.props;
 
-    return (<Spin spinning={!!sessionLoading}>
-      <div className={SessionStyles['session-container']}>
+    return <div className={SessionStyles['session-container']}>
+      <Spin spinning={!!sessionLoading}>
         <Tabs activeKey={serverType} onChange={changeServerType}>
           <TabPane tab='Local Server' key={ServerTypes.local}>
             <Form>
@@ -73,7 +73,7 @@ export default class Session extends Component {
           <Button type="button" onClick={requestSaveAsModal}>Save As</Button>
           <Button type="submit" onClick={() => newSession(caps)} className={SessionStyles['start-session-button']}>Start Session</Button>
         </div>
-      </div>
-    </Spin>);
+      </Spin>
+    </div>;
   }
 }
