@@ -40,6 +40,11 @@
     padding: 1em;
 }
 
+.session-container {
+    width: 100%;
+    padding: 1em;
+}
+
 .pull-right {
     float: right;
 }
