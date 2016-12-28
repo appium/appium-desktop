@@ -111,11 +111,11 @@ export function newSession (caps) {
         port = session.server.remote.port;
         break;
       case ServerTypes.sauce:
-        host = `ondemand.saucelabs.com`;
-        port = 443;
+        host = 'ondemand.saucelabs.com';
+        port = 80;
         username = session.server.sauce.username;
         accessKey = session.server.sauce.accessKey;
-        https = true;
+        https = false;
         break;
       default: 
         break;
@@ -129,7 +129,17 @@ export function newSession (caps) {
     // If it failed, show an alert saying it failed
     ipcRenderer.once('appium-new-session-failed', (evt, e) => {
       dispatch({type: SESSION_LOADING_DONE});
-      message.error(e.code, 10);
+      let errMessage;
+      if (e.data) {
+        errMessage = JSON.parse(e.data).value.message;
+      } else if (e.message) {
+        errMessage = e.message;
+      } else if (e.code) {
+        errMessage = e.code;
+      } else {
+        errMessage = 'Could not start session';
+      }
+      message.error(errMessage, 5);
     });
 
     ipcRenderer.once('appium-new-session-ready', () => {

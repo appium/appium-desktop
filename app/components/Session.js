@@ -26,10 +26,7 @@ export default class Session extends Component {
           <TabPane tab='Local Server' key={ServerTypes.local}>
             <Form>
               <FormItem>
-                <Input placeholder='Hostname' value={server.local.hostname} onChange={(e) => setServerParam('hostname', e.target.value)} />
-              </FormItem>
-              <FormItem>
-                <Input placeholder='Port' value={server.local.port} onChange={(e) => setServerParam('port', e.target.value)} />
+                <p>http://{server.local.hostname}:{server.local.port}</p>
               </FormItem>
             </Form>
           </TabPane>
