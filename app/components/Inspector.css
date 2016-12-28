@@ -1,6 +1,7 @@
 .inspector-container {
     display: flex;
     padding: 1em 1em 0 1em;
+    width: 100%;
 }
 
 .inspector-container .screenshot-container {

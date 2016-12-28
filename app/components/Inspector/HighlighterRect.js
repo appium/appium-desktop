@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import InspectorCSS from '../Inspector.css';
+import { parseCoordinates } from './shared';
 
 /**
  * Absolute positioned divs that overlay the app screenshot and highlight the bounding
@@ -9,42 +10,33 @@ import InspectorCSS from '../Inspector.css';
 export default class HighlighterRect extends Component {
 
   render () {
-    const {selectedElement = {}, selectHoveredElement, unselectHoveredElement, hoveredElement = {}, selectElement, unselectElement, node, zIndex, scaleRatio} = this.props;
+    const {selectedElement = {}, selectHoveredElement, unselectHoveredElement, hoveredElement = {}, selectElement, unselectElement, element, zIndex, scaleRatio} = this.props;
     const {path: hoveredPath} = hoveredElement;
     const {path: selectedPath} = selectedElement;
 
-    let {bounds} = node.attributes || {};
-    if (bounds) {
+    // Calculate left, top, width and height coordinates
+    const {x1, y1, x2, y2} = parseCoordinates(element);
+    const left = x1 / scaleRatio;
+    const top = y1 / scaleRatio;
+    const width = (x2 - x1) / scaleRatio;
+    const height = (y2 - y1) / scaleRatio;
 
-      // Parse the bounds from string to array
-      let [x1, y1, x2, y2] = bounds.split(/\[|\]|,/).filter((str) => str !== '');
-
-      // Calculate left, top, width and height coordinates
-      let left = x1 / scaleRatio;
-      let top = y1 / scaleRatio;
-      let width = (x2 - x1) / scaleRatio;
-      let height = (y2 - y1) / scaleRatio;
-
-      // Add class + special classes to hovered and selected elements
-      let highlighterClasses = [InspectorCSS['highlighter-box']];
-      if (hoveredPath === node.path) {
-        highlighterClasses.push(InspectorCSS['hovered-element-box']);
-      }
-      if (selectedPath === node.path) {
-        highlighterClasses.push(InspectorCSS['inspected-element-box']);
-      }
-
-      return <div className={highlighterClasses.join(' ').trim()} 
-        onMouseOver={() => selectHoveredElement(node.path)}
-        onMouseOut={unselectHoveredElement} 
-        onClick={() => node.path === selectedPath ? unselectElement() : selectElement(node.path)}
-        key={node.path}
-        style={{zIndex, left, top, width, height}}>
-        <div></div>
-      </div>;
-
-    } else {
-      return null;
+    // Add class + special classes to hovered and selected elements
+    const highlighterClasses = [InspectorCSS['highlighter-box']];
+    if (hoveredPath === element.path) {
+      highlighterClasses.push(InspectorCSS['hovered-element-box']);
     }
+    if (selectedPath === element.path) {
+      highlighterClasses.push(InspectorCSS['inspected-element-box']);
+    }
+
+    return <div className={highlighterClasses.join(' ').trim()} 
+      onMouseOver={() => selectHoveredElement(element.path)}
+      onMouseOut={unselectHoveredElement} 
+      onClick={() => element.path === selectedPath ? unselectElement() : selectElement(element.path)}
+      key={element.path}
+      style={{zIndex, left, top, width, height}}>
+      <div></div>
+    </div>;
   }
 }
