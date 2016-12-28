@@ -69,6 +69,12 @@ npm run build  # prepare resources
 npm start  # start a production version of the app
 ```
 
+If you encounter the error 'Cannot find module /path/to/sqlite3/node_sqlite3' run the script this command rebuilds the native modules to work with Electron
+
+```bash
+npm run rebuild # rebuild native modules to work with version of Node electron uses instead of system version
+```
+
 ### Packaging and Releasing
 
 To package the app for your platform, run:
