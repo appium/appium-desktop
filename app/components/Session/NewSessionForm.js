@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Switch, Input, InputNumber, Modal, Form, Icon, Row, Col } from 'antd';
+import { Button, Switch, Input, Modal, Form, Icon, Row, Col } from 'antd';
 import { remote } from 'electron';
 import FormattedCaps from './FormattedCaps';
 import SessionStyles from '../Session.css';
