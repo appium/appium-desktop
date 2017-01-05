@@ -108,6 +108,7 @@
     "jsdom": "9.x",
     "json-loader": "0.x",
     "minimist": "1.x",
+    "mocha": "3.x",
     "node-libs-browser": "2.x",
     "react-addons-test-utils": "15.x",
     "redux-logger": "2.x",
