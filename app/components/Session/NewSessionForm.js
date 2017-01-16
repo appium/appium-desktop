@@ -49,7 +49,6 @@ export default class NewSessionForm extends Component {
 
     // Translate the current value to the new type
     let translatedValue = caps[index].value;
-    typeof('');
     switch (type) {
       case 'text':
         translatedValue = translatedValue + '';
@@ -82,7 +81,7 @@ export default class NewSessionForm extends Component {
     const {setCapabilityParam, caps, addCapability, removeCapability, saveSession, hideSaveAsModal, saveAsText, showSaveAsModal, setSaveAsText} = this.props;
 
     return <div>
-      <h4>Desired Capabilities</h4> 
+      <h4>Desired Capabilities</h4>
       <Row> 
       <Col span={12}>
         <Form inline>
