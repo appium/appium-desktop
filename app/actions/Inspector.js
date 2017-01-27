@@ -13,6 +13,8 @@ export const SET_FIELD_VALUE = 'SET_FIELD_VALUE';
 export const SET_EXPANDED_PATHS = 'SET_EXPANDED_PATHS';
 export const SELECT_HOVERED_ELEMENT = 'SELECT_HOVERED_ELEMENT';
 export const UNSELECT_HOVERED_ELEMENT = 'UNSELECT_HOVERED_ELEMENT';
+export const SHOW_SEND_KEYS_MODAL = 'SHOW_SEND_KEYS_MODAL';
+export const HIDE_SEND_KEYS_MODAL = 'HIDE_SEND_KEYS_MODAL';
 
 const clientMethodPromises = {};
 
@@ -146,6 +148,18 @@ export function applyClientMethod (params) {
       dispatch({type: METHOD_CALL_DONE});
     }
   };
+}
+
+export function showSendKeysModal () {
+  return (dispatch) => {
+    dispatch({type: SHOW_SEND_KEYS_MODAL});
+  };
+}
+
+export function hideSendKeysModal () {
+  return (dispatch) => {
+    dispatch({type: HIDE_SEND_KEYS_MODAL});
+  };  
 }
 
 /**

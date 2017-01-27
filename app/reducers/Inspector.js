@@ -1,7 +1,7 @@
 import { omit } from 'lodash';
 
 import { SET_SOURCE_AND_SCREENSHOT, QUIT_SESSION_REQUESTED, SESSION_DONE, SELECT_ELEMENT, UNSELECT_ELEMENT, SELECT_HOVERED_ELEMENT, UNSELECT_HOVERED_ELEMENT,
-  METHOD_CALL_REQUESTED, METHOD_CALL_DONE, SET_FIELD_VALUE, SET_EXPANDED_PATHS } from '../actions/Inspector';
+  METHOD_CALL_REQUESTED, METHOD_CALL_DONE, SET_FIELD_VALUE, SET_EXPANDED_PATHS, SHOW_SEND_KEYS_MODAL, HIDE_SEND_KEYS_MODAL } from '../actions/Inspector';
 
 const INITIAL_STATE = {
   expandedPaths: ['0']
@@ -78,6 +78,16 @@ export default function inspector (state=INITIAL_STATE, action) {
         ...state,
         expandedPaths: action.paths,
       };    
+
+    case SHOW_SEND_KEYS_MODAL:
+      return {
+        ...state,
+        sendKeysModalVisible: true
+      };
+
+    case HIDE_SEND_KEYS_MODAL:
+      var nextState = omit(state, 'sendKeysModalVisible');
+      return omit(nextState, 'action.sendKeys');
 
     default:
       return {...state};
