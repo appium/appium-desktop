@@ -7,7 +7,7 @@ const config = {
 
   devtool: 'source-map',
 
-  entry: './app/index',
+  entry: ['babel-polyfill', './app/index'],
 
   output: {
     ...baseConfig.output,

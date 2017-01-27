@@ -15,11 +15,6 @@ export default {
   },
 
   plugins: [
-    new webpack.optimize.UglifyJsPlugin({
-      compressor: {
-        warnings: false
-      }
-    }),
     new webpack.BannerPlugin(
       'require("source-map-support").install();',
       { raw: true, entryOnly: false }
@@ -36,6 +31,10 @@ export default {
   node: {
     __dirname: false,
     __filename: false
+  },
+
+  resolve: {
+    packageAlias: 'main'
   },
 
   externals: [
