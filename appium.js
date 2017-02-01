@@ -149,6 +149,11 @@ function connectCreateNewSession () {
       await killSession(event.sender);
     }
 
+    // If a newCommandTimeout wasn't provided, set it to 0 so that sessions don't close on users
+    if (!desiredCapabilities.newCommandTimeout) {
+      desiredCapabilities.newCommandTimeout = 0;
+    }
+
     // Create the driver and cache it by the sender ID
     let driver = sessionDrivers[event.sender.id] = wd.promiseChainRemote({
       hostname: host,
