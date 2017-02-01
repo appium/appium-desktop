@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { Button } from 'react-photonkit';
+import { Button } from 'antd';
 
 import { propTypes } from './shared';
 import SimpleTab from './SimpleTab';
@@ -36,20 +36,17 @@ export default class StartServer extends Component {
         <div className={styles.formAndLogo}>
           <img src={'../images/appium_logo.png'} className={styles.logo} />
           <div className={styles.tabs}>
-            <div className={`btn-group ${styles.tabButtons}`}>
-              <Button text="Simple"
-                ptStyle={tabId === TAB_SIMPLE ? "primary" : "default" }
+            <Button.Group className={styles.tabButtons}>
+              <Button type={tabId === TAB_SIMPLE ? "primary" : null }
                 onClick={() => switchTab(TAB_SIMPLE)}
-              />
-              <Button text="Advanced"
-                ptStyle={tabId === TAB_ADVANCED ? "primary" : "default" }
+              >Simple</Button>
+              <Button type={tabId === TAB_ADVANCED ? "primary" : null }
                 onClick={() => switchTab(TAB_ADVANCED)}
-              />
-              <Button text="Presets"
-                ptStyle={tabId === TAB_PRESETS ? "primary" : "default" }
+              >Advanced</Button>
+              <Button type={tabId === TAB_PRESETS ? "primary" : null }
                 onClick={() => switchTab(TAB_PRESETS)}
-              />
-            </div>
+              >Presets</Button>
+            </Button.Group>
           </div>
           {this.displayTab()}
         </div>

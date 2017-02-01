@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import moment from 'moment';
 import React, { Component } from 'react';
-import { ListGroup, ListItem } from 'react-photonkit';
+import { notification, Table } from 'antd';
 
 import { propTypes } from './shared';
 import StartButton from './StartButton';
@@ -68,42 +68,57 @@ export default class PresetsTab extends Component {
     if (window.confirm(`Are you sure you want to delete ${this.state.selectedPreset}?`)) {
       this.props.deletePreset(this.state.selectedPreset);
       this.setState({selectedPreset: null});
+      notification.success({
+        message: 'Deleted',
+        description: 'Preset successfully trashed'
+      });
     }
   }
 
   presetList () {
     const {presets} = this.props;
     return (
-      <ListGroup className={styles.presetsList}>
+      <ul className={styles.presetsList}>
         {_.toPairs(presets).map((p) =>
           <a
            onClick={this.selectPreset.bind(this, p[0])}
            key={p[0]}
            className={styles.presetLink}
           >
-            <ListItem
-             title={p[0]}
-             subtitle={`Saved ${moment(p[1]._modified).fromNow()}`}
-             active={p[0] === this.state.selectedPreset}
-             className={styles.preset}
-            />
+            <li className={`${styles.preset} ${p[0] === this.state.selectedPreset ? styles.presetItemActive : ""}`}>
+              <div className={styles.presetItemTitle}>{p[0]}</div>
+              <div className={styles.presetItemDesc}>{`Saved ${moment(p[1]._modified).fromNow()}`}</div>
+            </li>
           </a>
         )}
-      </ListGroup>
+      </ul>
     );
   }
 
   presetDetail () {
     const preset = this.selectedPresetData();
     if (preset) {
+      const columns = [{
+        title: 'Server Argument',
+        dataIndex: 'arg',
+        width: 200
+      }, {
+        title: 'Value',
+        dataIndex: 'val',
+      }];
+      let data = [];
+      for (let [arg, val] of _.toPairs(preset)) {
+        data.push({
+          key: arg,
+          arg,
+          val: typeof val === 'string' ? val : JSON.stringify(val)
+        });
+      }
       return (
         <div className={styles.presetsDetail}>
-          {_.toPairs(preset).map((p) =>
-            <div className={styles.presetData}>
-              <b>{p[0]}:</b>
-              {typeof p[1] === 'string' ? p[1] : JSON.stringify(p[1])}
-            </div>
-          )}
+          <Table columns={columns} dataSource={data} size="small"
+           pagination={false}
+          />
         </div>
       );
     }

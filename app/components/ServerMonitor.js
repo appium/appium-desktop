@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import moment from 'moment';
-import { Button } from 'react-photonkit';
+import { Button } from 'antd';
 import { STATUS_RUNNING, STATUS_STOPPING,
          STATUS_STOPPED } from '../reducers/ServerMonitor';
 import styles from './ServerMonitor.css';
@@ -11,16 +11,16 @@ const convert = new AnsiConverter({fg: '#bbb'});
 function leveler (level) {
   switch (level) {
     case "debug":
-      return "tools";
+      return "message";
     case "warn":
-      return "attention";
+      return "exclamation-circle";
     case "error":
-      return "cancel-circled";
+      return "close-circle";
     case "silly":
-      return "basket";
+      return "paper-clip";
     case "info":
     default:
-      return "info-circled";
+      return "info-circle";
   }
 }
 
@@ -31,14 +31,13 @@ class StopButton extends Component {
 
   render () {
     const {serverStatus, stopServer, closeMonitor} = this.props;
-    let btn = <Button className={styles.stopButton} ptStyle="default"
-               text="Stop Server" onClick={stopServer} />;
+    let btn = <Button className={styles.stopButton}
+               onClick={stopServer}>Stop Server</Button>;
     if (serverStatus === STATUS_STOPPED) {
-      btn = <Button className={styles.stopButton} ptStyle="default"
-             text="Close Logs" onClick={closeMonitor} />;
+      btn = <Button className={styles.stopButton}
+             onClick={closeMonitor}>Close Logs</Button>;
     } else if (serverStatus === STATUS_STOPPING) {
-      btn = <Button className={styles.stopButton} ptStyle="disabled"
-             text="Stopping..." />;
+      btn = <Button className={styles.stopButton} type="disabled">Stopping...</Button>;
     }
     return btn;
   }
@@ -53,8 +52,8 @@ class StartSessionButton extends Component {
   render () {
     const {serverStatus, startSession} = this.props;
     if (serverStatus !== STATUS_STOPPED && serverStatus !== STATUS_STOPPING) {
-      return <Button className={styles.stopButton} ptStyle="default"
-             text="Start New Session" onClick={startSession} />;
+      return <Button className={styles.stopButton}
+             onClick={startSession}>Start New Session</Button>;
     } else {
       return null;
     }
@@ -90,15 +89,15 @@ export default class ServerMonitor extends Component {
     let statusIcon, statusMsg;
     switch (serverStatus) {
       case STATUS_RUNNING:
-        statusIcon = "icon-arrows-ccw";
+        statusIcon = "anticon-retweet";
         statusMsg = "The server is running";
         break;
       case STATUS_STOPPED:
-        statusIcon = "icon-block";
+        statusIcon = "anticon-pause-circle";
         statusMsg = "The server is stopped";
         break;
       case STATUS_STOPPING:
-        statusIcon = "icon-hourglass";
+        statusIcon = "anticon-loading";
         statusMsg = "The server is waiting for all connections to close";
         break;
       default:
@@ -109,7 +108,7 @@ export default class ServerMonitor extends Component {
       let icn = leveler(line.level);
       return (
         <div key={i}>
-          <span className={`${styles.icon} ${styles[`icon-${icn}`]} icon icon-${icn}`} />
+          <span className={`${styles.icon} anticon anticon-${icn}`} />
           {
             serverArgs.logTimestamp &&
             <span className={styles.timestamp}>
@@ -137,7 +136,7 @@ export default class ServerMonitor extends Component {
         <div className={`${styles.bar} ${styles['bar-'+serverStatus]}`}>
           <img src={'../images/appium_small_magenta.png'} className={styles.logo} />
           <div className={`${styles.status} ${styles[serverStatus]}`}>
-            <span className={`icon ${statusIcon}`} />
+            <span className={`icon anticon ${statusIcon}`} />
             {statusMsg}
           </div>
           <div className={`${styles['button-container']}`}>

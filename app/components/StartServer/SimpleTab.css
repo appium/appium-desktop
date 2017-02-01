@@ -3,3 +3,6 @@
     margin: 0px auto;
 }
 
+.form :global(.ant-input-wrapper) {
+    margin: 15px auto;
+}

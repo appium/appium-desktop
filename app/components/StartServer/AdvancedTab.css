@@ -37,23 +37,15 @@
   justify-content: center;
 }
 
-.input label, .input input {
-  width: 50%;
-  margin-bottom: 0px;
-}
-
-.input label {
-  position: relative;
-  top: 5px;
-}
-
-.input input[type=checkbox] {
-  height: 1.8em;
+.advancedForm :global(.ant-checkbox-wrapper) {
+    width: 300px;
 }
 
 .secTitle {
-  font-weight: bold;
   font-size: 1.2em;
+  color: #333;
+  margin-bottom: 12px;
+  width: 300px;
 }
 
 .secBody {
@@ -63,32 +55,7 @@
   flex-direction: row;
   flex-wrap: wrap;
   flex-flow: row wrap;
-}
-
-.savePresetTitle {
-  border-bottom: 1px solid #ccc;
-  margin-top: 0px;
-}
-
-.presetModal {
-  height: 160px;
-  width: 400px;
-  background: #fff;
-  margin: 40px auto;
-  border: 1px solid #ccc;
-  overflow: auto;
-  outline: none;
-  padding: 20px;
-}
-
-.presetModal label {
-  width: 100px !important;
-  margin-left: 0px;
-  margin-right: 10px;
-}
-
-.presetModal input {
-  width: 250px !important;
+  margin-bottom: 15px;
 }
 
 .presetActions {
@@ -109,4 +76,14 @@
   font-style: italic;
   text-align: center;
   color: #999;
+}
+
+.comingSoon {
+  font-style: italic;
+  color: #666;
+}
+
+:global(.ant-modal) {
+  width: auto;
+  margin: auto;
 }

@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { Button } from 'react-photonkit';
+import { Button } from 'antd';
 
 import styles from './StartButton.css';
 
@@ -14,11 +14,10 @@ export default class SavePresetButton extends Component {
 
     return (
       <div>
-        <Button className={styles.startButton} type="button"
-         ptStyle={presetSaving ? "disabled" : "positive"}
-         text={presetSaving ? "Saving..." : "Save As Preset..."}
+        <Button className={styles.startButton}
+         type={presetSaving ? "disabled" : ""}
          onClick={savePreset}
-        />
+        >{presetSaving ? "Saving..." : "Save As Preset..."}</Button>
         <input type="submit" hidden={true} />
       </div>
     );
