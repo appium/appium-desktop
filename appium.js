@@ -103,7 +103,7 @@ function connectCreateNewSessionWindow (win) {
   ipcMain.on('create-new-session-window', () => {
 
     // Create and open the Browser Window
-    let sessionWin = new BrowserWindow({width: 1200, height: 800, webPreferences: {devTools: true}});
+    let sessionWin = new BrowserWindow({width: 1500, height: 800, webPreferences: {devTools: isDev}});
     let sessionHTMLPath = path.resolve(__dirname, 'app', 'index.html#/session');
     sessionWin.loadURL(`file://${sessionHTMLPath}`);
     sessionWin.show();

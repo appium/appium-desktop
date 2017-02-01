@@ -44,7 +44,7 @@ export default class Source extends Component {
       });
     };
 
-    return <div className={InspectorStyles['tree-container']} style={{height: path ? 400 : 800}}>
+    return <div className={InspectorStyles['tree-container']}>
       <Button icon='arrow-left' onClick={() => applyClientMethod({methodName: 'back'})}></Button>
       <Button icon='reload' onClick={() => applyClientMethod({methodName: 'source'})}></Button>
       <Tree onExpand={setExpandedPaths} 

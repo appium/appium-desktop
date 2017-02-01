@@ -24,6 +24,10 @@ export default class Inspector extends Component {
       <div className={InspectorStyles['source-tree-container']}>
         <Card title='Source' className={InspectorStyles['source-tree-card']}>
           <Source {...this.props} />
+        </Card>
+      </div>
+      <div className={InspectorStyles['source-tree-container']}>
+        <Card title='Inspector' className={InspectorStyles['source-tree-card']}>
           {path && <SelectedElement {...this.props}/>}
         </Card>
       </div>
