@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { Button, Switch, Input, Modal, Form, Icon, Row, Col } from 'antd';
+import { Button, Switch, Input, Modal, Form, Icon, Row, Col, Select } from 'antd';
 import { remote } from 'electron';
 import FormattedCaps from './FormattedCaps';
 import SessionStyles from '../Session.css';
 const {dialog} = remote;
 const FormItem = Form.Item;
+const Option = Select.Option;
 
 export default class NewSessionForm extends Component {
 
@@ -21,21 +22,21 @@ export default class NewSessionForm extends Component {
     const {setCapabilityParam} = this.props;
 
     const buttonAfter = <Icon className={SessionStyles['filepath-button']}
-      type="file" 
+      type="file"
       onClick={() => this.getLocalFilePath((filepath) => setCapabilityParam(index, 'value', filepath))} />;
 
     switch (cap.type) {
-      case 'text': return <Input placeholder='Value' value={cap.value} onChange={(e) => setCapabilityParam(index, 'value', e.target.value)}/>;
-      case 'boolean': return <Switch checkedChildren={'true'} unCheckedChildren={'false'} 
-        placeholder='Value' checked={cap.value} onChange={(value) => setCapabilityParam(index, 'value', value)}/>;
-      case 'number': return <Input placeholder='Value' value={cap.value} 
-        onChange={(e) => !isNaN(parseInt(e.target.value, 10)) ? setCapabilityParam(index, 'value', parseInt(e.target.value, 10)) : setCapabilityParam(index, 'value', undefined)}/>; 
-      case 'json_object': return <Input type='textarea' rows={4} placeholder='Value' value={cap.value} 
-        onChange={(e) => setCapabilityParam(index, 'value', e.target.value)}/>;
-      case 'file': return <div>
-        <Input placeholder='Value' value={cap.value} addonAfter={buttonAfter}/>
+      case 'text': return <Input placeholder='Value' value={cap.value} onChange={(e) => setCapabilityParam(index, 'value', e.target.value)} size="large"/>;
+      case 'boolean': return <Switch checkedChildren={'true'} unCheckedChildren={'false'}
+        placeholder='Value' checked={cap.value} onChange={(value) => setCapabilityParam(index, 'value', value)} size="large"/>;
+      case 'number': return <Input placeholder='Value' value={cap.value}
+        onChange={(e) => !isNaN(parseInt(e.target.value, 10)) ? setCapabilityParam(index, 'value', parseInt(e.target.value, 10)) : setCapabilityParam(index, 'value', undefined)} size="large"/>;
+      case 'json_object': return <Input type='textarea' rows={4} placeholder='Value' value={cap.value}
+        onChange={(e) => setCapabilityParam(index, 'value', e.target.value)} size="large"/>;
+      case 'file': return <div className={SessionStyles.fileControlWrapper}>
+        <Input placeholder='Value' value={cap.value} addonAfter={buttonAfter} size="large"/>
       </div>;
-      default: 
+      default:
         throw `Invalid cap type: ${cap.type}`;
     }
   }
@@ -81,9 +82,8 @@ export default class NewSessionForm extends Component {
     const {setCapabilityParam, caps, addCapability, removeCapability, saveSession, hideSaveAsModal, saveAsText, showSaveAsModal, setSaveAsText} = this.props;
 
     return <div>
-      <h4>Desired Capabilities</h4>
-      <Row> 
-      <Col span={12}>
+      <Row type="flex" align="top" justify="start" className={SessionStyles.capsFormRow}>
+      <Col order={1} className={SessionStyles.capsFormCol}>
         <Form inline>
           {caps.map((cap, index) => {
             return <div key={index} className={SessionStyles['desired-capabilities-form-container']}>
@@ -91,35 +91,39 @@ export default class NewSessionForm extends Component {
                 <Input placeholder='Name' value={cap.name} onChange={(e) => setCapabilityParam(index, 'name', e.target.value)}/>
               </FormItem>
               <FormItem>
-                <select onChange={(e) => this.handleSetType(index, e.target.value)} value={cap.type}>
-                  <option value='text'>text</option>
-                  <option value='boolean'>boolean</option>
-                  <option value='number'>number</option>
-                  <option value='json_object'>JSON object</option>
-                  <option value='file'>filepath</option>
-                </select>
+                <Select onChange={(val) => this.handleSetType(index, val)} defaultValue={cap.type} size="large" style={{width: 120}}>
+                  <Option value='text'>text</Option>
+                  <Option value='boolean'>boolean</Option>
+                  <Option value='number'>number</Option>
+                  <Option value='json_object'>JSON object</Option>
+                  <Option value='file'>filepath</Option>
+                </Select>
               </FormItem>
-              <FormItem>
+              <FormItem className={SessionStyles.capsValueControl}>
                 {this.getCapsControl(cap, index)}
               </FormItem>
               <FormItem>
-                { (caps.length > 1) && <Button icon='delete' onClick={() => removeCapability(index)}/> }
-                <Button icon='plus' onClick={addCapability} className={SessionStyles['add-desired-capability-button']} />
+                <Button {...{disabled: caps.length <= 1}} icon='delete' onClick={() => removeCapability(index)}/>
               </FormItem>
             </div>;
           })}
+          <div className={SessionStyles.capsFormLastRow}>
+            <FormItem>
+              <Button icon='plus' onClick={addCapability} className={SessionStyles['add-desired-capability-button']} />
+            </FormItem>
+          </div>
         </Form>
       </Col>
 
-      <Col span={12}>        
+      <Col order={2} className={SessionStyles.capsFormattedCol}>
         <FormattedCaps {...this.props} />
         <Modal visible={showSaveAsModal}
-          title='Save Session As'
+          title='Save Capability Set As...'
           okText='Save'
-          cancelText='Cancel' 
-          onCancel={hideSaveAsModal} 
+          cancelText='Cancel'
+          onCancel={hideSaveAsModal}
           onOk={() => saveSession(caps, {name: saveAsText})}>
-          <Input onChange={(e) => setSaveAsText(e.target.value)} placeholder='Name' value={saveAsText}/>
+          <Input onChange={(e) => setSaveAsText(e.target.value)} addonBefore='Name' value={saveAsText}/>
         </Modal>
       </Col>
       </Row>

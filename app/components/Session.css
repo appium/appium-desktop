@@ -3,36 +3,13 @@
     color: white;
 }
 
-.saved-sessions {
-    padding-right: 1em;
-}
-
-.saved-sessions tr {
-    height: 3em;
-}
-
-.saved-sessions tr td {
-    border: 1px solid black;
-    border-bottom: none;
-    border-right: none;
-    cursor: pointer !important;
-}
-
-.saved-sessions tr td p {
-    display: block;
-}
-
-.saved-sessions tr td:last-child {
-    border-right: 1px solid black;
-    width: 4em;
-}
-
-.saved-sessions tr:last-child td {
-    border-bottom: 1px solid black;
-}
-
-.saved-sessions .edit-session {
-    margin-right: 1em;
+.session-container {
+    width: 100%;
+    height: 100%;
+    padding: 1em;
+    background: linear-gradient(180deg, #f9f9f9, #f2f2f2, 5%, #f2f2f2, 95%, #d9d9d9);
+    display: flex;
+    flex-flow: column;
 }
 
 .session-container {
@@ -40,19 +17,45 @@
     padding: 1em;
 }
 
-.session-container {
-    width: 100%;
-    padding: 1em;
+.sessionFooter {
+  text-align: right;
+  height: 30px;
 }
 
-.pull-right {
-    float: right;
+.serverTabs {
+  min-height: 160px;
+}
+
+.serverTabs :global(.ant-tabs-content) {
+  height: 100px;
+}
+
+.scrollingTabCont {
+  border-bottom: 1px solid #d9d9d9;
+  margin-bottom: 15px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.scrollingTab {
+  overflow-y: scroll;
+  flex-grow: 1;
+}
+
+.scrollingTab::-webkit-scrollbar {
+  width: 0px;
 }
 
 .formatted-caps {
-    padding: 4px;
     width: 100%;
-    background-color: #d3d3d3;
+    margin-bottom: 15px;
+    min-height: 250px;
+}
+
+.formatted-caps pre {
+  white-space: pre-wrap;
+  word-wrap: break-word;
 }
 
 .start-session-button {
@@ -61,6 +64,32 @@
 
 .filepath-button {
     cursor: pointer;
+}
+
+.capsFormCol {
+    min-width: 476px;
+}
+
+.capsFormRow {
+    flex-wrap: nowrap;
+}
+
+.capsFormattedCol {
+    flex-grow: 1;
+}
+
+.capsFormLastRow {
+  width: 100%;
+  text-align: right;
+}
+
+.capsValueControl {
+  min-width: 142px;
+}
+
+.fileControlWrapper :global(.ant-input-group),
+.capsValueControl textarea {
+  max-width: 142px;
 }
 
 .desired-capabilities-form-container {
@@ -75,6 +104,12 @@
     display: initial;
 }
 
-.add-desired-capability-button {
-    margin-left: 4px;
+.localDesc {
+    font-style: italic;
+    color: #666;
+}
+
+.savedCaps .formatted-caps {
+  position: fixed;
+  width: 47%;
 }

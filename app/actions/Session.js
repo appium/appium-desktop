@@ -39,8 +39,13 @@ export const ServerTypes = {
 };
 
 export function getCapsObject (caps) {
-  return Object.assign({}, ...(caps.map((cap) => { 
-    return {[cap.name]: cap.value}; 
+  return Object.assign({}, ...(caps.map((cap) => {
+    try {
+      let obj = JSON.parse(cap.value);
+      return {[cap.name]: obj};
+    } catch (e) {
+      return {[cap.name]: cap.value};
+    }
   })));
 }
 
@@ -90,7 +95,7 @@ export function removeCapability (index) {
 }
 
 /**
- * Start a new appium session with the given caps 
+ * Start a new appium session with the given caps
  */
 export function newSession (caps) {
   return async (dispatch, getState) => {
@@ -117,7 +122,7 @@ export function newSession (caps) {
         accessKey = session.server.sauce.accessKey;
         https = false;
         break;
-      default: 
+      default:
         break;
     }
 
@@ -183,9 +188,9 @@ export function saveSession (caps, params) {
       }
     }
     await settings.set(SAVED_SESSIONS, savedSessions);
+    await getSavedSessions()(dispatch);
     dispatch({type: SET_CAPS, caps, uuid});
     dispatch({type: SAVE_SESSION_DONE});
-    await getSavedSessions()(dispatch);
   };
 }
 
@@ -239,13 +244,14 @@ export function setSaveAsText (saveAsText) {
 /**
  * Delete a saved session
  */
-export function deleteSavedSession (index) {
+export function deleteSavedSession (uuid) {
   return async (dispatch) => {
-    dispatch({type: DELETE_SAVED_SESSION_REQUESTED, index});
+    dispatch({type: DELETE_SAVED_SESSION_REQUESTED, uuid});
     let savedSessions = await settings.get(SAVED_SESSIONS) || [];
-    savedSessions.splice(index, 1);
-    await settings.set(SAVED_SESSIONS, savedSessions);
-    dispatch({type: GET_SAVED_SESSIONS_DONE, savedSessions});
+    let newSessions = savedSessions.filter((session) => session.uuid !== uuid);
+    await settings.set(SAVED_SESSIONS, newSessions);
+    dispatch({type: DELETE_SAVED_SESSION_DONE});
+    dispatch({type: GET_SAVED_SESSIONS_DONE, savedSessions: newSessions});
   };
 }
 
@@ -290,6 +296,6 @@ export function setSavedServerParams () {
     let serverType = await settings.get(SESSION_SERVER_TYPE);
     if (server) {
       dispatch({type: SET_SERVER, server, serverType});
-    }   
+    }
   };
 }

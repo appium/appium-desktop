@@ -103,7 +103,7 @@ function connectCreateNewSessionWindow (win) {
   ipcMain.on('create-new-session-window', () => {
 
     // Create and open the Browser Window
-    let sessionWin = new BrowserWindow({width: 1500, height: 800, webPreferences: {devTools: isDev}});
+    let sessionWin = new BrowserWindow({width: 900, minWidth: 800, height: 570, minHeight: 570, title: "Start Session", backgroundColor: "#f2f2f2", webPreferences: {devTools: isDev}});
     let sessionHTMLPath = path.resolve(__dirname, 'app', 'index.html#/session');
     sessionWin.loadURL(`file://${sessionHTMLPath}`);
     sessionWin.show();
@@ -115,7 +115,7 @@ function connectCreateNewSessionWindow (win) {
         await sessionDrivers[sessionID].quit();
         delete sessionDrivers[sessionID];
       }
-      sessionWin = null; 
+      sessionWin = null;
     });
 
     // When the main window is closed, close the session window too
@@ -218,7 +218,7 @@ function connectClientMethodListener () {
       // If the status is '6' that means the session has been terminated
       if (e.status === 6) {
         renderer.send('appium-session-done', e);
-      } 
+      }
       console.log('reporting error', {e, uuid});
       renderer.send('appium-client-command-response-error', {e, uuid});
     }

@@ -76,6 +76,15 @@
   font-family: "Inconsolata", "Lucida console", Monaco, monospace;
 }
 
+.term::-webkit-scrollbar {
+  width: 14px;
+  background: transparent;
+}
+
+.term::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
 .term-stopped {
   color: #999;
 }
