@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { Button } from 'react-photonkit';
-import Modal from 'react-modal';
+import { Modal, Input, Checkbox, notification } from 'antd';
 
 import { propTypes, updateArg } from './shared';
 import StartButton from './StartButton';
@@ -25,7 +24,6 @@ export default class AdvancedTab extends Component {
     this.state = {
       modalOpen: false,
       newPresetName: "",
-      presetSaveComplete: false,
     };
   }
 
@@ -35,10 +33,10 @@ export default class AdvancedTab extends Component {
     if (type === "text") {
       return (
         <div className={styles.input}>
-          <label>{label}</label>
-          <input className={"form-control"} ref={argName} type="text"
+          <Input ref={argName} type="text"
             defaultValue={serverArgs[argName]}
             name={argName} onChange={updateArg.bind(this)}
+            addonBefore={label} size="large"
           />
         </div>
       );
@@ -47,11 +45,10 @@ export default class AdvancedTab extends Component {
     if (type === "checkbox") {
       return (
         <div className={styles.input}>
-          <label>{label}</label>
-          <input className={"form-control"} ref={argName} type="checkbox"
+          <Checkbox ref={argName}
             name={argName} defaultChecked={serverArgs[argName]}
-            onChange={updateArg.bind(this)}
-          />
+            onChange={updateArg.bind(this)} size="large"
+          >{label}</Checkbox>
         </div>
       );
     }
@@ -66,7 +63,6 @@ export default class AdvancedTab extends Component {
   openPresetModal () {
     this.setState({
       modalOpen: true,
-      presetSaveComplete: false,
     });
   }
 
@@ -79,58 +75,53 @@ export default class AdvancedTab extends Component {
   }
 
   savePreset (evt) {
-    evt.preventDefault();
+    if (evt) {
+      // might get here from Modal binding (no event) or form submit binding
+      // (event)
+      evt.preventDefault();
+    }
     if (!this.state.newPresetName) {
       // don't save a preset without a name
       return;
     }
     this.props.savePreset(this.state.newPresetName, this.props.serverArgs);
-    this.setState({presetSaveComplete: true});
-    setTimeout(() => {
-      this.setState({modalOpen: false});
-    }, 1000);
+    notification.success({
+      message: 'Saved',
+      description: `Your preset '${this.state.newPresetName}' has been added ` +
+                   `to the list in the Presets tab!`
+    });
+    this.setState({modalOpen: false});
   }
 
   modal () {
     const form = (
       <div>
-        <h3 className={styles.savePresetTitle}>Save Server Arguments Preset</h3>
         <form className={styles.input}
          onSubmit={this.savePreset.bind(this)}>
-          <label>Preset name:</label>
-          <input autoFocus
-            className={"form-control"}
+          <Input autoFocus
             ref="presetName"
-            type="text"
             name={"presetName"}
+            addonBefore="Preset name"
             onChange={this.updatePresetName.bind(this)}
+            size="large"
           />
           <input type="submit" hidden={true} />
         </form>
-        <div className={styles.presetActions}>
-          <Button
-           type="button"
-           ptStyle="default"
-           text="Cancel"
-           onClick={this.closePresetModal.bind(this)}
-          />
-          <Button
-           type="button"
-           ptStyle="primary"
-           text="Save"
-           onClick={this.savePreset.bind(this)}
-          />
-        </div>
       </div>
     );
 
-    const success = (
-      <div className={styles.savePresetSuccess}>Saved</div>
-    );
-
     return (
-      <Modal isOpen={this.state.modalOpen} className={styles.presetModal}>
-      {this.state.presetSaveComplete ? success : form}
+      <Modal
+       visible={this.state.modalOpen}
+       className={styles.presetModal}
+       title="Save Server Arguments Preset"
+       width={340}
+       okText="Save"
+       onOk={this.savePreset.bind(this)}
+       cancelText="Cancel"
+       onCancel={this.closePresetModal.bind(this)}
+      >
+        {form}
       </Modal>
     );
   }
@@ -157,8 +148,16 @@ export default class AdvancedTab extends Component {
               {this.buildInput('enforceStrictCaps', 'checkbox', 'Strict Caps Mode')}
               {this.buildInput('defaultCapabilities', 'textarea', 'Default Capabilities')}
             </div>
+
             <div className={styles.secTitle}>iOS</div>
+            <div className={styles.secBody}>
+              <div className={styles.comingSoon}>iOS options coming soon!</div>
+            </div>
+
             <div className={styles.secTitle}>Android</div>
+            <div className={styles.secBody}>
+              <div className={styles.comingSoon}>Android options coming soon!</div>
+            </div>
           </div>
           <div className={styles.actions}>
             <StartButton {...{serverStarting, startServer}} />

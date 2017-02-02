@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { Button } from 'react-photonkit';
+import { Button } from 'antd';
 
 import styles from './StartButton.css';
 
@@ -14,11 +14,10 @@ export default class DeletePresetButton extends Component {
 
     return (
       <div>
-        <Button className={styles.startButton} type="button"
-         ptStyle={presetDeleting ? "disabled" : "negative"}
-         text={presetDeleting ? "Deleting..." : "Delete Preset"}
+        <Button className={styles.startButton}
+         type={presetDeleting ? "disabled" : null}
          onClick={deletePreset}
-        />
+        >{presetDeleting ? "Deleting..." : "Delete Preset"}</Button>
       </div>
     );
   }

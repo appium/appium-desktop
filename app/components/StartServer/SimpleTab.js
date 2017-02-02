@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Input } from 'react-photonkit';
+import { Input } from 'antd';
 
 import { propTypes, updateArg } from './shared';
 import StartButton from './StartButton';
@@ -14,11 +14,14 @@ export default class SimpleTab extends Component {
     return (
       <div className={styles.form}>
         <form onSubmit={startServer}>
-          <Input ref="address" type="text" defaultValue={serverArgs.address}
-            label="Server Address" name="address" onChange={updateArg.bind(this)}
+          <Input ref="address" defaultValue={serverArgs.address}
+            addonBefore="Host"
+            name="address" onChange={updateArg.bind(this)}
+            size="large" id="simpleHostInput"
           />
-          <Input ref="port" type="text" defaultValue={serverArgs.port}
-            label="Port" name="port" onChange={updateArg.bind(this)}
+          <Input ref="port" defaultValue={serverArgs.port}
+            addonBefore="Port" name="port" onChange={updateArg.bind(this)}
+            size="large" id="simplePortInput"
           />
           <div className="form-actions">
             <StartButton {...{serverStarting, startServer}} />

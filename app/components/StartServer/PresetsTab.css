@@ -10,14 +10,47 @@
 }
 
 .presetsList {
-  /*border-right: 1px solid #662d91;*/
   overflow: scroll;
   height: 100%;
+  width: 100%;
 }
 
 .presetsList::-webkit-scrollbar {
   width: 0px;
   height: 0px;
+}
+
+.presetLink {
+  display: block;
+  border-top: 1px dotted #662d91 !important;
+  color: inherit;
+}
+
+.presetLink:first-child {
+  border-top: 0px !important;
+}
+
+.presetLink:hover {
+  background-color: #dff1ff;
+  color: inherit;
+}
+
+li.preset {
+  padding: 10px;
+}
+
+.presetItemTitle {
+  font-weight: bold;
+  font-size: 1.3em;
+}
+
+.presetItemDesc {
+  font-size: 0.9em;
+  color: #666;
+}
+
+.presetItemActive {
+  background-color: #d9cfe0; /*#662d91;*/
 }
 
 .presetsDetail {
@@ -26,8 +59,21 @@
   overflow: scroll;
   border-left: 1px solid #662d91;
   padding-top: 15px;
-  background-color: #662d91;
-  color: #fff;
+}
+
+.presetsDetail :global(th),
+.presetsDetail :global(thead),
+.presetsDetail :global(tbody) {
+  background: none !important;
+}
+
+.presetsDetail :global(th),
+.presetsDetail :global(td) {
+  border-color: #662d91 !important;
+}
+
+.presetsDetail :global(.ant-table-small) {
+  border: none;
 }
 
 .presetsDetail::-webkit-scrollbar {
@@ -38,19 +84,6 @@
 .presetsDetail h4 {
   margin-top: 0px;
   padding-left: 8px;
-}
-
-.presetLink {
-  display: block;
-  border-top: 1px dotted #662d91 !important;
-}
-
-.presetLink:first-child {
-  border-top: 0px !important;
-}
-
-.presetLink:hover {
-  background-color: #dff1ff;
 }
 
 .noPresetsContainer {
@@ -75,10 +108,7 @@
   padding: 2px 8px;
 }
 
-.presetData b {
-  color: #fff;
-}
-
-.presetData:first-child {
-  border-top: 0px;
+:global(.ant-modal) {
+  width: 340px !important;
+  margin: auto;
 }

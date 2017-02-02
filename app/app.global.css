@@ -3,9 +3,14 @@ body {
   box-sizing: border-box;
 }
 
+#root {
+  height: 100%;
+}
+
 .window {
   background-color: #cde4f5 !important;
   width: 100%;
+  height: 100%;
 }
 
 .list-group-item.active {

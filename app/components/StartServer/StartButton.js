@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { Button } from 'react-photonkit';
+import { Button } from 'antd';
 
 import styles from './StartButton.css';
 
@@ -20,14 +20,20 @@ export default class StartButton extends Component {
 
   render () {
     const {startServer, serverStarting} = this.props;
+    const buttonProps = {};
+    if (!this.isEnabled()) {
+      buttonProps.disabled = true;
+    }
 
     return (
       <div>
-        <Button className={styles.startButton} type="button"
-         ptStyle={!this.isEnabled() ? "disabled" : "primary"}
-         text={serverStarting ? "Starting..." : "Start Server"}
+        <Button {...buttonProps}
+         className={styles.startButton}
+         type="primary"
          onClick={this.isEnabled() ? startServer : this.noop}
-        />
+        >
+          {serverStarting ? "Starting..." : "Start Server"}
+        </Button>
         <input type="submit" hidden={true} />
       </div>
     );
