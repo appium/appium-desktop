@@ -168,6 +168,10 @@ function connectCreateNewSession () {
       let p = driver.init(desiredCapabilities);
       event.sender.send('appium-new-session-successful');
       await p;
+      // we don't really support the web portion of apps for a number of
+      // reasons, so pre-emptively ensure we're in native mode before doing the
+      // rest of the inspector startup
+      await driver.context('NATIVE_APP');
       event.sender.send('appium-new-session-ready');
     } catch (e) {
       // If the session failed, delete it from the cache
