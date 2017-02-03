@@ -22,6 +22,11 @@ body {
   height: 100%;
 }
 
+.ant-notification {
+  width: 80%;
+  margin-right: 10%;
+}
+
 body::-webkit-scrollbar {
   width: 0px;
   background: transparent;

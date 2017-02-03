@@ -28,7 +28,7 @@ export default class NewSessionForm extends Component {
     switch (cap.type) {
       case 'text': return <Input placeholder='Value' value={cap.value} onChange={(e) => setCapabilityParam(index, 'value', e.target.value)} size="large"/>;
       case 'boolean': return <Switch checkedChildren={'true'} unCheckedChildren={'false'}
-        placeholder='Value' checked={cap.value} onChange={(value) => setCapabilityParam(index, 'value', value)} size="large"/>;
+        placeholder='Value' checked={cap.value} onChange={(value) => setCapabilityParam(index, 'value', value)} />;
       case 'number': return <Input placeholder='Value' value={cap.value}
         onChange={(e) => !isNaN(parseInt(e.target.value, 10)) ? setCapabilityParam(index, 'value', parseInt(e.target.value, 10)) : setCapabilityParam(index, 'value', undefined)} size="large"/>;
       case 'json_object': return <Input type='textarea' rows={4} placeholder='Value' value={cap.value}

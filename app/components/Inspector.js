@@ -17,7 +17,7 @@ export default class Inspector extends Component {
     const chromeHeight = 48;
     if (!this.didInitialResize) {
       // resize width to something sensible for using the inspector on first run
-      window.resizeTo(1150, window.clientHeight - chromeHeight);
+      window.resizeTo(1080, window.clientHeight - chromeHeight);
       this.didInitialResize = true;
     }
     this.props.bindAppium();
@@ -29,10 +29,10 @@ export default class Inspector extends Component {
     const {path} = selectedElement;
 
     let actions = <span>
-      <Button icon='arrow-left' onClick={() => applyClientMethod({methodName: 'back'})}>
+      <Button icon='arrow-left' onClick={() => applyClientMethod({methodName: 'back'})} size="small" >
         Back
       </Button>
-      <Button icon='reload' onClick={() => applyClientMethod({methodName: 'source'})}>
+      <Button icon='reload' onClick={() => applyClientMethod({methodName: 'source'})} size="small">
         Refresh
       </Button>
       <Button icon='close' onClick={() => quitSession()} size="small">

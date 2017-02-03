@@ -35,7 +35,7 @@ export default class HighlighterRect extends Component {
       onMouseOut={unselectHoveredElement}
       onClick={() => element.path === selectedPath ? unselectElement() : selectElement(element.path)}
       key={element.path}
-      style={{zIndex, left, top, width, height}}>
+      style={{zIndex, left: (left || 0), top: (top || 0), width: (width || 0), height: (height || 0)}}>
       <div></div>
     </div>;
   }

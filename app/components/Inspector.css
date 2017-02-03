@@ -25,20 +25,20 @@
     width: 100%;
     height: 100%;
     text-align: center;
-    padding-bottom: 20px;
+    padding-bottom: 13px;
 }
 
 .inspector-container .source-tree-container {
     flex-grow: 3;
     flex-basis: 550px;
-    min-width: 350px;
+    min-width: 380px;
     padding-bottom: 1em;
     padding-left: 1em;
 }
 
 .inspector-container .element-detail-container {
     flex-grow: 2;
-    flex-basis: 300px;
+    flex-basis: 360px;
     min-width: 300px;
 }
 
@@ -53,7 +53,7 @@
 }
 
 .inspector-container .source-tree-card :global(.ant-card-extra) {
-  top: 10px;
+    top: 14px;
 }
 
 .inspector-container .source-tree-card :global(.ant-card-extra) button {

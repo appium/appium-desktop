@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import { Tree, Button } from 'antd';
+import { Tree } from 'antd';
 import InspectorStyles from '../Inspector.css';
 
 const {TreeNode} = Tree;
 const IMPORTANT_ATTRS = [
   'name',
-  'content-desc'
+  'content-desc',
+  'resource-id'
 ];
 
 /**
@@ -18,7 +19,7 @@ export default class Source extends Component {
     let attrs = [];
     for (let attr of IMPORTANT_ATTRS) {
       if (attributes[attr]) {
-        attrs.push(<span>
+        attrs.push(<span key={attr}>&nbsp;
           <i
            className={InspectorStyles.sourceAttrName}
           >{attr}</i>=<span
@@ -28,7 +29,7 @@ export default class Source extends Component {
       }
     }
     return <span>
-      &lt;<b className={InspectorStyles.sourceTag}>{tagName}</b> {attrs}&gt;
+      &lt;<b className={InspectorStyles.sourceTag}>{tagName}</b>{attrs}&gt;
     </span>;
   }i
 

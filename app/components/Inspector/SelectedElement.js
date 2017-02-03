@@ -40,7 +40,7 @@ export default class SelectedElement extends Component {
       title: 'Attribute',
       dataIndex: 'name',
       key: 'name',
-      width: 80
+      width: 100
     }, {
       title: 'Value',
       dataIndex: 'value',

@@ -1,6 +1,7 @@
 import { ipcRenderer } from 'electron';
-import { message } from 'antd';
+import { notification } from 'antd';
 import { push } from 'react-router-redux';
+import { showError } from './Session';
 import UUID from 'uuid';
 import Promise from 'bluebird';
 
@@ -17,6 +18,7 @@ export const UNSELECT_HOVERED_ELEMENT = 'UNSELECT_HOVERED_ELEMENT';
 export const SHOW_SEND_KEYS_MODAL = 'SHOW_SEND_KEYS_MODAL';
 export const HIDE_SEND_KEYS_MODAL = 'HIDE_SEND_KEYS_MODAL';
 export const QUIT_SESSION_REQUESTED = 'QUIT_SESSION_REQUESTED';
+export const QUIT_SESSION_DONE = 'QUIT_SESSION_DONE';
 
 const clientMethodPromises = {};
 
@@ -49,7 +51,7 @@ ipcRenderer.on('appium-client-command-response-error', (evt, resp) => {
   const {e, uuid} = resp;
   let promise = clientMethodPromises[uuid];
   if (promise) {
-    promise.reject(e.message);
+    promise.reject(e);
     delete clientMethodPromises[uuid];
   }
 });
@@ -89,7 +91,11 @@ function xmlToJSON (source) {
 export function bindAppium () {
   return (dispatch) => {
     ipcRenderer.on('appium-session-done', () => {
-      message.error('Session has been terminated', 100000);
+      notification.error({
+        message: "Error",
+        description: "Session has been terminated",
+        duration: 0
+      });
       ipcRenderer.removeAllListeners('appium-client-command-response');
       ipcRenderer.removeAllListeners('appium-client-command-response-error');
       dispatch({type: SESSION_DONE});
@@ -146,7 +152,7 @@ export function applyClientMethod (params) {
       dispatch({type: SET_SOURCE_AND_SCREENSHOT, source: xmlToJSON(source), screenshot});
       return result;
     } catch (error) {
-      message.error(error, 10);
+      showError(error, 10);
       dispatch({type: METHOD_CALL_DONE});
     }
   };
@@ -186,7 +192,7 @@ export function quitSession () {
   return async (dispatch) => {
     dispatch({type: QUIT_SESSION_REQUESTED});
     await applyClientMethod({methodName: 'quit'})(dispatch);
-    dispatch({type: SESSION_DONE});
+    dispatch({type: QUIT_SESSION_DONE});
     dispatch(push('/session'));
   };
 }

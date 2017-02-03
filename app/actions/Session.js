@@ -2,7 +2,7 @@ import { ipcRenderer } from 'electron';
 import settings from 'electron-settings';
 import { v4 as UUID } from 'uuid';
 import { push } from 'react-router-redux';
-import { message } from 'antd';
+import { notification } from 'antd';
 
 export const NEW_SESSION_REQUESTED = 'NEW_SESSION_REQUESTED';
 export const NEW_SESSION_BEGAN = 'NEW_SESSION_BEGAN';
@@ -50,6 +50,34 @@ export function getCapsObject (caps) {
     }
     return {[cap.name]: cap.value};
   })));
+}
+
+export function showError (e, secs = 5) {
+  let errMessage;
+  if (e.data) {
+    try {
+      e.data = JSON.parse(e.data);
+    } catch (ign) {}
+    if (e.data.value && e.data.value.message) {
+      errMessage = e.data.value.message;
+    } else {
+      errMessage = e.data;
+    }
+  } else if (e.message) {
+    errMessage = e.message;
+  } else if (e.code) {
+    errMessage = e.code;
+  } else {
+    errMessage = 'Could not start session';
+  }
+  if (errMessage === "ECONNREFUSED") {
+    errMessage = "Could not connect to server; are you sure it's running?";
+  }
+  notification.error({
+    message: "Error",
+    description: errMessage,
+    duration: secs
+  });
 }
 
 /**
@@ -124,7 +152,11 @@ export function newSession (caps) {
         username = session.server.sauce.username;
         accessKey = session.server.sauce.accessKey;
         if (!username || !accessKey) {
-          message.error("Sauce username and access key are required!", 5);
+          notification.error({
+            message: "Error",
+            description: "Sauce username and access key are required!",
+            duration: 4
+          });
           return;
         }
         https = false;
@@ -141,21 +173,7 @@ export function newSession (caps) {
     // If it failed, show an alert saying it failed
     ipcRenderer.once('appium-new-session-failed', (evt, e) => {
       dispatch({type: SESSION_LOADING_DONE});
-      let errMessage;
-      if (e.data) {
-        if (e.data.value && e.data.value.message) {
-          errMessage = e.data.value.message;
-        } else {
-          errMessage = e.data;
-        }
-      } else if (e.message) {
-        errMessage = e.message;
-      } else if (e.code) {
-        errMessage = e.code;
-      } else {
-        errMessage = 'Could not start session';
-      }
-      message.error(errMessage, 5);
+      showError(e, 0);
     });
 
     ipcRenderer.once('appium-new-session-ready', () => {
