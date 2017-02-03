@@ -25,7 +25,7 @@ export default class Inspector extends Component {
   }
 
   render () {
-    const {screenshot, selectedElement = {}, applyClientMethod} = this.props;
+    const {screenshot, selectedElement = {}, applyClientMethod, quitSession} = this.props;
     const {path} = selectedElement;
 
     let actions = <span>
@@ -34,6 +34,9 @@ export default class Inspector extends Component {
       </Button>
       <Button icon='reload' onClick={() => applyClientMethod({methodName: 'source'})}>
         Refresh
+      </Button>
+      <Button icon='close' onClick={() => quitSession()} size="small">
+        Quit
       </Button>
     </span>;
 

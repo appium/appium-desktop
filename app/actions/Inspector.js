@@ -1,5 +1,6 @@
 import { ipcRenderer } from 'electron';
 import { message } from 'antd';
+import { push } from 'react-router-redux';
 import UUID from 'uuid';
 import Promise from 'bluebird';
 
@@ -15,6 +16,7 @@ export const SELECT_HOVERED_ELEMENT = 'SELECT_HOVERED_ELEMENT';
 export const UNSELECT_HOVERED_ELEMENT = 'UNSELECT_HOVERED_ELEMENT';
 export const SHOW_SEND_KEYS_MODAL = 'SHOW_SEND_KEYS_MODAL';
 export const HIDE_SEND_KEYS_MODAL = 'HIDE_SEND_KEYS_MODAL';
+export const QUIT_SESSION_REQUESTED = 'QUIT_SESSION_REQUESTED';
 
 const clientMethodPromises = {};
 
@@ -109,7 +111,7 @@ export function selectElement (path) {
         expandedPaths.push(path);
       }
     }
-    
+
     dispatch({type: SET_EXPANDED_PATHS, paths: expandedPaths});
   };
 }
@@ -133,7 +135,7 @@ export function unselectHoveredElement (path) {
 }
 
 /**
- * Requests a method call on appium 
+ * Requests a method call on appium
  */
 export function applyClientMethod (params) {
   return async (dispatch) => {
@@ -159,7 +161,7 @@ export function showSendKeysModal () {
 export function hideSendKeysModal () {
   return (dispatch) => {
     dispatch({type: HIDE_SEND_KEYS_MODAL});
-  };  
+  };
 }
 
 /**
@@ -174,5 +176,17 @@ export function setFieldValue (name, value) {
 export function setExpandedPaths (paths) {
   return (dispatch) => {
     dispatch({type: SET_EXPANDED_PATHS, paths});
+  };
+}
+
+/**
+ * Quit the session and go back to the new session window
+ */
+export function quitSession () {
+  return async (dispatch) => {
+    dispatch({type: QUIT_SESSION_REQUESTED});
+    await applyClientMethod({methodName: 'quit'})(dispatch);
+    dispatch({type: SESSION_DONE});
+    dispatch(push('/session'));
   };
 }

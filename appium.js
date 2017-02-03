@@ -189,14 +189,23 @@ function connectCreateNewSession () {
 function connectClientMethodListener () {
   ipcMain.on('appium-client-command-request', async (evt, data) => {
     const {methodName, args = [], xpath, uuid} = data;
+    console.log(`Handling client method request with method '${methodName}' ` +
+                `and args ${JSON.stringify(args)}`);
     let renderer = evt.sender;
     let driver = sessionDrivers[renderer.id];
     let source, screenshot;
 
     try {
       if (methodName === 'quit') {
-        renderer.send('appium-session-done');
-        await killSession(renderer);
+        await killSession(renderer.id);
+        // when we've quit the session, there's no source/screenshot to send
+        // back
+        renderer.send('appium-client-command-response', {
+          source: null,
+          screenshot: null,
+          uuid,
+          result: null
+        });
       } else {
 
         // Execute the requested method
