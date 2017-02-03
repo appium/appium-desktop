@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import { Button, Row, Col, Input, Modal } from 'antd';
+import styles from '../Inspector.css';
+import { Button, Row, Col, Input, Modal, Table } from 'antd';
 
 /**
  * Shows details of the currently selected element and shows methods that can
@@ -25,36 +26,50 @@ export default class SelectedElement extends Component {
     const {attributes, xpath} = selectedElement;
 
     // Translate attributes into an array so we can iterate over them
-    let attrArray = Object.keys(attributes || {}).map((attrName) => {
+    let attrArray = Object
+      .keys(attributes || {})
+      .filter((attrName) => attrName !== 'path')
+      .map((attrName) => {
+        return {
+          name: attrName,
+          value: attributes[attrName],
+        };
+      });
+
+    let columns = [{
+      title: 'Attribute',
+      dataIndex: 'name',
+      key: 'name',
+      width: 80
+    }, {
+      title: 'Value',
+      dataIndex: 'value',
+      key: 'value'
+    }];
+
+    let dataSource = attrArray.map((attr) => {
       return {
-        name: attrName,
-        value: attributes[attrName],
+        key: attr.name,
+        name: attr.name,
+        value: attr.value,
       };
     });
 
     return <div>
-      <h4>Actions</h4>
-      <Row>
-        <Col span={12}>
-          <Button onClick={() => applyClientMethod({methodName: 'click', xpath})}>Tap Element</Button>
-        </Col>
-        <Col span={12}>
-          <Button onClick={() => showSendKeysModal()}>Send Keys</Button>
-        </Col>
+      <Row justify="center" type="flex" align="middle" gutter={10} className={styles.elementActions}>
+        <Col><Button onClick={() => applyClientMethod({methodName: 'click', xpath})}>Tap</Button></Col>
+        <Col><Button onClick={() => showSendKeysModal()}>Send Keys</Button></Col>
       </Row>
-      <h4>Attributes</h4>
+      {dataSource.length > 0 &&
       <Row>
-        <Col span={12}>
-        {attrArray.map((attr) => [
-          <div>{attr.name}:  {attr.value}</div>
-        ])}
-        </Col>
+        <Table columns={columns} dataSource={dataSource} size="small" pagination={false} />
       </Row>
+      }
       <Modal title='Send Keys'
         visible={sendKeysModalVisible}
         okText='Send Keys'
-        cancelText='Cancel' 
-        onCancel={hideSendKeysModal} 
+        cancelText='Cancel'
+        onCancel={hideSendKeysModal}
         onOk={this.handleSendKeys}>
             <Input placeholder='Enter keys' value={sendKeys} onChange={(e) => setFieldValue('sendKeys', e.target.value)} />
       </Modal>
