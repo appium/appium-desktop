@@ -3,14 +3,9 @@ import { Button, Switch, Input, Modal, Form, Icon, Row, Col, Select } from 'antd
 import { remote } from 'electron';
 import FormattedCaps from './FormattedCaps';
 import SessionStyles from '../Session.css';
-<<<<<<< Updated upstream
 const {dialog} = remote;
-const FormItem = Form.Item;
-const Option = Select.Option;
-=======
 const {Item:FormItem} = Form;
 const {Option} = Select;
->>>>>>> Stashed changes
 
 export default class NewSessionForm extends Component {
 

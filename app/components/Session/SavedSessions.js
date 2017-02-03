@@ -15,6 +15,7 @@ export default class SavedSessions extends Component {
   }
 
   onRowClick (record)  {
+    const {setCaps} = this.props;
     let session = this.sessionFromUUID(record.key);
     setCaps(session.caps, session.uuid);
   }
