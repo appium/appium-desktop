@@ -5,7 +5,6 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(180deg, #f9f9f9, #f2f2f2, 5%, #f2f2f2, 95%, #d9d9d9);
 }
 
 .tabs {

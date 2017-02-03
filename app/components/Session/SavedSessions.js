@@ -7,6 +7,23 @@ import SessionCSS from '../Session.css';
 
 export default class SavedSessions extends Component {
 
+
+  constructor (props) {
+    super(props);
+    this.onRowClick = this.onRowClick.bind(this);
+    this.getRowClassName = this.getRowClassName.bind(this);
+  }
+
+  onRowClick (record)  {
+    let session = this.sessionFromUUID(record.key);
+    setCaps(session.caps, session.uuid);
+  }
+
+  getRowClassName (record) {
+    const {capsUUID} = this.props;
+    return capsUUID === record.key ? SessionCSS.selected: '';
+  }
+
   handleDelete (uuid) {
     return () => {
       if (window.confirm('Are you sure?')) {
@@ -64,10 +81,6 @@ export default class SavedSessions extends Component {
       });
     }
 
-    let onRowClick = (record) => {
-      let session = this.sessionFromUUID(record.key);
-      setCaps(session.caps, session.uuid);
-    };
 
     return (<Row gutter={20}>
       <Col span={12}>
@@ -75,7 +88,8 @@ export default class SavedSessions extends Component {
          pagination={false}
          dataSource={dataSource}
          columns={columns}
-         onRowClick={onRowClick}
+         onRowClick={this.onRowClick}
+         rowClassName={this.getRowClassName}
         />
       </Col>
       <Col span={12} className={SessionCSS.savedCaps}>
