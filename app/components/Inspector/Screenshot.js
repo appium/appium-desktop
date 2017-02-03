@@ -51,6 +51,13 @@ export default class Screenshot extends Component {
     // Recurse through the 'source' JSON and render a highlighter rect for each element
     const highlighterRects = [];
 
+    let highlighterXOffset = 0;
+    if (this.containerEl) {
+      const screenshotEl = this.containerEl.querySelector('img');
+      highlighterXOffset = screenshotEl.getBoundingClientRect().left -
+                           this.containerEl.getBoundingClientRect().left;
+    }
+
     let recursive = (element, zIndex = 0) => {
       if (!element) {
         return;
@@ -60,6 +67,7 @@ export default class Screenshot extends Component {
         zIndex={zIndex}
         scaleRatio={scaleRatio}
         key={element.path}
+        xOffset={highlighterXOffset}
       />);
 
       for (let childEl of element.children) {
