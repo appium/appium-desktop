@@ -38,14 +38,17 @@ export const ServerTypes = {
   sauce: 'sauce',
 };
 
+const JSON_TYPES = ['json_object', 'number', 'boolean'];
+
 export function getCapsObject (caps) {
   return Object.assign({}, ...(caps.map((cap) => {
-    try {
-      let obj = JSON.parse(cap.value);
-      return {[cap.name]: obj};
-    } catch (e) {
-      return {[cap.name]: cap.value};
+    if (JSON_TYPES.indexOf(cap.type) !== -1) {
+      try {
+        let obj = JSON.parse(cap.value);
+        return {[cap.name]: obj};
+      } catch (ign) {}
     }
+    return {[cap.name]: cap.value};
   })));
 }
 
@@ -120,6 +123,10 @@ export function newSession (caps) {
         port = 80;
         username = session.server.sauce.username;
         accessKey = session.server.sauce.accessKey;
+        if (!username || !accessKey) {
+          message.error("Sauce username and access key are required!", 5);
+          return;
+        }
         https = false;
         break;
       default:
@@ -136,7 +143,11 @@ export function newSession (caps) {
       dispatch({type: SESSION_LOADING_DONE});
       let errMessage;
       if (e.data) {
-        errMessage = JSON.parse(e.data).value.message;
+        if (e.data.value && e.data.value.message) {
+          errMessage = e.data.value.message;
+        } else {
+          errMessage = e.data;
+        }
       } else if (e.message) {
         errMessage = e.message;
       } else if (e.code) {
