@@ -1,11 +1,13 @@
 import { app, BrowserWindow, Menu } from 'electron';
 import { initializeIpc } from './appium';
 import menuTemplates from './menus';
+import path from 'path';
 
 let menu;
 let template;
 let mainWindow = null;
 const isDev = process.env.NODE_ENV === 'development';
+const indexPath = path.resolve(__dirname, isDev ? '..' : 'app');
 
 
 if (isDev) {
@@ -14,7 +16,7 @@ if (isDev) {
 
 
 app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') app.quit();
+  app.quit();
 });
 
 
@@ -45,7 +47,7 @@ app.on('ready', async () => {
     minHeight: 600,
   });
 
-  mainWindow.loadURL(`file://${__dirname}/app/index.html`);
+  mainWindow.loadURL(`file://${indexPath}/renderer/index.html`);
 
   mainWindow.webContents.on('did-finish-load', () => {
     mainWindow.show();
