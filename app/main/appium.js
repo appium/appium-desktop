@@ -104,7 +104,7 @@ function connectCreateNewSessionWindow (win) {
 
     // Create and open the Browser Window
     let sessionWin = new BrowserWindow({width: 900, minWidth: 800, height: 570, minHeight: 570, title: "Start Session", backgroundColor: "#f2f2f2", webPreferences: {devTools: isDev}});
-    let sessionHTMLPath = path.resolve(__dirname, 'app', 'index.html#/session');
+    let sessionHTMLPath = path.resolve(__dirname, '..', 'renderer', 'index.html#/session');
     sessionWin.loadURL(`file://${sessionHTMLPath}`);
     sessionWin.show();
 
