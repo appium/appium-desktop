@@ -103,8 +103,11 @@ function connectCreateNewSessionWindow (win) {
   ipcMain.on('create-new-session-window', () => {
 
     // Create and open the Browser Window
-    let sessionWin = new BrowserWindow({width: 900, minWidth: 800, height: 570, minHeight: 570, title: "Start Session", backgroundColor: "#f2f2f2", webPreferences: {devTools: isDev}});
-    let sessionHTMLPath = path.resolve(__dirname, '..', 'renderer', 'index.html#/session');
+    let sessionWin = new BrowserWindow({width: 920, minWidth: 920, height: 570, minHeight: 570, title: "Start Session", backgroundColor: "#f2f2f2", webPreferences: {devTools: isDev}});
+    let sessionHTMLPath = path.resolve(__dirname, '..', 'renderer', 'index.html');
+    // on Windows we'll get backslashes, but we don't want these for a browser URL, so replace
+    sessionHTMLPath = sessionHTMLPath.replace("\\", "/");
+    sessionHTMLPath += '#/session';
     sessionWin.loadURL(`file://${sessionHTMLPath}`);
     sessionWin.show();
 
@@ -170,8 +173,11 @@ function connectCreateNewSession () {
       await p;
       // we don't really support the web portion of apps for a number of
       // reasons, so pre-emptively ensure we're in native mode before doing the
-      // rest of the inspector startup
-      await driver.context('NATIVE_APP');
+      // rest of the inspector startup. Since some platforms might not implement
+      // contexts, ignore any failures here.
+      try {
+        await driver.context('NATIVE_APP');
+      } catch (ign) {}
       event.sender.send('appium-new-session-ready');
     } catch (e) {
       // If the session failed, delete it from the cache

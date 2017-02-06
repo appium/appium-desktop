@@ -109,11 +109,6 @@
     color: #666;
 }
 
-.savedCaps .formatted-caps {
-  position: fixed;
-  width: 47%;
-}
-
 .selected {
   background-color: #d6e8ff;
 }

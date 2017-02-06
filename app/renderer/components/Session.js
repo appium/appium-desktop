@@ -27,7 +27,9 @@ export default class Session extends Component {
             <Form>
               <FormItem>
                 <Card>
-                  <p className={SessionStyles.localDesc}>Will use currently-running Appium Desktop server at <b>http://{server.local.hostname}:{server.local.port}</b></p>
+                  <p className={SessionStyles.localDesc}>Will use currently-running Appium Desktop server at 
+                    <b> http://{server.local.hostname === "0.0.0.0" ? "localhost" : server.local.hostname}:{server.local.port}</b>
+                  </p>
                 </Card>
               </FormItem>
             </Form>

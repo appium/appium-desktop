@@ -140,6 +140,12 @@ export function newSession (caps) {
     switch (session.serverType) {
       case ServerTypes.local:
         host = session.server.local.hostname;
+        if (host === "0.0.0.0") {
+          // if we're on windows, we won't be able to connect directly to '0.0.0.0'
+          // so just connect to localhost; if we're listening on all interfaces,
+          // that will of course include 127.0.0.1 on all platforms
+          host = "localhost";
+        }
         port = session.server.local.port;
         break;
       case ServerTypes.remote:
