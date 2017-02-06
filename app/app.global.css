@@ -5,6 +5,7 @@ body {
 
 #root {
   height: 100%;
+  background: linear-gradient(180deg, #f9f9f9, #f2f2f2, 5%, #f2f2f2, 95%, #d9d9d9);
 }
 
 .window {
@@ -17,11 +18,20 @@ body {
   background-color: #662d91 !important;
 }
 
-::-webkit-scrollbar {
-  width: 14px;
+.ant-spin-nested-loading, .ant-spin-container {
+  height: 100%;
+}
+
+.ant-notification {
+  width: 80%;
+  margin-right: 10%;
+}
+
+body::-webkit-scrollbar {
+  width: 0px;
   background: transparent;
 }
 
-::-webkit-scrollbar-corner {
+body::-webkit-scrollbar-corner {
   background: transparent;
 }

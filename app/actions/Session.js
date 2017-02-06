@@ -2,7 +2,7 @@ import { ipcRenderer } from 'electron';
 import settings from 'electron-settings';
 import { v4 as UUID } from 'uuid';
 import { push } from 'react-router-redux';
-import { message } from 'antd';
+import { notification } from 'antd';
 
 export const NEW_SESSION_REQUESTED = 'NEW_SESSION_REQUESTED';
 export const NEW_SESSION_BEGAN = 'NEW_SESSION_BEGAN';
@@ -38,10 +38,46 @@ export const ServerTypes = {
   sauce: 'sauce',
 };
 
+const JSON_TYPES = ['json_object', 'number', 'boolean'];
+
 export function getCapsObject (caps) {
-  return Object.assign({}, ...(caps.map((cap) => { 
-    return {[cap.name]: cap.value}; 
+  return Object.assign({}, ...(caps.map((cap) => {
+    if (JSON_TYPES.indexOf(cap.type) !== -1) {
+      try {
+        let obj = JSON.parse(cap.value);
+        return {[cap.name]: obj};
+      } catch (ign) {}
+    }
+    return {[cap.name]: cap.value};
   })));
+}
+
+export function showError (e, secs = 5) {
+  let errMessage;
+  if (e.data) {
+    try {
+      e.data = JSON.parse(e.data);
+    } catch (ign) {}
+    if (e.data.value && e.data.value.message) {
+      errMessage = e.data.value.message;
+    } else {
+      errMessage = e.data;
+    }
+  } else if (e.message) {
+    errMessage = e.message;
+  } else if (e.code) {
+    errMessage = e.code;
+  } else {
+    errMessage = 'Could not start session';
+  }
+  if (errMessage === "ECONNREFUSED") {
+    errMessage = "Could not connect to server; are you sure it's running?";
+  }
+  notification.error({
+    message: "Error",
+    description: errMessage,
+    duration: secs
+  });
 }
 
 /**
@@ -90,7 +126,7 @@ export function removeCapability (index) {
 }
 
 /**
- * Start a new appium session with the given caps 
+ * Start a new appium session with the given caps
  */
 export function newSession (caps) {
   return async (dispatch, getState) => {
@@ -115,9 +151,17 @@ export function newSession (caps) {
         port = 80;
         username = session.server.sauce.username;
         accessKey = session.server.sauce.accessKey;
+        if (!username || !accessKey) {
+          notification.error({
+            message: "Error",
+            description: "Sauce username and access key are required!",
+            duration: 4
+          });
+          return;
+        }
         https = false;
         break;
-      default: 
+      default:
         break;
     }
 
@@ -129,17 +173,7 @@ export function newSession (caps) {
     // If it failed, show an alert saying it failed
     ipcRenderer.once('appium-new-session-failed', (evt, e) => {
       dispatch({type: SESSION_LOADING_DONE});
-      let errMessage;
-      if (e.data) {
-        errMessage = JSON.parse(e.data).value.message;
-      } else if (e.message) {
-        errMessage = e.message;
-      } else if (e.code) {
-        errMessage = e.code;
-      } else {
-        errMessage = 'Could not start session';
-      }
-      message.error(errMessage, 5);
+      showError(e, 0);
     });
 
     ipcRenderer.once('appium-new-session-ready', () => {
@@ -183,9 +217,9 @@ export function saveSession (caps, params) {
       }
     }
     await settings.set(SAVED_SESSIONS, savedSessions);
+    await getSavedSessions()(dispatch);
     dispatch({type: SET_CAPS, caps, uuid});
     dispatch({type: SAVE_SESSION_DONE});
-    await getSavedSessions()(dispatch);
   };
 }
 
@@ -239,13 +273,14 @@ export function setSaveAsText (saveAsText) {
 /**
  * Delete a saved session
  */
-export function deleteSavedSession (index) {
+export function deleteSavedSession (uuid) {
   return async (dispatch) => {
-    dispatch({type: DELETE_SAVED_SESSION_REQUESTED, index});
+    dispatch({type: DELETE_SAVED_SESSION_REQUESTED, uuid});
     let savedSessions = await settings.get(SAVED_SESSIONS) || [];
-    savedSessions.splice(index, 1);
-    await settings.set(SAVED_SESSIONS, savedSessions);
-    dispatch({type: GET_SAVED_SESSIONS_DONE, savedSessions});
+    let newSessions = savedSessions.filter((session) => session.uuid !== uuid);
+    await settings.set(SAVED_SESSIONS, newSessions);
+    dispatch({type: DELETE_SAVED_SESSION_DONE});
+    dispatch({type: GET_SAVED_SESSIONS_DONE, savedSessions: newSessions});
   };
 }
 
@@ -290,6 +325,6 @@ export function setSavedServerParams () {
     let serverType = await settings.get(SESSION_SERVER_TYPE);
     if (server) {
       dispatch({type: SET_SERVER, server, serverType});
-    }   
+    }
   };
 }

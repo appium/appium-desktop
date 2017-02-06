@@ -151,12 +151,17 @@ export default class AdvancedTab extends Component {
 
             <div className={styles.secTitle}>iOS</div>
             <div className={styles.secBody}>
-              <div className={styles.comingSoon}>iOS options coming soon!</div>
+              {this.buildInput('wdaLocalPort', 'text', 'WebDriverAgent Port')}
+              {this.buildInput('callbackHost', 'text', 'executeAsync Callback Host')}
+              {this.buildInput('callbackPort', 'text', 'executeAsync Callback Port')}
             </div>
 
             <div className={styles.secTitle}>Android</div>
             <div className={styles.secBody}>
-              <div className={styles.comingSoon}>Android options coming soon!</div>
+              {this.buildInput('bootstrapPort', 'text', 'Bootstrap Port')}
+              {this.buildInput('selendroidPort', 'text', 'Selendroid Port')}
+              {this.buildInput('chromeDriverPort', 'text', 'Chromedriver Port')}
+              {this.buildInput('chromedriverExecutable', 'text', 'Chromedriver Binary Path')}
             </div>
           </div>
           <div className={styles.actions}>

@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import { debounce } from 'lodash';
 import HighlighterRect from './HighlighterRect';
 import { Spin } from 'antd';
+import styles from '../Inspector.css';
 import { parseCoordinates } from './shared';
 
 /**
@@ -12,8 +13,9 @@ export default class Screenshot extends Component {
 
   constructor (props) {
     super(props);
+    this.containerEl = null;
     this.state = {
-      scaleRatio: 1
+      scaleRatio: 1,
     };
     this.updateScaleRatio = debounce(this.updateScaleRatio.bind(this), 1000);
   }
@@ -23,10 +25,13 @@ export default class Screenshot extends Component {
    */
   updateScaleRatio () {
     const screenshotEl = this.containerEl.querySelector('img');
+
+    // now update scale ratio
     const {x1, x2} = parseCoordinates(this.props.source.children[0].children[0]);
     this.setState({
       scaleRatio: (x2 - x1) / screenshotEl.offsetWidth
     });
+
   }
 
   componentDidMount () {
@@ -46,17 +51,25 @@ export default class Screenshot extends Component {
     // Recurse through the 'source' JSON and render a highlighter rect for each element
     const highlighterRects = [];
 
+    let highlighterXOffset = 0;
+    if (this.containerEl) {
+      const screenshotEl = this.containerEl.querySelector('img');
+      highlighterXOffset = screenshotEl.getBoundingClientRect().left -
+                           this.containerEl.getBoundingClientRect().left;
+    }
+
     let recursive = (element, zIndex = 0) => {
       if (!element) {
         return;
       }
-      highlighterRects.push(<HighlighterRect {...this.props} 
-        element={element} 
-        zIndex={zIndex} 
-        scaleRatio={scaleRatio} 
-        key={element.path} 
+      highlighterRects.push(<HighlighterRect {...this.props}
+        element={element}
+        zIndex={zIndex}
+        scaleRatio={scaleRatio}
+        key={element.path}
+        xOffset={highlighterXOffset}
       />);
-      
+
       for (let childEl of element.children) {
         recursive(childEl, zIndex + 1);
       }
@@ -66,8 +79,8 @@ export default class Screenshot extends Component {
 
     // Show the screenshot and highlighter rects. Show loading indicator if a method call is in progress.
     return <Spin size='large' spinning={!!methodCallInProgress}>
-      <div ref={(containerEl) => this.containerEl = containerEl}>
-        <img src={`data:image/gif;base64,${screenshot}`} />
+      <div ref={(containerEl) => { this.containerEl = containerEl; }} className={styles.screenshotBox}>
+        <img src={`data:image/gif;base64,${screenshot}`} id="screenshot" />
         {highlighterRects}
       </div>
     </Spin>;

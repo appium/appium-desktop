@@ -5,7 +5,7 @@ import { NEW_SESSION_REQUESTED, NEW_SESSION_BEGAN, NEW_SESSION_DONE,
         SESSION_LOADING, SESSION_LOADING_DONE,
         SET_CAPABILITY_PARAM, ADD_CAPABILITY, REMOVE_CAPABILITY, SET_CAPS,
         SWITCHED_TABS, SAVE_AS_MODAL_REQUESTED, HIDE_SAVE_AS_MODAL_REQUESTED, SET_SAVE_AS_TEXT,
-        DELETE_SAVED_SESSION_REQUESTED, DELETE_SAVED_SESSION_DONE, 
+        DELETE_SAVED_SESSION_REQUESTED, DELETE_SAVED_SESSION_DONE,
         CHANGE_SERVER_TYPE, SET_SERVER_PARAM, SET_SERVER,
         ServerTypes } from '../actions/Session';
 
@@ -53,7 +53,7 @@ export default function session (state = INITIAL_STATE, action) {
       return {
         ...state,
         caps: [
-          ...state.caps, 
+          ...state.caps,
           {type: 'text'},
         ],
       };
@@ -69,7 +69,7 @@ export default function session (state = INITIAL_STATE, action) {
         ...state,
         isCapsDirty: true,
         caps: state.caps.map((cap, index) => index !== action.index ? cap : {
-          ...cap, 
+          ...cap,
           [action.name]: action.value
         }),
       };
@@ -85,7 +85,7 @@ export default function session (state = INITIAL_STATE, action) {
     case SAVE_SESSION_REQUESTED:
       nextState = {
         ...state,
-        saveSessionRequested: true,  
+        saveSessionRequested: true,
       };
       return omit(nextState, 'showSaveAsModal');
 
@@ -112,7 +112,11 @@ export default function session (state = INITIAL_STATE, action) {
       };
 
     case DELETE_SAVED_SESSION_DONE:
-      return omit(state, 'deletingSession');
+      return {
+        ...state,
+        deletingSession: false,
+        capsUUID: null
+      };
 
     case SWITCHED_TABS:
       return {
@@ -120,7 +124,7 @@ export default function session (state = INITIAL_STATE, action) {
         tabKey: action.key,
       };
 
-    case SAVE_AS_MODAL_REQUESTED: 
+    case SAVE_AS_MODAL_REQUESTED:
       return {
         ...state,
         'showSaveAsModal': true,

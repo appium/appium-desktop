@@ -58,6 +58,12 @@
   margin-bottom: 15px;
 }
 
+.secBody:after {
+  width: 300px;
+  margin-right: 15px;
+  content: "";
+}
+
 .presetActions {
   margin-top: 10px;
   display: flex;

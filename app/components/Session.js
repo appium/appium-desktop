@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import NewSessionForm from './Session/NewSessionForm';
 import SavedSessions from './Session/SavedSessions';
-import { Tabs, Form, Input, Button, Spin } from 'antd';
+import { Tabs, Form, Input, Button, Spin, Card } from 'antd';
 import { ServerTypes } from '../actions/Session';
 import SessionStyles from './Session.css';
 
@@ -17,36 +17,38 @@ export default class Session extends Component {
   }
 
   render () {
-    const {newSessionBegan, savedSessions, tabKey, switchTabs, changeServerType, serverType, setServerParam, server, 
+    const {newSessionBegan, savedSessions, tabKey, switchTabs, changeServerType, serverType, setServerParam, server,
       requestSaveAsModal, newSession, caps, capsUUID, saveSession, isCapsDirty, sessionLoading} = this.props;
 
-    return <div className={SessionStyles['session-container']}>
-      <Spin spinning={!!sessionLoading}>
-        <Tabs activeKey={serverType} onChange={changeServerType}>
-          <TabPane tab='Local Server' key={ServerTypes.local}>
+    return <Spin spinning={!!sessionLoading}>
+      <div className={SessionStyles['session-container']}>
+        <Tabs activeKey={serverType} onChange={changeServerType} className={SessionStyles.serverTabs}>
+          <TabPane tab='Automatic Server' key={ServerTypes.local}>
             <Form>
               <FormItem>
-                <p>http://{server.local.hostname}:{server.local.port}</p>
+                <Card>
+                  <p className={SessionStyles.localDesc}>Will use currently-running Appium Desktop server at <b>http://{server.local.hostname}:{server.local.port}</b></p>
+                </Card>
               </FormItem>
             </Form>
           </TabPane>
-          <TabPane tab='Remote Server' key={ServerTypes.remote}>
+          <TabPane tab='Custom Server' key={ServerTypes.remote}>
             <Form>
               <FormItem>
-                <Input placeholder='Hostname' value={server.remote.hostname} onChange={(e) => setServerParam('hostname', e.target.value)} />
+                <Input placeholder='127.0.0.1' addonBefore="Remote Host" value={server.remote.hostname} onChange={(e) => setServerParam('hostname', e.target.value)} size="large" />
               </FormItem>
               <FormItem>
-                <Input placeholder='Port' value={server.remote.port} onChange={(e) => setServerParam('port', e.target.value)} />
+                <Input placeholder='4723' addonBefore="Remote Port" value={server.remote.port} onChange={(e) => setServerParam('port', e.target.value)} size="large" />
               </FormItem>
             </Form>
           </TabPane>
           <TabPane tab='Sauce Labs' key={ServerTypes.sauce}>
             <Form>
               <FormItem>
-                <Input placeholder='Sauce Username' value={server.sauce.username} onChange={(e) => setServerParam('username', e.target.value)} />
+                <Input placeholder='your-username' addonBefore="Sauce Username" value={server.sauce.username} onChange={(e) => setServerParam('username', e.target.value)} />
               </FormItem>
               <FormItem>
-                <Input type='password' placeholder='Sauce Access Key' value={server.sauce.accessKey} onChange={(e) => setServerParam('accessKey', e.target.value)} />
+                <Input type='password' placeholder='your-access-key' addonBefore="Sauce Access Key" value={server.sauce.accessKey} onChange={(e) => setServerParam('accessKey', e.target.value)} />
               </FormItem>
             </Form>
           </TabPane>
@@ -56,21 +58,21 @@ export default class Session extends Component {
         {newSessionBegan && <div key={2}>
           <p>Session In Progress</p>
         </div>}
-        
-        {!newSessionBegan && <Tabs activeKey={tabKey} onChange={switchTabs}>
-          <TabPane tab='Start New Session' key='new'>
+
+        {!newSessionBegan && <Tabs activeKey={tabKey} onChange={switchTabs} className={SessionStyles.scrollingTabCont}>
+          <TabPane tab='Desired Capabilities' key='new' className={SessionStyles.scrollingTab}>
             <NewSessionForm {...this.props} />
           </TabPane>
-          <TabPane tab={`Saved Sessions (${savedSessions.length})`} key='saved'>
+          <TabPane tab={`Saved Capability Sets (${savedSessions.length})`} key='saved' className={SessionStyles.scrollingTab}>
               <SavedSessions {...this.props} />
           </TabPane>
         </Tabs>}
-        <div className={SessionStyles['pull-right']}>
-          { capsUUID && <Button type="primary" onClick={() => saveSession(caps, {uuid: capsUUID})} disabled={!isCapsDirty}>Save</Button> }
-          <Button type="button" onClick={requestSaveAsModal}>Save As</Button>
-          <Button type="submit" onClick={() => newSession(caps)} className={SessionStyles['start-session-button']}>Start Session</Button>
+        <div className={SessionStyles.sessionFooter}>
+          { capsUUID && <Button onClick={() => saveSession(caps, {uuid: capsUUID})} disabled={!isCapsDirty}>Save</Button> }
+          <Button onClick={requestSaveAsModal}>Save As...</Button>
+          <Button type="primary" onClick={() => newSession(caps)} className={SessionStyles['start-session-button']}>Start Session</Button>
         </div>
-      </Spin>
-    </div>;
+      </div>
+    </Spin>;
   }
 }

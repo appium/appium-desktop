@@ -1,5 +1,7 @@
 import { ipcRenderer } from 'electron';
-import { message } from 'antd';
+import { notification } from 'antd';
+import { push } from 'react-router-redux';
+import { showError } from './Session';
 import UUID from 'uuid';
 import Promise from 'bluebird';
 
@@ -15,6 +17,8 @@ export const SELECT_HOVERED_ELEMENT = 'SELECT_HOVERED_ELEMENT';
 export const UNSELECT_HOVERED_ELEMENT = 'UNSELECT_HOVERED_ELEMENT';
 export const SHOW_SEND_KEYS_MODAL = 'SHOW_SEND_KEYS_MODAL';
 export const HIDE_SEND_KEYS_MODAL = 'HIDE_SEND_KEYS_MODAL';
+export const QUIT_SESSION_REQUESTED = 'QUIT_SESSION_REQUESTED';
+export const QUIT_SESSION_DONE = 'QUIT_SESSION_DONE';
 
 const clientMethodPromises = {};
 
@@ -47,7 +51,7 @@ ipcRenderer.on('appium-client-command-response-error', (evt, resp) => {
   const {e, uuid} = resp;
   let promise = clientMethodPromises[uuid];
   if (promise) {
-    promise.reject(e.message);
+    promise.reject(e);
     delete clientMethodPromises[uuid];
   }
 });
@@ -87,7 +91,11 @@ function xmlToJSON (source) {
 export function bindAppium () {
   return (dispatch) => {
     ipcRenderer.on('appium-session-done', () => {
-      message.error('Session has been terminated', 100000);
+      notification.error({
+        message: "Error",
+        description: "Session has been terminated",
+        duration: 0
+      });
       ipcRenderer.removeAllListeners('appium-client-command-response');
       ipcRenderer.removeAllListeners('appium-client-command-response-error');
       dispatch({type: SESSION_DONE});
@@ -109,7 +117,7 @@ export function selectElement (path) {
         expandedPaths.push(path);
       }
     }
-    
+
     dispatch({type: SET_EXPANDED_PATHS, paths: expandedPaths});
   };
 }
@@ -133,7 +141,7 @@ export function unselectHoveredElement (path) {
 }
 
 /**
- * Requests a method call on appium 
+ * Requests a method call on appium
  */
 export function applyClientMethod (params) {
   return async (dispatch) => {
@@ -144,7 +152,7 @@ export function applyClientMethod (params) {
       dispatch({type: SET_SOURCE_AND_SCREENSHOT, source: xmlToJSON(source), screenshot});
       return result;
     } catch (error) {
-      message.error(error, 10);
+      showError(error, 10);
       dispatch({type: METHOD_CALL_DONE});
     }
   };
@@ -159,7 +167,7 @@ export function showSendKeysModal () {
 export function hideSendKeysModal () {
   return (dispatch) => {
     dispatch({type: HIDE_SEND_KEYS_MODAL});
-  };  
+  };
 }
 
 /**
@@ -174,5 +182,17 @@ export function setFieldValue (name, value) {
 export function setExpandedPaths (paths) {
   return (dispatch) => {
     dispatch({type: SET_EXPANDED_PATHS, paths});
+  };
+}
+
+/**
+ * Quit the session and go back to the new session window
+ */
+export function quitSession () {
+  return async (dispatch) => {
+    dispatch({type: QUIT_SESSION_REQUESTED});
+    await applyClientMethod({methodName: 'quit'})(dispatch);
+    dispatch({type: QUIT_SESSION_DONE});
+    dispatch(push('/session'));
   };
 }

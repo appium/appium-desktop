@@ -1,7 +1,7 @@
 .container {
   width: 100%;
   height: 100%;
-  background-color: #000;
+  background-color: #222;
   display: flex;
   flex-flow: column;
   align-items: center;
@@ -60,7 +60,7 @@
 .stopButton {
   color: #a0a0a0 !important;
   background-image: none !important;
-  background-color: #151515 !important;
+  background-color: #252525 !important;
   border-color: #a0a0a0 !important;
 }
 
@@ -74,6 +74,15 @@
   -webkit-user-select: text;
   overflow: scroll;
   font-family: "Inconsolata", "Lucida console", Monaco, monospace;
+}
+
+.term::-webkit-scrollbar {
+  width: 14px;
+  background: transparent;
+}
+
+.term::-webkit-scrollbar-corner {
+  background: transparent;
 }
 
 .term-stopped {
@@ -105,7 +114,7 @@
 }
 
 .term :global(span.anticon-message:before) {
-  color: #666;
+  color: #999;
 }
 
 .term .last {

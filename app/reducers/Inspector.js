@@ -1,6 +1,6 @@
 import { omit } from 'lodash';
 
-import { SET_SOURCE_AND_SCREENSHOT, QUIT_SESSION_REQUESTED, SESSION_DONE, SELECT_ELEMENT, UNSELECT_ELEMENT, SELECT_HOVERED_ELEMENT, UNSELECT_HOVERED_ELEMENT,
+import { SET_SOURCE_AND_SCREENSHOT, QUIT_SESSION_REQUESTED, QUIT_SESSION_DONE, SESSION_DONE, SELECT_ELEMENT, UNSELECT_ELEMENT, SELECT_HOVERED_ELEMENT, UNSELECT_HOVERED_ELEMENT,
   METHOD_CALL_REQUESTED, METHOD_CALL_DONE, SET_FIELD_VALUE, SET_EXPANDED_PATHS, SHOW_SEND_KEYS_MODAL, HIDE_SEND_KEYS_MODAL } from '../actions/Inspector';
 
 const INITIAL_STATE = {
@@ -30,13 +30,19 @@ export default function inspector (state=INITIAL_STATE, action) {
     case QUIT_SESSION_REQUESTED:
       return {
         ...state,
+        methodCallInProgress: true,
         isQuittingSession: true,
       };
-      
+
+    case QUIT_SESSION_DONE:
+      return {
+        ...INITIAL_STATE
+      };
+
     case SESSION_DONE:
       return {
         ...state,
-        isSessionDone: true, 
+        isSessionDone: true,
         methodCallInProgress: false,
       };
 
@@ -77,7 +83,7 @@ export default function inspector (state=INITIAL_STATE, action) {
       return {
         ...state,
         expandedPaths: action.paths,
-      };    
+      };
 
     case SHOW_SEND_KEYS_MODAL:
       return {

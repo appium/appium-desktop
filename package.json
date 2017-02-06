@@ -42,7 +42,7 @@
   "dependencies": {
     "ansi-to-html": "0.x",
     "antd": "2.x",
-    "appium": "1.6.x",
+    "appium": "1.6.4-beta",
     "bluebird": "^3.x",
     "css-modules-require-hook": "4.x",
     "electron-debug": "1.x",

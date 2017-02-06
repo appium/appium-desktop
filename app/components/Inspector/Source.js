@@ -1,8 +1,13 @@
 import React, { Component } from 'react';
-import { Tree, Button } from 'antd';
+import { Tree } from 'antd';
 import InspectorStyles from '../Inspector.css';
 
 const {TreeNode} = Tree;
+const IMPORTANT_ATTRS = [
+  'name',
+  'content-desc',
+  'resource-id'
+];
 
 /**
  * Shows the 'source' of the app as a Tree
@@ -10,8 +15,22 @@ const {TreeNode} = Tree;
 export default class Source extends Component {
 
   getFormattedTag (el) {
-    const {tagName} = el;
-    return `<${tagName}>`;
+    const {tagName, attributes} = el;
+    let attrs = [];
+    for (let attr of IMPORTANT_ATTRS) {
+      if (attributes[attr]) {
+        attrs.push(<span key={attr}>&nbsp;
+          <i
+           className={InspectorStyles.sourceAttrName}
+          >{attr}</i>=<span
+           className={InspectorStyles.sourceAttrValue}
+          >&quot;{attributes[attr]}&quot;</span>
+        </span>);
+      }
+    }
+    return <span>
+      &lt;<b className={InspectorStyles.sourceTag}>{tagName}</b>{attrs}&gt;
+    </span>;
   }i
 
   /**
@@ -29,7 +48,7 @@ export default class Source extends Component {
   }
 
   render () {
-    const {source, setExpandedPaths, expandedPaths, selectedElement = {}, applyClientMethod} = this.props;
+    const {source, setExpandedPaths, expandedPaths, selectedElement = {}} = this.props;
     const {path} = selectedElement;
 
     // Recursives through the source and renders a TreeNode for an element
@@ -45,15 +64,18 @@ export default class Source extends Component {
     };
 
     return <div className={InspectorStyles['tree-container']}>
-      <Button icon='arrow-left' onClick={() => applyClientMethod({methodName: 'back'})}></Button>
-      <Button icon='reload' onClick={() => applyClientMethod({methodName: 'source'})}></Button>
-      <Tree onExpand={setExpandedPaths} 
-        autoExpandParent={false} 
-        expandedKeys={expandedPaths}
-        onSelect={(selectedPaths) => this.handleSelectElement(selectedPaths[0])} 
-        selectedKeys={[path]}>
-        {recursive(source)}
-      </Tree>
+      {source &&
+        <Tree onExpand={setExpandedPaths}
+          autoExpandParent={false}
+          expandedKeys={expandedPaths}
+          onSelect={(selectedPaths) => this.handleSelectElement(selectedPaths[0])}
+          selectedKeys={[path]}>
+          {recursive(source)}
+        </Tree>
+      }
+      {!source &&
+        <i>Gathering initial app source...</i>
+      }
     </div>;
   }
 }
