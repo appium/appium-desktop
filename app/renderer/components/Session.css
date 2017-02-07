@@ -38,9 +38,14 @@
   flex-direction: column;
 }
 
+.scrollingTabCont :global(.ant-tabs-bar) {
+  margin-bottom: 0px;
+}
+
 .scrollingTab {
   overflow-y: scroll;
   flex-grow: 1;
+  padding-top: 16px;
 }
 
 .scrollingTab::-webkit-scrollbar {
@@ -84,7 +89,7 @@
 }
 
 .capsValueControl {
-  min-width: 142px;
+  width: 142px;
 }
 
 .fileControlWrapper :global(.ant-input-group),
