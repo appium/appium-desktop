@@ -103,8 +103,11 @@ function connectCreateNewSessionWindow (win) {
   ipcMain.on('create-new-session-window', () => {
 
     // Create and open the Browser Window
-    let sessionWin = new BrowserWindow({width: 920, minWidth: 920, height: 570, minHeight: 570, title: "Start Session", backgroundColor: "#f2f2f2", webPreferences: {devTools: isDev}});
-    let sessionHTMLPath = path.resolve(__dirname, '..', 'renderer', 'index.html');
+    let sessionWin = new BrowserWindow({width: 920, minWidth: 920, height: 570, minHeight: 570, title: "Start Session", backgroundColor: "#f2f2f2", webPreferences: {devTools: true}});
+    // note that __dirname changes based on whether we're in dev or prod;
+    // in dev it's the actual dirname of the file, in prod it's the root
+    // of the project (where main.js is built), so switch accordingly
+    let sessionHTMLPath = path.resolve(__dirname,  isDev ? '..' : 'app', 'renderer', 'index.html');
     // on Windows we'll get backslashes, but we don't want these for a browser URL, so replace
     sessionHTMLPath = sessionHTMLPath.replace("\\", "/");
     sessionHTMLPath += '#/session';
@@ -126,20 +129,20 @@ function connectCreateNewSessionWindow (win) {
       sessionWin = null;
     });
 
-    // If it's dev, include devTools and 'inspect element' context menu option
+    // If it's dev, go ahead and open up the dev tools automatically
     if (isDev) {
       sessionWin.openDevTools();
-      sessionWin.webContents.on('context-menu', (e, props) => {
-        const {x, y} = props;
-
-        Menu.buildFromTemplate([{
-          label: 'Inspect element',
-          click () {
-            sessionWin.inspectElement(x, y);
-          }
-        }]).popup(sessionWin);
-      });
     }
+    sessionWin.webContents.on('context-menu', (e, props) => {
+      const {x, y} = props;
+
+      Menu.buildFromTemplate([{
+        label: 'Inspect element',
+        click () {
+          sessionWin.inspectElement(x, y);
+        }
+      }]).popup(sessionWin);
+    });
   });
 }
 

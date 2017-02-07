@@ -29,6 +29,10 @@ export default {
     extensions: ['', '.js', '.jsx', '.json'],
     packageMains: ['webpack', 'browser', 'web', 'browserify', ['jam', 'main'], 'main']
   },
+  node: {
+    __dirname: false,
+    __filename: false
+  },
   plugins: [
 
   ],

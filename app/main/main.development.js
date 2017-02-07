@@ -7,6 +7,7 @@ let menu;
 let template;
 let mainWindow = null;
 const isDev = process.env.NODE_ENV === 'development';
+// __dirname is this dir in dev, and the project root (where main.js is built) in prod
 const indexPath = path.resolve(__dirname, isDev ? '..' : 'app');
 
 
