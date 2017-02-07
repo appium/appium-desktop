@@ -65,7 +65,7 @@ export default class Session extends Component {
           <TabPane tab='Desired Capabilities' key='new' className={SessionStyles.scrollingTab}>
             <NewSessionForm {...this.props} />
           </TabPane>
-          <TabPane tab={`Saved Capability Sets (${savedSessions.length})`} key='saved' className={SessionStyles.scrollingTab}>
+          <TabPane tab={`Saved Capability Sets (${savedSessions.length})`} key='saved' className={SessionStyles.scrollingTab} disabled={savedSessions.length === 0}>
               <SavedSessions {...this.props} />
           </TabPane>
         </Tabs>}
