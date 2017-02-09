@@ -54,7 +54,12 @@ const config = {
     new ExtractTextPlugin('style.css', { allChunks: true })
   ],
 
-  target: 'electron-renderer'
+  target: 'electron-renderer',
+
+  node: {
+    __dirname: false,
+    __filename: false
+  },
 };
 
 export default config;
