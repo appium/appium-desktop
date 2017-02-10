@@ -42,6 +42,11 @@
     "productName": "Appium",
     "appId": "io.appium.desktop",
     "category": "public.app-category.tools",
+    "asar": false,
+    "directories": {
+      "buildResources": "resources",
+      "output": "release"
+    },
     "dmg": {
       "contents": [
         {
@@ -61,6 +66,7 @@
       "dist/",
       "node_modules/",
       "app/renderer/index.html",
+      "app/renderer/images/",
       "main.js",
       "main.js.map",
       "package.json"
@@ -78,10 +84,6 @@
   "bin": {
     "electron": "./node_modules/.bin/electron"
   },
-  "directories": {
-    "buildResources": "resources",
-    "output": "release"
-  },
   "dependencies": {
     "ansi-to-html": "0.x",
     "antd": "2.x",
@@ -89,7 +91,6 @@
     "bluebird": "^3.x",
     "css-modules-require-hook": "4.x",
     "electron-debug": "1.x",
-    "electron-rebuild": "1.4.x",
     "electron-settings": "2.x",
     "font-awesome": "4.x",
     "format-json": "1.x",
@@ -131,7 +132,7 @@
     "css-loader": "0.x",
     "del": "2.x",
     "devtron": "1.x",
-    "electron-builder": "^13.0.0",
+    "electron-builder": "13.3.x",
     "electron-devtools-installer": "2.x",
     "electron-prebuilt": "^1.4.13",
     "eslint": "3.x",
