@@ -44,7 +44,6 @@
     "category": "public.app-category.tools",
     "asar": false,
     "directories": {
-      "buildResources": "resources",
       "output": "release"
     },
     "dmg": {
