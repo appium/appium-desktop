@@ -89,6 +89,15 @@ function connectGetDefaultArgs () {
   });
 
   ipcMain.on('get-args-metadata', (evt) => {
+    // If argv isn't defined, set it now. If argv[1] isn't defined, set it to empty string.
+    // If process.argv[1] is undefined, calling getParser() will break because argparse expects it to be a string
+    if (!process.argv) {
+      process.argv = [];
+    }
+
+    if (!process.argv[1]) {
+      process.argv[1] = '';
+    }
     let defArgs = Object.keys(getDefaultArgs());
     evt.returnValue = getParser().rawArgs
                         .filter((a) => defArgs.indexOf(a[1].dest) !== -1)
@@ -103,7 +112,17 @@ function connectCreateNewSessionWindow (win) {
   ipcMain.on('create-new-session-window', () => {
 
     // Create and open the Browser Window
-    let sessionWin = new BrowserWindow({width: 920, minWidth: 920, height: 570, minHeight: 570, title: "Start Session", backgroundColor: "#f2f2f2", webPreferences: {devTools: true}});
+    let sessionWin = new BrowserWindow({
+      width: 920, 
+      minWidth: 920, 
+      height: 570, 
+      minHeight: 570, 
+      title: "Start Session", 
+      backgroundColor: "#f2f2f2", 
+      webPreferences: {
+        devTools: true
+      }
+    });
     // note that __dirname changes based on whether we're in dev or prod;
     // in dev it's the actual dirname of the file, in prod it's the root
     // of the project (where main.js is built), so switch accordingly

@@ -55,11 +55,6 @@ const config = {
   ],
 
   target: 'electron-renderer',
-
-  node: {
-    __dirname: false,
-    __filename: false
-  },
 };
 
 export default config;
