@@ -27,7 +27,7 @@ There are not currently any releases of Appium Desktop available for users. If y
 
 Appium Desktop is an [Electron](http://electron.atom.io) app. Electron apps have a basic architecture that consists of a _main_ process (which runs Node.js) and possibly many _renderer_ processes (essentially browser windows which display HTML/CSS and can run JS---this is where the UI lives). Interactions between the two types of process are made possible by a built-in interprocess communication (IPC) mechanism.
 
-For the UI, Appium Desktop is built using [React](https://facebook.github.io/react/) and [Redux](http://redux.js.org) for managing UI state and interactions, with [PhotonKit](http://photonkit.com) for various UI components.
+For the UI, Appium Desktop is built using [React](https://facebook.github.io/react/) and [Redux](http://redux.js.org) for managing UI state and interactions, with [Ant Design](https://ant.design/docs/react/introduce) for various UI components.
 
 Why did we decide to go this route?
 
@@ -69,12 +69,6 @@ npm run build  # prepare resources
 npm start  # start a production version of the app
 ```
 
-If you encounter the error 'Cannot find module /path/to/sqlite3/node_sqlite3' run the script this command rebuilds the native modules to work with Electron
-
-```bash
-npm run rebuild # rebuild native modules to work with version of Node electron uses instead of system version
-```
-
 ### Packaging and Releasing
 
 To package the app for your platform, run:
@@ -89,5 +83,5 @@ To package the app for _all_ platforms, run:
 npm run package-all
 ```
 
-This will build the apps with the latest version of electron and put the various app packages in `dist/`.
+This will build the apps with the latest version of electron and put the various app packages in `release/`.
 
