@@ -1,6 +1,7 @@
 {
   "name": "appium-desktop",
   "version": "0.1.0",
+  "description": "Placeholder description",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/appium/appium-desktop.git"
@@ -30,11 +31,54 @@
     "build": "npm run build-main && npm run build-renderer",
     "start": "cross-env NODE_ENV=production electron ./",
     "start-hot": "cross-env HOT=1 NODE_ENV=development electron -r babel-register -r babel-polyfill ./app/main/main.development --color",
-    "package": "cross-env NODE_ENV=production node -r babel-register package.js -- --asar",
-    "package-all": "npm run package -- --all",
-    "postinstall": "node node_modules/fbjs-scripts/node/check-dev-engines.js package.json && npm run rebuild",
+    "postinstall": "node node_modules/fbjs-scripts/node/check-dev-engines.js package.json",
     "dev": "concurrently --kill-others \"npm run hot-server\" \"npm run start-hot\" --color",
-    "rebuild": "./node_modules/.bin/electron-rebuild"
+    "package": "npm run build && build --publish never",
+    "package-win": "npm run build && build --win --x64",
+    "package-linux": "npm run build && build --linux",
+    "package-all": "npm run build && build -mwl"
+  },
+  "build": {
+    "productName": "Appium",
+    "appId": "io.appium.desktop",
+    "category": "public.app-category.tools",
+    "asar": false,
+    "directories": {
+      "output": "release"
+    },
+    "dmg": {
+      "contents": [
+        {
+          "x": 410,
+          "y": 150,
+          "type": "link",
+          "path": "/Applications"
+        },
+        {
+          "x": 130,
+          "y": 150,
+          "type": "file"
+        }
+      ]
+    },
+    "files": [
+      "dist/",
+      "node_modules/",
+      "app/renderer/index.html",
+      "app/renderer/images/",
+      "main.js",
+      "main.js.map",
+      "package.json"
+    ],
+    "win": {
+      "target": "nsis"
+    },
+    "linux": {
+      "target": [
+        "deb",
+        "AppImage"
+      ]
+    }
   },
   "bin": {
     "electron": "./node_modules/.bin/electron"
@@ -46,8 +90,6 @@
     "bluebird": "^3.x",
     "css-modules-require-hook": "4.x",
     "electron-debug": "1.x",
-    "electron-prebuilt": "^1.4.13",
-    "electron-rebuild": "1.4.x",
     "electron-settings": "2.x",
     "font-awesome": "4.x",
     "format-json": "1.x",
@@ -89,9 +131,9 @@
     "css-loader": "0.x",
     "del": "2.x",
     "devtron": "1.x",
+    "electron-builder": "13.3.x",
     "electron-devtools-installer": "2.x",
-    "electron-packager": "8.x",
-    "electron-prebuilt": "1.x",
+    "electron-prebuilt": "^1.4.13",
     "eslint": "3.x",
     "eslint-config-appium": "1.x",
     "eslint-import-resolver-webpack": "0.x",

@@ -41,6 +41,7 @@ export default {
     ...baseConfig.externals,
     'font-awesome',
     'source-map-support',
-    'appium'
+    'appium',
+    'teen_process'
   ]
 };
