@@ -1,0 +1,36 @@
+language: c
+sudo: required
+node:
+matrix:
+  include:
+    #- os: osx
+    - os: linux
+      env: CC=clang CXX=clang++ npm_config_clang=1
+      compiler: clang
+node_js:
+  - "7"
+before_install:
+  - echo $TRAVIS_OS_NAME
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install --no-install-recommends -y icnsutils graphicsmagick xz-utils; fi
+addons:
+  apt:
+    packages:
+      - xvfb
+before_script:
+  - node --version
+  - npm install
+  - npm install -g electron
+  - node --version
+  - npm run package || true # TODO: Take out || true once electron-builder is fixed and maxBuffer error disappears
+cache:
+  directories:
+  - node_modules
+  - $HOME/.electron
+  - $HOME/.cache
+script:
+  - npm run e2e 
+install:
+  - nvm install 7
+  - export DISPLAY=':99.0'
+  - Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
+dist: trusty
