@@ -33,7 +33,7 @@ install:
 - export DISPLAY=':99.0'
 - Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
 dist: trusty
-deployyyy:
+deploy:
   provider: releases
   skip_cleanup: true
   api_key: e5895ad1ddd5ef7d4b70aca01164cfeea88f3617
