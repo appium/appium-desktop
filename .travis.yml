@@ -41,5 +41,7 @@ deploy:
     - /release/mac/Appium.app/Contents/MacOS/Appium
     - /release/linux-unpacked/appium-desktop
   on:
-    repo: appium/appium-desktop
+    repo: 
+      - appium/appium-desktop
+      - dpgraham/appium-desktop
     tags: true
