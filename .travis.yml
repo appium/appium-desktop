@@ -38,10 +38,7 @@ deploy:
   api_key:
     secure: l2i9HFNXWh6G8POofgOUM6o88FkwPFOULNZ+U4W7JD4YEdRA/GWcZPbVnCIgI1y6/jutxTCssVdedIpSTTNbwWCITYhSeHqVNNMOofcWLHYD0H/Us/Wpp8yn7rUBKZF7eAGjcYC729RkgzqoiV5V14kDN5A2h8eqRx+K3xFc347bqZjSNjTCNBmFDqtys77lTV3nPvl+hHBHH3jZ6sfgtPGfCo7hG1q8yqxqiTqZrStep/G2g4nFwOG1qQhwK1sUNy3RE0oLXaxoiHpqLt6k724bgULyTYtSH/Ux1m7sR3WPnNzQQU7ldlZmUgjRPZHzkl1q32BupLg2PZxb2vcTPQxvhN3jUmFC6oYYG/43GQR7VCY0tcGJKrVGff5v/eLxGmo1q91TvEEAiPNTdgt44uDcRatb20cHt0UsiOcXU14X8Cr8vmsw06ruz+ozY7cRsaircRC5lyCDUohdmJTdzU5uzL3Ekr99APa99o8DyztsQW/Ox6CqJXqgLj9P/ylNlVxZhKygKiN8Cc3YD1JWGh53jOy86kLhwNeo44q/73cZqZGjnkr0PvAPPA221JWHUeqFGRgPF3mK5fPtKQxkgE1G07m1RBj4vsC8+pwYL4sZDXO0Jgnv4ZSVaAggTIY8B27H2sNbtwJPaB0IY2chXyXH1I7xWN32CA0WaIeW7lQ=
   file:
-    - /release/mac/Appium.app/Contents/MacOS/Appium
+    # - /release/mac/Appium.app/Contents/MacOS/Appium
     - /release/linux-unpacked/appium-desktop
   on:
-    repo: 
-      - appium/appium-desktop
-      - dpgraham/appium-desktop
     tags: true
