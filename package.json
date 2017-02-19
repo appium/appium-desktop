@@ -1,6 +1,6 @@
 {
   "name": "appium-desktop",
-  "version": "1.5.12-3",
+  "version": "1.0.0-beta",
   "description": "Graphical interface for the Appium server, and an app inspector",
   "repository": {
     "type": "git",
@@ -21,10 +21,9 @@
   "homepage": "https://github.com/chentsulin/electron-react-boilerplate#readme",
   "main": "main.js",
   "scripts": {
-    "test": "cross-env NODE_ENV=test mocha --compilers js:babel-register --recursive --require ./test/setup.js test/**/*.spec.js",
+    "test": "echo 'No unit tests'",
     "test-watch": "npm test -- --watch",
     "e2e": "mocha ./test/e2e",
-    "e2e-win": "mocha test\\e2e",
     "lint": "eslint app test *.js",
     "hot-server": "node -r babel-register server.js --color",
     "build-main": "cross-env NODE_ENV=production node -r babel-register ./node_modules/webpack/bin/webpack --config webpack.config.electron.js --progress --profile --colors --color",
@@ -39,8 +38,7 @@
     "package-linux": "npm run build && build --linux",
     "package-all": "npm run build && build -mwl",
     "package-ci": "npm run build && build --dir && npm run e2e && build --publish onTagOrDraft",
-    "postversion": "git pull --tags && git push && git push --tags",
-    "deploy-win-exe": "node scripts\\deploy-exe.js"
+    "postversion": "git pull --tags && git push && git push --tags"
   },
   "build": {
     "productName": "Appium",
@@ -163,7 +161,6 @@
     "minimist": "1.x",
     "mocha": "^3.2.0",
     "node-libs-browser": "2.x",
-    "octonode": "^0.7.9",
     "react-addons-test-utils": "15.x",
     "redux-logger": "2.x",
     "request": "^2.79.0",
