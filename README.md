@@ -1,8 +1,8 @@
-# Appium Desktop [![Build Status](https://travis-ci.org/dpgraham/appium-desktop.svg?branch=master)](https://travis-ci.org/dpgraham/appium-desktop) [![Build status](https://ci.appveyor.com/api/projects/status/gxx736n70959dl84?svg=true)](https://ci.appveyor.com/project/dpgraham/appium-desktop-9xjtw)
+# Appium Desktop [![Build Status](https://travis-ci.org/appium/appium-desktop.svg?branch=master)](https://travis-ci.org/appium/appium-desktop) [![Build status](https://ci.appveyor.com/api/projects/status/gxx736n70959dl84?svg=true)](https://ci.appveyor.com/project/appium/appium-desktop-9xjtw)
 
 Appium Desktop is an app for Mac, Windows, and Linux which gives you the power of the [Appium](http://appium.io) automation server in a beautiful and flexible UI. It is a combination of a few Appium-related tools:
 
-* An graphical interface for the Appium Server. You can set options, start/stop the server, see logs, etc... You also don't need to use Node/NPM to install Appium, as the Node runtime comes bundled with Appium Desktop.
+* A graphical interface for the Appium Server. You can set options, start/stop the server, see logs, etc... You also don't need to use Node/NPM to install Appium, as the Node runtime comes bundled with Appium Desktop.
 * An Inspector that you can use to look at your app's elements, get basic information about them, and perform basic interactions with them. This is useful as a way to learn about Appium or as a way to learn about your app so you can write tests for it.
 
 **This is a work in progress!**
@@ -96,4 +96,4 @@ draft of the new release.
 Appium Desktop follows the same npm versioning workflow but isn't published to NPM.
 
 Travis CI dashboard: https://travis-ci.org/appium/appium-desktop/
-AppVeyor dashboard: https://ci.appveyor.com/project/dpgraham/appium-desktop
+AppVeyor dashboard: https://ci.appveyor.com/project/appium/appium-desktop
