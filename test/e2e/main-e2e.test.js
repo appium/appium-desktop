@@ -2,22 +2,23 @@ var Application = require('spectron').Application;
 var assert = require('assert');
 var os = require('os');
 var platform = os.platform();
+var path = require('path');
 
 describe('application launch', function () {
   this.timeout(process.env.TRAVIS ? 10 * 60 * 1000 : 30 * 1000);
 
-  var app = __dirname;
+  var appPath;
   if (platform === 'linux') {
-    app += '/../../release/linux-unpacked/appium-desktop';
-  } else if (platform === '') {
-    app += '/../../release/mac/Appium.app/Contents/MacOS/Appium';
+    appPath = path.join(__dirname, '..', '..', 'release', 'linux-unpacked', 'appium-desktop');
+  } else if (platform === 'darwin') {
+    appPath = path.join(__dirname, '..', '..', 'release', 'mac', 'Appium.app', 'Contents', 'MacOS', 'Appium');
   } else if (platform === 'win32') {
-    app += '/../../release/win-ia32-unpacked/Appium.exe';
+    appPath = path.join(__dirname, '..', '..', 'release', 'win-ia32-unpacked', 'Appium.exe');
   }
 
   beforeEach(function () {
     this.app = new Application({
-      path: app,
+      path: appPath,
     });
     return this.app.start();
   });
