@@ -1,4 +1,4 @@
-# Appium Desktop
+# Appium Desktop [![Build Status](https://travis-ci.org/dpgraham/appium-desktop.svg?branch=master)](https://travis-ci.org/dpgraham/appium-desktop) [![Build status](https://ci.appveyor.com/api/projects/status/gxx736n70959dl84?svg=true)](https://ci.appveyor.com/project/dpgraham/appium-desktop-9xjtw)
 
 Appium Desktop is an app for Mac, Windows, and Linux which gives you the power of the [Appium](http://appium.io) automation server in a beautiful and flexible UI. It is a combination of a few Appium-related tools:
 
@@ -85,3 +85,15 @@ npm run package-all
 
 This will build the apps with the latest version of electron and put the various app packages in `release/`.
 
+```bash
+npm version <VERSION_TYPE>
+```
+
+This will increment the version and push a new tag. This will trigger AppVeyor and Travis CI to run a CI
+build process and then publish the assets (.dmg, .exe, .AppImage) to GitHub releases which will contain a
+draft of the new release.
+
+Appium Desktop follows the same npm versioning workflow but isn't published to NPM.
+
+Travis CI dashboard: https://travis-ci.org/appium/appium-desktop/
+AppVeyor dashboard: https://ci.appveyor.com/project/dpgraham/appium-desktop

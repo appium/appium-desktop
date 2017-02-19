@@ -1,12 +1,12 @@
-language: c
+language: node_js
 sudo: required
 node: 
 matrix:
   include:
   - os: osx
   - os: linux
-    env: CC=clang CXX=clang++ npm_config_clang=1
-    compiler: clang
+    #env: CC=clang CXX=clang++ npm_config_clang=1
+    #compiler: clang
 node_js:
 - '7'
 before_install: 
