@@ -5,17 +5,19 @@ matrix:
   include:
   - os: osx
   - os: linux
-    #env: CC=clang CXX=clang++ npm_config_clang=1
-    #compiler: clang
 node_js:
 - '7'
-before_install: 
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install --no-install-recommends
-    -y icnsutils graphicsmagick xz-utils; fi
+before_install:
+- openssl aes-256-cbc -K $encrypted_85c0316e8199_key -iv $encrypted_85c0316e8199_iv
+  -in Certificates.p12.enc -out Certificates.p12 -d
+- openssl aes-256-cbc -K $encrypted_85c0316e8199_key -iv $encrypted_85c0316e8199_iv
+  -in Certificates.p12.enc -out ../Documents/Certificates.p12 -d
+- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install --no-install-recommends
+  -y icnsutils graphicsmagick xz-utils; fi
 addons:
   apt:
     packages:
-      - xvfb
+    - xvfb
 before_script:
 - node --version
 - npm install
@@ -32,3 +34,8 @@ install:
 - export DISPLAY=':99.0'
 - Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
 dist: trusty
+env:
+  global:
+  - secure: s6/lKczanbwNSVGJdaIniLCX1wprKSzDkgjsZ7lRi6oUJT02Jqra0r2XLXtyQzSV+fr8i2d5SclcglPpsFKsWXSkPbU8BIDlsOLHzCloSaJZ93zxKA0da/gXKWvwHPWXHA22F+fdWmSRnEvWuwDOGxw9y80JBNY+dxFLGREI+KMCDa8jq3cjBBii7GB6wAbylzUrdY8Y5xk3lzlAhWofpaC6hUiF9cD3FEWP3xxEiD3v/QAW5e0MPJVH8bkuBX3BWPxSIn909Pkc5SJsr2J3dKDDyI5KzkjZrE7P3q4qLV+fgL8Yygh/jkPAfMDufNltS3i3Sx6wt8Kjr2HaP4UPvEHfqXDQea48iUNhqwN5zvuc9PslOYczpiOffTfcUNEegzadFLF8oKB1ePr4P/JUrjTugxjJ/r/8SRAiTbdEQ87TrMTbmffCTljpJRgL21RsJH88ZB7G3qlfypKcibVheEWuXzDI9dra1rJxJCSGrljH/vOZnUz7ZMKaODmKSQ/Xyyfsm8QSoseLGIglUWsCYXkUhS6r5ZjWralpCw4BOooFeHJHQ6GbFSi52Xh1OWmBicylOP7vKDtAufMzSb9RV5tpvZHNzuEYgkqjDmYT1XLpD3zHt8x99ZAg2usAECGK9bwTNB0gvfuaYfbLeGehzShbNdXRvgmWZjnwue7D/G0=
+  - secure: e4RqcSNOGAOw/K1Jyg04gU3RUFc2LYuqJV92LXrTjXlPQGQ5N5VIyh60IwNZy8rVj3Bu/H6A4u89Hl8LglC7BwfTtLEqpAtnwkajzBUfjpkmjv06UG+mLcx+nhnJP3TLdYp1DgyZnRMZIw5IGzgYXEZyqK85NTYeropg1ucj35x2DBwLapdU0Xuy3tkEEkRYohv/6STewVv0s8/OudYfz76TZ48LVcehk4x8Y419r18tP0NSILgn7KjXLer/cylLQxqC+GQlcsXYJbFIc/cOozHCRvUa2XpjhGAtAhUnDhZLFIVveN5bn9wjJwgwjLWPzz/ED7jZfP1+4PWrNxttqFbsuEYqSf0tBP/DZrFpqw4BanEPpum9Turt05DjS+71W/SZp2yjBcpvfL20HquwrO73Hf20CPDExCUYnBFOv1/7C+Rj5CE3seBwWTLdih2dNNt2CUE0H4IHKMv5tnT24KwwOOa9XF8Xg+NAIL6aT3K822x2/aKMFbGjO/cSu7RQPjehh8xvRLrzzaGcQl8tDseaaMWbFJiy/JBKAX/qWLZVM7NzT+7JQ7f6q8h2MvXz2LtOmGMd3FlkmX6DxoFw7PjJg3+1c/UL+1XJxU/yMJPB3gFKvRo4ds9tLMux2Fo1WNFC2DlJtAwTAOmRw87ZWzOkPb4BQity71W2W4IQVos=
+  - secure: nXEKchGe3qin291RFMmE8Yujrs2jYhBdmhX8Ha2WjxP6aLDVDnH0uI5tLTRRO8ejPnvZz0JF2X2dy4ZzIG6cZEBZdx+um131nOavVAWpabreqMuooo3P2Q7LcbbGqeqCxQ2U/X6FXUjGKzRIAfgWHTwqv4TDJ7j9eGNEe5jfVvMxnphmPP7ZrOmvaHR5+L7wEYACma0yg6D+eVk+PnLZY6RmIDrYYXxd8XPw1EDz0he8TQskAFp+2qymVQgDpi+LGOWpeXMWpuuV4wMRUhnsTgXlKDO8dzFUSwy8r1hXss4hsckDjP/L1PO2tBL2L1sKapLHER0coHDxtCGxLL0NDURNrttHA6J7X1tK9zg4g2g1CEw56vompK3nUbI3TVZyt6oe55klwgLokgPtEUr1W0Ny/5gruNcmlDyN4Ge5TagGnTmxP2NCrt5sBTxh0ces4BVajbFK5Qd63CEy5/yPPwbglS3zE42XglCzF859tEq5pVtthkMKkmLNGNZSA2Sjel3OTZIrqXi1ac+4kVBqRs0pkW0uELHzgNGb5uwH9bySGKRFzWNZB98W+8deVLCkNTl3A9hZeKDIaLs8LZlqEkFPEKQeBNTdr7jux5KUlfNvxJsCAtmHwS4/B5ZiTi0y2liaJ+ZCHLYsEhHnWe8Kmh3JjARrLxT0v+urIz42T4k=
