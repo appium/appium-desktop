@@ -7,13 +7,7 @@ function connectAutoUpdater (win) {
   autoUpdater.logger = log;
   autoUpdater.logger.transports.file.level = "info";
 
-  // Autoupdater only works in binaries. Don't do anything 
-  try {
-    autoUpdater.checkForUpdates();
-    log.info(`Looking for updates. Current version is ${packageJSON.version}`);
-  } catch (e) {
-    return;
-  }
+  win.webContents.send('appium-version', packageJSON.version);
 
   autoUpdater.on('checking-for-update', () => {
     log.info('Checking for an update!');
@@ -39,6 +33,16 @@ function connectAutoUpdater (win) {
     log.info('Update error');
     win.webContents.send('update-error');
   });
+
+  setTimeout(() => {
+    // Autoupdater only works in binaries. Don't do anything 
+    try {
+      log.info(`Looking for updates. Current version is ${packageJSON.version}`);
+      autoUpdater.checkForUpdates();
+    } catch (e) {
+      return;
+    }
+  }, 1000);
 }
 
 export { connectAutoUpdater };
