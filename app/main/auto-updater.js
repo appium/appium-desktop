@@ -57,8 +57,6 @@ function openUpdaterWindow () {
 
 function startAutoUpdater () {
 
-  let updaterWin;
-
   // We want the user to decide if they want to download the latest
   autoUpdater.autoDownload = false;
 
@@ -72,12 +70,12 @@ function startAutoUpdater () {
   autoUpdater.on('update-available', async (updateInfo) => {
     log.info('Update is available');
     await B.delay(3000); // Give the main window time to open BEFORE the update window
-    updaterWin = openUpdaterWindow();
+    openUpdaterWindow();
     ipcMain.on('update-info-request', (evt) => {
       evt.sender.send('update-info', updateInfo);
     });
 
-    // If a download is requested, start the download
+    // If a download is requested, start the download and send progress along the way
     ipcMain.on('update-download-request', (evt) => {
       autoUpdater.downloadUpdate();
       autoUpdater.on('download-progress', (downloadProgress) => {
@@ -87,6 +85,10 @@ function startAutoUpdater () {
       autoUpdater.on('update-downloaded', () => {
         evt.sender.send('update-download-complete');
       });
+    });
+
+    ipcMain.on('update-quit-and-install', () => {
+      autoUpdater.quitAndInstall();
     });
   });
 

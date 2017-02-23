@@ -3,8 +3,8 @@ import { UPDATE_INFO, DOWNLOAD_UPDATE_REQUESTED, DOWNLOAD_PROGRESSED, DOWNLOAD_C
 
 const INITIAL_STATE = {
   downloadProgress: {},
-  isDownloading: false,
-  isDownloaded: false,
+  hasDownloadStarted: false,
+  hasDownloadFinished: false,
   updateInfo: {},
 };
 
@@ -19,7 +19,7 @@ export default function session (state = INITIAL_STATE, action) {
     case DOWNLOAD_UPDATE_REQUESTED:
       return {
         ...state,
-        isDownloading: true,
+        hasDownloadStarted: true,
       };
 
     case DOWNLOAD_PROGRESSED:
@@ -31,8 +31,7 @@ export default function session (state = INITIAL_STATE, action) {
     case DOWNLOAD_COMPLETED:
       return {
         ...state,
-        isDownloading: false,
-        isDownloaded: true,
+        hasDownloadFinished: true,
         downloadProgress: {},
       };
 
