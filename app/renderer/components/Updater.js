@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { Button, Progress } from 'antd';
-import { ipcRenderer } from 'electron';
+import { Alert, Button, Progress } from 'antd';
+import { ipcRenderer, remote } from 'electron';
 
 export default class Updater extends Component {
 
@@ -10,10 +10,12 @@ export default class Updater extends Component {
     this.handleAvailableUpdate = this.handleAvailableUpdate.bind(this);
     this.handleDownloadProgress = this.handleDownloadProgress.bind(this);
     this.handleDownloadComplete = this.handleDownloadComplete.bind(this);
+    this.handleUpdateError = this.handleUpdateError.bind(this);
 
     ipcRenderer.on('update-info', this.handleAvailableUpdate);
     ipcRenderer.on('download-progress', this.handleDownloadProgress);
     ipcRenderer.on('update-download-complete', this.handleDownloadComplete);
+    ipcRenderer.on('update-error', this.handleUpdateError);
   }
 
   componentWillUnmount () {
@@ -35,22 +37,34 @@ export default class Updater extends Component {
     downloadCompleted();
   }
 
-  render () {
-    const {updateInfo, requestUpdateDownload, hasDownloadStarted, hasDownloadFinished, downloadProgress} = this.props;
+  handleUpdateError () {
+    const {updateError} = this.props;
+    updateError();
+  }
 
-    const { releaseDate, releaseNotes, version } = updateInfo;
-    const { bytesPerSecond, percent, total } = downloadProgress;
+  render () {
+    const {updateInfo, requestUpdateDownload, hasDownloadStarted, hasDownloadFinished, downloadProgress, hasUpdateError} = this.props;
+
+    const {releaseDate, releaseNotes, version} = updateInfo;
+    const {bytesPerSecond, percent, total} = downloadProgress;
 
     return <div>
         <h3>A new version of Appium Desktop is ready: <span>{version}</span> released <span>{releaseDate}</span></h3>
         <h4>Release Notes</h4>
         <p>{releaseNotes}</p>
-        {hasDownloadStarted && <Progress percent={!hasDownloadFinished ? percent : 100}></Progress>}
-        {!hasDownloadStarted && <Button onClick={requestUpdateDownload}>{'Download Update Now'}</Button>}
-        {!hasDownloadStarted && <Button>Ask Me Later</Button>}
-        {hasDownloadStarted && !hasDownloadFinished && <Button onClick={requestUpdateDownload} disabled>{ 'Downloading'}</Button>}
-        {hasDownloadFinished && <p>Download Complete</p>}
-        {hasDownloadFinished && <Button onClick={() => ipcRenderer.send('update-quit-and-install')}>Click to Restart Appium</Button>}
+        {!hasUpdateError && <div>
+          {!hasDownloadStarted && <Button onClick={requestUpdateDownload}>Download Update Now</Button>}
+          {!hasDownloadStarted && <Button>Ask Me Later</Button>}
+          {hasDownloadStarted && <Progress percent={!hasDownloadFinished ? percent : 100}></Progress>}
+          {hasDownloadStarted && !hasDownloadFinished && <Button onClick={requestUpdateDownload} disabled>Downloading</Button>}
+          {hasDownloadFinished && <p>Download Complete</p>}
+          {hasDownloadFinished && <Button onClick={() => ipcRenderer.send('update-quit-and-install')}>Click to Restart Appium</Button>}
+        </div>}
+
+        {hasUpdateError && <div>
+          <Alert message="An error has occurred. Try again later" type="error" />
+          <Button onClick={() => remote.getCurrentWindow().close()}>OK</Button>
+        </div>}
     </div>;
   }
 }
