@@ -4,7 +4,7 @@ import * as UpdaterActions from '../actions/Updater';
 import Updater from '../components/Updater';
 
 function mapStateToProps (state) {
-  return state.startServer;
+  return state.updater;
 }
 
 function mapDispatchToProps (dispatch) {

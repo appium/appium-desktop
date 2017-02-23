@@ -1,13 +1,13 @@
 // import {omit} from 'lodash';
 
-import { ACTION } from '../actions/Session';
+import { UPDATE_INFO } from '../actions/Updater';
 
 export default function session (state = {}, action) {
   switch (action.type) {
-    case ACTION:
+    case UPDATE_INFO:
       return {
         ...state,
-        action,
+        updateInfo: action.updateInfo,
       };
 
     default:
