@@ -90,7 +90,7 @@ app.on('ready', async () => {
 
   if (!isDev || process.env.MOCK_AUTO_UPDATER) {
     console.log('Enabling mock auto updater');
-    startAutoUpdater();
+    startAutoUpdater(mainWindow);
   }
 });
 
