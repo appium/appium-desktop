@@ -19,5 +19,21 @@ autoUpdater.checkForUpdates = async () => {
 };
 
 autoUpdater.downloadUpdate = async () => {
-    console.log('!!!downloading update now');
+  let progress = {
+    bytesPerSecond: 1000,
+    percent: 0,
+    total: 1,
+    transferred: 1,
+  };
+
+  while (progress.percent <= 100) {
+    autoUpdater.emit('download-progress', progress);
+    await B.delay(1000);
+    progress.bytesPerSecond += (Math.random() * 50) - 25;
+    progress.percent += 20;
+    progress.total += 100;
+    progress.transferred += 100;
+  }
+
+  autoUpdater.emit('update-downloaded');
 };
