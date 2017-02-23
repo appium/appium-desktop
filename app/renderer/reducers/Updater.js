@@ -1,8 +1,14 @@
-// import {omit} from 'lodash';
 
-import { UPDATE_INFO, DOWNLOAD_UPDATE_REQUESTED } from '../actions/Updater';
+import { UPDATE_INFO, DOWNLOAD_UPDATE_REQUESTED, DOWNLOAD_PROGRESSED, DOWNLOAD_COMPLETED } from '../actions/Updater';
 
-export default function session (state = {}, action) {
+const INITIAL_STATE = {
+  downloadProgress: {},
+  isDownloading: false,
+  isDownloaded: false,
+  updateInfo: {},
+};
+
+export default function session (state = INITIAL_STATE, action) {
   switch (action.type) {
     case UPDATE_INFO:
       return {
@@ -14,6 +20,20 @@ export default function session (state = {}, action) {
       return {
         ...state,
         isDownloading: true,
+      };
+
+    case DOWNLOAD_PROGRESSED:
+      return {
+        ...state,
+        downloadProgress: action.downloadProgress,
+      };
+
+    case DOWNLOAD_COMPLETED:
+      return {
+        ...state,
+        isDownloading: false,
+        isDownloaded: true,
+        downloadProgress: {},
       };
 
     default:

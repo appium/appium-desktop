@@ -80,7 +80,11 @@ function startAutoUpdater () {
     // If a download is requested, start the download
     ipcMain.on('update-download-request', (evt) => {
       autoUpdater.downloadUpdate();
-      autoUpdater.once('update-downloaded', () => {
+      autoUpdater.on('download-progress', (downloadProgress) => {
+        evt.sender.send('download-progress', downloadProgress);
+      });
+
+      autoUpdater.on('update-downloaded', () => {
         evt.sender.send('update-download-complete');
       });
     });
