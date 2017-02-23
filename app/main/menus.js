@@ -1,40 +1,51 @@
 import { app, shell } from 'electron';
+import { createNewSessionWindow } from './appium';
 
 let menuTemplates = {mac: {}, other: {}};
 
-const macMenuAppium = {
-  label: 'Appium',
-  submenu: [{
-    label: 'About Appium',
-    selector: 'orderFrontStandardAboutPanel:'
-  }, {
-    type: 'separator'
-  }, {
-    label: 'Services',
-    submenu: []
-  }, {
-    type: 'separator'
-  }, {
-    label: 'Hide Appium',
-    accelerator: 'Command+H',
-    selector: 'hide:'
-  }, {
-    label: 'Hide Others',
-    accelerator: 'Command+Shift+H',
-    selector: 'hideOtherApplications:'
-  }, {
-    label: 'Show All',
-    selector: 'unhideAllApplications:'
-  }, {
-    type: 'separator'
-  }, {
-    label: 'Quit',
-    accelerator: 'Command+Q',
-    click () {
-      app.quit();
-    }
-  }]
-};
+function macMenuAppium (mainWindow) {
+  return {
+    label: 'Appium',
+    submenu: [{
+      label: 'About Appium',
+      selector: 'orderFrontStandardAboutPanel:'
+    }, {
+      type: 'separator'
+    }, {
+      label: 'New Session Window...',
+      accelerator: 'Command+N',
+      click () {
+        createNewSessionWindow(mainWindow);
+      }
+    }, {
+      type: 'separator'
+    }, {
+      label: 'Services',
+      submenu: []
+    }, {
+      type: 'separator'
+    }, {
+      label: 'Hide Appium',
+      accelerator: 'Command+H',
+      selector: 'hide:'
+    }, {
+      label: 'Hide Others',
+      accelerator: 'Command+Shift+H',
+      selector: 'hideOtherApplications:'
+    }, {
+      label: 'Show All',
+      selector: 'unhideAllApplications:'
+    }, {
+      type: 'separator'
+    }, {
+      label: 'Quit',
+      accelerator: 'Command+Q',
+      click () {
+        app.quit();
+      }
+    }]
+  };
+}
 
 const macMenuEdit = {
   label: 'Edit',
@@ -137,7 +148,7 @@ const macMenuHelp = {
 };
 
 menuTemplates.mac = (mainWindow) => [
-  macMenuAppium,
+  macMenuAppium(mainWindow),
   macMenuEdit,
   macMenuView(mainWindow),
   macMenuWindow,
@@ -150,6 +161,12 @@ function otherMenuFile (mainWindow) {
     submenu: [{
       label: '&Open',
       accelerator: 'Ctrl+O'
+    }, {
+      label: '&New Session Window...',
+      accelerator: 'Ctrl+N',
+      click () {
+        createNewSessionWindow(mainWindow);
+      }
     }, {
       label: '&Close',
       accelerator: 'Ctrl+W',

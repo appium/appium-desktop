@@ -111,58 +111,61 @@ function connectGetDefaultArgs () {
  */
 function connectCreateNewSessionWindow (win) {
   ipcMain.on('create-new-session-window', () => {
+    createNewSessionWindow(win);
+  });
+}
 
-    // Create and open the Browser Window
-    let sessionWin = new BrowserWindow({
-      width: 920, 
-      minWidth: 920, 
-      height: 570, 
-      minHeight: 570, 
-      title: "Start Session", 
-      backgroundColor: "#f2f2f2", 
-      webPreferences: {
-        devTools: true
-      }
-    });
-    // note that __dirname changes based on whether we're in dev or prod;
-    // in dev it's the actual dirname of the file, in prod it's the root
-    // of the project (where main.js is built), so switch accordingly
-    let sessionHTMLPath = path.resolve(__dirname,  isDev ? '..' : 'app', 'renderer', 'index.html');
-    // on Windows we'll get backslashes, but we don't want these for a browser URL, so replace
-    sessionHTMLPath = sessionHTMLPath.replace("\\", "/");
-    sessionHTMLPath += '#/session';
-    sessionWin.loadURL(`file://${sessionHTMLPath}`);
-    sessionWin.show();
-
-    // When you close the session window, kill its associated Appium session (if there is one)
-    let sessionID = sessionWin.webContents.id;
-    sessionWin.on('closed', async () => {
-      if (sessionDrivers[sessionID]) {
-        await sessionDrivers[sessionID].quit();
-        delete sessionDrivers[sessionID];
-      }
-      sessionWin = null;
-    });
-
-    // When the main window is closed, close the session window too
-    win.once('closed', () => {
-      sessionWin = null;
-    });
-
-    // If it's dev, go ahead and open up the dev tools automatically
-    if (isDev) {
-      sessionWin.openDevTools();
+export function createNewSessionWindow (win) {
+  // Create and open the Browser Window
+  let sessionWin = new BrowserWindow({
+    width: 920,
+    minWidth: 920,
+    height: 570,
+    minHeight: 570,
+    title: "Start Session",
+    backgroundColor: "#f2f2f2",
+    webPreferences: {
+      devTools: true
     }
-    sessionWin.webContents.on('context-menu', (e, props) => {
-      const {x, y} = props;
+  });
+  // note that __dirname changes based on whether we're in dev or prod;
+  // in dev it's the actual dirname of the file, in prod it's the root
+  // of the project (where main.js is built), so switch accordingly
+  let sessionHTMLPath = path.resolve(__dirname,  isDev ? '..' : 'app', 'renderer', 'index.html');
+  // on Windows we'll get backslashes, but we don't want these for a browser URL, so replace
+  sessionHTMLPath = sessionHTMLPath.replace("\\", "/");
+  sessionHTMLPath += '#/session';
+  sessionWin.loadURL(`file://${sessionHTMLPath}`);
+  sessionWin.show();
 
-      Menu.buildFromTemplate([{
-        label: 'Inspect element',
-        click () {
-          sessionWin.inspectElement(x, y);
-        }
-      }]).popup(sessionWin);
-    });
+  // When you close the session window, kill its associated Appium session (if there is one)
+  let sessionID = sessionWin.webContents.id;
+  sessionWin.on('closed', async () => {
+    if (sessionDrivers[sessionID]) {
+      await sessionDrivers[sessionID].quit();
+      delete sessionDrivers[sessionID];
+    }
+    sessionWin = null;
+  });
+
+  // When the main window is closed, close the session window too
+  win.once('closed', () => {
+    sessionWin = null;
+  });
+
+  // If it's dev, go ahead and open up the dev tools automatically
+  if (isDev) {
+    sessionWin.openDevTools();
+  }
+  sessionWin.webContents.on('context-menu', (e, props) => {
+    const {x, y} = props;
+
+    Menu.buildFromTemplate([{
+      label: 'Inspect element',
+      click () {
+        sessionWin.inspectElement(x, y);
+      }
+    }]).popup(sessionWin);
   });
 }
 
