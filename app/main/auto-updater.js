@@ -7,14 +7,17 @@ const isDev = process.env.NODE_ENV === 'development';
 
 // Mock auto updater. Used to aid development because testing using actual releases is super tedious.
 if (process.env.NODE_ENV === 'development' && process.env.MOCK_AUTO_UPDATER) {
-  require('./mock-updater');
+  let { forceFail } = require('./mock-updater');
+  if (process.env.MOCK_FAILED_UPDATE) {
+    forceFail();
+  }
 }
 
 function openUpdaterWindow () {
   // Create and open the Browser Window
   let updaterWin = new BrowserWindow({
-    width: 400, 
-    height: 400, 
+    width: 600, 
+    height: 600, 
     title: "Update Available", 
     backgroundColor: "#f2f2f2", 
     webPreferences: {
@@ -78,6 +81,7 @@ function startAutoUpdater () {
     // If a download is requested, start the download and send progress along the way
     ipcMain.on('update-download-request', (evt) => {
       autoUpdater.downloadUpdate();
+
       autoUpdater.on('download-progress', (downloadProgress) => {
         evt.sender.send('download-progress', downloadProgress);
       });
@@ -85,16 +89,16 @@ function startAutoUpdater () {
       autoUpdater.on('update-downloaded', () => {
         evt.sender.send('update-download-complete');
       });
+
+      autoUpdater.on('error', () => {
+        log.info('Update error');
+        evt.sender.send('update-error');
+      });
     });
 
     ipcMain.on('update-quit-and-install', () => {
       autoUpdater.quitAndInstall();
     });
-  });
-
-  autoUpdater.on('error', () => {
-    log.info('Update error');
-    //updaterWin.webContents.send('update-error');
   });
 
   autoUpdater.checkForUpdates();
