@@ -2,6 +2,8 @@ import { app } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import B from 'bluebird';
 
+let fail;
+
 autoUpdater.checkForUpdates = async () => {
   await B.delay(2000);
   autoUpdater.emit('update-available', {
@@ -29,6 +31,9 @@ autoUpdater.downloadUpdate = async () => {
 
   while (progress.percent <= 100) {
     autoUpdater.emit('download-progress', progress);
+    if (fail && progress.percent > 50) {
+      autoUpdater.emit('error', new Error());
+    }
     await B.delay(1000);
     progress.bytesPerSecond += (Math.random() * 50) - 25;
     progress.percent += 20;
@@ -42,3 +47,7 @@ autoUpdater.downloadUpdate = async () => {
 autoUpdater.quitAndInstall = () => {
   app.quit();
 };
+
+export function forceFail () {
+  fail = true;
+}

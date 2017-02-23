@@ -1,10 +1,11 @@
 
-import { UPDATE_INFO, DOWNLOAD_UPDATE_REQUESTED, DOWNLOAD_PROGRESSED, DOWNLOAD_COMPLETED } from '../actions/Updater';
+import { UPDATE_INFO, UPDATE_ERROR, DOWNLOAD_UPDATE_REQUESTED, DOWNLOAD_PROGRESSED, DOWNLOAD_COMPLETED } from '../actions/Updater';
 
 const INITIAL_STATE = {
   downloadProgress: {},
   hasDownloadStarted: false,
   hasDownloadFinished: false,
+  hasUpdateError: false,
   updateInfo: {},
 };
 
@@ -33,6 +34,12 @@ export default function session (state = INITIAL_STATE, action) {
         ...state,
         hasDownloadFinished: true,
         downloadProgress: {},
+      };
+    
+    case UPDATE_ERROR:
+      return {
+        ...state,
+        hasUpdateError: true,
       };
 
     default:
