@@ -1,3 +1,4 @@
+import { app } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import B from 'bluebird';
 
@@ -36,4 +37,8 @@ autoUpdater.downloadUpdate = async () => {
   }
 
   autoUpdater.emit('update-downloaded');
+};
+
+autoUpdater.quitAndInstall = () => {
+  app.quit();
 };
