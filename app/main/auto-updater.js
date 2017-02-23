@@ -57,6 +57,9 @@ function openUpdaterWindow (mainWindow) {
 
   // If the main window closes, close the updater window too
   mainWindow.on('closed', updaterWin.close);
+
+  // Focus on this window
+  updaterWin.focus();
 }
 
 function startAutoUpdater (mainWindow) {

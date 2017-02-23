@@ -5,7 +5,7 @@ import B from 'bluebird';
 let fail;
 
 autoUpdater.checkForUpdates = async () => {
-  await B.delay(2000);
+  await B.delay(Math.random() * 10000);
   autoUpdater.emit('update-available', {
     version: 'v0.0.0',
     releaseDate: 'July 24th, 1985',
