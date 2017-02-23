@@ -1,6 +1,6 @@
 // import {omit} from 'lodash';
 
-import { UPDATE_INFO } from '../actions/Updater';
+import { UPDATE_INFO, DOWNLOAD_UPDATE_REQUESTED } from '../actions/Updater';
 
 export default function session (state = {}, action) {
   switch (action.type) {
@@ -8,6 +8,12 @@ export default function session (state = {}, action) {
       return {
         ...state,
         updateInfo: action.updateInfo,
+      };
+
+    case DOWNLOAD_UPDATE_REQUESTED:
+      return {
+        ...state,
+        isDownloading: true,
       };
 
     default:

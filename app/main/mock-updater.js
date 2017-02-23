@@ -17,3 +17,7 @@ autoUpdater.checkForUpdates = async () => {
     `,
   });
 };
+
+autoUpdater.downloadUpdate = async () => {
+    console.log('!!!downloading update now');
+};

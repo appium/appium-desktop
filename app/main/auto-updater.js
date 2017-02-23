@@ -65,14 +65,8 @@ function startAutoUpdater () {
   autoUpdater.logger = log;
   autoUpdater.logger.transports.file.level = "info";
 
-  autoUpdater.on('checking-for-update', () => {
-    log.info('Checking for an update!');
-    //updaterWin.webContents.send('checking-for-update');
-  });
-
   autoUpdater.on('update-not-available', () => {
     log.info('Update is not available');
-    //updaterWin.webContents.send('update-not-available');
   });
 
   autoUpdater.on('update-available', async (updateInfo) => {
@@ -82,11 +76,14 @@ function startAutoUpdater () {
     ipcMain.on('update-info-request', (evt) => {
       evt.sender.send('update-info', updateInfo);
     });
-  });
 
-  autoUpdater.on('update-downloaded', () => {
-    log.info('Update downloaded');
-    //updaterWin.webContents.send('update-downloaded');
+    // If a download is requested, start the download
+    ipcMain.on('update-download-request', (evt) => {
+      autoUpdater.downloadUpdate();
+      autoUpdater.once('update-downloaded', () => {
+        evt.sender.send('update-download-complete');
+      });
+    });
   });
 
   autoUpdater.on('error', () => {
