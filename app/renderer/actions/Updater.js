@@ -1,9 +1,7 @@
-// import { ipcRenderer } from 'electron';
+export const UPDATE_INFO = 'UPDATE_INFO';
 
-export const ACTION = 'ACTION';
-
-export function doAction (action) {
+export function foundAvailableUpdate (updateInfo) {
   return (dispatch) => {
-    dispatch({type: ACTION});
+    dispatch({type: UPDATE_INFO, updateInfo});
   };
 }

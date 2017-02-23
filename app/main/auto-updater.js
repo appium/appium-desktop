@@ -1,5 +1,5 @@
 import { autoUpdater } from 'electron-updater';
-import {  BrowserWindow, Menu } from 'electron';
+import { ipcMain, BrowserWindow, Menu } from 'electron';
 import log from 'electron-log';
 import path from 'path';
 import B from 'bluebird';
@@ -57,8 +57,6 @@ function openUpdaterWindow () {
 
 function startAutoUpdater () {
 
-  console.log('!!!inside start AU');
-
   let updaterWin;
 
   // We want the user to decide if they want to download the latest
@@ -77,10 +75,13 @@ function startAutoUpdater () {
     //updaterWin.webContents.send('update-not-available');
   });
 
-  autoUpdater.on('update-available', async () => {
+  autoUpdater.on('update-available', async (updateInfo) => {
     log.info('Update is available');
     await B.delay(3000); // Give the main window time to open BEFORE the update window
     updaterWin = openUpdaterWindow();
+    ipcMain.on('update-info-request', (evt) => {
+      evt.sender.send('update-info', updateInfo);
+    });
   });
 
   autoUpdater.on('update-downloaded', () => {
@@ -93,7 +94,6 @@ function startAutoUpdater () {
     //updaterWin.webContents.send('update-error');
   });
 
-  console.log(autoUpdater.checkForUpdates);
   autoUpdater.checkForUpdates();
 }
 
