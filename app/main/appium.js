@@ -285,9 +285,6 @@ function initializeIpc (win) {
   connectGetDefaultArgs(win);
   connectCreateNewSession(win);
   connectClientMethodListener(win);
-
-  // Look for changes 
-  connectAutoUpdater(win);
 }
 
 export { initializeIpc };
