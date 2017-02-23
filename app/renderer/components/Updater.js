@@ -54,7 +54,7 @@ export default class Updater extends Component {
         <p>{releaseNotes}</p>
         {!hasUpdateError && <div>
           {!hasDownloadStarted && <Button onClick={requestUpdateDownload}>Download Update Now</Button>}
-          {!hasDownloadStarted && <Button>Ask Me Later</Button>}
+          {!hasDownloadStarted && <Button onClick={() => remote.getCurrentWindow().close()}>Ask Me Later</Button>}
           {hasDownloadStarted && <Progress percent={!hasDownloadFinished ? percent : 100}></Progress>}
           {hasDownloadStarted && !hasDownloadFinished && <Button onClick={requestUpdateDownload} disabled>Downloading</Button>}
           {hasDownloadFinished && <p>Download Complete</p>}
