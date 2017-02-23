@@ -23,10 +23,10 @@ export function downloadProgressed (downloadProgress) {
   return (dispatch) => {
     dispatch({type: DOWNLOAD_PROGRESSED, downloadProgress});
   };
-};
+}
 
 export function downloadCompleted (downloadProgress) {
   return (dispatch) => {
     dispatch({type: DOWNLOAD_COMPLETED, downloadProgress})
   };
-};
+}
