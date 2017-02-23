@@ -88,9 +88,8 @@ app.on('ready', async () => {
 
   initializeIpc(mainWindow);
 
-  console.log('Use mock updater?', process.env.MOCK_AUTO_UPDATER);
   if (!isDev || process.env.MOCK_AUTO_UPDATER) {
-    console.log('Starting AU');
+    console.log('Enabling mock auto updater');
     startAutoUpdater();
   }
 });
