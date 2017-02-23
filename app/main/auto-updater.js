@@ -13,7 +13,7 @@ if (process.env.NODE_ENV === 'development' && process.env.MOCK_AUTO_UPDATER) {
   }
 }
 
-function openUpdaterWindow () {
+function openUpdaterWindow (mainWindow) {
   // Create and open the Browser Window
   let updaterWin = new BrowserWindow({
     width: 600, 
@@ -55,10 +55,11 @@ function openUpdaterWindow () {
     }]).popup(updaterWin);
   });
 
-  return updaterWin;
+  // If the main window closes, close the updater window too
+  mainWindow.on('closed', updaterWin.close);
 }
 
-function startAutoUpdater () {
+function startAutoUpdater (mainWindow) {
 
   // We want the user to decide if they want to download the latest
   autoUpdater.autoDownload = false;
@@ -73,7 +74,7 @@ function startAutoUpdater () {
   autoUpdater.on('update-available', async (updateInfo) => {
     log.info('Update is available');
     await B.delay(3000); // Give the main window time to open BEFORE the update window
-    openUpdaterWindow();
+    openUpdaterWindow(mainWindow);
     ipcMain.on('update-info-request', (evt) => {
       evt.sender.send('update-info', updateInfo);
     });
