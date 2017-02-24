@@ -5,8 +5,6 @@ import { ipcRenderer, remote } from 'electron';
 export default class DownloadUpdate extends Component {
 
   componentDidMount () {
-    ipcRenderer.send('update-info-request');
-
     this.handleAvailableUpdate = this.handleAvailableUpdate.bind(this);
     this.handleDownloadProgress = this.handleDownloadProgress.bind(this);
     this.handleDownloadComplete = this.handleDownloadComplete.bind(this);

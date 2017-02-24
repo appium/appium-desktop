@@ -2,20 +2,19 @@ import { autoUpdater } from 'electron-updater';
 import { ipcMain, BrowserWindow, Menu } from 'electron';
 import log from 'electron-log';
 import path from 'path';
-import B from 'bluebird';
 const isDev = process.env.NODE_ENV === 'development';
 
-// Mock auto updater. Used to aid development because testing using actual releases is super tedious.
-if (process.env.NODE_ENV === 'development' && process.env.MOCK_AUTO_UPDATER) {
-  let { forceFail } = require('./mock-updater');
-  if (process.env.MOCK_FAILED_UPDATE) {
-    forceFail();
-  }
-}
+// Singleton instance of updaterWindow
+let updaterWin;
 
-function openUpdaterWindow (mainWindow) {
+export function openUpdaterWindow (mainWindow) {
+  // If we already opened the window, don't do anything
+  if (updaterWin) {
+    return;
+  }
+
   // Create and open the Browser Window
-  let updaterWin = new BrowserWindow({
+  updaterWin = new BrowserWindow({
     width: 600, 
     height: 600, 
     title: "Update Available", 
@@ -25,9 +24,6 @@ function openUpdaterWindow (mainWindow) {
     }
   });
 
-  // note that __dirname changes based on whether we're in dev or prod;
-  // in dev it's the actual dirname of the file, in prod it's the root
-  // of the project (where main.js is built), so switch accordingly
   let updaterHTMLPath = path.resolve(__dirname,  isDev ? '..' : 'app', 'renderer', 'index.html');
   // on Windows we'll get backslashes, but we don't want these for a browser URL, so replace
   updaterHTMLPath = updaterHTMLPath.replace("\\", "/");
@@ -58,11 +54,28 @@ function openUpdaterWindow (mainWindow) {
   // If the main window closes, close the updater window too
   mainWindow.on('closed', updaterWin.close);
 
+  updaterWin.on('closed', () => updaterWin = null);
+
   // Focus on this window
   updaterWin.focus();
 }
 
-function startAutoUpdater (mainWindow) {
+export function forceCheckForUpdates (mainWindow) {
+  openUpdaterWindow(mainWindow);
+  autoUpdater.checkForUpdates();
+}
+
+export function initAutoUpdater (mainWindow) {
+  // Mock auto updater. Used to aid development because testing using actual releases is super tedious.
+  if (process.env.NODE_ENV === 'development') {
+    let { forceFail, updateAvailable } = require('./mock-updater');
+    if (process.env.MOCK_FAILED_UPDATE) {
+      forceFail();
+    }
+    if (process.env.MOCK_AUTO_UPDATER) {
+      updateAvailable();
+    }
+  }
 
   // We want the user to decide if they want to download the latest
   autoUpdater.autoDownload = false;
@@ -70,14 +83,19 @@ function startAutoUpdater (mainWindow) {
   autoUpdater.logger = log;
   autoUpdater.logger.transports.file.level = "info";
 
+
   autoUpdater.on('update-not-available', () => {
-    log.info('Update is not available');
+    if (updaterWin) {
+      updaterWin.webContents.send('update-not-available');
+    }
   });
 
-  autoUpdater.on('update-available', async (updateInfo) => {
+  autoUpdater.on('update-available', (updateInfo) => {
     log.info('Update is available');
-    await B.delay(3000); // Give the main window time to open BEFORE the update window
+
+    // If an update is available, force   
     openUpdaterWindow(mainWindow);
+
     ipcMain.on('update-info-request', (evt) => {
       evt.sender.send('update-info', updateInfo);
     });
@@ -100,6 +118,7 @@ function startAutoUpdater (mainWindow) {
       });
     });
 
+    // If user asks to quit and install, do so
     ipcMain.on('update-quit-and-install', () => {
       autoUpdater.quitAndInstall();
     });
@@ -107,5 +126,3 @@ function startAutoUpdater (mainWindow) {
 
   autoUpdater.checkForUpdates();
 }
-
-export { startAutoUpdater, openUpdaterWindow };

@@ -1,6 +1,6 @@
 import { app, shell } from 'electron';
 import { createNewSessionWindow } from './appium';
-import { openUpdaterWindow } from './auto-updater';
+import { forceCheckForUpdates } from './auto-updater';
 
 let menuTemplates = {mac: {}, other: {}};
 
@@ -13,7 +13,7 @@ function macMenuAppium (mainWindow) {
     }, {
       label: 'Check for updates',
       click () {
-        openUpdaterWindow(mainWindow);
+        forceCheckForUpdates(mainWindow);
       }
     }, {
       type: 'separator'
