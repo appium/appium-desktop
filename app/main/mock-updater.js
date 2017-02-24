@@ -2,23 +2,28 @@ import { app } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import B from 'bluebird';
 
-let fail;
+let fail, update;
 
 autoUpdater.checkForUpdates = async () => {
-  await B.delay(Math.random() * 10000);
-  autoUpdater.emit('update-available', {
-    version: 'v0.0.0',
-    releaseDate: 'July 24th, 1985',
-    releaseNotes: `
-        1. Feature 1
-        2. Feature 2
-        3. Feature 3
-        4. Feature 4
-        5. Feature 5
-        6. Feature 6
-        7. Feature 7
-    `,
-  });
+  if (update) {
+    await B.delay(Math.random() * 10000);
+    autoUpdater.emit('update-available', {
+      version: 'v0.0.0',
+      releaseDate: 'July 24th, 1985',
+      releaseNotes: `
+          1. Feature 1
+          2. Feature 2
+          3. Feature 3
+          4. Feature 4
+          5. Feature 5
+          6. Feature 6
+          7. Feature 7
+      `,
+    });
+  } else {
+    await B.delay(5000);
+    autoUpdater.emit('update-not-available');
+  }
 };
 
 autoUpdater.downloadUpdate = async () => {
@@ -50,4 +55,8 @@ autoUpdater.quitAndInstall = () => {
 
 export function forceFail () {
   fail = true;
+}
+
+export function updateAvailable () {
+  update = true;
 }
