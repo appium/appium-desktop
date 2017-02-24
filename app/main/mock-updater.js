@@ -2,10 +2,10 @@ import { app } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import B from 'bluebird';
 
-let fail, update;
+let fail, update, updateDone = false;
 
 autoUpdater.checkForUpdates = async () => {
-  if (update) {
+  if (update && !updateDone) {
     await B.delay(Math.random() * 10000);
     autoUpdater.emit('update-available', {
       version: 'v0.0.0',
@@ -45,7 +45,7 @@ autoUpdater.downloadUpdate = async () => {
     progress.total += 100;
     progress.transferred += 100;
   }
-
+  updateDone = true;
   autoUpdater.emit('update-downloaded');
 };
 
