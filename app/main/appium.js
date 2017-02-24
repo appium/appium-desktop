@@ -6,7 +6,6 @@ import { getDefaultArgs, getParser } from 'appium/build/lib/parser';
 import path from 'path';
 import wd from 'wd';
 import Bluebird from 'bluebird';
-import { connectAutoUpdater } from './auto-updater';
 import settings from 'electron-settings';
 
 const LOG_SEND_INTERVAL_MS = 250;

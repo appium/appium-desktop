@@ -1,6 +1,7 @@
 import { ipcRenderer } from 'electron';
 
-export const UPDATE_INFO = 'UPDATE_INFO';
+export const FOUND_UPDATE = 'FOUND_UPDATE';
+export const FOUND_NO_UPDATE = 'FOUND_NO_UPDATE';
 export const UPDATE_ERROR = 'UPDATE_ERROR';
 export const DOWNLOAD_UPDATE_REQUESTED = 'DOWNLOAD_UPDATE_REQUESTED';
 export const DOWNLOAD_PROGRESSED = 'DOWNLOAD_PROGRESSED';
@@ -9,9 +10,15 @@ export const DOWNLOAD_COMPLETED = 'DOWNLOAD_COMPLETED';
 
 export function foundAvailableUpdate (updateInfo) {
   return (dispatch) => {
-    dispatch({type: UPDATE_INFO, updateInfo});
+    dispatch({type: FOUND_UPDATE, updateInfo});
   };
 }
+
+export function foundNoUpdate () {
+  return (dispatch) => {
+    dispatch({type: FOUND_NO_UPDATE});
+  };
+};
 
 export function requestUpdateDownload () {
   return (dispatch) => {
@@ -28,7 +35,7 @@ export function downloadProgressed (downloadProgress) {
 
 export function downloadCompleted (downloadProgress) {
   return (dispatch) => {
-    dispatch({type: DOWNLOAD_COMPLETED, downloadProgress})
+    dispatch({type: DOWNLOAD_COMPLETED, downloadProgress});
   };
 }
 
