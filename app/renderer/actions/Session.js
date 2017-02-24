@@ -315,14 +315,12 @@ export function setServerParam (name, value) {
 export function setLocalServerParams () {
   return async (dispatch, getState) => {
     let serverArgs = await settings.get('SERVER_ARGS');
-
     // Get saved server args from settings and set local server settings to it. If there are no saved args, set local
     // host and port to undefined
     if (serverArgs) {
       dispatch({type: SET_SERVER_PARAM, serverType: ServerTypes.local, name: 'port', value: serverArgs.port});
       dispatch({type: SET_SERVER_PARAM, serverType: ServerTypes.local, name: 'hostname', value: 'localhost'});
     } else {
-
       dispatch({type: SET_SERVER_PARAM, serverType: ServerTypes.local, name: 'port', value: undefined});
       dispatch({type: SET_SERVER_PARAM, serverType: ServerTypes.local, name: 'hostname', value: undefined});
       if (getState().session.serverType === 'local') {

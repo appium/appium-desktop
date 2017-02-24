@@ -4,6 +4,7 @@ import startServer from './StartServer';
 import serverMonitor from './ServerMonitor';
 import session from './Session';
 import inspector from './Inspector';
+import updater from './Updater';
 
 const rootReducer = combineReducers({
   routing,
@@ -11,6 +12,7 @@ const rootReducer = combineReducers({
   serverMonitor,
   session,
   inspector,
+  updater,
 });
 
 export default rootReducer;

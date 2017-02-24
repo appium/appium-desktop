@@ -2,6 +2,8 @@ import { app, BrowserWindow, Menu } from 'electron';
 import { initializeIpc } from './appium';
 import menuTemplates from './menus';
 import path from 'path';
+import { startAutoUpdater } from './auto-updater';
+
 
 let menu;
 let template;
@@ -85,5 +87,10 @@ app.on('ready', async () => {
   }
 
   initializeIpc(mainWindow);
+
+  if (!isDev || process.env.MOCK_AUTO_UPDATER) {
+    console.log('Enabling mock auto updater');
+    startAutoUpdater(mainWindow);
+  }
 });
 
