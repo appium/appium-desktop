@@ -2,7 +2,6 @@ import { app, BrowserWindow, Menu } from 'electron';
 import { initializeIpc } from './appium';
 import menuTemplates from './menus';
 import path from 'path';
-import { initAutoUpdater } from './auto-updater';
 
 let menu;
 let template;
@@ -86,7 +85,7 @@ app.on('ready', async () => {
   }
 
   initializeIpc(mainWindow);
-  
-  initAutoUpdater();
+
+
 });
 
