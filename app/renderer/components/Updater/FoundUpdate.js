@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { Alert, Button } from 'antd';
-import { remote } from 'electron';
+import { ipcRenderer, remote } from 'electron';
 
 export default class FoundUpdate extends Component {
 
   render () {
-    const {updateInfo, requestUpdateDownload, hasUpdateError, hasFoundUpdate} = this.props;
+    const {hasUpdateAvailable, updateInfo, hasUpdateError} = this.props;
 
-    if (!hasFoundUpdate) {
+    if (!hasUpdateAvailable) {
       return null;
     }
 
@@ -18,7 +18,7 @@ export default class FoundUpdate extends Component {
         <h4>Release Notes</h4>
         <p>{releaseNotes}</p>
         {!hasUpdateError && <div>
-          <Button onClick={requestUpdateDownload}>Download Update Now</Button>
+          <Button onClick={() => ipcRenderer.send('update-download')}>Download Update Now</Button>
           <Button onClick={() => remote.getCurrentWindow().close()}>Ask Me Later</Button>
         </div>}
 

@@ -30,7 +30,7 @@ class AutoUpdaterController {
 
     ipcMain.on('update-state-request', (e) => e.sender.send('update-state-change', this.state));
     ipcMain.on('update-check-for-updates', autoUpdater.checkForUpdates);
-    ipcMain.on('update-download-updates', autoUpdater.downloadUpdate);
+    ipcMain.on('update-download', autoUpdater.downloadUpdate);
     ipcMain.on('update-quit-and-install', autoUpdater.quitAndInstall);
 
   }
@@ -66,6 +66,9 @@ class AutoUpdaterController {
   }
 
   handleUpdateDownloaded (updateInfo) {
+    if (this.updaterWin) {
+      this.updaterWin.focus();
+    }
     this.setState({
       updateDownloaded: true,
       updateInfo,
