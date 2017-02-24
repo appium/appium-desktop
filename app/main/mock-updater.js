@@ -6,6 +6,7 @@ let fail, update;
 
 autoUpdater.checkForUpdates = async () => {
   if (update) {
+    console.log('!!!Emitting update available');
     await B.delay(Math.random() * 10000);
     autoUpdater.emit('update-available', {
       version: 'v0.0.0',

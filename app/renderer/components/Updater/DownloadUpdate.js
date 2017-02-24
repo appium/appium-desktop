@@ -4,42 +4,6 @@ import { ipcRenderer, remote } from 'electron';
 
 export default class DownloadUpdate extends Component {
 
-  componentDidMount () {
-    this.handleAvailableUpdate = this.handleAvailableUpdate.bind(this);
-    this.handleDownloadProgress = this.handleDownloadProgress.bind(this);
-    this.handleDownloadComplete = this.handleDownloadComplete.bind(this);
-    this.handleUpdateError = this.handleUpdateError.bind(this);
-
-    ipcRenderer.on('update-info', this.handleAvailableUpdate);
-    ipcRenderer.on('download-progress', this.handleDownloadProgress);
-    ipcRenderer.on('update-download-complete', this.handleDownloadComplete);
-    ipcRenderer.on('update-error', this.handleUpdateError);
-  }
-
-  componentWillUnmount () {
-    ipcRenderer.removeListener('update-info', this.handleAvailableUpdate);
-  }
-
-  handleAvailableUpdate (e, updateInfo) {
-    const {foundAvailableUpdate} = this.props;
-    foundAvailableUpdate(updateInfo);
-  }
-
-  handleDownloadProgress (e, downloadProgress) {
-    const {downloadProgressed} = this.props;
-    downloadProgressed(downloadProgress);
-  }
-
-  handleDownloadComplete () {
-    const {downloadCompleted} = this.props;
-    downloadCompleted();
-  }
-
-  handleUpdateError () {
-    const {updateError} = this.props;
-    updateError();
-  }
-
   render () {
     const {requestUpdateDownload, hasDownloadStarted, hasDownloadFinished, hasUpdateError} = this.props;
 

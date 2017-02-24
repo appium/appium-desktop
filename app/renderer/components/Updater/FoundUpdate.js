@@ -1,39 +1,17 @@
 import React, { Component } from 'react';
 import { Alert, Button } from 'antd';
-import { ipcRenderer, remote } from 'electron';
+import { remote } from 'electron';
 
 export default class FoundUpdate extends Component {
-
-  componentDidMount () {
-    this.handleDownloadProgress = this.handleDownloadProgress.bind(this);
-    this.handleDownloadComplete = this.handleDownloadComplete.bind(this);
-    ipcRenderer.on('download-progress', this.handleDownloadProgress);
-    ipcRenderer.on('update-download-complete', this.handleDownloadComplete);
-  }
-
-  componentWillUnmount () {
-    ipcRenderer.removeListener('download-progress', this.handleAvailableUpdate);
-    ipcRenderer.removeListener('update-download-complete', this.handleAvailableUpdate);
-  }
-
-  handleDownloadProgress (e, downloadProgress) {
-    const {downloadProgressed} = this.props;
-    downloadProgressed(downloadProgress);
-  }
-
-  handleDownloadComplete () {
-    const {downloadCompleted} = this.props;
-    downloadCompleted();
-  }
 
   render () {
     const {updateInfo, requestUpdateDownload, hasUpdateError, hasFoundUpdate} = this.props;
 
-    const {releaseDate, releaseNotes, version} = updateInfo;
-
     if (!hasFoundUpdate) {
       return null;
     }
+
+    const {releaseDate, releaseNotes, version} = updateInfo;
 
     return <div>
         <h3>A new version of Appium Desktop is ready: <span>{version}</span> released <span>{releaseDate}</span></h3>
