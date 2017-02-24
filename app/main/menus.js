@@ -14,6 +14,7 @@ function macMenuAppium (mainWindow) {
       label: 'Check for updates',
       click () {
         autoUpdater.openUpdaterWindow(mainWindow);
+        autoUpdater.checkForUpdates();
       }
     }, {
       type: 'separator'

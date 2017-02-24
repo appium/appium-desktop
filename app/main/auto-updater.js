@@ -22,9 +22,7 @@ class AutoUpdaterController {
 
   constructor () {
     this.updaterWin = null;
-    this.state = {
-      isCheckingForUpdates: true,
-    };
+    this.state = {};
 
     autoUpdater.on('update-available', this.handleUpdateAvailable.bind(this));
     autoUpdater.on('update-not-available', this.handleUpdateNotAvailable.bind(this));
@@ -81,13 +79,15 @@ class AutoUpdaterController {
   }
 
   handleError (error) {
-    console.log('!!!ERROR', error);
     this.setState({
       error,
     });
   }
 
   checkForUpdates () {
+    this.setState({
+      isCheckingForUpdates: true,
+    });
     autoUpdater.checkForUpdates();
   }
 
