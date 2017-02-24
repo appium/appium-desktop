@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import CheckForUpdates from './Updater/CheckForUpdates';
 import FoundUpdate from './Updater/FoundUpdate';
 import DownloadUpdate from './Updater/DownloadUpdate';
+import UpdateError from './Updater/UpdateError';
 import { ipcRenderer } from 'electron';
 
 export default class Updater extends Component {
@@ -21,6 +22,7 @@ export default class Updater extends Component {
       <CheckForUpdates {...this.props} />
       <FoundUpdate {...this.props} />
       <DownloadUpdate {...this.props} />
+      <UpdateError {...this.props} />
     </div>;
   }
 }
