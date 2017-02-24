@@ -1,5 +1,6 @@
 import { app, shell } from 'electron';
 import { createNewSessionWindow } from './appium';
+import { openUpdaterWindow } from './auto-updater';
 
 let menuTemplates = {mac: {}, other: {}};
 
@@ -10,6 +11,11 @@ function macMenuAppium (mainWindow) {
       label: 'About Appium',
       selector: 'orderFrontStandardAboutPanel:'
     }, {
+      label: 'Check for updates',
+      click () {
+        openUpdaterWindow(mainWindow);
+      }
+    }, {
       type: 'separator'
     }, {
       label: 'New Session Window...',
@@ -17,11 +23,6 @@ function macMenuAppium (mainWindow) {
       click () {
         createNewSessionWindow(mainWindow);
       }
-    }, {
-      type: 'separator'
-    }, {
-      label: 'Services',
-      submenu: []
     }, {
       type: 'separator'
     }, {

@@ -108,4 +108,4 @@ function startAutoUpdater (mainWindow) {
   autoUpdater.checkForUpdates();
 }
 
-export { startAutoUpdater };
+export { startAutoUpdater, openUpdaterWindow };

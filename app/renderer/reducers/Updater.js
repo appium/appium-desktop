@@ -1,20 +1,31 @@
-
-import { UPDATE_INFO, UPDATE_ERROR, DOWNLOAD_UPDATE_REQUESTED, DOWNLOAD_PROGRESSED, DOWNLOAD_COMPLETED } from '../actions/Updater';
+import { FOUND_UPDATE, FOUND_NO_UPDATE, UPDATE_ERROR, DOWNLOAD_UPDATE_REQUESTED, DOWNLOAD_PROGRESSED, DOWNLOAD_COMPLETED } from '../actions/Updater';
 
 const INITIAL_STATE = {
-  downloadProgress: {},
+  isCheckingForUpdate: true,
+  hasFoundNoUpdate: false,
+  hasFoundUpdate: false,
   hasDownloadStarted: false,
   hasDownloadFinished: false,
   hasUpdateError: false,
+  downloadProgress: {},
   updateInfo: {},
 };
 
 export default function session (state = INITIAL_STATE, action) {
   switch (action.type) {
-    case UPDATE_INFO:
+    case FOUND_UPDATE:
       return {
         ...state,
+        isCheckingForUpdate: false,
+        hasFoundUpdate: true,
         updateInfo: action.updateInfo,
+      };
+
+    case FOUND_NO_UPDATE:
+      return {
+        ...state,
+        isCheckingForUpdate: false,
+        hasFoundNoUpdate: true
       };
 
     case DOWNLOAD_UPDATE_REQUESTED:
