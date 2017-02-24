@@ -43,7 +43,9 @@ class AutoUpdaterController {
   }
 
   handleUpdateAvailable (updateInfo) {
+    // If window not open, open it to notify user
     this.openUpdaterWindow(this.mainWindow);
+    this.forceFocus();
     this.setState({
       hasUpdateAvailable: true,
       updateInfo,
@@ -69,9 +71,8 @@ class AutoUpdaterController {
   }
 
   handleUpdateDownloaded (updateInfo) {
-    if (this.updaterWin) {
-      this.updaterWin.focus();
-    }
+    // Focus on window when the download is done to get the user's attention
+    this.forceFocus();
     this.setState({
       updateDownloaded: true,
       updateInfo,
@@ -84,6 +85,12 @@ class AutoUpdaterController {
     });
   }
 
+  forceFocus () {
+    if (this.updaterWin) {
+      this.updaterWin.focus();
+    }
+  }
+
   checkForUpdates () {
     this.setState({
       isCheckingForUpdates: true,
@@ -91,6 +98,10 @@ class AutoUpdaterController {
     autoUpdater.checkForUpdates();
   }
 
+  /**
+   * Update the state of the autoUpdater and send that state to the
+   * updater window
+   */
   setState (newState) {
     this.state = {...newState};
     if (this.updaterWin) {
@@ -98,6 +109,9 @@ class AutoUpdaterController {
     }
   }
 
+  /**
+   * Opens a browser window that shows the state of the updates in a UI
+   */
   openUpdaterWindow (mainWindow) {
     // If we already opened the window, don't do anything
     let updaterWin = this.updaterWin;
@@ -145,9 +159,6 @@ class AutoUpdaterController {
 
     // If the main window closes, close the updater window too
     mainWindow.on('closed', updaterWin.close);
-
-    // Focus on this window
-    updaterWin.focus();
   }
 }
 
