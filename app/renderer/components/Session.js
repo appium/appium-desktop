@@ -11,9 +11,12 @@ const FormItem = Form.Item;
 export default class Session extends Component {
 
   componentWillMount () {
-    this.props.getSavedSessions();
-    this.props.setSavedServerParams();
-    this.props.setLocalServerParams();
+    const {setLocalServerParams, getSavedSessions, setSavedServerParams} = this.props;
+    (async function () {
+      await getSavedSessions();
+      await setSavedServerParams();
+      await setLocalServerParams();
+    })();
   }
 
   render () {
@@ -23,13 +26,13 @@ export default class Session extends Component {
     return <Spin spinning={!!sessionLoading}>
       <div className={SessionStyles['session-container']}>
         <Tabs activeKey={serverType} onChange={changeServerType} className={SessionStyles.serverTabs}>
-          <TabPane tab='Automatic Server' key={ServerTypes.local}>
+          <TabPane disabled={!server.local.port} tab='Automatic Server' key={ServerTypes.local}>
             <Form>
               <FormItem>
                 <Card>
-                  <p className={SessionStyles.localDesc}>Will use currently-running Appium Desktop server at 
+                  {server.local.port && <p className={SessionStyles.localDesc}>Will use currently-running Appium Desktop server at 
                     <b> http://{server.local.hostname === "0.0.0.0" ? "localhost" : server.local.hostname}:{server.local.port}</b>
-                  </p>
+                  </p>}
                 </Card>
               </FormItem>
             </Form>

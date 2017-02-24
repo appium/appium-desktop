@@ -7,6 +7,7 @@ import path from 'path';
 import wd from 'wd';
 import Bluebird from 'bluebird';
 import { connectAutoUpdater } from './auto-updater';
+import settings from 'electron-settings';
 
 const LOG_SEND_INTERVAL_MS = 250;
 const isDev = process.env.NODE_ENV === 'development';
@@ -16,6 +17,9 @@ var logWatcher = null;
 var batchedLogs = [];
 
 let sessionDrivers = {};
+
+// Delete saved server args, don't start until a server has been started
+settings.deleteSync('SERVER_ARGS');
 
 /**
  * Kill session associated with session browser window
@@ -60,6 +64,7 @@ function connectStartServer (win) {
     try {
       // set up the appium server running in this thread
       server = await appiumServer(args, true);
+      await settings.set('SERVER_ARGS', args);
       win.webContents.send('appium-start-ok');
     } catch (e) {
       win.webContents.send('appium-start-error', e.message);
@@ -80,6 +85,7 @@ function connectStopServer (win) {
       win.webContents.send('appium-stop-error', e.message);
     }
     clearInterval(logWatcher);
+    await settings.delete('SERVER_ARGS');
   });
 }
 
@@ -111,58 +117,61 @@ function connectGetDefaultArgs () {
  */
 function connectCreateNewSessionWindow (win) {
   ipcMain.on('create-new-session-window', () => {
+    createNewSessionWindow(win);
+  });
+}
 
-    // Create and open the Browser Window
-    let sessionWin = new BrowserWindow({
-      width: 920, 
-      minWidth: 920, 
-      height: 570, 
-      minHeight: 570, 
-      title: "Start Session", 
-      backgroundColor: "#f2f2f2", 
-      webPreferences: {
-        devTools: true
-      }
-    });
-    // note that __dirname changes based on whether we're in dev or prod;
-    // in dev it's the actual dirname of the file, in prod it's the root
-    // of the project (where main.js is built), so switch accordingly
-    let sessionHTMLPath = path.resolve(__dirname,  isDev ? '..' : 'app', 'renderer', 'index.html');
-    // on Windows we'll get backslashes, but we don't want these for a browser URL, so replace
-    sessionHTMLPath = sessionHTMLPath.replace("\\", "/");
-    sessionHTMLPath += '#/session';
-    sessionWin.loadURL(`file://${sessionHTMLPath}`);
-    sessionWin.show();
-
-    // When you close the session window, kill its associated Appium session (if there is one)
-    let sessionID = sessionWin.webContents.id;
-    sessionWin.on('closed', async () => {
-      if (sessionDrivers[sessionID]) {
-        await sessionDrivers[sessionID].quit();
-        delete sessionDrivers[sessionID];
-      }
-      sessionWin = null;
-    });
-
-    // When the main window is closed, close the session window too
-    win.once('closed', () => {
-      sessionWin = null;
-    });
-
-    // If it's dev, go ahead and open up the dev tools automatically
-    if (isDev) {
-      sessionWin.openDevTools();
+export function createNewSessionWindow (win) {
+  // Create and open the Browser Window
+  let sessionWin = new BrowserWindow({
+    width: 920,
+    minWidth: 920,
+    height: 570,
+    minHeight: 570,
+    title: "Start Session",
+    backgroundColor: "#f2f2f2",
+    webPreferences: {
+      devTools: true
     }
-    sessionWin.webContents.on('context-menu', (e, props) => {
-      const {x, y} = props;
+  });
+  // note that __dirname changes based on whether we're in dev or prod;
+  // in dev it's the actual dirname of the file, in prod it's the root
+  // of the project (where main.js is built), so switch accordingly
+  let sessionHTMLPath = path.resolve(__dirname,  isDev ? '..' : 'app', 'renderer', 'index.html');
+  // on Windows we'll get backslashes, but we don't want these for a browser URL, so replace
+  sessionHTMLPath = sessionHTMLPath.replace("\\", "/");
+  sessionHTMLPath += '#/session';
+  sessionWin.loadURL(`file://${sessionHTMLPath}`);
+  sessionWin.show();
 
-      Menu.buildFromTemplate([{
-        label: 'Inspect element',
-        click () {
-          sessionWin.inspectElement(x, y);
-        }
-      }]).popup(sessionWin);
-    });
+  // When you close the session window, kill its associated Appium session (if there is one)
+  let sessionID = sessionWin.webContents.id;
+  sessionWin.on('closed', async () => {
+    if (sessionDrivers[sessionID]) {
+      await sessionDrivers[sessionID].quit();
+      delete sessionDrivers[sessionID];
+    }
+    sessionWin = null;
+  });
+
+  // When the main window is closed, close the session window too
+  win.once('closed', () => {
+    sessionWin = null;
+  });
+
+  // If it's dev, go ahead and open up the dev tools automatically
+  if (isDev) {
+    sessionWin.openDevTools();
+  }
+  sessionWin.webContents.on('context-menu', (e, props) => {
+    const {x, y} = props;
+
+    Menu.buildFromTemplate([{
+      label: 'Inspect element',
+      click () {
+        sessionWin.inspectElement(x, y);
+      }
+    }]).popup(sessionWin);
   });
 }
 
@@ -207,7 +216,6 @@ function connectCreateNewSession () {
       await killSession(event.sender);
       event.sender.send('appium-new-session-failed', e);
     }
-
   });
 }
 
@@ -264,8 +272,6 @@ function connectClientMethodListener () {
       console.log('reporting error', {e, uuid});
       renderer.send('appium-client-command-response-error', {e, uuid});
     }
-
-
   });
 }
 
@@ -281,7 +287,6 @@ function initializeIpc (win) {
   connectClientMethodListener(win);
 
   // Look for changes 
-  console.log('Opening auto updater');
   connectAutoUpdater(win);
 }
 

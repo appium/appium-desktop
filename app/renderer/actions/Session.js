@@ -313,11 +313,22 @@ export function setServerParam (name, value) {
  * defaults to what the currently running appium server is
  */
 export function setLocalServerParams () {
-  return async (dispatch) => {
-    let port = await settings.get('SERVER_PORT');
-    let host = await settings.get('SERVER_HOST');
-    dispatch({type: SET_SERVER_PARAM, serverType: ServerTypes.local, name: 'port', value: port});
-    dispatch({type: SET_SERVER_PARAM, serverType: ServerTypes.local, name: 'hostname', value: host});
+  return async (dispatch, getState) => {
+    let serverArgs = await settings.get('SERVER_ARGS');
+
+    // Get saved server args from settings and set local server settings to it. If there are no saved args, set local
+    // host and port to undefined
+    if (serverArgs) {
+      dispatch({type: SET_SERVER_PARAM, serverType: ServerTypes.local, name: 'port', value: serverArgs.port});
+      dispatch({type: SET_SERVER_PARAM, serverType: ServerTypes.local, name: 'hostname', value: 'localhost'});
+    } else {
+
+      dispatch({type: SET_SERVER_PARAM, serverType: ServerTypes.local, name: 'port', value: undefined});
+      dispatch({type: SET_SERVER_PARAM, serverType: ServerTypes.local, name: 'hostname', value: undefined});
+      if (getState().session.serverType === 'local') {
+        changeServerType('remote')(dispatch);
+      }
+    }
   };
 }
 
