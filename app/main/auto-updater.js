@@ -6,9 +6,13 @@ const isDev = process.env.NODE_ENV === 'development';
 // Mock auto updater. Used to aid development because testing using actual releases is super tedious.
 if (process.env.NODE_ENV === 'development') {
   let { forceFail, updateAvailable } = require('./mock-updater');
+
+  // Mock a failed update
   if (process.env.MOCK_FAILED_UPDATE) {
     forceFail();
   }
+
+  // Mock update being made available
   if (process.env.MOCK_AUTO_UPDATER) {
     updateAvailable();
   }
@@ -27,6 +31,7 @@ class AutoUpdaterController {
     autoUpdater.on('checking-for-update', this.handleCheckingForUpdate.bind(this));
     autoUpdater.on('download-progress', this.handleDownloadProgress.bind(this));
     autoUpdater.on('update-downloaded', this.handleUpdateDownloaded.bind(this));
+    autoUpdater.on('error', this.handleError.bind(this));
 
     ipcMain.on('update-state-request', (e) => e.sender.send('update-state-change', this.state));
     ipcMain.on('update-check-for-updates', autoUpdater.checkForUpdates);
@@ -72,6 +77,13 @@ class AutoUpdaterController {
     this.setState({
       updateDownloaded: true,
       updateInfo,
+    });
+  }
+
+  handleError (error) {
+    console.log('!!!ERROR', error);
+    this.setState({
+      error,
     });
   }
 

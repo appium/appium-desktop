@@ -6,7 +6,6 @@ let fail, update;
 
 autoUpdater.checkForUpdates = async () => {
   if (update) {
-    console.log('!!!Emitting update available');
     await B.delay(Math.random() * 10000);
     autoUpdater.emit('update-available', {
       version: 'v0.0.0',
@@ -38,7 +37,7 @@ autoUpdater.downloadUpdate = async () => {
   while (progress.percent <= 100) {
     autoUpdater.emit('download-progress', progress);
     if (fail && progress.percent > 50) {
-      autoUpdater.emit('error', new Error());
+      return autoUpdater.emit('error', new Error('An error occurred'));
     }
     await B.delay(1000);
     progress.bytesPerSecond += (Math.random() * 50) - 25;
