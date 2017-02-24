@@ -160,7 +160,13 @@ export default function session (state = INITIAL_STATE, action) {
     case SET_SERVER:
       return {
         ...state,
-        server: action.server || {},
+
+        // Only set remote and sauce; 'local' comes from electron-settings
+        server: {
+          ...state.server,
+          remote: action.server.remote || {},
+          sauce: action.server.sauce || {},
+        },
         serverType: action.serverType || ServerTypes.local,
       };
 

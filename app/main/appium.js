@@ -7,6 +7,7 @@ import path from 'path';
 import wd from 'wd';
 import Bluebird from 'bluebird';
 import { connectAutoUpdater } from './auto-updater';
+import settings from 'electron-settings';
 
 const LOG_SEND_INTERVAL_MS = 250;
 const isDev = process.env.NODE_ENV === 'development';
@@ -16,6 +17,9 @@ var logWatcher = null;
 var batchedLogs = [];
 
 let sessionDrivers = {};
+
+// Delete saved server args, don't start until a server has been started
+settings.deleteSync('SERVER_ARGS');
 
 /**
  * Kill session associated with session browser window
@@ -60,6 +64,7 @@ function connectStartServer (win) {
     try {
       // set up the appium server running in this thread
       server = await appiumServer(args, true);
+      await settings.set('SERVER_ARGS', args);
       win.webContents.send('appium-start-ok');
     } catch (e) {
       win.webContents.send('appium-start-error', e.message);
@@ -80,6 +85,7 @@ function connectStopServer (win) {
       win.webContents.send('appium-stop-error', e.message);
     }
     clearInterval(logWatcher);
+    await settings.delete('SERVER_ARGS');
   });
 }
 
@@ -210,7 +216,6 @@ function connectCreateNewSession () {
       await killSession(event.sender);
       event.sender.send('appium-new-session-failed', e);
     }
-
   });
 }
 
@@ -267,8 +272,6 @@ function connectClientMethodListener () {
       console.log('reporting error', {e, uuid});
       renderer.send('appium-client-command-response-error', {e, uuid});
     }
-
-
   });
 }
 
@@ -284,7 +287,6 @@ function initializeIpc (win) {
   connectClientMethodListener(win);
 
   // Look for changes 
-  console.log('Opening auto updater');
   connectAutoUpdater(win);
 }
 
