@@ -4,6 +4,7 @@ import FoundUpdate from './Updater/FoundUpdate';
 import DownloadUpdate from './Updater/DownloadUpdate';
 import UpdateError from './Updater/UpdateError';
 import { ipcRenderer } from 'electron';
+import UpdaterStyles from './Updater.css';
 
 export default class Updater extends Component {
 
@@ -18,7 +19,7 @@ export default class Updater extends Component {
   }
 
   render () {
-    return <div>
+    return <div className={UpdaterStyles['updater-container']}>
       <CheckForUpdates {...this.props} />
       <FoundUpdate {...this.props} />
       <DownloadUpdate {...this.props} />

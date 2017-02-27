@@ -65,6 +65,7 @@ class AutoUpdaterController {
   }
 
   handleDownloadProgress (downloadProgress) {
+    this.updaterWin.setSize(500, 100);
     this.setState({
       downloadProgress
     });
@@ -80,6 +81,7 @@ class AutoUpdaterController {
   }
 
   handleError (error) {
+    this.updaterWin.setSize(500, 125);
     this.setState({
       error,
     });
@@ -121,8 +123,8 @@ class AutoUpdaterController {
 
     // Create and open the Browser Window
     this.updaterWin = updaterWin = new BrowserWindow({
-      width: 600, 
-      height: 600, 
+      width: 550, 
+      height: 200, 
       title: "Update Available", 
       backgroundColor: "#f2f2f2", 
       webPreferences: {

@@ -42,7 +42,7 @@ autoUpdater.downloadUpdate = async () => {
     await B.delay(1000);
     progress.bytesPerSecond += (Math.random() * 50) - 25;
     progress.percent += 20;
-    progress.total += 100;
+    progress.total = 500;
     progress.transferred += 100;
   }
   updateDone = true;
