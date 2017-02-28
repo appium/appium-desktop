@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import {  } from 'antd';
 import UpdaterStyles from '../Updater.css';
 import AppiumLogo from '../../images/appium_logo.png';
 import { version } from '../../../../package.json';
