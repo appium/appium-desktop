@@ -14,12 +14,12 @@ export default class DownloadUpdate extends Component {
     const {bytesPerSecond, percent, total, transferred} = downloadProgress || {};
 
     return <div className={UpdaterStyles['download-updates-container']}>
-      {!updateDownloaded && <p>
-        <span>Downloading: {Math.round(bytesPerSecond * 100) / 100} bps</span>
-        <span>&nbsp;(transferred: {transferred} / {total} bytes)</span>
-      </p>}
-      {downloadProgress && <Progress percent={!hasDownloadFinished ? percent : 100}></Progress>}
-      {updateDownloaded && <p>Download Complete</p>}
+      <p>
+        {!updateDownloaded && <span>Downloading: {Math.round(bytesPerSecond * 100) / 100} bps</span>}
+        {!updateDownloaded && <span>&nbsp;(transferred: {transferred} / {total} bytes)</span>}
+        {updateDownloaded && <p>Download Complete</p>}
+      </p>
+      <Progress percent={!updateDownloaded ? percent : 100}></Progress>
       {updateDownloaded && <Button type='primary' onClick={() => ipcRenderer.send('update-quit-and-install')}>Click to Restart Appium</Button>}
     </div>;
   }

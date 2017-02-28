@@ -124,12 +124,13 @@ class AutoUpdaterController {
     // Create and open the Browser Window
     this.updaterWin = updaterWin = new BrowserWindow({
       width: 550, 
-      height: 200, 
+      height: 250, 
       title: "Update Available", 
       backgroundColor: "#f2f2f2", 
       webPreferences: {
         devTools: true
-      }
+      },
+      resizable: false,
     });
 
     let updaterHTMLPath = path.resolve(__dirname,  isDev ? '..' : 'app', 'renderer', 'index.html');
