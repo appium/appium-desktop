@@ -2,7 +2,6 @@
 
 import { ipcMain, BrowserWindow, Menu } from 'electron';
 import { main as appiumServer } from 'appium';
-import { version as appiumVersion } from 'appium/package.json';
 import { getDefaultArgs, getParser } from 'appium/build/lib/parser';
 import path from 'path';
 import wd from 'wd';
@@ -87,12 +86,6 @@ function connectStopServer (win) {
     }
     clearInterval(logWatcher);
     await settings.delete('SERVER_ARGS');
-  });
-}
-
-function connectGetVersion () {
-  ipcMain.on('get-appium-version', (evt) => {
-    evt.returnValue = appiumVersion;
   });
 }
 
@@ -290,7 +283,6 @@ function initializeIpc (win) {
   // listen for 'create-new-session-window' from the renderer
   connectCreateNewSessionWindow(win);
   connectGetDefaultArgs();
-  connectGetVersion();
   connectCreateNewSession(win);
   connectClientMethodListener(win);
 
