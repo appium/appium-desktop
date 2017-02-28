@@ -127,7 +127,7 @@ export default class AdvancedTab extends Component {
   }
 
   render () {
-    const {startServer, serverStarting, presetSaving} = this.props;
+    const {startServer, serverStarting, presetSaving, serverVersion} = this.props;
 
     return (
       <div className={styles.advancedForm}>
@@ -165,7 +165,7 @@ export default class AdvancedTab extends Component {
             </div>
           </div>
           <div className={styles.actions}>
-            <StartButton {...{serverStarting, startServer}} />
+            <StartButton {...{serverStarting, startServer, serverVersion}} />
             <SavePresetButton {...{savePreset: this.openPresetModal.bind(this), presetSaving}} />
           </div>
         </form>

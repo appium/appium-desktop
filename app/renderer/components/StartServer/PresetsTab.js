@@ -50,7 +50,7 @@ export default class PresetsTab extends Component {
   }
 
   selectPreset (presetName) {
-    const {serverArgs, updateArgs} = this.props;
+    const {serverArgs, updateArgs, serverVersion} = this.props;
 
     this.setState({selectedPreset: presetName});
 
@@ -126,7 +126,7 @@ export default class PresetsTab extends Component {
   }
 
   render () {
-    const {startServer, serverStarting, presetDeleting} = this.props;
+    const {startServer, serverStarting, presetDeleting, serverVersion} = this.props;
 
     return (
       <div className={advancedStyles.advancedForm}>
@@ -136,7 +136,7 @@ export default class PresetsTab extends Component {
             {this.presetIsSelected() ? this.presetDetail() : ""}
           </div>
           <div className={advancedStyles.actions}>
-            <StartButton {...{serverStarting, startServer, disabledOverride: !this.presetIsSelected()}} />
+            <StartButton {...{serverStarting, startServer, serverVersion, disabledOverride: !this.presetIsSelected()}} />
             {this.presetIsSelected() &&
              <DeletePresetButton {...{presetDeleting, deletePreset: this.deletePreset.bind(this)}} />
             }
