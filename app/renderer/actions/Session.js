@@ -36,6 +36,7 @@ export const ServerTypes = {
   local: 'local',
   remote: 'remote',
   sauce: 'sauce',
+  testobject: 'testobject',
 };
 
 const JSON_TYPES = ['json_object', 'number', 'boolean'];
@@ -166,6 +167,11 @@ export function newSession (caps) {
           return;
         }
         https = false;
+        break;
+      case ServerTypes.testobject:
+        host = 'appium.testobject.com';
+        port = 80;
+        desiredCapabilities.testobject_api_key = session.server.testobject.apiKey;
         break;
       default:
         break;

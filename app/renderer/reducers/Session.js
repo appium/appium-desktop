@@ -18,6 +18,7 @@ const INITIAL_STATE = {
     local: {},
     remote: {},
     sauce: {},
+    testobject: {},
   },
 
   // Make sure there's always at least one cap
@@ -160,12 +161,12 @@ export default function session (state = INITIAL_STATE, action) {
     case SET_SERVER:
       return {
         ...state,
-
-        // Only set remote and sauce; 'local' comes from electron-settings
+        // Only set remote, sauce, and testobject; 'local' comes from electron-settings
         server: {
           ...state.server,
           remote: action.server.remote || {},
           sauce: action.server.sauce || {},
+          testobject: action.server.testobject || {},
         },
         serverType: action.serverType || ServerTypes.local,
       };

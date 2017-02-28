@@ -30,7 +30,7 @@ export default class Session extends Component {
             <Form>
               <FormItem>
                 <Card>
-                  {server.local.port && <p className={SessionStyles.localDesc}>Will use currently-running Appium Desktop server at 
+                  {server.local.port && <p className={SessionStyles.localDesc}>Will use currently-running Appium Desktop server at
                     <b> http://{server.local.hostname === "0.0.0.0" ? "localhost" : server.local.hostname}:{server.local.port}</b>
                   </p>}
                 </Card>
@@ -54,6 +54,13 @@ export default class Session extends Component {
               </FormItem>
               <FormItem>
                 <Input type='password' placeholder='your-access-key' addonBefore="Sauce Access Key" value={server.sauce.accessKey} onChange={(e) => setServerParam('accessKey', e.target.value)} />
+              </FormItem>
+            </Form>
+          </TabPane>
+          <TabPane tab='TestObject' key={ServerTypes.testobject}>
+            <Form>
+              <FormItem>
+                <Input type='password' placeholder='testobject-api-key' addonBefore="TestObject API Key" value={server.testobject.apiKey} onChange={(e) => setServerParam('apiKey', e.target.value)} />
               </FormItem>
             </Form>
           </TabPane>
