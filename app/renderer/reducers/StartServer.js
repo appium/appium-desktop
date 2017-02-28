@@ -8,6 +8,7 @@ import settings from 'electron-settings';
 
 export const DEFAULT_ARGS = ipcRenderer.sendSync('get-default-args');
 export const ARG_DATA = ipcRenderer.sendSync('get-args-metadata');
+export const SERVER_VERSION = ipcRenderer.sendSync('get-appium-version');
 
 // set default user settings
 settings.defaults({
@@ -16,6 +17,7 @@ settings.defaults({
 
 const initialState = {
   serverArgs: {...DEFAULT_ARGS},
+  serverVersion: SERVER_VERSION,
   serverStarting: false,
   serverFailMsg: "",
   tabId: 0,

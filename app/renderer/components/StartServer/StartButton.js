@@ -19,7 +19,7 @@ export default class StartButton extends Component {
   }
 
   render () {
-    const {startServer, serverStarting} = this.props;
+    const {startServer, serverStarting, serverVersion} = this.props;
     const buttonProps = {};
     if (!this.isEnabled()) {
       buttonProps.disabled = true;
@@ -32,7 +32,7 @@ export default class StartButton extends Component {
          type="primary"
          onClick={this.isEnabled() ? startServer : this.noop}
         >
-          {serverStarting ? "Starting..." : "Start Server"}
+          {serverStarting ? "Starting..." : `Start Server v${serverVersion}`}
         </Button>
         <input type="submit" hidden={true} />
       </div>

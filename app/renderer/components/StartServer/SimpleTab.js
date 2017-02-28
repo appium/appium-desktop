@@ -9,7 +9,7 @@ export default class SimpleTab extends Component {
   static propTypes = {...propTypes}
 
   render () {
-    const {startServer, serverArgs, serverStarting} = this.props;
+    const {startServer, serverArgs, serverStarting, serverVersion} = this.props;
 
     return (
       <div className={styles.form}>
@@ -24,7 +24,7 @@ export default class SimpleTab extends Component {
             size="large" id="simplePortInput"
           />
           <div className="form-actions">
-            <StartButton {...{serverStarting, startServer}} />
+            <StartButton {...{serverStarting, startServer, serverVersion}} />
           </div>
         </form>
       </div>
