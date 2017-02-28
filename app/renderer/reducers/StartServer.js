@@ -4,11 +4,11 @@ import { SERVER_START_REQ, SERVER_START_OK, SERVER_START_ERR, GET_PRESETS,
        } from '../actions/StartServer';
 
 import { ipcRenderer } from 'electron';
+import { version as SERVER_VERSION } from 'appium/package.json';
 import settings from 'electron-settings';
 
 export const DEFAULT_ARGS = ipcRenderer.sendSync('get-default-args');
 export const ARG_DATA = ipcRenderer.sendSync('get-args-metadata');
-export const SERVER_VERSION = ipcRenderer.sendSync('get-appium-version');
 
 // set default user settings
 settings.defaults({

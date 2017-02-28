@@ -23,6 +23,9 @@ export default class Session extends Component {
     const {newSessionBegan, savedSessions, tabKey, switchTabs, changeServerType, serverType, setServerParam, server,
       requestSaveAsModal, newSession, caps, capsUUID, saveSession, isCapsDirty, sessionLoading} = this.props;
 
+    const sauceTabHead = <span className={SessionStyles.tabText}><img src="images/sauce_logo.svg" /></span>;
+    const testObjectTabHead = <span className={SessionStyles.tabText}><img src="images/testobject_logo.svg" /></span>;
+
     return <Spin spinning={!!sessionLoading}>
       <div className={SessionStyles['session-container']}>
         <Tabs activeKey={serverType} onChange={changeServerType} className={SessionStyles.serverTabs}>
@@ -47,7 +50,7 @@ export default class Session extends Component {
               </FormItem>
             </Form>
           </TabPane>
-          <TabPane tab='Sauce Labs' key={ServerTypes.sauce}>
+          <TabPane tab={sauceTabHead} key={ServerTypes.sauce}>
             <Form>
               <FormItem>
                 <Input placeholder='your-username' addonBefore="Sauce Username" value={server.sauce.username} onChange={(e) => setServerParam('username', e.target.value)} />
@@ -57,7 +60,7 @@ export default class Session extends Component {
               </FormItem>
             </Form>
           </TabPane>
-          <TabPane tab='TestObject' key={ServerTypes.testobject}>
+          <TabPane tab={testObjectTabHead} key={ServerTypes.testobject}>
             <Form>
               <FormItem>
                 <Input type='password' placeholder='testobject-api-key' addonBefore="TestObject API Key" value={server.testobject.apiKey} onChange={(e) => setServerParam('apiKey', e.target.value)} />

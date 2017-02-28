@@ -22,6 +22,17 @@
   height: 30px;
 }
 
+.tabText img {
+  height: 20px;
+  position: relative;
+  top: 4px;
+  filter: grayscale(100%);
+}
+
+:global(.ant-tabs-tab-active) .tabText img {
+  filter: none;
+}
+
 .serverTabs {
   min-height: 160px;
 }
