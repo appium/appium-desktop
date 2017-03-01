@@ -152,7 +152,8 @@ export function applyClientMethod (params) {
       dispatch({type: SET_SOURCE_AND_SCREENSHOT, source: xmlToJSON(source), screenshot});
       return result;
     } catch (error) {
-      showError(error, 10);
+      let methodName = params.methodName === 'click' ? 'tap' : params.methodName;
+      showError(error, methodName, 10);
       dispatch({type: METHOD_CALL_DONE});
     }
   };

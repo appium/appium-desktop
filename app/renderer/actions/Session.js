@@ -53,9 +53,11 @@ export function getCapsObject (caps) {
   })));
 }
 
-export function showError (e, secs = 5) {
+export function showError (e, methodName, secs = 5) {
   let errMessage;
-  if (e.data) {
+  if (e['jsonwire-error'] && e['jsonwire-error'].status === 7) {
+    errMessage = `Failed to find element for '${methodName}'. Please refresh page and try again.`;
+  } else if (e.data) {
     try {
       e.data = JSON.parse(e.data);
     } catch (ign) {}
@@ -74,11 +76,13 @@ export function showError (e, secs = 5) {
   if (errMessage === "ECONNREFUSED") {
     errMessage = "Could not connect to server; are you sure it's running?";
   }
+
   notification.error({
     message: "Error",
     description: errMessage,
     duration: secs
   });
+  
 }
 
 /**

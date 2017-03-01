@@ -5,7 +5,7 @@ const isDev = process.env.NODE_ENV === 'development';
 
 // Mock auto updater. Used to aid development because testing using actual releases is super tedious.
 if (process.env.NODE_ENV === 'development') {
-  let { forceFail, updateAvailable } = require('./mock-updater');
+  let {forceFail, updateAvailable} = require('./mock-updater');
 
   // Mock a failed update
   if (process.env.MOCK_FAILED_UPDATE) {
