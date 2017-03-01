@@ -169,7 +169,7 @@ Remember, Appium Desktop is not a replacement for understanding Appium
 itself---it is simply a convenient tool for working with Appium on your
 desktop, and an Inspector for exploring your app. Have fun!
 
-## Reporting Issues
+## Reporting Issues and Requesting Features
 
 Appium Desktop is open source, and we use GitHub for issue tracking. Please
 simply report issues at our [issue
@@ -183,6 +183,11 @@ experiencing is related to Appium Desktop specifically or instead is a general
 Appium issue. You can do this by seeing whether the issue reproduces with the
 Appium command line server as well. If it does, direct your report to Appium's
 issue tracker.
+
+Have a feature request? Follow the same process and submit an issue to the
+appropriate tracker! (Either here in this repo if the request is specifically
+for Appium Desktop, or Appium's main tracker if the request is for Appium more
+generally.)
 
 ## Developer Instructions
 
