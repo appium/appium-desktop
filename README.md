@@ -1,100 +1,191 @@
 # Appium Desktop [![Build Status](https://travis-ci.org/appium/appium-desktop.svg?branch=master)](https://travis-ci.org/appium/appium-desktop) [![Build status](https://ci.appveyor.com/api/projects/status/gxx736n70959dl84?svg=true)](https://ci.appveyor.com/project/appium/appium-desktop-9xjtw)
 
-Appium Desktop is an app for Mac, Windows, and Linux which gives you the power of the [Appium](http://appium.io) automation server in a beautiful and flexible UI. It is a combination of a few Appium-related tools:
+![Action screenshot](docs/images/screen-inspector-and-logs.png)
+
+Appium Desktop is an open source app for Mac, Windows, and Linux which gives
+you the power of the [Appium](http://appium.io) automation server in
+a beautiful and flexible UI. It is a combination of a few Appium-related tools:
 
 * A graphical interface for the Appium Server. You can set options, start/stop the server, see logs, etc... You also don't need to use Node/NPM to install Appium, as the Node runtime comes bundled with Appium Desktop.
 * An Inspector that you can use to look at your app's elements, get basic information about them, and perform basic interactions with them. This is useful as a way to learn about Appium or as a way to learn about your app so you can write tests for it.
 
-# Download 
-[Latest Release](https://github.com/appium/appium-desktop/releases/latest)
+## Download Appium Desktop
 
-## Screenshots
+You can always pick up the latest release at our
+[Release](https://github.com/appium/appium-desktop/releases/latest) page on
+GitHub.
 
-#### Start an Appium server
+If you're on Windows or macOS, Appium Desktop will automatically provide you
+with updated versions of the app when they are released. If you encounter
+a problem updating, simply delete or uninstall the app and re-download the
+latest from the link above.
 
-![Start a server](app/renderer/images/screenshots/start.png)
+Note that Appium Desktop _is not_ the same thing as Appium. Appium Desktop is
+a graphical frontend to Appium with additional tools. Appium Desktop is
+released on its own cadence and has its own versioning system. If you are
+reporting an issue with Appium Desktop, always be sure to include _both_ the
+version of Appium Desktop and the version of the Appium Server which is in use
+(see below).
 
-#### Follow Appium logs
+## Usage Instructions
 
-![Follow logs](app/renderer/images/screenshots/console.png)
+These instructions assume you are already familiar with Appium and
+Appium-related concepts. If you are new to Appium, please visit
+[appium.io](http://appium.io) and read our introductory material.
 
-## Instructions for Users
+This app provides a convenient way to download and run the Appium automation
+server, as well as a tool for inspecting your Android or iOS application. Its
+various capabilities are described in the following sections.
 
-There are not currently any releases of Appium Desktop available for users. If you want to play with it, you will need to build it from source following the directions for developers below.
+### The server start window
 
-## Instructions for Developers
+#### Starting a simple server
 
-### Overview
+![Start a basic server](docs/images/screen-start-simple.png)
 
-Appium Desktop is an [Electron](http://electron.atom.io) app. Electron apps have a basic architecture that consists of a _main_ process (which runs Node.js) and possibly many _renderer_ processes (essentially browser windows which display HTML/CSS and can run JS---this is where the UI lives). Interactions between the two types of process are made possible by a built-in interprocess communication (IPC) mechanism.
+When you open Appium Desktop, you are greeted with the server start window. The
+basic option is to start an Appium server with all its defaults and the ability
+to modify the host and port. The start button will also let you know which
+version of the Appium server you are running, which can be useful when
+reporting issues to the Appium team.
 
-For the UI, Appium Desktop is built using [React](https://facebook.github.io/react/) and [Redux](http://redux.js.org) for managing UI state and interactions, with [Ant Design](https://ant.design/docs/react/introduce) for various UI components.
+#### Starting a server with advanced options
 
-Why did we decide to go this route?
+![Start an advanced server](docs/images/screen-start-advanced.png)
 
-* Electron bundles apps for any platform
-* Appium is written in JS so it's a nice way to stick with that as the main language; we can rely on Appium's community to maintain this app and follow Appium's coding standards
-* Using web technologies to build a UI is a skill that many people have, whereas building native UIs is more esoteric
-* Because Electron's main process runs in Node, we can import Appium as a strict dependency rather than be forced to manage it as a subprocess. This is great for speed and error handling
-* It's fun!
+By clicking on the 'Advanced' tab, you have the ability to set all the server
+flags that are available in Appium. This is for advanced users and should only
+be modified after consulting the Appium documentation.
 
-Credits where credit is due: for the project's tooling, we started with [electron-react-boilerplate](https://github.com/chentsulin/electron-react-boilerplate), which comes with an excellent set of helpers scripts, many of which we still use in an unmodified fashion. Many thanks to that project!
+#### Server presets
 
-### Setting up
+![Server presets](docs/images/screen-start-presets.png)
 
-0. Clone the repo
-0. Install dependencies (`npm install`)
+If you use the advanced server options, you have the ability to save
+a configuration for later use. Simply save the preset on the 'Advanced' tab,
+and you will subsequently be able to recall and start the server with that
+configuration from the 'Preset' tab.
 
-NB: the app currently does not work with the dependencies installed this way. This is because we rely on a version of Appium which has not yet been published. To work around this, after you `npm install`, simply pull down Appium master in another repository, install its dependencies, run `npm link` in that repo, then come back to Appium Desktop's repo and run `npm link appium`. This will overwrite the version of Appium that we use with the development version that works.
+### The server console output window
 
-### Doing Development
+Once you start the server, it will launch on the host and port you specified,
+and open a new window displaying the server log output.
 
-There is a handy script for preparing the code and launching a development version of the app:
+![Server console](docs/images/screen-logs.png)
 
-```bash
-npm run dev
-```
+This is fairly straightforward and no real interaction is possible, beyond
+using the button to stop the server. You can also copy-and-paste the logs from
+this window which is useful in reporting Appium issues.
 
-This launches both the app and a development server which feeds UI code changes to the app as you make them (this is called 'hot reload'). In most cases, if you're simply making UI changes, you won't need to relaunch the app in order to see them reflected. If you do, simply kill this script and start again.
+One other button is available: 'Start New Session'. Clicking this will open up
+the New Session window enabling you to start an Inspector session on the
+currently-running server.
 
-Another important thing to do before committing is to run a lint tool on your code:
+### The New Session window
 
-```bash
-npm run lint
-```
+The New Session window allows you to construct a set of Appium desired
+capabilities used to launch an Appium session. You can launch a session against
+the currently-running Appium Desktop server (which is the default), or you can
+launch a session against a variety of other endpoints.
 
-Finally, you might want to run the app in a non-development mode in order to make sure that everything works as expected if you were to publish:
+![New session window](docs/images/screen-new-session.png)
 
-```bash
-npm run build  # prepare resources
-npm start  # start a production version of the app
-```
+Since it's not required to run against Appium Desktop's own server, you can get
+to the New Session window without starting an Appium Desktop server. Simply go
+to "File" (Windows/Linux) or "Appium" (Mac) and choose "New Session...", which
+will open the New Session window without having to start a local server. In
+this case, attaching to the local server will be disabled.
 
-### Packaging and Releasing
+#### Appium Endpoints
 
-To package the app for your platform, run:
+These are the options for launching a session against a non-local Appium server:
 
-```bash
-npm run package
-```
+* A custom host/port configuration: this is useful if you want to launch an Inspector session against an Appium server running on another machine in your network, for example.
+* Sauce Labs: if you don't have access to, say, iOS simulators on your machine, you can leverage your [Sauce Labs](https://saucelabs.com) account to start an Appium session in the cloud.
+* TestObject: you can also utilize [TestObject](https://testobject.com)'s cloud of real devices for a real device-based Inspector session.
 
-To package the app for _all_ platforms, run:
+It should be straightforward to get set up with any of these options. Simply
+enter your details in the input fields provided.
 
-```bash
-npm run package-all
-```
+#### Desired Capabilities
 
-This will build the apps with the latest version of electron and put the various app packages in `release/`.
+Desired capabilities are how you configure your Appium session. They tell the
+Appium server what kind of platform and app you want to automate. If you are
+unfamiliar with the concept of desired capabilities, or which desired
+capabilities are required to launch Appium sessions of various types, you
+should consult the Appium documentation.
 
-```bash
-npm version <VERSION_TYPE>
-```
+Appium Desktop does not restrict your creation of desired capabilities in any
+way, nor will it validate them for you. It simply provides a nice UI for
+entering them in, and saving them for later use. Under the 'Desired
+Capabilities' tab, you can use the form fields and '+' button to enter as many
+desired capabilities as you need. You will also see a representation of the
+resulting JSON, which is what is actually sent to the Appium server. This can
+be useful for verifying your capabilities, or for copy-and-pasting when
+reporting issues.
 
-This will increment the version and push a new tag. This will trigger AppVeyor and Travis CI to run a CI
-build process and then publish the assets (.dmg, .exe, .AppImage) to GitHub releases which will contain a
-draft of the new release.
+Once you have set your desired capabilities, you might wish to save them so you
+can run the same type of session later. Simply click the 'Save As...' button to
+give your capability set a name. You can then access it under the 'Saved
+Capability Sets' tab, for later editing or session launching.
 
-Appium Desktop follows the same npm versioning workflow but isn't published to NPM.
+Once your server type and capabilities are set, click 'Start Session' to launch
+the Appium Desktop Inspector.
 
-Travis CI dashboard: https://travis-ci.org/appium/appium-desktop/
-AppVeyor dashboard: https://ci.appveyor.com/project/appium/appium-desktop
+### The Inspector
+
+The Inspector is a visual representation of the state of your application along
+with the ability to perform certain interactions in your application through
+Appium.
+
+![Inspector window](docs/images/screen-inspector.png)
+
+Appium sessions can take some time to load, especially on cloud services, so
+please be patient. When the session loads, a screenshot of your app will appear
+on the left. You can mouse over various UI elements in your application, and
+see them highlighted.
+
+In the middle of the Inspector window is your app's hierarchy, represented as
+XML. You can navigate this tree by clicking through it, or by clicking on
+elements in the screenshot view. They will then be highlighted.
+
+When an element is highlighted, its information will appear in the detail view
+on the right side of the Inspector. This detail view consists of potential
+actions to take against the element, and a table of the element's properties.
+These properties are valuable in determining how the element might accessed
+using a particular Appium locator strategy. With an element selected, you can
+also 'Tap' the element, or 'Send Keys' to the element (if it is a text field).
+
+When you take such an action with an element, the Inspector will send the
+command to Appium, which will execute it. If the action is successful, a new
+screenshot will be generated and you should see the updated state and XML of
+your app. If it's not successful, you'll have an opportunity to see the error
+message.
+
+### Conclusion
+
+This is everything you need to know to use Appium Desktop successfully!
+Remember, Appium Desktop is not a replacement for understanding Appium
+itself---it is simply a convenient tool for working with Appium on your
+desktop, and an Inspector for exploring your app. Have fun!
+
+## Reporting Issues
+
+Appium Desktop is open source, and we use GitHub for issue tracking. Please
+simply report issues at our [issue
+tracker](https://github.com/appium/appium-desktop/issues). We will endeavor to
+determine whether the issue you are reporting is related to Appium Desktop or
+Appium Server. If it's not related to Appium Desktop specifically, we will
+close the issue and ask you to open a general Appium issue at [Appium's main
+issue tracker](https://github.com/appium/appium/issues). Please, save
+yourselves and us valuable time by getting clear on whether the issue you're
+experiencing is related to Appium Desktop specifically or instead is a general
+Appium issue. You can do this by seeing whether the issue reproduces with the
+Appium command line server as well. If it does, direct your report to Appium's
+issue tracker.
+
+## Developer Instructions
+
+Want to hack on Appium Desktop? Awesome! Head on over to our [Contributing
+Doc](CONTRIBUTING.md) for information on how to get a dev environment set up
+and submit changes back to the project.
