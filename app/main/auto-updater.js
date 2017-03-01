@@ -1,6 +1,7 @@
 import { autoUpdater } from 'electron-updater';
 import { ipcMain, BrowserWindow, Menu } from 'electron';
 import path from 'path';
+import _ from 'lodash';
 const isDev = process.env.NODE_ENV === 'development';
 
 // Mock auto updater. Used to aid development because testing using actual releases is super tedious.
@@ -32,9 +33,9 @@ class AutoUpdaterController {
     autoUpdater.on('error', this.handleError.bind(this));
 
     ipcMain.on('update-state-request', (e) => e.sender.send('update-state-change', this.state));
-    ipcMain.on('update-check-for-updates', autoUpdater.checkForUpdates);
-    ipcMain.on('update-download', autoUpdater.downloadUpdate);
-    ipcMain.on('update-quit-and-install', autoUpdater.quitAndInstall);
+    ipcMain.on('update-check-for-updates', autoUpdater.checkForUpdates || _.noop);
+    ipcMain.on('update-download', autoUpdater.downloadUpdate || _.noop);
+    ipcMain.on('update-quit-and-install', autoUpdater.quitAndInstall || _.noop);
 
   }
 
