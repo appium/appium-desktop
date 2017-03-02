@@ -15,6 +15,8 @@ export const GET_PRESETS = 'GET_PRESETS';
 export const PRESET_DELETE_REQ = 'PRESET_DELETE_REQ';
 export const PRESET_DELETE_OK = 'PRESET_DELETE_OK';
 
+export const PRESETS = 'presets';
+
 export function startServer (evt) {
   evt.preventDefault();
   return (dispatch, getState) => {
@@ -64,11 +66,11 @@ export function switchTab (tabId) {
 export function savePreset (name, args) {
   return async (dispatch) => {
     dispatch({type: PRESET_SAVE_REQ});
-    let presets = await settings.get('presets');
+    let presets = await settings.get(PRESETS);
     try {
       presets[name] = args;
       presets[name]._modified = Date.now();
-      await settings.set('presets', presets);
+      await settings.set(PRESETS, presets);
     } catch (e) {
       console.error(e);
       alert(`There was a problem saving preset: ${e.message}`);
@@ -80,7 +82,7 @@ export function savePreset (name, args) {
 export function getPresets () {
   return async (dispatch) => {
     try {
-      let presets = await settings.get('presets');
+      let presets = await settings.get(PRESETS);
       dispatch({type: GET_PRESETS, presets});
     } catch (e) {
       console.error(e);
@@ -92,10 +94,10 @@ export function getPresets () {
 export function deletePreset (name) {
   return async (dispatch) => {
     dispatch({type: PRESET_DELETE_REQ});
-    let presets = await settings.get('presets');
+    let presets = await settings.get(PRESETS);
     try {
       delete presets[name];
-      await settings.set('presets', presets);
+      await settings.set(PRESETS);
     } catch (e) {
       console.error(e);
       alert(`There was a problem deleting preset: ${e.message}`);
