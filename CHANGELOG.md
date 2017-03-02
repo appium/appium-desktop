@@ -1,6 +1,6 @@
-## [1.0.0-beta.1](https://github.com/appium/appium-desktop/compare/v1.0.0-beta...v1.0.0-beta.1) (2017-02-28)
+## [1.0.0-beta.1](https://github.com/appium/appium-desktop/compare/v1.0.0-beta...v1.0.0-beta.1) (2017-03-02)
 
-### Features
+### Changes
 
 * Fix: shell environment was not loaded so drivers dependent on shell path or environment variables could not function ([#45](https://github.com/appium/appium-desktop/issues/45))
 * Fix: some persistent settings keys were not given defaults and caused issues e.g. saving presets ([#52](https://github.com/appium/appium-desktop/issues/52))
