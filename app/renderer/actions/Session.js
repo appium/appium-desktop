@@ -28,9 +28,10 @@ export const SET_SERVER = 'SET_SERVER';
 export const SESSION_LOADING = 'SESSION_LOADING';
 export const SESSION_LOADING_DONE = 'SESSION_LOADING_DONE';
 
-const SAVED_SESSIONS = 'SAVED_SESSIONS';
-const SESSION_SERVER_PARAMS = 'SESSION_SERVER_PARAMS';
-const SESSION_SERVER_TYPE = 'SESSION_SERVER_TYPE';
+export const SAVED_SESSIONS = 'SAVED_SESSIONS';
+export const SESSION_SERVER_PARAMS = 'SESSION_SERVER_PARAMS';
+export const SESSION_SERVER_TYPE = 'SESSION_SERVER_TYPE';
+export const SERVER_ARGS = 'SERVER_ARGS';
 
 export const ServerTypes = {
   local: 'local',
@@ -82,7 +83,7 @@ export function showError (e, methodName, secs = 5) {
     description: errMessage,
     duration: secs
   });
-  
+
 }
 
 /**
@@ -211,7 +212,7 @@ export function saveSession (caps, params) {
   return async (dispatch) => {
     let {name, uuid} = params;
     dispatch({type: SAVE_SESSION_REQUESTED});
-    let savedSessions = await settings.get(SAVED_SESSIONS) || [];
+    let savedSessions = await settings.get(SAVED_SESSIONS);
     if (!uuid) {
 
       // If it's a new session, add it to the list
@@ -245,7 +246,7 @@ export function saveSession (caps, params) {
 export function getSavedSessions () {
   return async (dispatch) => {
     dispatch({type: GET_SAVED_SESSIONS_REQUESTED});
-    let savedSessions = await settings.get(SAVED_SESSIONS) || [];
+    let savedSessions = await settings.get(SAVED_SESSIONS);
     dispatch({type: GET_SAVED_SESSIONS_DONE, savedSessions});
   };
 }
@@ -292,7 +293,7 @@ export function setSaveAsText (saveAsText) {
 export function deleteSavedSession (uuid) {
   return async (dispatch) => {
     dispatch({type: DELETE_SAVED_SESSION_REQUESTED, uuid});
-    let savedSessions = await settings.get(SAVED_SESSIONS) || [];
+    let savedSessions = await settings.get(SAVED_SESSIONS);
     let newSessions = savedSessions.filter((session) => session.uuid !== uuid);
     await settings.set(SAVED_SESSIONS, newSessions);
     dispatch({type: DELETE_SAVED_SESSION_DONE});
@@ -324,7 +325,7 @@ export function setServerParam (name, value) {
  */
 export function setLocalServerParams () {
   return async (dispatch, getState) => {
-    let serverArgs = await settings.get('SERVER_ARGS');
+    let serverArgs = await settings.get(SERVER_ARGS);
     // Get saved server args from settings and set local server settings to it. If there are no saved args, set local
     // host and port to undefined
     if (serverArgs) {
