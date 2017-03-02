@@ -2,6 +2,7 @@ import { app, BrowserWindow, Menu } from 'electron';
 import { initializeIpc } from './appium';
 import menuTemplates from './menus';
 import path from 'path';
+import shellEnv from 'shell-env';
 
 let menu;
 let template;
@@ -13,6 +14,13 @@ const indexPath = path.resolve(__dirname, isDev ? '..' : 'app');
 
 if (isDev) {
   require('electron-debug')(); // eslint-disable-line global-require
+}
+
+if (!isDev) {
+  // if we're running from the app package, we won't have access to env vars
+  // normally loaded in a shell, so work around with the shell-env module
+  const decoratedEnv = shellEnv.sync();
+  process.env = {...process.env, ...decoratedEnv};
 }
 
 
