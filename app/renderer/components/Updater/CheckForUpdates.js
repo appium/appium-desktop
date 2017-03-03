@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import UpdaterStyles from '../Updater.css';
-import AppiumLogo from '../../images/appium_logo.png';
 import { version } from '../../../../package.json';
 
 export default class CheckForUpdates extends Component {
@@ -14,7 +13,7 @@ export default class CheckForUpdates extends Component {
 
     return <div className={UpdaterStyles['check-for-updates-container']}>
       <div>
-        <img src={AppiumLogo} />
+        <img src={'images/appium_logo.png'} />
         <p>Version: {version}</p>
       </div>
       <footer>

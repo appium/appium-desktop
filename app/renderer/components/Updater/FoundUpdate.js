@@ -6,7 +6,7 @@ import UpdaterStyles from '../Updater.css';
 export default class FoundUpdate extends Component {
 
   render () {
-    const {hasUpdateAvailable, updateInfo, hasUpdateError} = this.props;
+    const {hasUpdateAvailable, updateInfo} = this.props;
 
     if (!hasUpdateAvailable) {
       return null;
