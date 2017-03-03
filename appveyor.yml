@@ -13,3 +13,4 @@ build: off
 
 artifacts:
   - path: 'release\Appium*.exe'
+  - path: 'release\*.json'
