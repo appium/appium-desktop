@@ -4,7 +4,7 @@
 
 ## Writing Redux Reducers
 
-* Always define an `initalState` variable
+* Always define an `initialState` variable
 
 * Always extend the state and never overwrite it
 
@@ -30,7 +30,7 @@ export default function session (state = initialState, action) {
 }
 ```
 
-* The initial state should define every property up front (properties shouldn't be introduced to the state by a future action) and each property should always be the scrictly typed
+* The initial state should define every property up front (properties shouldn't be introduced to the state by a future action) and each property should always be scrictly typed
 
 ```javascript
 // good
