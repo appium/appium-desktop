@@ -45,7 +45,6 @@
   "build": {
     "productName": "Appium",
     "appId": "io.appium.desktop",
-    "category": "public.app-category.tools",
     "asar": false,
     "directories": {
       "output": "release"
@@ -75,7 +74,7 @@
       "package.json"
     ],
     "win": {
-      "target": "nsis"
+      "target": ["nsis"]
     },
     "linux": {
       "target": [
