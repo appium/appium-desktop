@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import styles from '../Inspector.css';
+import styles from './Inspector.css';
 import { Button, Row, Col, Input, Modal, Table } from 'antd';
 
 /**

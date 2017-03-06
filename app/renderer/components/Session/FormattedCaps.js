@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import formatJSON from 'format-json';
-import SessionCSS from '../Session.css';
+import SessionCSS from './Session.css';
 import { Card } from 'antd';
 import { getCapsObject } from '../../actions/Session.js';
 

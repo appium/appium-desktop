@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Tree } from 'antd';
-import InspectorStyles from '../Inspector.css';
+import InspectorStyles from './Inspector.css';
 
 const {TreeNode} = Tree;
 const IMPORTANT_ATTRS = [

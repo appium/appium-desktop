@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { debounce } from 'lodash';
 import HighlighterRect from './HighlighterRect';
 import { Spin } from 'antd';
-import styles from '../Inspector.css';
+import styles from './Inspector.css';
 import { parseCoordinates } from './shared';
 
 /**

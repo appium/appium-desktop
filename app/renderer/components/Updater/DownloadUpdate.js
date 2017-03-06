@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Button, Progress } from 'antd';
 import { ipcRenderer } from 'electron';
-import UpdaterStyles from '../Updater.css';
+import UpdaterStyles from './Updater.css';
 
 export default class DownloadUpdate extends Component {
 

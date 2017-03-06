@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import UpdaterStyles from '../Updater.css';
+import UpdaterStyles from './Updater.css';
 import { version } from '../../../../package.json';
 
 export default class CheckForUpdates extends Component {

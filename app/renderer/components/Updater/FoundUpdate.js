@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Button } from 'antd';
 import { ipcRenderer, remote } from 'electron';
-import UpdaterStyles from '../Updater.css';
+import UpdaterStyles from './Updater.css';
 
 export default class FoundUpdate extends Component {
 

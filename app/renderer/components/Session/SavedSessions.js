@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import moment from 'moment';
 import { Button, Row, Col, Table } from 'antd';
 import FormattedCaps from './FormattedCaps';
-import SessionCSS from '../Session.css';
+import SessionCSS from './Session.css';
 
 
 export default class SavedSessions extends Component {

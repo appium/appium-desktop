@@ -1,7 +1,7 @@
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import * as InspectorActions from '../actions/Inspector';
-import InspectorPage from '../components/Inspector';
+import InspectorPage from '../components/Inspector/Inspector';
 
 function mapStateToProps (state) {
   return state.inspector;
