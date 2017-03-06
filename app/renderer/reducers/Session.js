@@ -1,12 +1,12 @@
 import {omit} from 'lodash';
 
 import { NEW_SESSION_REQUESTED, NEW_SESSION_BEGAN, NEW_SESSION_DONE,
-        SAVE_SESSION_REQUESTED, SAVE_SESSION_DONE, GET_SAVED_SESSIONS_REQUESTED, GET_SAVED_SESSIONS_DONE,
-        SESSION_LOADING, SESSION_LOADING_DONE,
+        SAVE_SESSION_REQUESTED, SAVE_SESSION_DONE, GET_SAVED_SESSIONS_REQUESTED,
+        GET_SAVED_SESSIONS_DONE, SESSION_LOADING, SESSION_LOADING_DONE,
         SET_CAPABILITY_PARAM, ADD_CAPABILITY, REMOVE_CAPABILITY, SET_CAPS,
         SWITCHED_TABS, SAVE_AS_MODAL_REQUESTED, HIDE_SAVE_AS_MODAL_REQUESTED, SET_SAVE_AS_TEXT,
         DELETE_SAVED_SESSION_REQUESTED, DELETE_SAVED_SESSION_DONE,
-        CHANGE_SERVER_TYPE, SET_SERVER_PARAM, SET_SERVER,
+        CHANGE_SERVER_TYPE, SET_SERVER_PARAM, SET_SERVER, SET_ATTACH_SESS_ID,
         ServerTypes } from '../actions/Session';
 
 // Make sure there's always at least one cap
@@ -20,6 +20,7 @@ const INITIAL_STATE = {
     sauce: {},
     testobject: {},
   },
+  attachSessId: null,
 
   // Make sure there's always at least one cap
   caps: [{
@@ -169,6 +170,12 @@ export default function session (state = INITIAL_STATE, action) {
           testobject: action.server.testobject || {},
         },
         serverType: action.serverType || ServerTypes.local,
+      };
+
+    case SET_ATTACH_SESS_ID:
+      return {
+        ...state,
+        attachSessId: action.attachSessId
       };
 
     case SESSION_LOADING:

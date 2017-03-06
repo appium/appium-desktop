@@ -30,7 +30,9 @@ async function killSession (sessionWinID) {
     let sessionID;
     try {
       await driver.getSessionId();
-      await driver.quit();
+      if (!driver._isAttachedSession) {
+        await driver.quit();
+      }
     } catch (e) {
       console.log(`Couldn't close session: ${sessionID || 'unknown session ID'}`);
     }
@@ -177,11 +179,38 @@ export function createNewSessionWindow (win) {
 
 function connectCreateNewSession () {
   ipcMain.on('appium-create-new-session', async (event, args) => {
-    const {desiredCapabilities, host, port, username, accessKey, https} = args;
+    const {desiredCapabilities, host, port, username, accessKey, https,
+      attachSessId} = args;
 
     // If there is an already active session, kill it. Limit one session per window.
     if (sessionDrivers[event.sender.id]) {
       await killSession(event.sender);
+    }
+
+    // Create the driver and cache it by the sender ID
+    let driver = sessionDrivers[event.sender.id] = wd.promiseChainRemote({
+      hostname: host,
+      port,
+      username,
+      accessKey,
+      https,
+    });
+
+    // If we're just attaching to an existing session, do that and
+    // short-circuit the rest of the logic
+    if (attachSessId) {
+      sessionDrivers[event.sender.id]._isAttachedSession = true;
+      try {
+        await driver.attach(attachSessId);
+        // get the session capabilities to prove things are working
+        await driver.sessionCapabilities();
+        event.sender.send('appium-new-session-ready');
+      } catch (e) {
+        // If the session failed to attach, delete it from the cache
+        await killSession(event.sender);
+        event.sender.send('appium-new-session-failed', e);
+      }
+      return;
     }
 
     // If a newCommandTimeout wasn't provided, set it to 0 so that sessions don't close on users
@@ -194,15 +223,6 @@ function connectCreateNewSession () {
     if (typeof desiredCapabilities.connectHardwareKeyboard === "undefined") {
       desiredCapabilities.connectHardwareKeyboard = true;
     }
-
-    // Create the driver and cache it by the sender ID
-    let driver = sessionDrivers[event.sender.id] = wd.promiseChainRemote({
-      hostname: host,
-      port,
-      username,
-      accessKey,
-      https,
-    });
 
     // Try initializing it. If it fails, kill it and send error message to sender
     try {

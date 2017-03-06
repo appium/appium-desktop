@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import NewSessionForm from './NewSessionForm';
 import SavedSessions from './SavedSessions';
+import AttachToSession from './AttachToSession';
 import { Tabs, Form, Input, Button, Spin, Card } from 'antd';
 import { ServerTypes } from '../../actions/Session';
 import SessionStyles from './Session.css';
@@ -20,8 +21,12 @@ export default class Session extends Component {
   }
 
   render () {
-    const {newSessionBegan, savedSessions, tabKey, switchTabs, changeServerType, serverType, setServerParam, server,
-      requestSaveAsModal, newSession, caps, capsUUID, saveSession, isCapsDirty, sessionLoading} = this.props;
+    const {newSessionBegan, savedSessions, tabKey, switchTabs,
+      changeServerType, serverType, setServerParam, server,
+      requestSaveAsModal, newSession, caps, capsUUID, saveSession, isCapsDirty,
+      sessionLoading, attachSessId} = this.props;
+
+    const isAttaching = tabKey === 'attach';
 
     const sauceTabHead = <span className={SessionStyles.tabText}><img src="images/sauce_logo.svg" /></span>;
     const testObjectTabHead = <span className={SessionStyles.tabText}><img src="images/testobject_logo.svg" /></span>;
@@ -79,13 +84,21 @@ export default class Session extends Component {
             <NewSessionForm {...this.props} />
           </TabPane>
           <TabPane tab={`Saved Capability Sets (${savedSessions.length})`} key='saved' className={SessionStyles.scrollingTab} disabled={savedSessions.length === 0}>
-              <SavedSessions {...this.props} />
+            <SavedSessions {...this.props} />
+          </TabPane>
+          <TabPane tab='Attach to Session...' key='attach' className={SessionStyles.scrollingTab}>
+            <AttachToSession {...this.props} />
           </TabPane>
         </Tabs>}
         <div className={SessionStyles.sessionFooter}>
-          { capsUUID && <Button onClick={() => saveSession(caps, {uuid: capsUUID})} disabled={!isCapsDirty}>Save</Button> }
-          <Button onClick={requestSaveAsModal}>Save As...</Button>
-          <Button type="primary" onClick={() => newSession(caps)} className={SessionStyles['start-session-button']}>Start Session</Button>
+          { (!isAttaching && capsUUID) && <Button onClick={() => saveSession(caps, {uuid: capsUUID})} disabled={!isCapsDirty}>Save</Button> }
+          {!isAttaching && <Button onClick={requestSaveAsModal}>Save As...</Button>}
+          {!isAttaching && <Button type="primary" onClick={() => newSession(caps)} className={SessionStyles['start-session-button']}>Start Session</Button>}
+          {isAttaching &&
+            <Button type="primary" disabled={!attachSessId} onClick={() => newSession(null, attachSessId)}>
+              Attach to Session
+            </Button>
+          }
         </div>
       </div>
     </Spin>;
