@@ -189,6 +189,12 @@ function connectCreateNewSession () {
       desiredCapabilities.newCommandTimeout = 0;
     }
 
+    // If someone didn't specify connectHardwareKeyboard, set it to true by
+    // default
+    if (typeof desiredCapabilities.connectHardwareKeyboard === "undefined") {
+      desiredCapabilities.connectHardwareKeyboard = true;
+    }
+
     // Create the driver and cache it by the sender ID
     let driver = sessionDrivers[event.sender.id] = wd.promiseChainRemote({
       hostname: host,
