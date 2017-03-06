@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import NewSessionForm from './Session/NewSessionForm';
-import SavedSessions from './Session/SavedSessions';
+import NewSessionForm from './NewSessionForm';
+import SavedSessions from './SavedSessions';
 import { Tabs, Form, Input, Button, Spin, Card } from 'antd';
-import { ServerTypes } from '../actions/Session';
+import { ServerTypes } from '../../actions/Session';
 import SessionStyles from './Session.css';
 
 const {TabPane} = Tabs;

@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import moment from 'moment';
 import { Button } from 'antd';
 import { STATUS_RUNNING, STATUS_STOPPING,
-         STATUS_STOPPED } from '../reducers/ServerMonitor';
+         STATUS_STOPPED } from '../../reducers/ServerMonitor';
 import styles from './ServerMonitor.css';
 import AnsiConverter from 'ansi-to-html';
 

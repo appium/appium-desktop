@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { Card, Icon, Button, Spin } from 'antd';
-import Screenshot from './Inspector/Screenshot';
-import SelectedElement from './Inspector/SelectedElement';
-import Source from './Inspector/Source';
+import Screenshot from './Screenshot';
+import SelectedElement from './SelectedElement';
+import Source from './Source';
 import InspectorStyles from './Inspector.css';
 
 export default class Inspector extends Component {

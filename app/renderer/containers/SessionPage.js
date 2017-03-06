@@ -1,7 +1,7 @@
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import * as SessionActions from '../actions/Session';
-import Session from '../components/Session';
+import Session from '../components/Session/Session';
 
 function mapStateToProps (state) {
   return state.session;
