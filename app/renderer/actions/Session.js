@@ -33,6 +33,8 @@ export const SESSION_SERVER_PARAMS = 'SESSION_SERVER_PARAMS';
 export const SESSION_SERVER_TYPE = 'SESSION_SERVER_TYPE';
 export const SERVER_ARGS = 'SERVER_ARGS';
 
+export const SET_ATTACH_SESS_ID = 'SET_ATTACH_SESS_ID';
+
 export const ServerTypes = {
   local: 'local',
   remote: 'remote',
@@ -134,12 +136,12 @@ export function removeCapability (index) {
 /**
  * Start a new appium session with the given caps
  */
-export function newSession (caps) {
+export function newSession (caps, attachSessId = null) {
   return async (dispatch, getState) => {
 
     dispatch({type: NEW_SESSION_REQUESTED, caps});
 
-    let desiredCapabilities = getCapsObject(caps);
+    let desiredCapabilities = caps ? getCapsObject(caps) : null;
     let session = getState().session;
 
     let host, port, username, accessKey, https;
@@ -176,14 +178,24 @@ export function newSession (caps) {
       case ServerTypes.testobject:
         host = 'appium.testobject.com';
         port = 80;
-        desiredCapabilities.testobject_api_key = session.server.testobject.apiKey;
+        if (caps) {
+          desiredCapabilities.testobject_api_key = session.server.testobject.apiKey;
+        }
         break;
       default:
         break;
     }
 
     // Start the session
-    ipcRenderer.send('appium-create-new-session', {desiredCapabilities, host, port, username, accessKey, https});
+    ipcRenderer.send('appium-create-new-session', {
+      desiredCapabilities,
+      attachSessId,
+      host,
+      port,
+      username,
+      accessKey,
+      https
+    });
 
     dispatch({type: SESSION_LOADING});
 
@@ -298,6 +310,15 @@ export function deleteSavedSession (uuid) {
     await settings.set(SAVED_SESSIONS, newSessions);
     dispatch({type: DELETE_SAVED_SESSION_DONE});
     dispatch({type: GET_SAVED_SESSIONS_DONE, savedSessions: newSessions});
+  };
+}
+
+/**
+ * Set the session id to attach to
+ */
+export function setAttachSessId (attachSessId) {
+  return (dispatch) => {
+    dispatch({type: SET_ATTACH_SESS_ID, attachSessId});
   };
 }
 
