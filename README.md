@@ -1,4 +1,4 @@
-# Appium Desktop [![Build Status](https://travis-ci.org/appium/appium-desktop.svg?branch=master)](https://travis-ci.org/appium/appium-desktop) [![Build status](https://ci.appveyor.com/api/projects/status/gxx736n70959dl84?svg=true)](https://ci.appveyor.com/project/appium/appium-desktop-9xjtw)
+# Appium Desktop [![Build Status](https://travis-ci.org/appium/appium-desktop.svg?branch=master)](https://travis-ci.org/appium/appium-desktop)
 
 ![Action screenshot](docs/images/screen-inspector-and-logs.png)
 
@@ -131,6 +131,16 @@ Capability Sets' tab, for later editing or session launching.
 
 Once your server type and capabilities are set, click 'Start Session' to launch
 the Appium Desktop Inspector.
+
+#### Attach to an Existing Session
+
+If you click on the "Attach to Session..." tab, you'll be able to enter
+a session ID of a currently-running session. That session should be running on
+the server details you specified in the server type section above. Attaching to
+an existing session is possible because the Inspector is just an Appium client.
+This could be useful if you want to debug the middle of a running test. When
+you quit the Inspector window of an existing session, Appium Desktop will not
+quit the session as it does normally.
 
 ### The Inspector
 
