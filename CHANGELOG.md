@@ -1,3 +1,10 @@
+## [1.0.0-beta.3](https://github.com/appium/appium-desktop/compare/v1.0.0-beta.2...v1.0.0-beta.3) (2017-03-09)
+
+### Changes
+
+* Feature: add "Attach to Session" tab on New Session window that allows attaching to an already-running session
+* Fix: make 'connectHardwareKeyboard' capability true by default so that sims are interactable via the hardware keyboard when running under an Inspector session ([#61](https://github.com/appium/appium-desktop/issues/61))
+
 ## [1.0.0-beta.2](https://github.com/appium/appium-desktop/compare/v1.0.0-beta.1...v1.0.0-beta.2) (2017-03-02)
 
 ### Changes
