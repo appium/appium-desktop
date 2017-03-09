@@ -27,6 +27,9 @@ reporting an issue with Appium Desktop, always be sure to include _both_ the
 version of Appium Desktop and the version of the Appium Server which is in use
 (see below).
 
+## Known Issues
+* Auto updater is not working (https://github.com/appium/appium-desktop/issues/74)
+
 ## Usage Instructions
 
 These instructions assume you are already familiar with Appium and
