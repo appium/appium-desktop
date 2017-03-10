@@ -1,8 +1,14 @@
 import { autoUpdater } from 'electron-updater';
+import log from 'electron-log';
 import { ipcMain, BrowserWindow, Menu } from 'electron';
 import path from 'path';
 import _ from 'lodash';
 const isDev = process.env.NODE_ENV === 'development';
+
+// Logs data to 
+autoUpdater.logger = log;
+autoUpdater.logger.transports.file.level = 'info';
+log.info('Auto updater starting');
 
 // Mock auto updater. Used to aid development because testing using actual releases is super tedious.
 if (process.env.NODE_ENV === 'development') {
@@ -44,6 +50,7 @@ class AutoUpdaterController {
   }
 
   handleUpdateAvailable (updateInfo) {
+    log.info('Found update', updateInfo);
     // If window not open, open it to notify user
     this.openUpdaterWindow(this.mainWindow);
     this.forceFocus();
@@ -54,18 +61,21 @@ class AutoUpdaterController {
   }
 
   handleUpdateNotAvailable () {
+    log.info('No update available');
     this.setState({
       hasNoUpdateAvailable: true,
     });
   }
 
   handleCheckingForUpdate () {
+    log.info('Looking for updates');
     this.setState({
       checkingForUpdate: true,
     });
   }
 
   handleDownloadProgress (downloadProgress) {
+    log.info('Downloading...', downloadProgress);
     this.updaterWin.setSize(500, 100);
     this.setState({
       downloadProgress
@@ -73,6 +83,7 @@ class AutoUpdaterController {
   }
 
   handleUpdateDownloaded (updateInfo) {
+    log.info('Download complete', updateInfo);
     // Focus on window when the download is done to get the user's attention
     this.forceFocus();
     this.setState({
@@ -82,6 +93,7 @@ class AutoUpdaterController {
   }
 
   handleError (error) {
+    log.info('Updater error occurred', error);
     this.updaterWin.setSize(500, 125);
     this.setState({
       error,
@@ -95,6 +107,7 @@ class AutoUpdaterController {
   }
 
   checkForUpdates () {
+    log.info('Checking for updates');
     this.setState({
       isCheckingForUpdates: true,
     });
