@@ -15,8 +15,8 @@ export default class DownloadUpdate extends Component {
 
     return <div className={UpdaterStyles['download-updates-container']}>
       <p>
-        {!updateDownloaded && <span>Downloading: {Math.round(bytesPerSecond * 100) / 100} bps</span>}
-        {!updateDownloaded && <span>&nbsp;(transferred: {transferred} / {total} bytes)</span>}
+        {!updateDownloaded && <span>Downloading: {bytesPerSecond ? Math.round(bytesPerSecond * 100) / 100 : '-'} bps</span>}
+        {!updateDownloaded && <span>&nbsp;(transferred: {transferred || 0} / {total || '-'} bytes)</span>}
         {updateDownloaded && <p>Download Complete</p>}
       </p>
       <Progress percent={!updateDownloaded ? percent : 100}></Progress>

@@ -40,13 +40,23 @@ class AutoUpdaterController {
 
     ipcMain.on('update-state-request', (e) => e.sender.send('update-state-change', this.state));
     ipcMain.on('update-check-for-updates', autoUpdater.checkForUpdates || _.noop);
-    ipcMain.on('update-download', autoUpdater.downloadUpdate || _.noop);
+    ipcMain.on('update-download', this.downloadUpdate.bind(this));
     ipcMain.on('update-quit-and-install', autoUpdater.quitAndInstall || _.noop);
 
   }
 
   setMainWindow (mainWindow) {
     this.mainWindow = mainWindow;
+  }
+
+  downloadUpdate () {
+    this.updaterWin.setSize(500, 100);
+    this.setState({
+      downloadProgress: {
+        percent: 0,
+      },
+    });
+    autoUpdater.downloadUpdate && autoUpdater.downloadUpdate();
   }
 
   handleUpdateAvailable (updateInfo) {
@@ -76,7 +86,6 @@ class AutoUpdaterController {
 
   handleDownloadProgress (downloadProgress) {
     log.info('Downloading...', downloadProgress);
-    this.updaterWin.setSize(500, 100);
     this.setState({
       downloadProgress
     });
