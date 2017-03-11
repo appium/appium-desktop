@@ -35,11 +35,11 @@ autoUpdater.downloadUpdate = async () => {
   };
 
   while (progress.percent <= 100) {
+    await B.delay(2000);
     autoUpdater.emit('download-progress', progress);
     if (fail && progress.percent > 50) {
       return autoUpdater.emit('error', new Error('An error occurred'));
     }
-    await B.delay(1000);
     progress.bytesPerSecond += (Math.random() * 50) - 25;
     progress.percent += 20;
     progress.total = 500;
