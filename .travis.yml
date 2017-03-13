@@ -18,7 +18,7 @@ before_script:
 - npm install
 - npm install -g electron
 - node --version
-- npm run package-ci
+- travis_wait 30 npm run package-ci # This command takes a long time, so increased the time limit to 30 minutes (default is 10 minutes)
 cache:
   directories:
   - node_modules
