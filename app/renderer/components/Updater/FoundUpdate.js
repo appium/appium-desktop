@@ -15,8 +15,8 @@ export default class FoundUpdate extends Component {
     const {releaseDate, releaseNotes, version} = updateInfo;
 
     return <div className={UpdaterStyles['found-updates-container']}>
+      <h3>A new version of Appium Desktop is available: <span className={UpdaterStyles['release-info']}><span>{version}</span> released <span>{releaseDate}</span></span></h3>
       <div>
-        <h3>A new version of Appium Desktop is available: <span className={UpdaterStyles['release-info']}><span>{version}</span> released <span>{releaseDate}</span></span></h3>
         <textarea value={releaseNotes}></textarea>
       </div>
       <footer>
