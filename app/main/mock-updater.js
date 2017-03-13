@@ -9,7 +9,7 @@ autoUpdater.checkForUpdates = async () => {
     await B.delay(Math.random() * 10000);
     autoUpdater.emit('update-available', {
       version: 'v0.0.0',
-      releaseDate: 'July 24th, 1985',
+      releaseDate: 'July 24th, 1985 asdfasdf asdfafds asdf  asdf  asfd asadfasd as dff',
       releaseNotes: `
           1. Feature 1
           2. Feature 2

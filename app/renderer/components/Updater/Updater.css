@@ -19,29 +19,34 @@
   margin: 20vh 0 5vh 0;
 }
 
-.found-updates-container > div {
-  height: 80vh;
-  padding: 1em;
+.found-updates-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
-.found-updates-container > div h3 {
+.found-updates-container > h3 {
   font-size: 12px;
-  height: 10vh;
+  padding: 1em;
 }
 
 .found-updates-container > div h3 .release-info {
   font-style: italic;
 }
 
+.found-updates-container > div {
+  padding: 0 1em 1em 1em;
+  flex-grow: 1;
+  display: flex;
+}
+
 .found-updates-container > div textarea {
   width: 100%;
-  height: 60vh;
 }
 
 .found-updates-container footer {
   border-top: 1px solid #d9d9d9;
-  height: 20vh;
-  text-align: right;
+  text-align: right;  
 }
 
 .found-updates-container footer button {
