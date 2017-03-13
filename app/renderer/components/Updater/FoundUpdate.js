@@ -17,7 +17,7 @@ export default class FoundUpdate extends Component {
     return <div className={UpdaterStyles['found-updates-container']}>
       <h3>A new version of Appium Desktop is available: <span className={UpdaterStyles['release-info']}><span>{version}</span> released <span>{releaseDate}</span></span></h3>
       <div>
-        <textarea value={releaseNotes}></textarea>
+        <textarea defaultValue={releaseNotes}></textarea>
       </div>
       <footer>
         <Button type='primary' onClick={() => ipcRenderer.send('update-download')}>Download Update Now</Button>
