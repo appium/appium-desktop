@@ -6,7 +6,7 @@ import UpdaterStyles from './Updater.css';
 export default class DownloadUpdate extends Component {
 
   render () {
-    const {hasDownloadFinished, downloadProgress, updateDownloaded, downloadError} = this.props;
+    const {downloadProgress, updateDownloaded, downloadError} = this.props;
     if (!downloadProgress && !updateDownloaded && !downloadError) {
       return null;
     }
@@ -17,7 +17,7 @@ export default class DownloadUpdate extends Component {
       <p>
         {!updateDownloaded && <span>Downloading: {bytesPerSecond ? Math.round(bytesPerSecond * 100) / 100 : '-'} bps</span>}
         {!updateDownloaded && <span>&nbsp;(transferred: {transferred || 0} / {total || '-'} bytes)</span>}
-        {updateDownloaded && <p>Download Complete</p>}
+        {updateDownloaded && <span>Download Complete</span>}
       </p>
       <Progress percent={!updateDownloaded ? percent : 100}></Progress>
       {updateDownloaded && <Button type='primary' onClick={() => ipcRenderer.send('update-quit-and-install')}>Click to Restart Appium</Button>}
