@@ -10,6 +10,7 @@ const isDev = process.env.NODE_ENV === 'development';
 // Logs data to 
 autoUpdater.logger = log;
 autoUpdater.logger.transports.file.level = 'info';
+autoUpdater.autoDownload = false;
 log.info('Auto updater starting');
 
 // Mock auto updater. Used to aid development because testing using actual releases is super tedious.
