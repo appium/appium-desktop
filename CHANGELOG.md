@@ -1,3 +1,11 @@
+## [1.0.0-beta.4](https://github.com/appium/appium-desktop/compare/v1.0.0-beta.3...v1.0.0-beta.4) (2017-03-09)
+
+### Changes
+* Feature: add logging to autoUpdater ([#74](https://github.com/appium/appium-desktop/issues/74))
+* Fix: improved markup and CSS in update window ([#74](https://github.com/appium/appium-desktop/issues/74))
+* Fix: when an update is found, pulls release notes from GitHub API and displays them in the update window textarea 
+
+
 ## [1.0.0-beta.3](https://github.com/appium/appium-desktop/compare/v1.0.0-beta.2...v1.0.0-beta.3) (2017-03-09)
 
 ### Changes
