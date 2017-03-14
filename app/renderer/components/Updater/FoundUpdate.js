@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Button } from 'antd';
-import { ipcRenderer, remote } from 'electron';
+import { ipcRenderer, remote, shell } from 'electron';
 import UpdaterStyles from './Updater.css';
 
 export default class FoundUpdate extends Component {
@@ -18,6 +18,7 @@ export default class FoundUpdate extends Component {
       <h3>A new version of Appium Desktop is available: <span className={UpdaterStyles['release-info']}><span>{version}</span> released <span>{releaseDate}</span></span></h3>
       <div>
         {releaseNotes && <textarea defaultValue={releaseNotes}></textarea>}
+        {!releaseNotes && <span>Release notes could not be found. To view changes since the last version, visit <a href='#' onClick={() => shell.openExternal('https://github.com/appium/appium-desktop/releases')}>https://github.com/appium/appium-desktop/releases</a>.</span> }
       </div>
       <footer>
         <Button type='primary' onClick={() => ipcRenderer.send('update-download')}>Download Update Now</Button>
