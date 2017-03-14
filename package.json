@@ -112,6 +112,7 @@
     "react-router-redux": "4.x",
     "redux": "3.x",
     "redux-thunk": "2.x",
+    "request-promise": "^4.1.1",
     "shell-env": "^0.3.0",
     "source-map-support": "0.x",
     "teen_process": "1.x",

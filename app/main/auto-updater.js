@@ -3,6 +3,8 @@ import log from 'electron-log';
 import { ipcMain, BrowserWindow, Menu } from 'electron';
 import path from 'path';
 import _ from 'lodash';
+import request from 'request-promise';
+import { version } from '../../package.json';
 const isDev = process.env.NODE_ENV === 'development';
 
 // Logs data to 
@@ -59,14 +61,21 @@ class AutoUpdaterController {
     autoUpdater.downloadUpdate && autoUpdater.downloadUpdate();
   }
 
-  handleUpdateAvailable (updateInfo) {
+  async handleUpdateAvailable (updateInfo) {
     log.info('Found update', updateInfo);
+    let releaseNotes;
+    try {
+      let url = `https://api.github.com/repos/appium/appium-desktop/releases/tags/v${version}`;
+      let userAgent = 'appium-desktop';
+      releaseNotes = JSON.parse(await request({url, headers: {'User-Agent': userAgent}})).body;
+    } catch (ign) { }
     // If window not open, open it to notify user
     this.openUpdaterWindow(this.mainWindow);
     this.forceFocus();
     this.setState({
       hasUpdateAvailable: true,
       updateInfo,
+      releaseNotes,
     });
   }
 

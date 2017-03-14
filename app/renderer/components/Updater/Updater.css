@@ -42,6 +42,7 @@
 
 .found-updates-container > div textarea {
   width: 100%;
+  padding: 1em;
 }
 
 .found-updates-container footer {
