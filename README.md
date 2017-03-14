@@ -27,6 +27,11 @@ reporting an issue with Appium Desktop, always be sure to include _both_ the
 version of Appium Desktop and the version of the Appium Server which is in use
 (see below).
 
+If you're on macOS, you will need to install Appium Desktop by copying the app
+from the downloaded DMG file to your own file system (the best place is the
+"Applications" folder). Running Appium from in side the attached DMG itself is
+not supported, and will not work.
+
 ## Known Issues
 * Auto updater is not working (https://github.com/appium/appium-desktop/issues/74)
 
