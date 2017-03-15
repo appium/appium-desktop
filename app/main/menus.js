@@ -164,6 +164,20 @@ function otherMenuFile (mainWindow) {
       label: '&Open',
       accelerator: 'Ctrl+O'
     }, {
+      label: '&About Appium',
+      click () {
+        autoUpdater.openUpdaterWindow(mainWindow);
+        autoUpdater.checkForUpdates();
+      }
+    }, {
+      label: '&Check for updates',
+      click () {
+        autoUpdater.openUpdaterWindow(mainWindow);
+        autoUpdater.checkForUpdates();
+      }
+    }, {
+      type: 'separator'
+    }, {
       label: '&New Session Window...',
       accelerator: 'Ctrl+N',
       click () {
@@ -217,6 +231,9 @@ const otherMenuHelp = {
     click () {
       shell.openExternal('http://appium.io');
     }
+  }, {
+      label: '&About Appium',
+      selector: 'orderFrontStandardAboutPanel:'
   }, {
     label: 'Documentation',
     click () {
