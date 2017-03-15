@@ -183,7 +183,7 @@ function otherMenuFile (mainWindow) {
     }
   }];
 
-  // Don't include check for updates in Windows build
+  // If it's Windows, add a 'Check for Updates' menu option
   if (process.platform === 'win32') {
     fileSubmenu.splice(1, 0, {
       label: '&Check for updates',
