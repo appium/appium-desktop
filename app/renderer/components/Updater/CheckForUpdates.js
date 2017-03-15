@@ -1,3 +1,4 @@
+import { shell } from 'electron';
 import React, { Component } from 'react';
 import UpdaterStyles from './Updater.css';
 import { version } from '../../../../package.json';
@@ -5,9 +6,10 @@ import { version } from '../../../../package.json';
 export default class CheckForUpdates extends Component {
 
   render () {
-    const {isCheckingForUpdates, hasNoUpdateAvailable} = this.props;
+    const {isCheckingForUpdates, hasNoUpdateAvailable, unsupported} = this.props;
+    let latestReleaseUrl = 'https://github.com/appium/appium-desktop/releases/latest';
 
-    if (!isCheckingForUpdates && !hasNoUpdateAvailable) {
+    if (!isCheckingForUpdates && !hasNoUpdateAvailable && !unsupported) {
       return null;
     }
 
@@ -16,11 +18,14 @@ export default class CheckForUpdates extends Component {
         <img src={'images/appium_logo.png'} />
         <p>Version: {version}</p>
       </div>
-      {(isCheckingForUpdates || hasNoUpdateAvailable) &&
-        <footer>
-          { isCheckingForUpdates && <span>Checking for updates</span> }
-          { hasNoUpdateAvailable && <span>Appium is up-to-date</span> }
-      </footer>}
+      <footer>
+        { isCheckingForUpdates && <span>Checking for updates</span> }
+        { hasNoUpdateAvailable && <span>Appium is up-to-date</span> }
+        { unsupported && <span>
+          {`Auto update not supported on ${process.platform} platform. Download latest release from `}
+          <a href='#' onClick={(e) => e.preventDefault() || shell.openExternal(latestReleaseUrl)}>{latestReleaseUrl}</a>
+        </span> }
+      </footer>
     </div>;
   }
 }

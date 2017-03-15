@@ -145,6 +145,10 @@ class AutoUpdaterController {
         isCheckingForUpdates: true,
       });
       autoUpdater.checkForUpdates();
+    } else {
+      this.setState({
+        unsupported: true,
+      });
     }
   }
 
