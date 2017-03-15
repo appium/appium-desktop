@@ -16,10 +16,11 @@ export default class CheckForUpdates extends Component {
         <img src={'images/appium_logo.png'} />
         <p>Version: {version}</p>
       </div>
-      <footer>
-      { isCheckingForUpdates && <span>Checking for updates</span> }
-      { hasNoUpdateAvailable && <span>Appium is up-to-date</span> }
-      </footer>
+      {(isCheckingForUpdates || hasNoUpdateAvailable) &&
+        <footer>
+          { isCheckingForUpdates && <span>Checking for updates</span> }
+          { hasNoUpdateAvailable && <span>Appium is up-to-date</span> }
+      </footer>}
     </div>;
   }
 }

@@ -158,24 +158,45 @@ menuTemplates.mac = (mainWindow) => [
 ];
 
 function otherMenuFile (mainWindow) {
+  let fileSubmenu = [{
+    label: '&Open',
+    accelerator: 'Ctrl+O'
+  }, {
+    label: '&About Appium',
+    click () {
+      autoUpdater.openUpdaterWindow(mainWindow);
+      autoUpdater.checkForUpdates();
+    }
+  }, {
+    type: 'separator'
+  }, {
+    label: '&New Session Window...',
+    accelerator: 'Ctrl+N',
+    click () {
+      createNewSessionWindow(mainWindow);
+    }
+  }, {
+    label: '&Close',
+    accelerator: 'Ctrl+W',
+    click () {
+      mainWindow.close();
+    }
+  }];
+
+  // If it's Windows, add a 'Check for Updates' menu option
+  if (process.platform === 'win32') {
+    fileSubmenu.splice(1, 0, {
+      label: '&Check for updates',
+      click () {
+        autoUpdater.openUpdaterWindow(mainWindow);
+        autoUpdater.checkForUpdates();
+      }
+    });
+  }
+
   return {
     label: '&File',
-    submenu: [{
-      label: '&Open',
-      accelerator: 'Ctrl+O'
-    }, {
-      label: '&New Session Window...',
-      accelerator: 'Ctrl+N',
-      click () {
-        createNewSessionWindow(mainWindow);
-      }
-    }, {
-      label: '&Close',
-      accelerator: 'Ctrl+W',
-      click () {
-        mainWindow.close();
-      }
-    }]
+    submenu: fileSubmenu,
   };
 }
 

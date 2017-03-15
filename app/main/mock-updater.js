@@ -28,10 +28,10 @@ autoUpdater.checkForUpdates = async () => {
 
 autoUpdater.downloadUpdate = async () => {
   let progress = {
-    bytesPerSecond: 1000,
+    bytesPerSecond: 100000,
     percent: 0,
-    total: 1,
-    transferred: 1,
+    total: 10000000,
+    transferred: 1000000,
   };
 
   while (progress.percent <= 100) {
@@ -40,10 +40,10 @@ autoUpdater.downloadUpdate = async () => {
     if (fail && progress.percent > 50) {
       return autoUpdater.emit('error', new Error('An error occurred'));
     }
-    progress.bytesPerSecond += (Math.random() * 50) - 25;
-    progress.percent += 20;
-    progress.total = 500;
-    progress.transferred += 100;
+    progress.bytesPerSecond += (Math.random() * 50) - 24.999999999;
+    progress.percent += 19.999991;
+    progress.total = 499.999999999 * 1000000;
+    progress.transferred += 100.0000000001 * 1000000;
   }
   updateDone = true;
   autoUpdater.emit('update-downloaded');

@@ -11,12 +11,18 @@ export default class DownloadUpdate extends Component {
       return null;
     }
 
-    const {bytesPerSecond, percent, total, transferred} = downloadProgress || {};
+    let {bytesPerSecond = 0, percent, total, transferred} = downloadProgress || {};
+
+    const megaBytesPerSecond = Math.round((bytesPerSecond / 1000000) * 100) / 100;
+    const megaBytesTransferred = Math.round((transferred / 1000000) * 100) / 100;
+    const megaBytesTotal = Math.round((total / 1000000) * 100) / 100;
+    percent = Math.round(percent);
+
 
     return <div className={UpdaterStyles['download-updates-container']}>
       <p>
-        {!updateDownloaded && <span>Downloading: {bytesPerSecond ? Math.round(bytesPerSecond * 100) / 100 : '-'} bps</span>}
-        {!updateDownloaded && <span>&nbsp;(transferred: {transferred || 0} / {total || '-'} bytes)</span>}
+        {!updateDownloaded && <span>Downloading: {megaBytesPerSecond ? megaBytesPerSecond : '-'} bps</span>}
+        {!updateDownloaded && <span>&nbsp;(transferred: {megaBytesTransferred || 0} / {megaBytesTotal || '-'} mb)</span>}
         {updateDownloaded && <span>Download Complete</span>}
       </p>
       <Progress percent={!updateDownloaded ? percent : 100}></Progress>
