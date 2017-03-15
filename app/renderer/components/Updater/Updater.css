@@ -56,6 +56,21 @@
 
 .download-updates-container {
   padding: 8px;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.download-updates-container div {
+  flex-grow: 1;
+}
+
+.download-updates-container div p {
+  font-style: italic;
+}
+
+.download-updates-container footer button {
+  float: right;
 }
 
 .update-error-container {

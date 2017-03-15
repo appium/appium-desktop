@@ -5,6 +5,8 @@ import path from 'path';
 import _ from 'lodash';
 import request from 'request-promise';
 import { version } from '../../package.json';
+import settings from '../settings';
+import B from 'bluebird';
 const isDev = process.env.NODE_ENV === 'development';
 
 // Logs data to 
@@ -42,7 +44,6 @@ class AutoUpdaterController {
     autoUpdater.on('error', this.handleError.bind(this));
 
     ipcMain.on('update-state-request', (e) => e.sender.send('update-state-change', this.state));
-    ipcMain.on('update-check-for-updates', autoUpdater.checkForUpdates || _.noop);
     ipcMain.on('update-download', this.downloadUpdate.bind(this));
     ipcMain.on('update-quit-and-install', autoUpdater.quitAndInstall || _.noop);
 
@@ -53,7 +54,7 @@ class AutoUpdaterController {
   }
 
   downloadUpdate () {
-    this.updaterWin.setSize(500, 100);
+    this.updaterWin.setSize(500, 150);
     this.setState({
       downloadProgress: {
         percent: 0,
@@ -125,12 +126,30 @@ class AutoUpdaterController {
     }
   }
 
-  checkForUpdates () {
-    log.info('Checking for updates');
-    this.setState({
-      isCheckingForUpdates: true,
-    });
-    autoUpdater.checkForUpdates();
+  async checkForUpdates () {
+    const isWin = process.platform === 'win32';
+    const isMac = process.platform === 'darwin';
+    const SQUIRREL_FIRST_RUN = 'SQUIRREL_FIRST_RUN';
+
+    // Only check for updates on Mac and Windows (auto update not supported in linux)
+    if (isMac || isWin) {
+      log.info('Checking for updates');
+
+      // squirrel.windows needs time to initialize the first time it's run (https://github.com/electron/electron/issues/4306)
+      // if it's a first run, give it a long time (20 seconds) to let squirrel.windows initialize before checking for updates
+      if (isWin && !await settings.get(SQUIRREL_FIRST_RUN)) {
+        await B.delay(20000);
+        await settings.set(SQUIRREL_FIRST_RUN, true);
+      }
+      this.setState({
+        isCheckingForUpdates: true,
+      });
+      autoUpdater.checkForUpdates();
+    } else {
+      this.setState({
+        unsupported: true,
+      });
+    }
   }
 
   /**
