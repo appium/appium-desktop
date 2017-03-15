@@ -54,7 +54,7 @@ class AutoUpdaterController {
   }
 
   downloadUpdate () {
-    this.updaterWin.setSize(500, 100);
+    this.updaterWin.setSize(500, 150);
     this.setState({
       downloadProgress: {
         percent: 0,

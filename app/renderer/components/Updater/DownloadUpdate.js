@@ -18,15 +18,18 @@ export default class DownloadUpdate extends Component {
     const megaBytesTotal = Math.round((total / 1000000) * 100) / 100;
     percent = Math.round(percent);
 
-
+    // TODO: Check back on this periodically to see if 'quitAndInstall' works so we can get rid of instructions pertaining to shutting down appium.
     return <div className={UpdaterStyles['download-updates-container']}>
-      <p>
+      <div>
         {!updateDownloaded && <span>Downloading: {megaBytesPerSecond ? megaBytesPerSecond : '-'} bps</span>}
         {!updateDownloaded && <span>&nbsp;(transferred: {megaBytesTransferred || 0} / {megaBytesTotal || '-'} mb)</span>}
         {updateDownloaded && <span>Download Complete</span>}
-      </p>
-      <Progress percent={!updateDownloaded ? percent : 100}></Progress>
-      {updateDownloaded && <Button type='primary' onClick={() => ipcRenderer.send('update-quit-and-install')}>Click to Restart Appium</Button>}
+        <Progress percent={!updateDownloaded ? percent : 100}></Progress>
+        {updateDownloaded && <p>Changes will take effect after you close appium. Please wait a few minutes after closing Appium for it to install the new version before re-opening.</p>}
+      </div>
+      <footer>
+        {updateDownloaded && <Button type='primary' onClick={() => ipcRenderer.send('update-quit-and-install')}>Click to Close Appium Now</Button>}
+      </footer>
     </div>;
   }
 }
