@@ -1,3 +1,11 @@
+## [1.0.0-beta.4](https://github.com/appium/appium-desktop/compare/v1.0.0-beta.4...v1.0.0-beta.5) (2017-03-09)
+
+### Changes
+* Feature: When update complete, updater dialog asks user to close Appium instead of restarting it
+* Feature: Updater dialog shows Linux users a link to releases page because Linux doesn't support autoupdates
+* Fix: Windows waits 20 seconds after first run before checking for updates due to a timing issue with Squirrel.windows
+
+
 ## [1.0.0-beta.4](https://github.com/appium/appium-desktop/compare/v1.0.0-beta.3...v1.0.0-beta.4) (2017-03-09)
 
 ### Changes
