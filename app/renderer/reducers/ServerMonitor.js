@@ -1,5 +1,6 @@
+import moment from 'moment';
 import { SERVER_STOP_REQ, SERVER_STOP_OK, SERVER_STOP_FAIL, SET_SERVER_ARGS,
-         START_SESSION_REQUEST, 
+         START_SESSION_REQUEST,
          LOGS_RECEIVED, LOGS_CLEARED, MONITOR_CLOSED } from '../actions/ServerMonitor';
 
 export const STATUS_RUNNING = "running";
@@ -38,7 +39,11 @@ export default function serverMonitor (state = initialState, action) {
     case LOGS_RECEIVED:
       return {
         ...state,
-        logLines: state.logLines.concat(action.logs),
+        logLines: state.logLines.concat(action.logs.map((l) => {
+          // attach a timestamp to each log line here when it comes in
+          l.timestamp = moment().format('YYYY-MM-DD hh:mm:ss');
+          return l;
+        })),
         serverStatus: STATUS_RUNNING
       };
     case LOGS_CLEARED:

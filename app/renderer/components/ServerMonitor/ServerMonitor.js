@@ -1,5 +1,4 @@
 import React, { Component, PropTypes } from 'react';
-import moment from 'moment';
 import { Button } from 'antd';
 import { STATUS_RUNNING, STATUS_STOPPING,
          STATUS_STOPPED } from '../../reducers/ServerMonitor';
@@ -115,7 +114,7 @@ export default class ServerMonitor extends Component {
           {
             serverArgs.logTimestamp &&
             <span className={styles.timestamp}>
-              [{moment().format('YYYY-MM-DD hh:mm:ss')}]
+              [{line.timestamp}]
             </span>
           }
           <span dangerouslySetInnerHTML={{__html: convert.toHtml(line.msg)}} />
