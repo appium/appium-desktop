@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
-import { Alert, Button } from 'antd';
-import { remote } from 'electron';
+import { remote, shell } from 'electron';
+import { Button } from 'antd';
 import UpdaterStyles from './Updater.css';
+
+
+let latestReleaseUrl = 'https://github.com/appium/appium-desktop/releases/latest';
 
 export default class FoundUpdate extends Component {
 
@@ -12,7 +15,8 @@ export default class FoundUpdate extends Component {
     }
 
     return <div className={UpdaterStyles['update-error-container']}>
-      <Alert type='error' message={'Could not download update. ' + (error.message || 'Try again later.')} />
+      <p>Could not download update. Get the latest version at:</p>
+      <a href='#' onClick={(e) => e.preventDefault() || shell.openExternal(latestReleaseUrl)}>{latestReleaseUrl}</a>
       <footer>
         <Button onClick={() => remote.getCurrentWindow().close()}>OK</Button>
       </footer>
