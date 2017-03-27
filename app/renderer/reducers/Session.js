@@ -103,7 +103,7 @@ export default function session (state = INITIAL_STATE, action) {
     case GET_SAVED_SESSIONS_DONE:
       nextState = {
         ...state,
-        savedSessions: action.savedSessions
+        savedSessions: action.savedSessions || [],
       };
       return omit(nextState, 'getSavedSessionsRequested');
 
