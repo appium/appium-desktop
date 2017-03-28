@@ -1,7 +1,14 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import styles from './Inspector.css';
-import { Button, Row, Col, Input, Modal, Table } from 'antd';
+import { Button, Row, Col, Input, Modal, Table, Alert } from 'antd';
+
+const STRATEGY_MAPPINGS = {
+  name: 'accessibility id',
+  "content-desc": 'accessibility id',
+  id: 'id',
+  "resource-id": 'id',
+};
 
 /**
  * Shows details of the currently selected element and shows methods that can
@@ -55,11 +62,55 @@ export default class SelectedElement extends Component {
       };
     });
 
+    let findColumns = [{
+      title: 'Find By',
+      dataIndex: 'find',
+      key: 'find',
+      width: 100
+    }, {
+      title: 'Selector',
+      dataIndex: 'selector',
+      key: 'selector'
+    }];
+
+    let findDataSource = [], showXpathWarning = false;
+
+    for (let key of Object.keys(STRATEGY_MAPPINGS)) {
+      if (attributes[key]) {
+        findDataSource.push({
+          key: STRATEGY_MAPPINGS[key],
+          find: STRATEGY_MAPPINGS[key],
+          selector: attributes[key]
+        });
+      }
+    }
+
+    if (!findDataSource.length) {
+      findDataSource.push({
+        key: 'xpath',
+        find: 'xpath',
+        selector: xpath,
+      });
+      showXpathWarning = true;
+    }
+
     return <div>
       <Row justify="center" type="flex" align="middle" gutter={10} className={styles.elementActions}>
         <Col><Button onClick={() => applyClientMethod({methodName: 'click', xpath})}>Tap</Button></Col>
         <Col><Button onClick={() => showSendKeysModal()}>Send Keys</Button></Col>
       </Row>
+      <Table columns={findColumns} dataSource={findDataSource} size="small" pagination={false} />
+      <br />
+      {showXpathWarning &&
+        <div>
+          <Alert
+           message="Using XPath locators is not recommended and can lead to fragile tests. Ask your development team to provide unique accessibility locators instead!"
+           type="warning"
+           showIcon
+          />
+          <br />
+        </div>
+      }
       {dataSource.length > 0 &&
       <Row>
         <Table columns={columns} dataSource={dataSource} size="small" pagination={false} />
