@@ -40,7 +40,8 @@
     "package-linux": "npm run build && build --linux",
     "package-all": "npm run build && build -mwl",
     "package-ci": "npm run build && build --dir && npm run e2e && build --publish onTagOrDraft",
-    "postversion": "git pull --tags && git push && git push --tags"
+    "postversion": "git pull --tags && git push && git push --tags",
+    "import-keychain": "node ./scripts/import-keychain.js"
   },
   "build": {
     "productName": "Appium",
