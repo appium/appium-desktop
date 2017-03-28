@@ -1,4 +1,13 @@
-## [1.0.0-beta.4](https://github.com/appium/appium-desktop/compare/v1.0.0-beta.4...v1.0.0-beta.5) (2017-03-09)
+## [1.0.0-beta.6](https://github.com/appium/appium-desktop/compare/v1.0.0-beta.5...v1.0.0-beta.6) (2017-03-28)
+
+### Changes
+* Feature: When update fails to work automatically, show a link to the releases page
+* Feature: Add a simple element finding recommendation to the element detail
+* Fix: With logTimestamps set to `true`, server console timestamps would all update anytime a new one came in
+* Fix: When opening up the app after an old version had been installed, any click would cause an error due to inability to read settings files correctly
+
+
+## [1.0.0-beta.5](https://github.com/appium/appium-desktop/compare/v1.0.0-beta.4...v1.0.0-beta.5) (2017-03-09)
 
 ### Changes
 * Feature: When update complete, updater dialog asks user to close Appium instead of restarting it
@@ -11,7 +20,7 @@
 ### Changes
 * Feature: add logging to autoUpdater ([#74](https://github.com/appium/appium-desktop/issues/74))
 * Fix: improved markup and CSS in update window ([#74](https://github.com/appium/appium-desktop/issues/74))
-* Fix: when an update is found, pulls release notes from GitHub API and displays them in the update window textarea 
+* Fix: when an update is found, pulls release notes from GitHub API and displays them in the update window textarea
 
 
 ## [1.0.0-beta.3](https://github.com/appium/appium-desktop/compare/v1.0.0-beta.2...v1.0.0-beta.3) (2017-03-09)
