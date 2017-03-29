@@ -7,7 +7,7 @@ os:
 node_js:
 - '7'
 before_install:
-- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then 
+- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
     npm run import-keychain
     security find-identity -v
   fi
