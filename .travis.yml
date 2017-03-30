@@ -9,8 +9,7 @@ node_js:
 before_install:
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
     npm run import-keychain
-    security find-identity -v
-  fi
+    security find-identity -v; fi
 - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install --no-install-recommends
   -y icnsutils graphicsmagick xz-utils; fi
 addons:
