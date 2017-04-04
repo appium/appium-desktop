@@ -23,7 +23,7 @@ export default class NewSessionForm extends Component {
 
     const buttonAfter = <Icon className={SessionStyles['filepath-button']}
       type="file"
-      onClick={() => this.getLocalFilePath((filepath) => setCapabilityParam(index, 'value', filepath))} />;
+      onClick={() => this.getLocalFilePath((filepath) => setCapabilityParam(index, 'value', filepath[0]))} />;
 
     switch (cap.type) {
       case 'text': return <Input placeholder='Value' value={cap.value} onChange={(e) => setCapabilityParam(index, 'value', e.target.value)} size="large"/>;
