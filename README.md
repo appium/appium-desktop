@@ -207,6 +207,32 @@ appropriate tracker! (Either here in this repo if the request is specifically
 for Appium Desktop, or Appium's main tracker if the request is for Appium more
 generally.)
 
+## Advanced Topics and Troubleshooting
+
+#### Appium can't detect environment variables on Mac
+
+Appium uses environment variables like `ANDROID_HOME` as well as relying on
+various binaries in your `PATH` and so on. When running from the command line
+in an environment where you have set these variables appropriately, Appium has
+no problem in picking them up. However, Appium Desktop does not run in a shell
+or a command-line environment, and so by default it does not have access to
+environment variables you have set in your shell startup script or profile. To
+work around this, we use the
+[shell-env](https://github.com/sindresorhus/shell-env) package to pick up
+environment variables defined in your shell. This package only looks in certain
+common init scripts, however, like `~/.bashrc`, `~/.bash_profile`, and
+`~/.zshrc`. If you set your Appium environment variables in some other way, you
+will need to create one of these default init scripts and set your environment
+variables there as well, so that Appium Desktop will successfully pick them up.
+
+#### Warnings about being on a read-only file system
+
+This probably means you tried to launch Appium Desktop from the downloaded disk
+image (`.dmg` file). This is not a supported mode of running Appium Desktop. To
+correctly install Appium Desktop, copy the application from the disk image to
+your local filesystem, to somewhere like `/Applications`. Then, run the app
+from that new location.
+
 ## Developer Instructions
 
 Want to hack on Appium Desktop? Awesome! Head on over to our [Contributing
