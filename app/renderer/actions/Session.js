@@ -177,7 +177,8 @@ export function newSession (caps, attachSessId = null) {
         break;
       case ServerTypes.testobject:
         host = 'appium.testobject.com';
-        port = 80;
+        port = 443;
+        https = true;
         if (caps) {
           desiredCapabilities.testobject_api_key = session.server.testobject.apiKey;
         }
