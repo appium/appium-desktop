@@ -1,3 +1,9 @@
+## [1.0.0](https://github.com/appium/appium-desktop/compare/v1.0.0-beta.6...v1.0.0) (2017-04-07)
+
+### Changes
+* Feature: Set Appium version to 1.6.4
+* Fix: Filepath capabilities was being parsed as array, parses it to string 
+
 ## [1.0.0-beta.6](https://github.com/appium/appium-desktop/compare/v1.0.0-beta.5...v1.0.0-beta.6) (2017-03-28)
 
 ### Changes
