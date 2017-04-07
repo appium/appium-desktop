@@ -6,7 +6,9 @@ const {TreeNode} = Tree;
 const IMPORTANT_ATTRS = [
   'name',
   'content-desc',
-  'resource-id'
+  'resource-id',
+  'AXDescription',
+  'AXIdentifier',
 ];
 
 /**
