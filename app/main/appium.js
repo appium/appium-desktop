@@ -151,7 +151,9 @@ export function createNewSessionWindow (win) {
   sessionWin.on('closed', async () => {
     const driver = sessionDrivers[sessionID];
     if (driver) {
-      if (!driver._isAttachedSession) await driver.quit();
+      if (!driver._isAttachedSession) {
+        await driver.quit();
+      }
       delete sessionDrivers[sessionID];
     }
     sessionWin = null;
