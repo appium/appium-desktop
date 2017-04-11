@@ -149,8 +149,9 @@ export function createNewSessionWindow (win) {
   // When you close the session window, kill its associated Appium session (if there is one)
   let sessionID = sessionWin.webContents.id;
   sessionWin.on('closed', async () => {
-    if (sessionDrivers[sessionID]) {
-      await sessionDrivers[sessionID].quit();
+    const driver = sessionDrivers[sessionID];
+    if (driver) {
+      if (!driver._isAttachedSession) await driver.quit();
       delete sessionDrivers[sessionID];
     }
     sessionWin = null;
