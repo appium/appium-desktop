@@ -63,6 +63,8 @@ npm start  # start a production version of the app
 
 ### Packaging and Releasing
 
+Appium Desktop uses [Electron Builder](https://github.com/electron-userland/electron-builder/) to build app. Read this document for instructions on how to set up your local environment so that you can build and package the app: https://github.com/electron-userland/electron-builder/wiki/Multi-Platform-Build
+
 To package the app for your platform, run:
 
 ```bash
