@@ -3,6 +3,7 @@ import { initializeIpc } from './appium';
 import menuTemplates from './menus';
 import path from 'path';
 import shellEnv from 'shell-env';
+import fixPath fro 'fix-path';
 
 let menu;
 let template;
@@ -21,6 +22,9 @@ if (!isDev) {
   // normally loaded in a shell, so work around with the shell-env module
   const decoratedEnv = shellEnv.sync();
   process.env = {...process.env, ...decoratedEnv};
+
+  // and we need to do the same thing with PATH
+  fixPath();
 }
 
 
