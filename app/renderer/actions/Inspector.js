@@ -3,6 +3,7 @@ import { notification } from 'antd';
 import { push } from 'react-router-redux';
 import { showError } from './Session';
 import { callClientMethod } from './shared';
+import { getOptimalXPath } from '../util';
 
 export const SET_SOURCE_AND_SCREENSHOT = 'SET_SOURCE';
 export const SESSION_DONE = 'SESSION_DONE';
@@ -19,17 +20,21 @@ export const HIDE_SEND_KEYS_MODAL = 'HIDE_SEND_KEYS_MODAL';
 export const QUIT_SESSION_REQUESTED = 'QUIT_SESSION_REQUESTED';
 export const QUIT_SESSION_DONE = 'QUIT_SESSION_DONE';
 
+
+// Attributes on nodes that we know are unique to the node
+const uniqueAttributes = [
+  'name',
+  'content-desc',
+  'id',
+  'accessibility-id',
+];
+
 /**
  * Translates sourceXML to JSON
  */
 function xmlToJSON (source) {
+  let xmlDoc;
   let recursive = (xmlNode, parentPath, index) => {
-
-    // Get a dot separated path (root doesn't have a path)
-    let path = (index !== undefined) && `${!parentPath ? '' : parentPath + '.'}${index}`;
-
-    // Get an xpath for this element as well to use for Appium calls
-    let xpath = path && path.split('.').map((index) => `${path.length === 0 ? '/' : '//'}*[${parseInt(index, 10) + 1}]`).join('');
 
     // Translate attributes array to an object
     let attrObject = {};
@@ -37,16 +42,20 @@ function xmlToJSON (source) {
       attrObject[attribute.name] = attribute.value;
     }
 
+    // Dot Separated path of indices
+    let path = (index !== undefined) && `${!parentPath ? '' : parentPath + '.'}${index}`;
+
     return {
       children: [...xmlNode.children].map((childNode, childIndex) => recursive(childNode, path, childIndex)),
       tagName: xmlNode.tagName,
       attributes: attrObject,
+      xpath: getOptimalXPath(xmlDoc, xmlNode, uniqueAttributes),
       path,
-      xpath,
     };
   };
 
-  let sourceXML = (new DOMParser()).parseFromString(source, 'text/xml').children[0];
+  xmlDoc = (new DOMParser()).parseFromString(source, 'text/xml');
+  let sourceXML = xmlDoc.children[0];
   return recursive(sourceXML);
 }
 

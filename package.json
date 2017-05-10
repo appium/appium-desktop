@@ -121,7 +121,8 @@
     "teen_process": "1.x",
     "temp": "0.x",
     "uuid": "3.x",
-    "wd": "1.x"
+    "wd": "1.x",
+    "xpath": "0.0.24"
   },
   "devDependencies": {
     "asar": "0.x",
@@ -140,6 +141,8 @@
     "babel-preset-react-optimize": "1.x",
     "babel-preset-stage-0": "6.x",
     "babel-register": "6.x",
+    "chai": "^3.5.0",
+    "chai-as-promised": "^6.0.0",
     "concurrently": "3.x",
     "cross-env": "3.x",
     "css-loader": "0.x",
@@ -175,8 +178,7 @@
     "webpack": "1.x",
     "webpack-dev-middleware": "1.x",
     "webpack-hot-middleware": "2.x",
-    "xmldom": "^0.1.27",
-    "xpath": "0.0.24"
+    "xmldom": "^0.1.27"
   },
   "devEngines": {
     "node": ">=6.x",
