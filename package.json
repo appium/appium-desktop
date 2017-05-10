@@ -21,9 +21,9 @@
   "homepage": "https://github.com/chentsulin/electron-react-boilerplate#readme",
   "main": "main.js",
   "scripts": {
-    "test": "echo 'No unit tests'",
-    "test-watch": "npm test -- --watch",
+    "test": "npm run unit-test",
     "e2e": "mocha ./test/e2e",
+    "unit-test": "mocha --compilers js:babel-core/register ./test/unit",
     "lint": "eslint app test *.js",
     "hot-server": "node -r babel-register server.js --color",
     "build-main": "cross-env NODE_ENV=production node -r babel-register ./node_modules/webpack/bin/webpack --config webpack.config.electron.js --progress --profile --colors --color",
@@ -174,7 +174,9 @@
     "style-loader": "0.x",
     "webpack": "1.x",
     "webpack-dev-middleware": "1.x",
-    "webpack-hot-middleware": "2.x"
+    "webpack-hot-middleware": "2.x",
+    "xmldom": "^0.1.27",
+    "xpath": "0.0.24"
   },
   "devEngines": {
     "node": ">=6.x",
