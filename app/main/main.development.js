@@ -3,7 +3,7 @@ import { initializeIpc } from './appium';
 import menuTemplates from './menus';
 import path from 'path';
 import shellEnv from 'shell-env';
-import fixPath fro 'fix-path';
+import fixPath from 'fix-path';
 
 let menu;
 let template;
