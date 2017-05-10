@@ -163,8 +163,8 @@ export function newSession (caps, attachSessId = null) {
       case ServerTypes.sauce:
         host = 'ondemand.saucelabs.com';
         port = 80;
-        username = session.server.sauce.username;
-        accessKey = session.server.sauce.accessKey;
+        username = session.server.sauce.username || process.env.SAUCE_USERNAME;
+        accessKey = session.server.sauce.accessKey || process.env.SAUCE_ACCESS_KEY;
         if (!username || !accessKey) {
           notification.error({
             message: "Error",
@@ -176,11 +176,11 @@ export function newSession (caps, attachSessId = null) {
         https = false;
         break;
       case ServerTypes.testobject:
-        host = 'appium.testobject.com';
+        host = process.env.TESTOBJECT_HOST || 'appium.testobject.com';
         port = 443;
         https = true;
         if (caps) {
-          desiredCapabilities.testobject_api_key = session.server.testobject.apiKey;
+          desiredCapabilities.testobject_api_key = session.server.testobject.apiKey || process.env.TESTOBJECT_API_KEY;
         }
         break;
       default:
