@@ -2,8 +2,7 @@ import { ipcRenderer } from 'electron';
 import { notification } from 'antd';
 import { push } from 'react-router-redux';
 import { showError } from './Session';
-import UUID from 'uuid';
-import Promise from 'bluebird';
+import { callClientMethod } from './shared';
 
 export const SET_SOURCE_AND_SCREENSHOT = 'SET_SOURCE';
 export const SESSION_DONE = 'SESSION_DONE';
@@ -19,42 +18,6 @@ export const SHOW_SEND_KEYS_MODAL = 'SHOW_SEND_KEYS_MODAL';
 export const HIDE_SEND_KEYS_MODAL = 'HIDE_SEND_KEYS_MODAL';
 export const QUIT_SESSION_REQUESTED = 'QUIT_SESSION_REQUESTED';
 export const QUIT_SESSION_DONE = 'QUIT_SESSION_DONE';
-
-const clientMethodPromises = {};
-
-/**
- * Calls a client method on the main process
- */
-function callClientMethod (methodName, args, xpath) {
-  let uuid = UUID.v4();
-  let promise = new Promise((resolve, reject) => clientMethodPromises[uuid] = {resolve, reject});
-  ipcRenderer.send('appium-client-command-request', {methodName, args, xpath, uuid});
-  return promise;
-}
-
-/**
- * When we hear back from the main process, resolve the promise
- */
-ipcRenderer.on('appium-client-command-response', (evt, resp) => {
-  const {source, screenshot, result, uuid} = resp;
-  let promise = clientMethodPromises[uuid];
-  if (promise) {
-    promise.resolve({source, screenshot, result});
-    delete clientMethodPromises[uuid];
-  }
-});
-
-/**
- * If we hear back with an error, reject the promise
- */
-ipcRenderer.on('appium-client-command-response-error', (evt, resp) => {
-  const {e, uuid} = resp;
-  let promise = clientMethodPromises[uuid];
-  if (promise) {
-    promise.reject(e);
-    delete clientMethodPromises[uuid];
-  }
-});
 
 /**
  * Translates sourceXML to JSON
