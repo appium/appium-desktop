@@ -8,6 +8,10 @@ body {
   background: linear-gradient(180deg, #f9f9f9, #f2f2f2, 5%, #f2f2f2, 95%, #d9d9d9);
 }
 
+#root .ant-spin-nested-loading > div > .ant-spin {
+  max-height: initial;
+}
+
 .window {
   background-color: #cde4f5 !important;
   width: 100%;
