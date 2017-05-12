@@ -4,6 +4,7 @@ import { Card, Icon, Button, Spin } from 'antd';
 import Screenshot from './Screenshot';
 import SelectedElement from './SelectedElement';
 import Source from './Source';
+import SourceScrollButtons from './SourceScrollButtons';
 import InspectorStyles from './Inspector.css';
 
 export default class Inspector extends Component {
@@ -11,6 +12,7 @@ export default class Inspector extends Component {
   constructor () {
     super();
     this.didInitialResize = false;
+    this.state = {};
   }
 
   componentWillMount () {
@@ -49,18 +51,19 @@ export default class Inspector extends Component {
           </Spin>
         }
       </div>
-      <div className={InspectorStyles['source-tree-container']}>
+      <div className={InspectorStyles['source-tree-container']} ref={(div) => this.container = div} >
         <Card
          title={<span><Icon type="file-text" /> App Source</span>}
          extra={actions}
          className={InspectorStyles['source-tree-card']}>
           <Source {...this.props} />
         </Card>
+        {this.container && <SourceScrollButtons container={this.container} />}
       </div>
       <div className={`${InspectorStyles['source-tree-container']} ${InspectorStyles['element-detail-container']}`}>
         <Card
          title={<span><Icon type="tag-o" /> Selected Element</span>}
-         className={InspectorStyles['source-tree-card']}>
+         className={InspectorStyles['selected-element-card']}>
          {path && <SelectedElement {...this.props}/>}
          {!path && <i>Select an element in the source to begin.</i>}
         </Card>

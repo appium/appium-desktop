@@ -31,11 +31,29 @@
 }
 
 .inspector-container .source-tree-container {
+    position: relative;
     flex-grow: 3;
     flex-basis: 550px;
     min-width: 380px;
     padding-bottom: 1em;
     padding-left: 1em;
+}
+
+.inspector-container .source-tree-container .scroll-buttons {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding-left: 1em;
+    padding-bottom: 1em;
+}
+
+.inspector-container .source-tree-container .scroll-buttons :global(button) {
+    margin: 1em;
+}
+
+.inspector-container .source-tree-container .scroll-buttons .scroll-right {
+    float: right;
 }
 
 .inspector-container .element-detail-container {
@@ -105,8 +123,4 @@
 .sourceAttrName {
   color: #864da1;
   font-style: italic;
-}
-
-.sourceAttrValue {
-
 }
