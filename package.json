@@ -21,9 +21,9 @@
   "homepage": "https://github.com/chentsulin/electron-react-boilerplate#readme",
   "main": "main.js",
   "scripts": {
-    "test": "echo 'No unit tests'",
-    "test-watch": "npm test -- --watch",
+    "test": "npm run unit-test",
     "e2e": "mocha ./test/e2e",
+    "unit-test": "mocha --compilers js:babel-core/register ./test/unit",
     "lint": "eslint app test *.js",
     "hot-server": "node -r babel-register server.js --color",
     "build-main": "cross-env NODE_ENV=production node -r babel-register ./node_modules/webpack/bin/webpack --config webpack.config.electron.js --progress --profile --colors --color",
@@ -121,7 +121,8 @@
     "teen_process": "1.x",
     "temp": "0.x",
     "uuid": "3.x",
-    "wd": "1.x"
+    "wd": "1.x",
+    "xpath": "0.0.24"
   },
   "devDependencies": {
     "asar": "0.x",
@@ -140,6 +141,8 @@
     "babel-preset-react-optimize": "1.x",
     "babel-preset-stage-0": "6.x",
     "babel-register": "6.x",
+    "chai": "^3.5.0",
+    "chai-as-promised": "^6.0.0",
     "concurrently": "3.x",
     "cross-env": "3.x",
     "css-loader": "0.x",
@@ -174,7 +177,8 @@
     "style-loader": "0.x",
     "webpack": "1.x",
     "webpack-dev-middleware": "1.x",
-    "webpack-hot-middleware": "2.x"
+    "webpack-hot-middleware": "2.x",
+    "xmldom": "^0.1.27"
   },
   "devEngines": {
     "node": ">=6.x",
