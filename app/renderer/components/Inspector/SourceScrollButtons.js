@@ -9,7 +9,7 @@ export default class SourceScrollButtons extends Component {
   constructor () {
     super();
     this.checkShowScrollButtons = this.checkShowScrollButtons.bind(this);
-    this.debouncedCheckShowScrollButtons = debounce(this.checkShowScrollButtons, 100);
+    this.debouncedCheckShowScrollButtons = debounce(this.checkShowScrollButtons, 300);
     this.state = {};
   }
 
