@@ -59,17 +59,17 @@ export default class Session extends Component {
           <TabPane tab={sauceTabHead} key={ServerTypes.sauce}>
             <Form>
               <FormItem>
-                <Input placeholder='your-username' addonBefore="Sauce Username" value={server.sauce.username} onChange={(e) => setServerParam('username', e.target.value)} />
+                <Input placeholder={process.env.SAUCE_USERNAME ? 'Using data found in $SAUCE_USERNAME' : 'your-username'} addonBefore="Sauce Username" value={server.sauce.username} onChange={(e) => setServerParam('username', e.target.value)} />
               </FormItem>
               <FormItem>
-                <Input type='password' placeholder='your-access-key' addonBefore="Sauce Access Key" value={server.sauce.accessKey} onChange={(e) => setServerParam('accessKey', e.target.value)} />
+                <Input type='password' placeholder={process.env.SAUCE_ACCESS_KEY ? 'Using data found in $SAUCE_ACCESS_KEY' : 'your-access-key'} addonBefore="Sauce Access Key" value={server.sauce.accessKey} onChange={(e) => setServerParam('accessKey', e.target.value)} />
               </FormItem>
             </Form>
           </TabPane>
           <TabPane tab={testObjectTabHead} key={ServerTypes.testobject}>
             <Form>
               <FormItem>
-                <Input type='password' placeholder='testobject-api-key' addonBefore="TestObject API Key" value={server.testobject.apiKey} onChange={(e) => setServerParam('apiKey', e.target.value)} />
+                <Input type='password' placeholder={process.env.TESTOBJECT_API_KEY ? 'Using data found in $TESTOBJECT_API_KEY' : 'testobject-api-key'} addonBefore="TestObject API Key" value={server.testobject.apiKey} onChange={(e) => setServerParam('apiKey', e.target.value)} />
               </FormItem>
             </Form>
           </TabPane>
