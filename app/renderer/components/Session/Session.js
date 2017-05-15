@@ -1,8 +1,9 @@
+import { shell } from 'electron';
 import React, { Component } from 'react';
 import NewSessionForm from './NewSessionForm';
 import SavedSessions from './SavedSessions';
 import AttachToSession from './AttachToSession';
-import { Tabs, Form, Input, Button, Spin, Card } from 'antd';
+import { Tabs, Form, Input, Button, Spin, Card, Icon } from 'antd';
 import { ServerTypes } from '../../actions/Session';
 import SessionStyles from './Session.css';
 
@@ -91,6 +92,12 @@ export default class Session extends Component {
           </TabPane>
         </Tabs>}
         <div className={SessionStyles.sessionFooter}>
+          <div style={{float: 'left'}}>
+            <a href="#" onClick={(e) => e.preventDefault() || shell.openExternal("https://github.com/appium/appium/blob/master/docs/en/writing-running-appium/caps.md")}>
+              <Icon type='link' />&nbsp;
+              Desired Capabilities Documentation
+            </a>
+          </div>
           { (!isAttaching && capsUUID) && <Button onClick={() => saveSession(caps, {uuid: capsUUID})} disabled={!isCapsDirty}>Save</Button> }
           {!isAttaching && <Button onClick={requestSaveAsModal}>Save As...</Button>}
           {!isAttaching && <Button type="primary" onClick={() => newSession(caps)} className={SessionStyles['start-session-button']}>Start Session</Button>}
