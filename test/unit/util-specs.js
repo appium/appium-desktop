@@ -3,8 +3,9 @@ import chaiAsPromised from 'chai-as-promised';
 import { getOptimalXPath } from '../../app/renderer/util';
 import { DOMParser } from 'xmldom';
 import xpath from 'xpath';
+import sinon from 'sinon';
 
-chai.should();
+const should = chai.should();
 chai.use(chaiAsPromised);
 
 // Helper that checks that the optimal xpath for a node is the one that we expect and also
@@ -147,6 +148,32 @@ describe('util.js', function () {
         testXPath(doc, children[2], '(//child[@id="foo"])[3]');
         testXPath(doc, children[3], '(//child[@id="foo"])[4]');
         testXPath(doc, children[4], '(//child[@id="foo"])[5]');
+      });
+    });
+
+    describe('when exceptions are thrown', function () {
+      it('should keep going if xpath.select throws an exception', function () {
+        const xpathSelectStub = sinon.stub(xpath, 'select').callsFake(() => { throw new Error('Exception'); });
+        const doc = new DOMParser().parseFromString(`<node id='foo'>
+          <child id='a'></child>
+          <child id='b'>
+            <grandchild id='hello'></grandchild>
+          </child>
+        </node>`);
+        getOptimalXPath(doc, doc.getElementById('hello')).should.equal('/node/child[2]/grandchild');
+        xpathSelectStub.restore();
+      });
+
+      it('should return undefined if anything else throws an exception', function () {
+        const doc = new DOMParser().parseFromString(`<node id='foo'>
+          <child id='a'></child>
+          <child id='b'>
+            <grandchild id='hello'></grandchild>
+          </child>
+        </node>`);
+        const node = doc.getElementById('hello');
+        node.getAttribute = () => { throw new Error('Some unexpected error'); };
+        should.not.exist(getOptimalXPath(doc, node));
       });
     });
   });

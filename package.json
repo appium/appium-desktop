@@ -173,6 +173,7 @@
     "react-addons-test-utils": "15.x",
     "redux-logger": "2.x",
     "request": "^2.79.0",
+    "sinon": "^2.2.0",
     "spectron": "^3.6.0",
     "style-loader": "0.x",
     "webpack": "1.x",
