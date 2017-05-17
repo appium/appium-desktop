@@ -5,7 +5,7 @@ var platform = os.platform();
 var path = require('path');
 
 describe('application launch', function () {
-  this.timeout(process.env.TRAVIS ? 10 * 60 * 1000 : 30 * 1000);
+  this.timeout(process.env.TRAVIS || process.env.APPVEYOR ? 10 * 60 * 1000 : 30 * 1000);
 
   var appPath;
   if (platform === 'linux') {
