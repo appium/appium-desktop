@@ -85,7 +85,7 @@ export default class SelectedElement extends Component {
       }
     }
 
-    if (!findDataSource.length) {
+    if (!findDataSource.length && xpath) {
       findDataSource.push({
         key: 'xpath',
         find: 'xpath',
@@ -99,7 +99,7 @@ export default class SelectedElement extends Component {
         <Col><Button onClick={() => applyClientMethod({methodName: 'click', xpath})}>Tap</Button></Col>
         <Col><Button onClick={() => showSendKeysModal()}>Send Keys</Button></Col>
       </Row>
-      <Table columns={findColumns} dataSource={findDataSource} size="small" pagination={false} />
+      {findDataSource.length > 0 && <Table columns={findColumns} dataSource={findDataSource} size="small" pagination={false} />}
       <br />
       {showXpathWarning &&
         <div>
