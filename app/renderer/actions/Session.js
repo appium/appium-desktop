@@ -35,6 +35,9 @@ export const SERVER_ARGS = 'SERVER_ARGS';
 
 export const SET_ATTACH_SESS_ID = 'SET_ATTACH_SESS_ID';
 
+export const GET_SESSIONS_REQUESTED = 'GET_SESSIONS_REQUESTED';
+export const GET_SESSIONS_DONE = 'GET_SESSIONS_DONE';
+
 export const ServerTypes = {
   local: 'local',
   remote: 'remote',
@@ -374,5 +377,19 @@ export function setSavedServerParams () {
     if (server) {
       dispatch({type: SET_SERVER, server, serverType});
     }
+  };
+}
+
+export function getRunningSessions (host, port, ssl) {
+  return (dispatch) => {
+    dispatch({type: GET_SESSIONS_REQUESTED});
+    ipcRenderer.send('appium-client-get-sessions', {host, port, ssl});
+    ipcRenderer.once('appium-client-get-sessions-response', (evt, e) => {
+      const res = JSON.parse(e.res);
+      dispatch({type: GET_SESSIONS_DONE, sessions: res.value});
+    });
+    ipcRenderer.once('appium-client-get-sessions-fail', () => {
+      dispatch({type: GET_SESSIONS_DONE});
+    });
   };
 }
