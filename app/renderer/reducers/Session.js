@@ -193,6 +193,7 @@ export default function session (state = INITIAL_STATE, action) {
     case GET_SESSIONS_REQUESTED:
       return {
         ...state,
+        attachSessId: undefined,
         gettingSessions: true,
       };
 
@@ -200,6 +201,7 @@ export default function session (state = INITIAL_STATE, action) {
       return {
         ...state,
         gettingSessions: false,
+        attachSessId: (action.sessions && action.sessions.length > 0) ? action.sessions[0].id : undefined,
         runningAppiumSessions: action.sessions || [],
       };
 
