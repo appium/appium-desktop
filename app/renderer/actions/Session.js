@@ -330,8 +330,9 @@ export function setAttachSessId (attachSessId) {
  * Change the server type
  */
 export function changeServerType (serverType) {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     dispatch({type: CHANGE_SERVER_TYPE, serverType});
+    getRunningSessions()(dispatch, getState);
   };
 }
 
@@ -341,6 +342,7 @@ export function changeServerType (serverType) {
 export function setServerParam (name, value) {
   return (dispatch, getState) => {
     dispatch({type: SET_SERVER_PARAM, serverType: getState().session.serverType, name, value});
+    getRunningSessions()(dispatch, getState);
   };
 }
 
@@ -380,16 +382,26 @@ export function setSavedServerParams () {
   };
 }
 
-export function getRunningSessions (host, port, ssl) {
-  return (dispatch) => {
+export function getRunningSessions () {
+  return (dispatch, getState) => {
+    // Get currently running sessions for this server
+    const state = getState().session;
+    const server = state.server;
+    const serverType = state.serverType;
+    const serverInfo = server[serverType];
+
     dispatch({type: GET_SESSIONS_REQUESTED});
-    ipcRenderer.send('appium-client-get-sessions', {host, port, ssl});
-    ipcRenderer.once('appium-client-get-sessions-response', (evt, e) => {
-      const res = JSON.parse(e.res);
-      dispatch({type: GET_SESSIONS_DONE, sessions: res.value});
-    });
-    ipcRenderer.once('appium-client-get-sessions-fail', () => {
+    if (serverType !== 'sauce' && serverType !== 'testobject') {
+      ipcRenderer.send('appium-client-get-sessions', {host: serverInfo.hostname, port: serverInfo.port});
+      ipcRenderer.once('appium-client-get-sessions-response', (evt, e) => {
+        const res = JSON.parse(e.res);
+        dispatch({type: GET_SESSIONS_DONE, sessions: res.value});
+      });
+      ipcRenderer.once('appium-client-get-sessions-fail', () => {
+        dispatch({type: GET_SESSIONS_DONE});
+      });
+    } else {
       dispatch({type: GET_SESSIONS_DONE});
-    });
+    }
   };
 }
