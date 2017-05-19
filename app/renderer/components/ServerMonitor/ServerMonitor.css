@@ -125,6 +125,7 @@
 .button-container button {
   padding: 8px;
   margin-right: 8px;
+  height: auto;
 }
 
 .term .timestamp {
