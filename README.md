@@ -142,13 +142,14 @@ the Appium Desktop Inspector.
 
 #### Attach to an Existing Session
 
-If you click on the "Attach to Session..." tab, you'll be able to enter
-a session ID of a currently-running session. That session should be running on
-the server details you specified in the server type section above. Attaching to
-an existing session is possible because the Inspector is just an Appium client.
-This could be useful if you want to debug the middle of a running test. When
-you quit the Inspector window of an existing session, Appium Desktop will not
-quit the session as it does normally.
+If you click on the "Attach to Session..." tab, you can select an existing 
+session from a list of currently running sessions on your selected server, or you 
+can input a session ID of a currently-running session.  That session should be 
+running on the server details you specified in the server type section above. 
+Attaching to an existing session is possible because the Inspector is just an 
+Appium client. This could be useful if you want to debug the middle of a running 
+test. When you quit the Inspector window of an existing session, Appium Desktop 
+will not quit the session as it does normally.
 
 ### The Inspector
 

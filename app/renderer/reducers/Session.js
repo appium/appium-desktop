@@ -7,6 +7,7 @@ import { NEW_SESSION_REQUESTED, NEW_SESSION_BEGAN, NEW_SESSION_DONE,
         SWITCHED_TABS, SAVE_AS_MODAL_REQUESTED, HIDE_SAVE_AS_MODAL_REQUESTED, SET_SAVE_AS_TEXT,
         DELETE_SAVED_SESSION_REQUESTED, DELETE_SAVED_SESSION_DONE,
         CHANGE_SERVER_TYPE, SET_SERVER_PARAM, SET_SERVER, SET_ATTACH_SESS_ID,
+        GET_SESSIONS_REQUESTED, GET_SESSIONS_DONE,
         ServerTypes } from '../actions/Session';
 
 // Make sure there's always at least one cap
@@ -28,6 +29,8 @@ const INITIAL_STATE = {
   }],
 
   isCapsDirty: true,
+  gettingSessions: false,
+  runningAppiumSessions: [],
 };
 
 let nextState;
@@ -186,6 +189,20 @@ export default function session (state = INITIAL_STATE, action) {
 
     case SESSION_LOADING_DONE:
       return omit(state, 'sessionLoading');
+
+    case GET_SESSIONS_REQUESTED:
+      return {
+        ...state,
+        gettingSessions: true,
+      };
+
+    case GET_SESSIONS_DONE:
+      return {
+        ...state,
+        gettingSessions: false,
+        attachSessId: (action.sessions && action.sessions.length > 0 && !state.attachSessId) ? action.sessions[0].id : state.attachSessId,
+        runningAppiumSessions: action.sessions || [],
+      };
 
     default:
       return {...state};

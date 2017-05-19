@@ -1,21 +1,44 @@
 import React, { Component } from 'react';
-import { Form, Input, Card } from 'antd';
+import { Form, Card, Select, Button, Row, Col } from 'antd';
 import SessionCSS from './Session.css';
 
 const FormItem = Form.Item;
 
+function formatCaps (caps) {
+  let importantCaps = [caps.app, caps.platformName, caps.deviceName];
+  if (caps.automationName) {
+    importantCaps.push(caps.automationName);
+  }
+  return importantCaps.join(', ').trim();
+}
+
 export default class AttachToSession extends Component {
 
   render () {
-    let {attachSessId, setAttachSessId} = this.props;
+    let {attachSessId, setAttachSessId, runningAppiumSessions, getRunningSessions} = this.props;
     return (<Form>
       <FormItem>
         <Card>
-          <p className={SessionCSS.localDesc}>If you have an already-running session of the above server type, you can attach an inspector to it directly.<br/>Simply enter the session ID in the box below.</p>
+          <p className={SessionCSS.localDesc}>If you have an already-running session of the above server type, you can attach an inspector to it directly.<br/>Select the Session ID in the dropdown below.</p>
         </Card>
       </FormItem>
       <FormItem>
-        <Input placeholder='1234-5789-1234-57890' addonBefore="Session ID" value={attachSessId} onChange={(e) => setAttachSessId(e.target.value)} size="large" />
+        <Row>
+          <Col span={23}>
+            <Select showSearch 
+              mode='combobox'
+              notFoundContent='None found'
+              value={attachSessId}
+              onChange={(value) => setAttachSessId(value)}>
+              {runningAppiumSessions.map((session) => <Select.Option key={session.id} value={session.id}>
+                <div>{session.id} -- {formatCaps(session.capabilities)}</div>
+              </Select.Option>)}
+            </Select>
+          </Col>
+          <Col span={1}>
+            <Button onClick={getRunningSessions} icon='reload' />
+          </Col>
+        </Row>
       </FormItem>
     </Form>);
   }

@@ -13,11 +13,12 @@ const FormItem = Form.Item;
 export default class Session extends Component {
 
   componentWillMount () {
-    const {setLocalServerParams, getSavedSessions, setSavedServerParams} = this.props;
+    const {setLocalServerParams, getSavedSessions, setSavedServerParams, getRunningSessions} = this.props;
     (async function () {
       await getSavedSessions();
       await setSavedServerParams();
       await setLocalServerParams();
+      getRunningSessions();
     })();
   }
 

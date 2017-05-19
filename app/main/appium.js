@@ -8,6 +8,7 @@ import wd from 'wd';
 import Bluebird from 'bluebird';
 import settings from '../settings';
 import autoUpdaterController from './auto-updater';
+import request from 'request-promise';
 
 const LOG_SEND_INTERVAL_MS = 250;
 const isDev = process.env.NODE_ENV === 'development';
@@ -304,6 +305,18 @@ function connectClientMethodListener () {
   });
 }
 
+function connectGetSessionsListener () {
+  ipcMain.on('appium-client-get-sessions', async (evt, data) => {
+    const {host, port, ssl} = data;
+    try {
+      const res = await request(`http${ssl ? 's' : ''}://${host}:${port}/wd/hub/sessions`);
+      evt.sender.send('appium-client-get-sessions-response', {res});
+    } catch (e) {
+      evt.sender.send('appium-client-get-sessions-fail');
+    }
+  });
+}
+
 function initializeIpc (win) {
   // listen for 'start-server' from the renderer
   connectStartServer(win);
@@ -314,6 +327,7 @@ function initializeIpc (win) {
   connectGetDefaultArgs();
   connectCreateNewSession(win);
   connectClientMethodListener(win);
+  connectGetSessionsListener();
 
   autoUpdaterController.setMainWindow(win);
   autoUpdaterController.checkForUpdates();
