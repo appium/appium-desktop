@@ -31,6 +31,13 @@ body {
   margin-right: 10%;
 }
 
+.inner-button {
+  position: absolute;
+  top: 0;
+  right: 4px;
+  z-index: 1000;
+}
+
 body::-webkit-scrollbar {
   width: 0px;
   background: transparent;
