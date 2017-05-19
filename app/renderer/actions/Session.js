@@ -3,6 +3,7 @@ import settings from '../../settings';
 import { v4 as UUID } from 'uuid';
 import { push } from 'react-router-redux';
 import { notification } from 'antd';
+import { debounce } from 'lodash';
 
 export const NEW_SESSION_REQUESTED = 'NEW_SESSION_REQUESTED';
 export const NEW_SESSION_BEGAN = 'NEW_SESSION_BEGAN';
@@ -340,9 +341,10 @@ export function changeServerType (serverType) {
  * Set a server parameter (host, port, etc...)
  */
 export function setServerParam (name, value) {
+  const debounceGetRunningSessions = debounce(getRunningSessions(), 500);
   return (dispatch, getState) => {
     dispatch({type: SET_SERVER_PARAM, serverType: getState().session.serverType, name, value});
-    getRunningSessions()(dispatch, getState);
+    debounceGetRunningSessions(dispatch, getState);
   };
 }
 

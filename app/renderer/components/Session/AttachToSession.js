@@ -26,6 +26,7 @@ export default class AttachToSession extends Component {
         <Row>
           <Col span={23}>
             <Select showSearch 
+              mode='combobox'
               notFoundContent='None found'
               value={attachSessId}
               onChange={(value) => setAttachSessId(value)}>
