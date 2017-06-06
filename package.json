@@ -95,7 +95,7 @@
   "dependencies": {
     "ansi-to-html": "0.5",
     "antd": "2.10.1",
-    "appium": "1.6.4",
+    "appium": "1.6.5",
     "bluebird": "3.x",
     "css-modules-require-hook": "4.x",
     "electron-debug": "1.x",
