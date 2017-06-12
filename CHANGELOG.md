@@ -1,3 +1,15 @@
+## [1.1.0-beta.2](https://github.com/appium/appium-desktop/compare/v1.1.0-beta.2...v1.1.0-beta.1) (2017-05-12)
+
+### Changes
+* Fix: Previous version had wrong Appium Version on Mac (1.6.4 instead of 1.6.5)
+
+## [1.1.0-beta.1](https://github.com/appium/appium-desktop/compare/v1.0.0...v1.1.0-beta.1) (2017-05-08)
+
+### Changes
+* Feature: Updated to Appium 1.6.5 (#208)
+* Feature: Show a list of currently running sessions when attaching sessions (#196)
+* Fix: Pegged ANTD version to prevent errors (#198) 
+
 ## [1.0.0](https://github.com/appium/appium-desktop/compare/v1.0.0-beta.6...v1.0.0) (2017-04-07)
 
 ### Changes
