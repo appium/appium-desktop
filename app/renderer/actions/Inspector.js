@@ -5,7 +5,7 @@ import { showError } from './Session';
 import { callClientMethod } from './shared';
 import { getOptimalXPath } from '../util';
 
-export const SET_SOURCE_AND_SCREENSHOT = 'SET_SOURCE';
+export const SET_SOURCE_AND_SCREENSHOT = 'SET_SOURCE_AND_SCREENSHOT';
 export const SESSION_DONE = 'SESSION_DONE';
 export const SELECT_ELEMENT = 'SELECT_ELEMENT';
 export const UNSELECT_ELEMENT = 'UNSELECT_ELEMENT';
@@ -119,9 +119,9 @@ export function applyClientMethod (params) {
   return async (dispatch) => {
     try {
       dispatch({type: METHOD_CALL_REQUESTED});
-      let {source, screenshot, result} = await callClientMethod(params.methodName, params.args, params.xpath);
+      let {source, screenshot, result, sourceError, screenshotError} = await callClientMethod(params.methodName, params.args, params.xpath);
       dispatch({type: METHOD_CALL_DONE});
-      dispatch({type: SET_SOURCE_AND_SCREENSHOT, source: xmlToJSON(source), screenshot});
+      dispatch({type: SET_SOURCE_AND_SCREENSHOT, source: source && xmlToJSON(source), screenshot, sourceError, screenshotError});
       return result;
     } catch (error) {
       let methodName = params.methodName === 'click' ? 'tap' : params.methodName;

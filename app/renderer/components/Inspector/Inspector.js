@@ -27,7 +27,7 @@ export default class Inspector extends Component {
   }
 
   render () {
-    const {screenshot, selectedElement = {}, applyClientMethod, quitSession} = this.props;
+    const {screenshot, screenshotError, selectedElement = {}, applyClientMethod, quitSession} = this.props;
     const {path} = selectedElement;
 
     let actions = <span>
@@ -45,7 +45,8 @@ export default class Inspector extends Component {
     return <div className={InspectorStyles['inspector-container']}>
       <div className={InspectorStyles['screenshot-container']}>
         {screenshot && <Screenshot {...this.props} />}
-        {!screenshot &&
+        {screenshotError && `Could not obtain screenshot: ${screenshotError}`}
+        {!screenshot && !screenshotError &&
           <Spin size="large" spinning={true}>
             <div className={InspectorStyles.screenshotBox} />
           </Spin>

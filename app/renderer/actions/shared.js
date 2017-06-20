@@ -11,10 +11,10 @@ if (ipcRenderer) {
    * When we hear back from the main process, resolve the promise
    */
   ipcRenderer.on('appium-client-command-response', (evt, resp) => {
-    const {source, screenshot, result, uuid} = resp;
+    const {source, screenshot, result, screenshotError, sourceError, uuid} = resp;
     let promise = clientMethodPromises[uuid];
     if (promise) {
-      promise.resolve({source, screenshot, result});
+      promise.resolve({source, screenshot, result, screenshotError, sourceError});
       delete clientMethodPromises[uuid];
     }
   });
