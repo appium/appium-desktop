@@ -295,7 +295,7 @@ function connectClientMethodListener () {
           source = await driver.source();
         } catch (e) {
           if (e.status === 6) {
-            renderer.send('appium-session-done', e);
+            throw e;
           }
           sourceError = e;
         }
@@ -307,7 +307,7 @@ function connectClientMethodListener () {
           screenshot = await driver.takeScreenshot();
         } catch (e) {
           if (e.status === 6) {
-            renderer.send('appium-session-done', e);
+            throw e;
           }
           screenshotError = e;
         }
