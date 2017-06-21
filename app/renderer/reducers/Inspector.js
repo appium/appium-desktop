@@ -24,7 +24,9 @@ export default function inspector (state=INITIAL_STATE, action) {
       return {
         ...state,
         source: action.source,
+        sourceError: action.sourceError,
         screenshot: action.screenshot,
+        screenshotError: action.screenshotError,
       };
 
     case QUIT_SESSION_REQUESTED:
@@ -71,7 +73,10 @@ export default function inspector (state=INITIAL_STATE, action) {
       };
 
     case METHOD_CALL_DONE:
-      return omit(state, 'methodCallInProgress');
+      return {
+        ...state,
+        methodCallInProgress: false,
+      };
 
     case SET_FIELD_VALUE:
       return {

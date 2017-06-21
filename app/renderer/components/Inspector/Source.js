@@ -50,7 +50,7 @@ export default class Source extends Component {
   }
 
   render () {
-    const {source, setExpandedPaths, expandedPaths, selectedElement = {}} = this.props;
+    const {source, sourceError, setExpandedPaths, expandedPaths, selectedElement = {}} = this.props;
     const {path} = selectedElement;
 
     // Recursives through the source and renders a TreeNode for an element
@@ -75,8 +75,11 @@ export default class Source extends Component {
           {recursive(source)}
         </Tree>
       }
-      {!source &&
+      {!source && !sourceError &&
         <i>Gathering initial app source...</i>
+      }
+      {
+        sourceError && `Could not obtain source: ${sourceError}`
       }
     </div>;
   }

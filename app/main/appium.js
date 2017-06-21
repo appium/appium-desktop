@@ -288,10 +288,30 @@ function connectClientMethodListener () {
         // Give method time to finish altering the source before getting source and screenshot
         await Bluebird.delay(500);
 
-        // Send back the new source and screenshot
-        source = await driver.source();
-        screenshot = await driver.takeScreenshot();
-        renderer.send('appium-client-command-response', {source, screenshot, uuid, result});
+        // Try getting the source
+        let source;
+        let sourceError;
+        try {
+          source = await driver.source();
+        } catch (e) {
+          if (e.status === 6) {
+            throw e;
+          }
+          sourceError = e;
+        }
+
+        // Try getting the screenshot
+        let screenshot;
+        let screenshotError;
+        try {
+          screenshot = await driver.takeScreenshot();
+        } catch (e) {
+          if (e.status === 6) {
+            throw e;
+          }
+          screenshotError = e;
+        }
+        renderer.send('appium-client-command-response', {source, screenshot, uuid, result, sourceError, screenshotError});
       }
 
     } catch (e) {
@@ -299,7 +319,6 @@ function connectClientMethodListener () {
       if (e.status === 6) {
         renderer.send('appium-session-done', e);
       }
-      console.log('reporting error', {e, uuid});
       renderer.send('appium-client-command-response-error', {e, uuid});
     }
   });
