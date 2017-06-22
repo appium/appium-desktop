@@ -4,6 +4,7 @@ import { push } from 'react-router-redux';
 import { showError } from './Session';
 import { callClientMethod } from './shared';
 import { getOptimalXPath } from '../util';
+import frameworks from '../client-frameworks';
 
 export const SET_SOURCE_AND_SCREENSHOT = 'SET_SOURCE_AND_SCREENSHOT';
 export const SESSION_DONE = 'SESSION_DONE';
@@ -19,6 +20,13 @@ export const SHOW_SEND_KEYS_MODAL = 'SHOW_SEND_KEYS_MODAL';
 export const HIDE_SEND_KEYS_MODAL = 'HIDE_SEND_KEYS_MODAL';
 export const QUIT_SESSION_REQUESTED = 'QUIT_SESSION_REQUESTED';
 export const QUIT_SESSION_DONE = 'QUIT_SESSION_DONE';
+
+export const START_RECORDING = 'START_RECORDING';
+export const PAUSE_RECORDING = 'PAUSE_RECORDING';
+export const CLEAR_RECORDING = 'CLEAR_RECORDING';
+export const CLOSE_RECORDER = 'CLOSE_RECORDER';
+export const SET_ACTION_FRAMEWORK = 'SET_ACTION_FRAMEWORK';
+export const RECORD_ACTION = 'RECORD_ACTION';
 
 
 // Attributes on nodes that we know are unique to the node
@@ -116,10 +124,21 @@ export function unselectHoveredElement (path) {
  * Requests a method call on appium
  */
 export function applyClientMethod (params) {
-  return async (dispatch) => {
+  return async (dispatch, getState) => {
+    let isRecording = getState().inspector.isRecording;
     try {
       dispatch({type: METHOD_CALL_REQUESTED});
       let {source, screenshot, result, sourceError, screenshotError} = await callClientMethod(params.methodName, params.args, params.xpath);
+      if (isRecording) {
+        // for now just add a fake recorded step of 'finding'
+        // the element we are going to interact with. in the
+        // future we'll want to adjust this to use the locator
+        // strategy we recommend to the user, not just xpath
+        recordAction('findElement', ['xpath', params.xpath])(dispatch);
+        // now record the actual action
+        let args = params.args || [];
+        recordAction(params.methodName, args)(dispatch);
+      }
       dispatch({type: METHOD_CALL_DONE});
       dispatch({type: SET_SOURCE_AND_SCREENSHOT, source: source && xmlToJSON(source), screenshot, sourceError, screenshotError});
       return result;
@@ -167,5 +186,44 @@ export function quitSession () {
     await applyClientMethod({methodName: 'quit'})(dispatch);
     dispatch({type: QUIT_SESSION_DONE});
     dispatch(push('/session'));
+  };
+}
+
+export function startRecording () {
+  return (dispatch) => {
+    dispatch({type: START_RECORDING});
+  };
+}
+
+export function pauseRecording () {
+  return (dispatch) => {
+    dispatch({type: PAUSE_RECORDING});
+  };
+}
+
+export function clearRecording () {
+  return (dispatch) => {
+    dispatch({type: CLEAR_RECORDING});
+  };
+}
+
+export function setActionFramework (framework) {
+  return (dispatch) => {
+    if (!frameworks[framework]) {
+      throw new Error(`Framework '${framework}' not supported`);
+    }
+    dispatch({type: SET_ACTION_FRAMEWORK, framework});
+  };
+}
+
+export function recordAction (action, params) {
+  return (dispatch) => {
+    dispatch({type: RECORD_ACTION, action, params});
+  };
+}
+
+export function closeRecorder () {
+  return (dispatch) => {
+    dispatch({type: CLOSE_RECORDER});
   };
 }

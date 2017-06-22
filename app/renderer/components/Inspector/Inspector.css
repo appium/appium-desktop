@@ -64,8 +64,21 @@
     min-width: 300px;
 }
 
-.inspector-container .controls-card {
+.inspector-container .controls-card, .inspector-container .recorded-actions {
     margin-bottom: 12px;
+}
+
+.inspector-container .controls-card {
+    min-height: 60px;
+}
+
+.inspector-container .controls-card {
+    min-height: 60px;
+}
+
+.inspector-container .recorded-actions {
+    flex: 1;
+    min-height: 150px;
 }
 
 .inspector-container .controls-card :global(.ant-card-body) {
@@ -73,15 +86,24 @@
     flex-direction: row;
     align-items: center;
     justify-content: center;
+    height: 100%;
 }
 
 .inspector-container .controls-card :global(.ant-card-body) button {
-  margin-left: 10px;
+    margin-left: 10px;
 }
 
-.inspector-container .source-tree-card :global(.ant-card-body) {
+.inspector-container .recorded-actions button {
+    margin-left: 10px;
+}
+
+.inspector-container .recorded-actions :global(.ant-card-body), .inspector-container .source-tree-card :global(.ant-card-body) {
     overflow: scroll;
-    flex: 1;
+    height: 100%;
+}
+
+.inspector-container .source-tree-card {
+    flex: 2;
 }
 
 .inspector-container .source-tree-card :global(.ant-card-body::-webkit-scrollbar) {
@@ -121,15 +143,27 @@
 }
 
 .elementActions {
-  margin-bottom: 20px;
+    margin-bottom: 20px;
 }
 
 .sourceTag {
-  color: #7d2020;
-  font-weight: normal
+    color: #7d2020;
+    font-weight: normal
 }
 
 .sourceAttrName {
-  color: #864da1;
-  font-style: italic;
+    color: #864da1;
+    font-style: italic;
 }
+
+.no-recorded-actions {
+    font-style: italic;
+    margin-bottom: 20px;
+}
+
+.recorded-code {
+    font-family: monospace;
+    white-space: pre;
+    margin-bottom: 20px;
+}
+

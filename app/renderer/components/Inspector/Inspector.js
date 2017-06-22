@@ -6,6 +6,7 @@ import SelectedElement from './SelectedElement';
 import Source from './Source';
 import SourceScrollButtons from './SourceScrollButtons';
 import InspectorStyles from './Inspector.css';
+import RecordedActions from './RecordedActions';
 
 export default class Inspector extends Component {
 
@@ -27,7 +28,11 @@ export default class Inspector extends Component {
   }
 
   render () {
-    const {screenshot, screenshotError, selectedElement = {}, applyClientMethod, quitSession} = this.props;
+    const {screenshot, screenshotError, selectedElement = {},
+           applyClientMethod, quitSession, isRecording,
+           showRecord, recordedActions, actionFramework,
+           startRecording, pauseRecording, setActionFramework,
+           clearRecording, closeRecorder} = this.props;
     const {path} = selectedElement;
 
     let actions = <div>
@@ -40,6 +45,21 @@ export default class Inspector extends Component {
       <Button icon='close' onClick={() => quitSession()} size="small">
         Quit
       </Button>
+      {!isRecording &&
+       <Button icon="eye-o" onClick={startRecording} size="small">Record</Button>
+      }
+      {isRecording &&
+       <Button icon="pause" onClick={pauseRecording} size="small">Pause Recording</Button>
+      }
+    </div>;
+
+    let recorderActions = <div>
+      {!!recordedActions.length &&
+        <Button icon="delete" onClick={clearRecording} size="small">Clear Actions</Button>
+      }
+      {!isRecording &&
+        <Button icon="close" onClick={closeRecorder} size="small">Close</Button>
+      }
     </div>;
 
     return <div className={InspectorStyles['inspector-container']}>
@@ -57,6 +77,15 @@ export default class Inspector extends Component {
          className={InspectorStyles['controls-card']}>
           {actions}
         </Card>
+        {showRecord &&
+          <Card
+           title={<span><Icon type="code-o" /> Recorded Actions</span>}
+           className={InspectorStyles['recorded-actions']}
+           extra={recorderActions}
+          >
+            <RecordedActions {...this.props} />
+          </Card>
+        }
         <Card
          title={<span><Icon type="file-text" /> App Source</span>}
          className={InspectorStyles['source-tree-card']}>
