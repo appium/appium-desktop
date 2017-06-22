@@ -30,7 +30,7 @@ export default class Inspector extends Component {
     const {screenshot, screenshotError, selectedElement = {}, applyClientMethod, quitSession} = this.props;
     const {path} = selectedElement;
 
-    let actions = <span>
+    let actions = <div>
       <Button icon='arrow-left' onClick={() => applyClientMethod({methodName: 'back'})} size="small" >
         Back
       </Button>
@@ -40,7 +40,7 @@ export default class Inspector extends Component {
       <Button icon='close' onClick={() => quitSession()} size="small">
         Quit
       </Button>
-    </span>;
+    </div>;
 
     return <div className={InspectorStyles['inspector-container']}>
       <div className={InspectorStyles['screenshot-container']}>
@@ -54,8 +54,11 @@ export default class Inspector extends Component {
       </div>
       <div className={InspectorStyles['source-tree-container']} ref={(div) => this.container = div} >
         <Card
+         className={InspectorStyles['controls-card']}>
+          {actions}
+        </Card>
+        <Card
          title={<span><Icon type="file-text" /> App Source</span>}
-         extra={actions}
          className={InspectorStyles['source-tree-card']}>
           <Source {...this.props} />
         </Card>

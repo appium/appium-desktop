@@ -37,6 +37,8 @@
     min-width: 380px;
     padding-bottom: 1em;
     padding-left: 1em;
+    display: flex;
+    flex-flow: column;
 }
 
 .inspector-container .source-tree-container .scroll-buttons {
@@ -62,22 +64,29 @@
     min-width: 300px;
 }
 
+.inspector-container .controls-card {
+    margin-bottom: 12px;
+}
+
+.inspector-container .controls-card :global(.ant-card-body) {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.inspector-container .controls-card :global(.ant-card-body) button {
+  margin-left: 10px;
+}
+
 .inspector-container .source-tree-card :global(.ant-card-body) {
     overflow: scroll;
-    height: 100%;
+    flex: 1;
 }
 
 .inspector-container .source-tree-card :global(.ant-card-body::-webkit-scrollbar) {
     background: transparent;
     width: 14px;
-}
-
-.inspector-container .source-tree-card :global(.ant-card-extra) {
-    top: 14px;
-}
-
-.inspector-container .source-tree-card :global(.ant-card-extra) button {
-  margin-left: 10px;
 }
 
 .inspector-container .source-tree-container .source-tree-card {
