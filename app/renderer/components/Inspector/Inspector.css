@@ -165,7 +165,8 @@
 
 .recorded-code {
     font-family: monospace;
-    white-space: pre;
+    white-space: pre-wrap;
+    word-break: break-all;
     margin-bottom: 20px;
 }
 
