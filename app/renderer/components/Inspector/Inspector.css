@@ -97,7 +97,7 @@
     min-height: 150px;
 }
 
-.inspector-main .recorded-actions button {
+.inspector-main .recorded-actions :global(.ant-btn-group) {
     margin-left: 10px;
 }
 

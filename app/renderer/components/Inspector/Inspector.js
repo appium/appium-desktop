@@ -1,15 +1,13 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import { Card, Icon, Button, Spin, Select, Tooltip } from 'antd';
+import { Card, Icon, Button, Spin, Tooltip } from 'antd';
 import Screenshot from './Screenshot';
 import SelectedElement from './SelectedElement';
 import Source from './Source';
 import SourceScrollButtons from './SourceScrollButtons';
 import InspectorStyles from './Inspector.css';
 import RecordedActions from './RecordedActions';
-import frameworks from '../../client-frameworks';
 
-const Option = Select.Option;
 const ButtonGroup = Button.Group;
 
 export default class Inspector extends Component {
@@ -34,42 +32,9 @@ export default class Inspector extends Component {
 
   render () {
     const {screenshot, screenshotError, selectedElement = {},
-           applyClientMethod, quitSession, isRecording,
-           showRecord, recordedActions, actionFramework,
-           startRecording, pauseRecording, setActionFramework,
-           clearRecording, closeRecorder, showBoilerplate,
-           toggleShowBoilerplate} = this.props;
+      applyClientMethod, quitSession, isRecording, showRecord, startRecording,
+      pauseRecording} = this.props;
     const {path} = selectedElement;
-
-    let frameworkOpts = Object.keys(frameworks).map((f) => <Option value={f}>
-      {frameworks[f].readableName}
-    </Option>);
-    let boilerplateType = showBoilerplate ? "primary" : "default";
-    let recorderActions = <div>
-      {!!recordedActions.length &&
-        <Select defaultValue={actionFramework} onChange={setActionFramework}
-         className={InspectorStyles['framework-dropdown']} size="small">
-          {frameworkOpts}
-        </Select>
-      }
-      {!!recordedActions.length &&
-        <Tooltip title="Show/Hide Boilerplate Code">
-          <Button onClick={toggleShowBoilerplate} icon="file-text"
-           size="small" type={boilerplateType}
-          />
-        </Tooltip>
-      }
-      {!!recordedActions.length &&
-        <Tooltip title="Clear Actions">
-          <Button icon="delete" onClick={clearRecording} size="small" />
-        </Tooltip>
-      }
-      {!isRecording &&
-        <Tooltip title="Close Recorder">
-          <Button icon="close" onClick={closeRecorder} size="small" />
-        </Tooltip>
-      }
-    </div>;
 
     let main = <div className={InspectorStyles['inspector-main']}>
       <div className={InspectorStyles['screenshot-container']}>
@@ -83,13 +48,7 @@ export default class Inspector extends Component {
       </div>
       <div className={InspectorStyles['source-tree-container']} ref={(div) => this.container = div} >
         {showRecord &&
-          <Card
-           title={<span><Icon type="code-o" /> Recorder</span>}
-           className={InspectorStyles['recorded-actions']}
-           extra={recorderActions}
-          >
-            <RecordedActions {...this.props} />
-          </Card>
+          <RecordedActions {...this.props} />
         }
         <Card
          title={<span><Icon type="file-text" /> App Source</span>}
