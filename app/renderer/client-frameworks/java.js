@@ -3,7 +3,7 @@ import Framework from './framework';
 export default class JavaFramework extends Framework {
 
   get name () {
-    return "Java";
+    return "Java - JUnit";
   }
 
   get language () {
@@ -28,6 +28,10 @@ export default class JavaFramework extends Framework {
 
   codeFor_click () {
     return `${this.lastAssignedVar}.click();`;
+  }
+
+  codeFor_clear () {
+    return `${this.lastAssignedVar}.clear();`;
   }
 
   codeFor_sendKeys (text) {

@@ -30,6 +30,10 @@ export default class JsWdFramework extends Framework {
     return `await ${this.lastAssignedVar}.click();`;
   }
 
+  codeFor_clear () {
+    return `await ${this.lastAssignedVar}.clear();`;
+  }
+
   codeFor_sendKeys (text) {
     return `await ${this.lastAssignedVar}.sendKeys(${JSON.stringify(text)});`;
   }

@@ -98,6 +98,7 @@ export default class SelectedElement extends Component {
       <Row justify="center" type="flex" align="middle" gutter={10} className={styles.elementActions}>
         <Col><Button onClick={() => applyClientMethod({methodName: 'click', xpath})}>Tap</Button></Col>
         <Col><Button onClick={() => showSendKeysModal()}>Send Keys</Button></Col>
+        <Col><Button onClick={() => applyClientMethod({methodName: 'clear', xpath})}>Clear</Button></Col>
       </Row>
       {findDataSource.length > 0 && <Table columns={findColumns} dataSource={findDataSource} size="small" pagination={false} />}
       <br />
