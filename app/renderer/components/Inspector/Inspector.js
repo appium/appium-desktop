@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import { Card, Icon, Button, Spin, Select, Checkbox } from 'antd';
+import { Card, Icon, Button, Spin, Select, Tooltip } from 'antd';
 import Screenshot from './Screenshot';
 import SelectedElement from './SelectedElement';
 import Source from './Source';
@@ -40,22 +40,26 @@ export default class Inspector extends Component {
            toggleShowBoilerplate} = this.props;
     const {path} = selectedElement;
 
-    let actions = <ButtonGroup size="small">
-      <Button icon='arrow-left' onClick={() => applyClientMethod({methodName: 'back'})}>
-        Back
-      </Button>
-      <Button icon='reload' onClick={() => applyClientMethod({methodName: 'source'})}>
-        Refresh
-      </Button>
+    let actions = <ButtonGroup size="large">
+      <Tooltip title="Back">
+        <Button icon='arrow-left' onClick={() => applyClientMethod({methodName: 'back'})}/>
+      </Tooltip>
+      <Tooltip title="Refresh Source & Screenshot">
+        <Button icon='reload' onClick={() => applyClientMethod({methodName: 'source'})}/>
+      </Tooltip>
       {!isRecording &&
-       <Button icon="eye-o" onClick={startRecording}>Record</Button>
+       <Tooltip title="Start Recording">
+        <Button icon="eye-o" onClick={startRecording}/>
+       </Tooltip>
       }
       {isRecording &&
-       <Button icon="pause" onClick={pauseRecording}>Pause Recording</Button>
+       <Tooltip title="Pause Recording">
+         <Button icon="pause" onClick={pauseRecording}/>
+       </Tooltip>
       }
-      <Button icon='close' onClick={() => quitSession()}>
-        Quit
-      </Button>
+      <Tooltip title="Quit Session & Close Inspector">
+        <Button icon='close' onClick={() => quitSession()}/>
+      </Tooltip>
     </ButtonGroup>;
 
 
@@ -69,14 +73,21 @@ export default class Inspector extends Component {
         {frameworkOpts}
       </Select>
       {!!recordedActions.length &&
-        <Button onClick={toggleShowBoilerplate} icon="file-text"
-         size="small" type={boilerplateType}>Boilerplate</Button>
+        <Tooltip title="Show/Hide Boilerplate Code">
+          <Button onClick={toggleShowBoilerplate} icon="file-text"
+           size="small" type={boilerplateType}
+          />
+        </Tooltip>
       }
       {!!recordedActions.length &&
-        <Button icon="delete" onClick={clearRecording} size="small">Clear</Button>
+        <Tooltip title="Clear Actions">
+          <Button icon="delete" onClick={clearRecording} size="small" />
+        </Tooltip>
       }
       {!isRecording &&
-        <Button icon="close" onClick={closeRecorder} size="small"></Button>
+        <Tooltip title="Close Recorder">
+          <Button icon="close" onClick={closeRecorder} size="small" />
+        </Tooltip>
       }
     </div>;
 

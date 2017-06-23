@@ -126,11 +126,13 @@ export function unselectHoveredElement (path) {
  */
 export function applyClientMethod (params) {
   return async (dispatch, getState) => {
-    let isRecording = getState().inspector.isRecording;
+    let isRecording = params.methodName !== 'quit' &&
+                      params.methodName !== 'source' &&
+                      getState().inspector.isRecording;
     try {
       dispatch({type: METHOD_CALL_REQUESTED});
       let {source, screenshot, result, sourceError, screenshotError} = await callClientMethod(params.methodName, params.args, params.xpath);
-      if (isRecording && params.methodName !== 'source') {
+      if (isRecording) {
         // for now just add a fake recorded step of 'finding'
         // the element we are going to interact with. in the
         // future we'll want to adjust this to use the locator
