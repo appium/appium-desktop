@@ -6,9 +6,19 @@ class JsWdFramework extends Framework {
     return "js";
   }
 
-  get boilerplate () {
-    // TODO fill out boilerplate for script initialization
-    return "";
+  wrapWithBoilerplate (code) {
+    let str = "";
+    str += "// Requires the admc/wd client library\n" +
+           "// npm install -g wd\n\n" +
+           "// Then paste this into a .js file and run with Node 7.6+\n\n";
+    str += "const wd = require('wd');\n\n" +
+           "async function main () {\n" +
+           "  let driver = wd.promiseChainRemote();\n" +
+           "  await driver.init(caps);\n";
+    str += this.indent(code, 2) + "\n";
+    str += "}\n\n" +
+           "main().catch(console.log);\n";
+    return str;
   }
 
   codeFor_findAndAssign (strategy, locator, localVar) {

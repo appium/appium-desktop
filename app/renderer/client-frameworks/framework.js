@@ -25,15 +25,24 @@ export default class Framework {
     this.actions.push({action, params});
   }
 
-  get boilerplate () {
-    throw new Error("Must implement boilerplate getter");
+  wrapWithBoilerplate () {
+    throw new Error("Must implement wrapWithBoilerplate");
+  }
+
+  indent (str, spaces) {
+    let lines = str.split("\n");
+    let spaceStr = "";
+    for (let i = 0; i < spaces; i++) {
+      spaceStr += " ";
+    }
+    return lines
+      .filter((l) => !!l.trim())
+      .map((l) => `${spaceStr}${l}`)
+      .join("\n");
   }
 
   getCodeString (includeBoilerplate = false) {
     let str = "";
-    if (includeBoilerplate) {
-      str += this.boilerplate;
-    }
     for (let {action, params} of this.actions) {
       let genCodeFn = `codeFor_${action}`;
       if (!this[genCodeFn]) {
@@ -43,6 +52,9 @@ export default class Framework {
       if (code) {
         str += `${code}\n`;
       }
+    }
+    if (includeBoilerplate) {
+      return this.wrapWithBoilerplate(str);
     }
     return str;
   }

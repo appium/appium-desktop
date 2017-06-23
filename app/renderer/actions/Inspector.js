@@ -27,6 +27,7 @@ export const CLEAR_RECORDING = 'CLEAR_RECORDING';
 export const CLOSE_RECORDER = 'CLOSE_RECORDER';
 export const SET_ACTION_FRAMEWORK = 'SET_ACTION_FRAMEWORK';
 export const RECORD_ACTION = 'RECORD_ACTION';
+export const SET_SHOW_BOILERPLATE = 'SET_SHOW_BOILERPLATE';
 
 
 // Attributes on nodes that we know are unique to the node
@@ -229,5 +230,12 @@ export function recordAction (action, params) {
 export function closeRecorder () {
   return (dispatch) => {
     dispatch({type: CLOSE_RECORDER});
+  };
+}
+
+export function toggleShowBoilerplate () {
+  return (dispatch, getState) => {
+    const show = !getState().inspector.showBoilerplate;
+    dispatch({type: SET_SHOW_BOILERPLATE, show});
   };
 }

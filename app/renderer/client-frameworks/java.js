@@ -6,9 +6,12 @@ class JavaFramework extends Framework {
     return "java";
   }
 
-  get boilerplate () {
+  wrapWithBoilerplate (code) {
     // TODO fill out boilerplate for script initialization
-    return "";
+    let str = "";
+    str += "// Java boilerplate. Assumes all packages are accessible\n";
+    str += code;
+    return str;
   }
 
   codeFor_findAndAssign (strategy, locator, localVar) {

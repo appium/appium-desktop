@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import { Card, Icon, Button, Spin, Select } from 'antd';
+import { Card, Icon, Button, Spin, Select, Checkbox } from 'antd';
 import Screenshot from './Screenshot';
 import SelectedElement from './SelectedElement';
 import Source from './Source';
@@ -36,7 +36,8 @@ export default class Inspector extends Component {
            applyClientMethod, quitSession, isRecording,
            showRecord, recordedActions, actionFramework,
            startRecording, pauseRecording, setActionFramework,
-           clearRecording, closeRecorder} = this.props;
+           clearRecording, closeRecorder, showBoilerplate,
+           toggleShowBoilerplate} = this.props;
     const {path} = selectedElement;
 
     let actions = <ButtonGroup size="small">
@@ -61,11 +62,16 @@ export default class Inspector extends Component {
     let frameworkOpts = Object.keys(frameworks).map((f) => <Option value={f}>
       {frameworks[f].readableName}
     </Option>);
+    let boilerplateType = showBoilerplate ? "primary" : "default";
     let recorderActions = <div>
       <Select defaultValue={actionFramework} onChange={setActionFramework}
        className={InspectorStyles['framework-dropdown']} size="small">
         {frameworkOpts}
       </Select>
+      {!!recordedActions.length &&
+        <Button onClick={toggleShowBoilerplate} icon="file-text"
+         size="small" type={boilerplateType}>Boilerplate</Button>
+      }
       {!!recordedActions.length &&
         <Button icon="delete" onClick={clearRecording} size="small">Clear</Button>
       }
@@ -91,7 +97,7 @@ export default class Inspector extends Component {
         </div>
         {showRecord &&
           <Card
-           title={<span><Icon type="code-o" /> Recorded Actions</span>}
+           title={<span><Icon type="code-o" /> Recorder</span>}
            className={InspectorStyles['recorded-actions']}
            extra={recorderActions}
           >

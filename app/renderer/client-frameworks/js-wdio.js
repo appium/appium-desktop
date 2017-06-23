@@ -6,9 +6,14 @@ class JsWdIoFramework extends Framework {
     return "js";
   }
 
-  get boilerplate () {
+  wrapWithBoilerplate (code) {
     // TODO fill out boilerplate for script initialization
-    return "";
+    let str = "";
+    str += "// Requires webdriverio\n" +
+           "// npm install -g webdriverio\n\n" +
+           "// Then paste this into a .js file and run with Node 7+\n\n";
+    str += code;
+    return str;
   }
 
   codeFor_findAndAssign (strategy, locator, localVar) {
