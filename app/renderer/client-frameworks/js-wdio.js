@@ -14,24 +14,25 @@ class JsWdIoFramework extends Framework {
   }
 
   wrapWithBoilerplate (code) {
-    let str = "";
     let host = JSON.stringify(this.host);
     let caps = JSON.stringify(this.caps);
-    str += "// Requires webdriverio\n" +
-           "// (npm install -g webdriverio)\n" +
-           "// Then paste this into a .js file and run with the wdio runner:\n" +
-           "// wdio <file>.js\n\n" +
-           "const wdio = require('webdriverio');\n\n" +
-           `const caps = ${caps};\n\n` +
-           "const driver = wdio.remote({\n" +
-           `  host: ${host},\n` +
-           `  port: ${this.port},\n` +
-           `  desiredCapabilities: caps\n` +
-           "});\n" +
-           "driver.init()\n";
-    str += this.indent(this.chainifyCode(code), 2) + "\n";
-    str += "  .end();\n";
-    return str;
+    return `// Requires the webdriverio client library
+// (npm install webdriverio)
+// Then paste this into a .js file and run with Node:
+// node <file>.js
+
+const wdio = require('webdriverio');
+const caps = ${caps};
+const driver = wdio.remote({
+  host: ${host},
+  port: ${this.port},
+  desiredCapabilities: caps
+});
+
+driver.init()
+${this.indent(this.chainifyCode(code), 2)}
+  .end();
+`;
   }
 
   codeFor_findAndAssign (strategy, locator, localVar) {

@@ -7,22 +7,24 @@ class JsWdFramework extends Framework {
   }
 
   wrapWithBoilerplate (code) {
-    let str = "";
     let host = JSON.stringify(this.host);
     let caps = JSON.stringify(this.caps);
-    str += "// Requires the admc/wd client library\n" +
-           "// npm install -g wd\n\n" +
-           "// Then paste this into a .js file and run with Node 7.6+\n\n";
-    str += "const wd = require('wd');\n\n" +
-           `const driver = wd.promiseChainRemote(${host}, ${this.port});\n` +
-           `const caps = ${caps};\n\n` +
-           "async function main () {\n" +
-           "  await driver.init(caps);\n";
-    str += this.indent(code, 2) + "\n";
-    str += "  await driver.quit();\n" +
-           "}\n\n" +
-           "main().catch(console.log);\n";
-    return str;
+    return `// Requires the admc/wd client library
+// (npm install wd)
+// Then paste this into a .js file and run with Node 7.6+
+
+const wd = require('wd');
+const driver = wd.promiseChainRemote(${host}, ${this.port});
+const caps = ${caps};
+
+async function main () {
+  await driver.init(caps);
+${this.indent(code, 2)}
+  await driver.quit();
+}
+
+main().catch(console.log);
+`;
   }
 
   codeFor_findAndAssign (strategy, locator, localVar) {
