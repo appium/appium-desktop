@@ -1,10 +1,6 @@
 import Framework from './framework';
 
-export default class JavaFramework extends Framework {
-
-  get name () {
-    return "Java - JUnit";
-  }
+class JavaFramework extends Framework {
 
   get language () {
     return "java";
@@ -38,3 +34,7 @@ export default class JavaFramework extends Framework {
     return `${this.lastAssignedVar}.sendKeys(${JSON.stringify(text)});`;
   }
 }
+
+JavaFramework.readableName = "Java - JUnit";
+
+export default JavaFramework;

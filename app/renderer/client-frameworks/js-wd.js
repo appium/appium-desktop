@@ -1,10 +1,6 @@
 import Framework from './framework';
 
-export default class JsWdFramework extends Framework {
-
-  get name () {
-    return "JavaScript - WD";
-  }
+class JsWdFramework extends Framework {
 
   get language () {
     return "js";
@@ -38,3 +34,7 @@ export default class JsWdFramework extends Framework {
     return `await ${this.lastAssignedVar}.sendKeys(${JSON.stringify(text)});`;
   }
 }
+
+JsWdFramework.readableName = "JS - WD";
+
+export default JsWdFramework;

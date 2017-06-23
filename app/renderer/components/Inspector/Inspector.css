@@ -97,7 +97,8 @@
     margin-left: 10px;
 }
 
-.inspector-container .recorded-actions :global(.ant-card-body), .inspector-container .source-tree-card :global(.ant-card-body) {
+.inspector-container .recorded-actions :global(.ant-card-body),
+.inspector-container .source-tree-card :global(.ant-card-body) {
     overflow: scroll;
     height: 100%;
 }
@@ -106,7 +107,8 @@
     flex: 2;
 }
 
-.inspector-container .source-tree-card :global(.ant-card-body::-webkit-scrollbar) {
+.inspector-container .source-tree-card :global(.ant-card-body::-webkit-scrollbar),
+.inspector-container .recorded-actions :global(.ant-card-body::-webkit-scrollbar) {
     background: transparent;
     width: 14px;
 }
@@ -167,3 +169,6 @@
     margin-bottom: 20px;
 }
 
+.framework-dropdown {
+    width: 130px;
+}

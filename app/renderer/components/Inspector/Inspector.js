@@ -1,12 +1,15 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import { Card, Icon, Button, Spin } from 'antd';
+import { Card, Icon, Button, Spin, Select } from 'antd';
 import Screenshot from './Screenshot';
 import SelectedElement from './SelectedElement';
 import Source from './Source';
 import SourceScrollButtons from './SourceScrollButtons';
 import InspectorStyles from './Inspector.css';
 import RecordedActions from './RecordedActions';
+import frameworks from '../../client-frameworks';
+
+const Option = Select.Option;
 
 export default class Inspector extends Component {
 
@@ -53,13 +56,20 @@ export default class Inspector extends Component {
       }
     </div>;
 
-    // TODO add a drop-down language chooser to this set
+
+    let frameworkOpts = Object.keys(frameworks).map((f) => <Option value={f}>
+      {frameworks[f].readableName}
+    </Option>);
     let recorderActions = <div>
+      <Select defaultValue={actionFramework} onChange={setActionFramework}
+       className={InspectorStyles['framework-dropdown']} size="small">
+        {frameworkOpts}
+      </Select>
       {!!recordedActions.length &&
-        <Button icon="delete" onClick={clearRecording} size="small">Clear Actions</Button>
+        <Button icon="delete" onClick={clearRecording} size="small">Clear</Button>
       }
       {!isRecording &&
-        <Button icon="close" onClick={closeRecorder} size="small">Close</Button>
+        <Button icon="close" onClick={closeRecorder} size="small"></Button>
       }
     </div>;
 
