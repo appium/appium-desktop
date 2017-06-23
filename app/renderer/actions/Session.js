@@ -4,6 +4,7 @@ import { v4 as UUID } from 'uuid';
 import { push } from 'react-router-redux';
 import { notification } from 'antd';
 import { debounce } from 'lodash';
+import { setSessionDetails } from './Inspector';
 
 export const NEW_SESSION_REQUESTED = 'NEW_SESSION_REQUESTED';
 export const NEW_SESSION_BEGAN = 'NEW_SESSION_BEGAN';
@@ -212,6 +213,16 @@ export function newSession (caps, attachSessId = null) {
 
     ipcRenderer.once('appium-new-session-ready', () => {
       dispatch({type: SESSION_LOADING_DONE});
+      // pass some state to the inspector that it needs to build recorder
+      // code boilerplate
+      setSessionDetails({
+        desiredCapabilities,
+        host,
+        port,
+        username,
+        accessKey,
+        https,
+      })(dispatch);
       dispatch(push('/inspector'));
     });
 

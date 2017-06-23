@@ -68,10 +68,12 @@ export default class Inspector extends Component {
     </Option>);
     let boilerplateType = showBoilerplate ? "primary" : "default";
     let recorderActions = <div>
-      <Select defaultValue={actionFramework} onChange={setActionFramework}
-       className={InspectorStyles['framework-dropdown']} size="small">
-        {frameworkOpts}
-      </Select>
+      {!!recordedActions.length &&
+        <Select defaultValue={actionFramework} onChange={setActionFramework}
+         className={InspectorStyles['framework-dropdown']} size="small">
+          {frameworkOpts}
+        </Select>
+      }
       {!!recordedActions.length &&
         <Tooltip title="Show/Hide Boilerplate Code">
           <Button onClick={toggleShowBoilerplate} icon="file-text"

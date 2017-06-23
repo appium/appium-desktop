@@ -6,6 +6,7 @@ import { callClientMethod } from './shared';
 import { getOptimalXPath } from '../util';
 import frameworks from '../client-frameworks';
 
+export const SET_SESSION_DETAILS = 'SET_SESSION_DETAILS';
 export const SET_SOURCE_AND_SCREENSHOT = 'SET_SOURCE_AND_SCREENSHOT';
 export const SESSION_DONE = 'SESSION_DONE';
 export const SELECT_ELEMENT = 'SELECT_ELEMENT';
@@ -239,5 +240,11 @@ export function toggleShowBoilerplate () {
   return (dispatch, getState) => {
     const show = !getState().inspector.showBoilerplate;
     dispatch({type: SET_SHOW_BOILERPLATE, show});
+  };
+}
+
+export function setSessionDetails (sessionDetails) {
+  return (dispatch) => {
+    dispatch({type: SET_SESSION_DETAILS, sessionDetails});
   };
 }

@@ -6,13 +6,31 @@ class JsWdIoFramework extends Framework {
     return "js";
   }
 
+  chainifyCode (code) {
+    return code
+      .replace(/let .+ = /g, '')
+      .replace(/(\n|^)(driver|el.+)\./g, '\n.')
+      .replace(/;\n/g, '\n');
+  }
+
   wrapWithBoilerplate (code) {
-    // TODO fill out boilerplate for script initialization
     let str = "";
+    let host = JSON.stringify(this.host);
+    let caps = JSON.stringify(this.caps);
     str += "// Requires webdriverio\n" +
-           "// npm install -g webdriverio\n\n" +
-           "// Then paste this into a .js file and run with Node 7+\n\n";
-    str += code;
+           "// (npm install -g webdriverio)\n" +
+           "// Then paste this into a .js file and run with the wdio runner:\n" +
+           "// wdio <file>.js\n\n" +
+           "const wdio = require('webdriverio');\n\n" +
+           `const caps = ${caps};\n\n` +
+           "const driver = wdio.remote({\n" +
+           `  host: ${host},\n` +
+           `  port: ${this.port},\n` +
+           `  desiredCapabilities: caps\n` +
+           "});\n" +
+           "driver.init()\n";
+    str += this.indent(this.chainifyCode(code), 2) + "\n";
+    str += "  .end();\n";
     return str;
   }
 
@@ -23,7 +41,7 @@ class JsWdIoFramework extends Framework {
       case "accessibility id": locator = `~${locator}`; break;
       default: throw new Error(`Can't handle strategy ${strategy}`);
     }
-    return `let ${localVar} = $(${JSON.stringify(locator)});`;
+    return `let ${localVar} = driver.element(${JSON.stringify(locator)});`;
   }
 
   codeFor_click () {
@@ -31,7 +49,7 @@ class JsWdIoFramework extends Framework {
   }
 
   codeFor_clear () {
-    return `${this.lastAssignedVar}.clear();`;
+    return `${this.lastAssignedVar}.clearElement();`;
   }
 
   codeFor_sendKeys (text) {

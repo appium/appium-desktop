@@ -5,7 +5,8 @@ import { SET_SOURCE_AND_SCREENSHOT, QUIT_SESSION_REQUESTED, QUIT_SESSION_DONE,
   UNSELECT_HOVERED_ELEMENT, METHOD_CALL_REQUESTED, METHOD_CALL_DONE,
   SET_FIELD_VALUE, SET_EXPANDED_PATHS, SHOW_SEND_KEYS_MODAL,
   HIDE_SEND_KEYS_MODAL, START_RECORDING, PAUSE_RECORDING, CLEAR_RECORDING,
-  SET_ACTION_FRAMEWORK, RECORD_ACTION, CLOSE_RECORDER, SET_SHOW_BOILERPLATE
+  SET_ACTION_FRAMEWORK, RECORD_ACTION, CLOSE_RECORDER, SET_SHOW_BOILERPLATE,
+  SET_SESSION_DETAILS
 } from '../actions/Inspector';
 
 const INITIAL_STATE = {
@@ -14,7 +15,8 @@ const INITIAL_STATE = {
   showRecord: false,
   showBoilerplate: false,
   recordedActions: [],
-  actionFramework: 'java'
+  actionFramework: 'java',
+  sessionDetails: {},
 };
 
 /**
@@ -153,6 +155,9 @@ export default function inspector (state=INITIAL_STATE, action) {
 
     case SET_SHOW_BOILERPLATE:
       return {...state, showBoilerplate: action.show};
+
+    case SET_SESSION_DETAILS:
+      return {...state, sessionDetails: action.sessionDetails};
 
     default:
       return {...state};

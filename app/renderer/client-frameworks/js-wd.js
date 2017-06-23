@@ -8,15 +8,19 @@ class JsWdFramework extends Framework {
 
   wrapWithBoilerplate (code) {
     let str = "";
+    let host = JSON.stringify(this.host);
+    let caps = JSON.stringify(this.caps);
     str += "// Requires the admc/wd client library\n" +
            "// npm install -g wd\n\n" +
            "// Then paste this into a .js file and run with Node 7.6+\n\n";
     str += "const wd = require('wd');\n\n" +
+           `const driver = wd.promiseChainRemote(${host}, ${this.port});\n` +
+           `const caps = ${caps};\n\n` +
            "async function main () {\n" +
-           "  let driver = wd.promiseChainRemote();\n" +
            "  await driver.init(caps);\n";
     str += this.indent(code, 2) + "\n";
-    str += "}\n\n" +
+    str += "  await driver.quit();\n" +
+           "}\n\n" +
            "main().catch(console.log);\n";
     return str;
   }
