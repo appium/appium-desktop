@@ -53,6 +53,7 @@ export default class Inspector extends Component {
       }
     </div>;
 
+    // TODO add a drop-down language chooser to this set
     let recorderActions = <div>
       {!!recordedActions.length &&
         <Button icon="delete" onClick={clearRecording} size="small">Clear Actions</Button>

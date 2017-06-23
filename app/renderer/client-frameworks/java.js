@@ -1,13 +1,13 @@
 import Framework from './framework';
 
-export default class JsWdFramework extends Framework {
+export default class JavaFramework extends Framework {
 
   get name () {
-    return "JavaScript - WD";
+    return "Java";
   }
 
   get language () {
-    return "js";
+    return "java";
   }
 
   get boilerplate () {
@@ -23,14 +23,14 @@ export default class JsWdFramework extends Framework {
     if (!suffixMap[strategy]) {
       throw new Error(`Strategy ${strategy} can't be code-gened`);
     }
-    return `let ${localVar} = await driver.elementBy${suffixMap[strategy]}(${JSON.stringify(locator)});`;
+    return `WebElement ${localVar} = driver.findElementBy${suffixMap[strategy]}(${JSON.stringify(locator)});`;
   }
 
   codeFor_click () {
-    return `await ${this.lastAssignedVar}.click();`;
+    return `${this.lastAssignedVar}.click();`;
   }
 
   codeFor_sendKeys (text) {
-    return `await ${this.lastAssignedVar}.sendKeys(${JSON.stringify(text)});`;
+    return `${this.lastAssignedVar}.sendKeys(${JSON.stringify(text)});`;
   }
 }

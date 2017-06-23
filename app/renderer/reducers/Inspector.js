@@ -8,7 +8,7 @@ const INITIAL_STATE = {
   isRecording: false,
   showRecord: false,
   recordedActions: [],
-  actionFramework: 'jsWd'
+  actionFramework: 'java'
 };
 
 /**

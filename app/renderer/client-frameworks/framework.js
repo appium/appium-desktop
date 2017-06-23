@@ -17,6 +17,10 @@ export default class Framework {
     throw new Error("Must implement name getter");
   }
 
+  get language () {
+    throw new Error("Must implement language getter");
+  }
+
   addAction (action, params) {
     this.actions.push({action, params});
   }

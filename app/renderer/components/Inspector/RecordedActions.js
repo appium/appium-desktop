@@ -9,6 +9,7 @@ export default class RecordedActions extends Component {
     // TODO add server connection info to this constructor call
     let framework = new frameworks[actionFramework]("foo", "bar", "baz");
     framework.actions = recordedActions;
+    // TODO use framework.language to set up syntax highlighting
     return <div>
       {!recordedActions.length &&
        <div className={InspectorStyles['no-recorded-actions']}>
