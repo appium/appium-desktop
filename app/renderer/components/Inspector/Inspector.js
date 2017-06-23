@@ -29,6 +29,7 @@ export default class Inspector extends Component {
     }
     this.props.bindAppium();
     this.props.applyClientMethod({methodName: 'source'});
+    this.props.getSavedActionFramework();
   }
 
   render () {

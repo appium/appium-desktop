@@ -5,6 +5,7 @@ import { showError } from './Session';
 import { callClientMethod } from './shared';
 import { getOptimalXPath } from '../util';
 import frameworks from '../client-frameworks';
+import settings from '../../settings';
 
 export const SET_SESSION_DETAILS = 'SET_SESSION_DETAILS';
 export const SET_SOURCE_AND_SCREENSHOT = 'SET_SOURCE_AND_SCREENSHOT';
@@ -27,6 +28,7 @@ export const PAUSE_RECORDING = 'PAUSE_RECORDING';
 export const CLEAR_RECORDING = 'CLEAR_RECORDING';
 export const CLOSE_RECORDER = 'CLOSE_RECORDER';
 export const SET_ACTION_FRAMEWORK = 'SET_ACTION_FRAMEWORK';
+export const SAVED_FRAMEWORK = 'SAVED_FRAMEWORK';
 export const RECORD_ACTION = 'RECORD_ACTION';
 export const SET_SHOW_BOILERPLATE = 'SET_SHOW_BOILERPLATE';
 
@@ -215,11 +217,20 @@ export function clearRecording () {
   };
 }
 
+export function getSavedActionFramework () {
+  return async (dispatch) => {
+    let framework = await settings.get(SAVED_FRAMEWORK);
+    console.log(framework);
+    dispatch({type: SET_ACTION_FRAMEWORK, framework});
+  };
+}
+
 export function setActionFramework (framework) {
-  return (dispatch) => {
+  return async (dispatch) => {
     if (!frameworks[framework]) {
       throw new Error(`Framework '${framework}' not supported`);
     }
+    await settings.set(SAVED_FRAMEWORK, framework);
     dispatch({type: SET_ACTION_FRAMEWORK, framework});
   };
 }

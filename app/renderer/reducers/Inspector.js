@@ -9,13 +9,15 @@ import { SET_SOURCE_AND_SCREENSHOT, QUIT_SESSION_REQUESTED, QUIT_SESSION_DONE,
   SET_SESSION_DETAILS
 } from '../actions/Inspector';
 
+const DEFAULT_FRAMEWORK = 'java';
+
 const INITIAL_STATE = {
   expandedPaths: ['0'],
   isRecording: false,
   showRecord: false,
   showBoilerplate: false,
   recordedActions: [],
-  actionFramework: 'java',
+  actionFramework: DEFAULT_FRAMEWORK,
   sessionDetails: {},
 };
 
@@ -135,7 +137,7 @@ export default function inspector (state=INITIAL_STATE, action) {
     case SET_ACTION_FRAMEWORK:
       return {
         ...state,
-        actionFramework: action.framework
+        actionFramework: action.framework || DEFAULT_FRAMEWORK
       };
 
     case RECORD_ACTION:
