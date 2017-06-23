@@ -41,29 +41,6 @@ export default class Inspector extends Component {
            toggleShowBoilerplate} = this.props;
     const {path} = selectedElement;
 
-    let actions = <ButtonGroup size="large">
-      <Tooltip title="Back">
-        <Button icon='arrow-left' onClick={() => applyClientMethod({methodName: 'back'})}/>
-      </Tooltip>
-      <Tooltip title="Refresh Source & Screenshot">
-        <Button icon='reload' onClick={() => applyClientMethod({methodName: 'source'})}/>
-      </Tooltip>
-      {!isRecording &&
-       <Tooltip title="Start Recording">
-        <Button icon="eye-o" onClick={startRecording}/>
-       </Tooltip>
-      }
-      {isRecording &&
-       <Tooltip title="Pause Recording">
-         <Button icon="pause" onClick={pauseRecording}/>
-       </Tooltip>
-      }
-      <Tooltip title="Quit Session & Close Inspector">
-        <Button icon='close' onClick={() => quitSession()}/>
-      </Tooltip>
-    </ButtonGroup>;
-
-
     let frameworkOpts = Object.keys(frameworks).map((f) => <Option value={f}>
       {frameworks[f].readableName}
     </Option>);
@@ -94,7 +71,7 @@ export default class Inspector extends Component {
       }
     </div>;
 
-    return <div className={InspectorStyles['inspector-container']}>
+    let main = <div className={InspectorStyles['inspector-main']}>
       <div className={InspectorStyles['screenshot-container']}>
         {screenshot && <Screenshot {...this.props} />}
         {screenshotError && `Could not obtain screenshot: ${screenshotError}`}
@@ -105,10 +82,6 @@ export default class Inspector extends Component {
         }
       </div>
       <div className={InspectorStyles['source-tree-container']} ref={(div) => this.container = div} >
-        <div
-         className={InspectorStyles['controls-card']}>
-          {actions}
-        </div>
         {showRecord &&
           <Card
            title={<span><Icon type="code-o" /> Recorder</span>}
@@ -133,6 +106,35 @@ export default class Inspector extends Component {
          {!path && <i>Select an element in the source to begin.</i>}
         </Card>
       </div>
+    </div>;
+
+    let controls = <div className={InspectorStyles['inspector-toolbar']}>
+      <ButtonGroup size="large">
+        <Tooltip title="Back">
+          <Button icon='arrow-left' onClick={() => applyClientMethod({methodName: 'back'})}/>
+        </Tooltip>
+        <Tooltip title="Refresh Source & Screenshot">
+          <Button icon='reload' onClick={() => applyClientMethod({methodName: 'source'})}/>
+        </Tooltip>
+        {!isRecording &&
+         <Tooltip title="Start Recording">
+          <Button icon="eye-o" onClick={startRecording}/>
+         </Tooltip>
+        }
+        {isRecording &&
+         <Tooltip title="Pause Recording">
+           <Button icon="pause" type="danger" onClick={pauseRecording}/>
+         </Tooltip>
+        }
+        <Tooltip title="Quit Session & Close Inspector">
+          <Button icon='close' onClick={() => quitSession()}/>
+        </Tooltip>
+      </ButtonGroup>
+    </div>;
+
+    return <div className={InspectorStyles['inspector-container']}>
+      {controls}
+      {main}
     </div>;
   }
 }
