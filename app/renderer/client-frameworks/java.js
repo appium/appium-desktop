@@ -33,6 +33,10 @@ class JavaFramework extends Framework {
   codeFor_sendKeys (text) {
     return `${this.lastAssignedVar}.sendKeys(${JSON.stringify(text)});`;
   }
+
+  codeFor_back () {
+    return `driver.navigate().back();`;
+  }
 }
 
 JavaFramework.readableName = "Java - JUnit";

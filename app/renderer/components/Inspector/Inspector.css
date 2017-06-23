@@ -68,29 +68,16 @@
     margin-bottom: 12px;
 }
 
-.inspector-container .controls-card {
-    min-height: 60px;
-}
-
-.inspector-container .controls-card {
-    min-height: 60px;
-}
-
 .inspector-container .recorded-actions {
     flex: 1;
     min-height: 150px;
 }
 
-.inspector-container .controls-card :global(.ant-card-body) {
+.inspector-container .controls-card {
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    height: 100%;
-}
-
-.inspector-container .controls-card :global(.ant-card-body) button {
-    margin-left: 10px;
 }
 
 .inspector-container .recorded-actions button {

@@ -33,8 +33,12 @@ class JsWdFramework extends Framework {
   codeFor_sendKeys (text) {
     return `await ${this.lastAssignedVar}.sendKeys(${JSON.stringify(text)});`;
   }
+
+  codeFor_back () {
+    return `await driver.back();`;
+  }
 }
 
-JsWdFramework.readableName = "JS - WD";
+JsWdFramework.readableName = "JS - WD (Promise)";
 
 export default JsWdFramework;

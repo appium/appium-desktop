@@ -10,6 +10,7 @@ import RecordedActions from './RecordedActions';
 import frameworks from '../../client-frameworks';
 
 const Option = Select.Option;
+const ButtonGroup = Button.Group;
 
 export default class Inspector extends Component {
 
@@ -38,23 +39,23 @@ export default class Inspector extends Component {
            clearRecording, closeRecorder} = this.props;
     const {path} = selectedElement;
 
-    let actions = <div>
-      <Button icon='arrow-left' onClick={() => applyClientMethod({methodName: 'back'})} size="small" >
+    let actions = <ButtonGroup size="small">
+      <Button icon='arrow-left' onClick={() => applyClientMethod({methodName: 'back'})}>
         Back
       </Button>
-      <Button icon='reload' onClick={() => applyClientMethod({methodName: 'source'})} size="small">
+      <Button icon='reload' onClick={() => applyClientMethod({methodName: 'source'})}>
         Refresh
       </Button>
-      <Button icon='close' onClick={() => quitSession()} size="small">
-        Quit
-      </Button>
       {!isRecording &&
-       <Button icon="eye-o" onClick={startRecording} size="small">Record</Button>
+       <Button icon="eye-o" onClick={startRecording}>Record</Button>
       }
       {isRecording &&
-       <Button icon="pause" onClick={pauseRecording} size="small">Pause Recording</Button>
+       <Button icon="pause" onClick={pauseRecording}>Pause Recording</Button>
       }
-    </div>;
+      <Button icon='close' onClick={() => quitSession()}>
+        Quit
+      </Button>
+    </ButtonGroup>;
 
 
     let frameworkOpts = Object.keys(frameworks).map((f) => <Option value={f}>
@@ -84,10 +85,10 @@ export default class Inspector extends Component {
         }
       </div>
       <div className={InspectorStyles['source-tree-container']} ref={(div) => this.container = div} >
-        <Card
+        <div
          className={InspectorStyles['controls-card']}>
           {actions}
-        </Card>
+        </div>
         {showRecord &&
           <Card
            title={<span><Icon type="code-o" /> Recorded Actions</span>}

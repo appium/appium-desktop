@@ -129,12 +129,16 @@ export function applyClientMethod (params) {
     try {
       dispatch({type: METHOD_CALL_REQUESTED});
       let {source, screenshot, result, sourceError, screenshotError} = await callClientMethod(params.methodName, params.args, params.xpath);
-      if (isRecording) {
+      if (isRecording && params.methodName !== 'source') {
         // for now just add a fake recorded step of 'finding'
         // the element we are going to interact with. in the
         // future we'll want to adjust this to use the locator
         // strategy we recommend to the user, not just xpath
-        recordAction('findElement', ['xpath', params.xpath])(dispatch);
+        if (params.xpath) {
+          // also make sure we only do this optionally in case we're calling
+          // a global driver method that isn't operating on an element
+          recordAction('findElement', ['xpath', params.xpath])(dispatch);
+        }
         // now record the actual action
         let args = params.args || [];
         recordAction(params.methodName, args)(dispatch);

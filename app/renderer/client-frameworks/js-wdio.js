@@ -32,6 +32,10 @@ class JsWdIoFramework extends Framework {
   codeFor_sendKeys (text) {
     return `${this.lastAssignedVar}.setValue(${JSON.stringify(text)});`;
   }
+
+  codeFor_back () {
+    return `driver.back();`;
+  }
 }
 
 JsWdIoFramework.readableName = "JS - Webdriver.io";
