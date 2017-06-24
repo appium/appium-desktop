@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom';
 import styles from './Inspector.css';
 import { Button, Row, Col, Input, Modal, Table, Alert } from 'antd';
 
+const ButtonGroup = Button.Group;
+
 const STRATEGY_MAPPINGS = {
   name: 'accessibility id',
   "content-desc": 'accessibility id',
@@ -96,9 +98,13 @@ export default class SelectedElement extends Component {
 
     return <div>
       <Row justify="center" type="flex" align="middle" gutter={10} className={styles.elementActions}>
-        <Col><Button onClick={() => applyClientMethod({methodName: 'click', xpath})}>Tap</Button></Col>
-        <Col><Button onClick={() => showSendKeysModal()}>Send Keys</Button></Col>
-        <Col><Button onClick={() => applyClientMethod({methodName: 'clear', xpath})}>Clear</Button></Col>
+        <Col>
+          <ButtonGroup size="small">
+            <Button onClick={() => applyClientMethod({methodName: 'click', xpath})}>Tap</Button>
+            <Button onClick={() => showSendKeysModal()}>Send Keys</Button>
+            <Button onClick={() => applyClientMethod({methodName: 'clear', xpath})}>Clear</Button>
+          </ButtonGroup>
+        </Col>
       </Row>
       {findDataSource.length > 0 && <Table columns={findColumns} dataSource={findDataSource} size="small" pagination={false} />}
       <br />
