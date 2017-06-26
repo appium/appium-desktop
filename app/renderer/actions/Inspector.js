@@ -4,7 +4,7 @@ import { push } from 'react-router-redux';
 import { showError } from './Session';
 import { callClientMethod } from './shared';
 import { getOptimalXPath } from '../util';
-import frameworks from '../client-frameworks';
+import frameworks from '../lib/client-frameworks';
 import settings from '../../settings';
 
 export const SET_SESSION_DETAILS = 'SET_SESSION_DETAILS';
