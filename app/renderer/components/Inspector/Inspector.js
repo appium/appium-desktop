@@ -10,6 +10,9 @@ import RecordedActions from './RecordedActions';
 
 const ButtonGroup = Button.Group;
 
+const MIN_WIDTH = 1080;
+const MIN_HEIGHT = 570;
+
 export default class Inspector extends Component {
 
   constructor () {
@@ -19,12 +22,16 @@ export default class Inspector extends Component {
   }
 
   componentWillMount () {
-    const chromeHeight = 48;
-    if (!this.didInitialResize) {
+    const curHeight = window.innerHeight;
+    const curWidth = window.innerWidth;
+    const needsResize = (curHeight < MIN_HEIGHT) || (curWidth < MIN_WIDTH);
+    if (!this.didInitialResize && needsResize) {
+      const newWidth = curWidth < MIN_WIDTH ? MIN_WIDTH : curWidth;
+      const newHeight = curHeight < MIN_HEIGHT ? MIN_HEIGHT : curHeight;
       // resize width to something sensible for using the inspector on first run
-      window.resizeTo(1080, window.clientHeight - chromeHeight);
-      this.didInitialResize = true;
+      window.resizeTo(newWidth, newHeight);
     }
+    this.didInitialResize = true;
     this.props.bindAppium();
     this.props.applyClientMethod({methodName: 'source'});
     this.props.getSavedActionFramework();
