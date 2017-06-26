@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 ## [1.1.0-beta.3](https://github.com/appium/appium-desktop/compare/v1.1.0-beta.3...v1.1.0-beta.2) (2017-06-26)
+=======
+## [1.1.0-beta.3](https://github.com/appium/appium-desktop/compare/v1.1.0-beta.2...v1.1.0-beta.1) (2017-06-26)
+>>>>>>> Prepare for 1.1.0-beta.3
 
 ### Changes
 * Feature: Can record actions in Java, JS, Python, and Ruby (#224)
