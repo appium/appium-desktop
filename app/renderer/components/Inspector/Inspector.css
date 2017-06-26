@@ -1,27 +1,51 @@
 .inspector-container {
     display: flex;
-    flex-direction: row;
-    padding: 1em 1em 0 1em;
+    flex-direction: column;
     height: 100%;
+}
+
+.inspector-toolbar {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 50px;
+    margin-bottom: 12px;
+    background: linear-gradient(180deg, #e2e2e2, #e0e0e0, 10%, #d6d6d6, 50%, #cacaca);
+    border-top: 1px solid #f5f4f5;
+    border-bottom: 1px solid #a5a4a5;
+    -webkit-app-region: drag;
+}
+
+.inspector-toolbar button {
+    border-color: #cacaca;
+}
+
+.inspector-main {
+    display: flex;
+    flex: 1;
+    flex-direction: row;
+    padding: 0em 1em 0 1em;
     max-width: 100%;
     max-height: 100%;
 }
 
-.inspector-container .screenshot-container {
+.inspector-main .screenshot-container {
   max-width: 500px;
   flex-grow: 1;
   flex-shrink: 2;
   flex-basis: 400px;
 }
 
-.inspector-container .screenshot-container img {
+.inspector-main .screenshot-container img {
     max-width: 100%;
     max-height: 100%;
     border: 1px solid #eee;
     box-shadow: 0px 0px 1px 2px rgba(0, 0, 0, 0.05);
 }
 
-.inspector-container .screenshot-container .screenshotBox {
+.inspector-main .screenshot-container .screenshotBox {
     width: 100%;
     height: 100%;
     text-align: center;
@@ -30,16 +54,18 @@
     overflow: hidden;
 }
 
-.inspector-container .source-tree-container {
+.inspector-main .source-tree-container {
     position: relative;
     flex-grow: 3;
     flex-basis: 550px;
     min-width: 380px;
     padding-bottom: 1em;
     padding-left: 1em;
+    display: flex;
+    flex-flow: column;
 }
 
-.inspector-container .source-tree-container .scroll-buttons {
+.inspector-main .source-tree-container .scroll-buttons {
     position: absolute;
     bottom: 0;
     left: 0;
@@ -48,39 +74,50 @@
     padding-bottom: 1em;
 }
 
-.inspector-container .source-tree-container .scroll-buttons :global(button) {
+.inspector-main .source-tree-container .scroll-buttons :global(button) {
     margin: 1em;
 }
 
-.inspector-container .source-tree-container .scroll-buttons .scroll-right {
+.inspector-main .source-tree-container .scroll-buttons .scroll-right {
     float: right;
 }
 
-.inspector-container .element-detail-container {
+.inspector-main .element-detail-container {
     flex-grow: 2;
     flex-basis: 360px;
     min-width: 300px;
 }
 
-.inspector-container .source-tree-card :global(.ant-card-body) {
+.inspector-main .recorded-actions {
+    margin-bottom: 12px;
+}
+
+.inspector-main .recorded-actions {
+    flex: 1;
+    min-height: 150px;
+}
+
+.inspector-main .recorded-actions :global(.ant-btn-group) {
+    margin-left: 10px;
+}
+
+.inspector-main .recorded-actions :global(.ant-card-body),
+.inspector-main .source-tree-card :global(.ant-card-body) {
     overflow: scroll;
     height: 100%;
 }
 
-.inspector-container .source-tree-card :global(.ant-card-body::-webkit-scrollbar) {
+.inspector-main .source-tree-card {
+    flex: 2;
+}
+
+.inspector-main .source-tree-card :global(.ant-card-body::-webkit-scrollbar),
+.inspector-main .recorded-actions :global(.ant-card-body::-webkit-scrollbar) {
     background: transparent;
     width: 14px;
 }
 
-.inspector-container .source-tree-card :global(.ant-card-extra) {
-    top: 14px;
-}
-
-.inspector-container .source-tree-card :global(.ant-card-extra) button {
-  margin-left: 10px;
-}
-
-.inspector-container .source-tree-container .source-tree-card {
+.inspector-main .source-tree-container .source-tree-card {
     height: 100%;
 }
 
@@ -112,15 +149,31 @@
 }
 
 .elementActions {
-  margin-bottom: 20px;
+    margin-bottom: 20px;
 }
 
 .sourceTag {
-  color: #7d2020;
-  font-weight: normal
+    color: #7d2020;
+    font-weight: normal
 }
 
 .sourceAttrName {
-  color: #864da1;
-  font-style: italic;
+    color: #864da1;
+    font-style: italic;
+}
+
+.no-recorded-actions {
+    font-style: italic;
+    margin-bottom: 20px;
+}
+
+.recorded-code {
+    font-family: monospace;
+    white-space: pre-wrap;
+    word-break: break-all;
+    margin-bottom: 20px;
+}
+
+.framework-dropdown {
+    width: 150px;
 }

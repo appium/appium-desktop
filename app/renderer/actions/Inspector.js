@@ -4,7 +4,10 @@ import { push } from 'react-router-redux';
 import { showError } from './Session';
 import { callClientMethod } from './shared';
 import { getOptimalXPath } from '../util';
+import frameworks from '../lib/client-frameworks';
+import settings from '../../settings';
 
+export const SET_SESSION_DETAILS = 'SET_SESSION_DETAILS';
 export const SET_SOURCE_AND_SCREENSHOT = 'SET_SOURCE_AND_SCREENSHOT';
 export const SESSION_DONE = 'SESSION_DONE';
 export const SELECT_ELEMENT = 'SELECT_ELEMENT';
@@ -19,6 +22,15 @@ export const SHOW_SEND_KEYS_MODAL = 'SHOW_SEND_KEYS_MODAL';
 export const HIDE_SEND_KEYS_MODAL = 'HIDE_SEND_KEYS_MODAL';
 export const QUIT_SESSION_REQUESTED = 'QUIT_SESSION_REQUESTED';
 export const QUIT_SESSION_DONE = 'QUIT_SESSION_DONE';
+
+export const START_RECORDING = 'START_RECORDING';
+export const PAUSE_RECORDING = 'PAUSE_RECORDING';
+export const CLEAR_RECORDING = 'CLEAR_RECORDING';
+export const CLOSE_RECORDER = 'CLOSE_RECORDER';
+export const SET_ACTION_FRAMEWORK = 'SET_ACTION_FRAMEWORK';
+export const SAVED_FRAMEWORK = 'SAVED_FRAMEWORK';
+export const RECORD_ACTION = 'RECORD_ACTION';
+export const SET_SHOW_BOILERPLATE = 'SET_SHOW_BOILERPLATE';
 
 
 // Attributes on nodes that we know are unique to the node
@@ -116,10 +128,27 @@ export function unselectHoveredElement (path) {
  * Requests a method call on appium
  */
 export function applyClientMethod (params) {
-  return async (dispatch) => {
+  return async (dispatch, getState) => {
+    let isRecording = params.methodName !== 'quit' &&
+                      params.methodName !== 'source' &&
+                      getState().inspector.isRecording;
     try {
       dispatch({type: METHOD_CALL_REQUESTED});
       let {source, screenshot, result, sourceError, screenshotError} = await callClientMethod(params.methodName, params.args, params.xpath);
+      if (isRecording) {
+        // for now just add a fake recorded step of 'finding'
+        // the element we are going to interact with. in the
+        // future we'll want to adjust this to use the locator
+        // strategy we recommend to the user, not just xpath
+        if (params.xpath) {
+          // also make sure we only do this optionally in case we're calling
+          // a global driver method that isn't operating on an element
+          recordAction('findElement', ['xpath', params.xpath])(dispatch);
+        }
+        // now record the actual action
+        let args = params.args || [];
+        recordAction(params.methodName, args)(dispatch);
+      }
       dispatch({type: METHOD_CALL_DONE});
       dispatch({type: SET_SOURCE_AND_SCREENSHOT, source: source && xmlToJSON(source), screenshot, sourceError, screenshotError});
       return result;
@@ -167,5 +196,66 @@ export function quitSession () {
     await applyClientMethod({methodName: 'quit'})(dispatch);
     dispatch({type: QUIT_SESSION_DONE});
     dispatch(push('/session'));
+  };
+}
+
+export function startRecording () {
+  return (dispatch) => {
+    dispatch({type: START_RECORDING});
+  };
+}
+
+export function pauseRecording () {
+  return (dispatch) => {
+    dispatch({type: PAUSE_RECORDING});
+  };
+}
+
+export function clearRecording () {
+  return (dispatch) => {
+    dispatch({type: CLEAR_RECORDING});
+  };
+}
+
+export function getSavedActionFramework () {
+  return async (dispatch) => {
+    let framework = await settings.get(SAVED_FRAMEWORK);
+    console.log(framework);
+    dispatch({type: SET_ACTION_FRAMEWORK, framework});
+  };
+}
+
+export function setActionFramework (framework) {
+  return async (dispatch) => {
+    if (!frameworks[framework]) {
+      throw new Error(`Framework '${framework}' not supported`);
+    }
+    await settings.set(SAVED_FRAMEWORK, framework);
+    dispatch({type: SET_ACTION_FRAMEWORK, framework});
+  };
+}
+
+export function recordAction (action, params) {
+  return (dispatch) => {
+    dispatch({type: RECORD_ACTION, action, params});
+  };
+}
+
+export function closeRecorder () {
+  return (dispatch) => {
+    dispatch({type: CLOSE_RECORDER});
+  };
+}
+
+export function toggleShowBoilerplate () {
+  return (dispatch, getState) => {
+    const show = !getState().inspector.showBoilerplate;
+    dispatch({type: SET_SHOW_BOILERPLATE, show});
+  };
+}
+
+export function setSessionDetails (sessionDetails) {
+  return (dispatch) => {
+    dispatch({type: SET_SESSION_DETAILS, sessionDetails});
   };
 }

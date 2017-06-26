@@ -37,6 +37,11 @@
   min-height: 160px;
 }
 
+.serverTabs :global(.ant-tabs-bar) {
+  -webkit-app-region: drag;
+  padding-top: 1em;
+}
+
 .serverTabs :global(.ant-tabs-content) {
   height: 100px;
 }

@@ -133,6 +133,8 @@ export function createNewSessionWindow (win) {
     minHeight: 570,
     title: "Start Session",
     backgroundColor: "#f2f2f2",
+    frame: false,
+    titleBarStyle: 'hidden',
     webPreferences: {
       devTools: true
     }
