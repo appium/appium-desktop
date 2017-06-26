@@ -1,9 +1,6 @@
 export default class Framework {
 
-  constructor (host, port, caps) {
-    if (!host || !port || !caps) {
-      throw new Error("Must initialize with host, port, caps");
-    }
+  constructor (host = "localhost", port = 4723, caps = {}) {
     this.host = host;
     this.port = port;
     this.caps = caps;

@@ -36,7 +36,7 @@ public class SampleTest {
     DesiredCapabilities desiredCapabilities = new DesiredCapabilities();
 ${capStr}
 
-    URL remoteUrl = new URL("http://${this.host}:${this.port}");
+    URL remoteUrl = new URL("http://${this.host}:${this.port}/wd/hub");
 
     driver = new ${cls}(remoteUrl, desiredCapabilities);
   }
