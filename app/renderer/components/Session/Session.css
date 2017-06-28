@@ -39,7 +39,8 @@
 
 .serverTabs :global(.ant-tabs-bar) {
   -webkit-app-region: drag;
-  padding-top: 1em;
+  padding-top: 2em;
+  margin-top: -1em;
 }
 
 .serverTabs :global(.ant-tabs-content) {
