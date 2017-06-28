@@ -35,46 +35,48 @@ export default class Session extends Component {
 
     return <Spin spinning={!!sessionLoading}>
       <div className={SessionStyles['session-container']}>
-        <Tabs activeKey={serverType} onChange={changeServerType} className={SessionStyles.serverTabs}>
-          <TabPane disabled={!server.local.port} tab='Automatic Server' key={ServerTypes.local}>
-            <Form>
-              <FormItem>
-                <Card>
-                  {server.local.port && <p className={SessionStyles.localDesc}>Will use currently-running Appium Desktop server at
-                    <b> http://{server.local.hostname === "0.0.0.0" ? "localhost" : server.local.hostname}:{server.local.port}</b>
-                  </p>}
-                </Card>
-              </FormItem>
-            </Form>
-          </TabPane>
-          <TabPane tab='Custom Server' key={ServerTypes.remote}>
-            <Form>
-              <FormItem>
-                <Input placeholder='127.0.0.1' addonBefore="Remote Host" value={server.remote.hostname} onChange={(e) => setServerParam('hostname', e.target.value)} size="large" />
-              </FormItem>
-              <FormItem>
-                <Input placeholder='4723' addonBefore="Remote Port" value={server.remote.port} onChange={(e) => setServerParam('port', e.target.value)} size="large" />
-              </FormItem>
-            </Form>
-          </TabPane>
-          <TabPane tab={sauceTabHead} key={ServerTypes.sauce}>
-            <Form>
-              <FormItem>
-                <Input placeholder={process.env.SAUCE_USERNAME ? 'Using data found in $SAUCE_USERNAME' : 'your-username'} addonBefore="Sauce Username" value={server.sauce.username} onChange={(e) => setServerParam('username', e.target.value)} />
-              </FormItem>
-              <FormItem>
-                <Input type='password' placeholder={process.env.SAUCE_ACCESS_KEY ? 'Using data found in $SAUCE_ACCESS_KEY' : 'your-access-key'} addonBefore="Sauce Access Key" value={server.sauce.accessKey} onChange={(e) => setServerParam('accessKey', e.target.value)} />
-              </FormItem>
-            </Form>
-          </TabPane>
-          <TabPane tab={testObjectTabHead} key={ServerTypes.testobject}>
-            <Form>
-              <FormItem>
-                <Input type='password' placeholder={process.env.TESTOBJECT_API_KEY ? 'Using data found in $TESTOBJECT_API_KEY' : 'testobject-api-key'} addonBefore="TestObject API Key" value={server.testobject.apiKey} onChange={(e) => setServerParam('apiKey', e.target.value)} />
-              </FormItem>
-            </Form>
-          </TabPane>
-        </Tabs>
+        <div id='serverTypeTabs'>
+          <Tabs activeKey={serverType} onChange={changeServerType} className={SessionStyles.serverTabs}>
+            <TabPane disabled={!server.local.port} tab='Automatic Server' key={ServerTypes.local}>
+              <Form>
+                <FormItem>
+                  <Card>
+                    {server.local.port && <p className={SessionStyles.localDesc}>Will use currently-running Appium Desktop server at
+                      <b> http://{server.local.hostname === "0.0.0.0" ? "localhost" : server.local.hostname}:{server.local.port}</b>
+                    </p>}
+                  </Card>
+                </FormItem>
+              </Form>
+            </TabPane>
+            <TabPane tab='Custom Server' key={ServerTypes.remote}>
+              <Form>
+                <FormItem>
+                  <Input id='customServerHost' placeholder='127.0.0.1' addonBefore="Remote Host" value={server.remote.hostname} onChange={(e) => setServerParam('hostname', e.target.value)} size="large" />
+                </FormItem>
+                <FormItem>
+                  <Input id='customServerPort' placeholder='4723' addonBefore="Remote Port" value={server.remote.port} onChange={(e) => setServerParam('port', e.target.value)} size="large" />
+                </FormItem>
+              </Form>
+            </TabPane>
+            <TabPane tab={sauceTabHead} key={ServerTypes.sauce}>
+              <Form>
+                <FormItem>
+                  <Input id='sauceUsername' placeholder={process.env.SAUCE_USERNAME ? 'Using data found in $SAUCE_USERNAME' : 'your-username'} addonBefore="Sauce Username" value={server.sauce.username} onChange={(e) => setServerParam('username', e.target.value)} />
+                </FormItem>
+                <FormItem>
+                  <Input id='saucePassword' type='password' placeholder={process.env.SAUCE_ACCESS_KEY ? 'Using data found in $SAUCE_ACCESS_KEY' : 'your-access-key'} addonBefore="Sauce Access Key" value={server.sauce.accessKey} onChange={(e) => setServerParam('accessKey', e.target.value)} />
+                </FormItem>
+              </Form>
+            </TabPane>
+            <TabPane tab={testObjectTabHead} key={ServerTypes.testobject}>
+              <Form>
+                <FormItem>
+                  <Input id='testObjectPassword' type='password' placeholder={process.env.TESTOBJECT_API_KEY ? 'Using data found in $TESTOBJECT_API_KEY' : 'testobject-api-key'} addonBefore="TestObject API Key" value={server.testobject.apiKey} onChange={(e) => setServerParam('apiKey', e.target.value)} />
+                </FormItem>
+              </Form>
+            </TabPane>
+          </Tabs>
+        </div>
 
 
         {newSessionBegan && <div key={2}>
