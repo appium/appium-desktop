@@ -1,4 +1,9 @@
-## [1.1.0-beta.3](https://github.com/appium/appium-desktop/compare/v1.1.0-beta.2...v1.1.0-beta.1) (2017-06-26)
+## [1.1.0-beta.4](https://github.com/appium/appium-desktop/compare/v1.1.0-beta.4...v1.1.0-beta.3) (2017-06-26)
+
+### Changes
+* Fix:  Draggable app area and window controls issues in Windows and Linux (#229)
+
+## [1.1.0-beta.3](https://github.com/appium/appium-desktop/compare/v1.1.0-beta.3...v1.1.0-beta.2) (2017-06-26)
 
 ### Changes
 * Fix: Resize inspector if it was previously too small (#225)
