@@ -22,7 +22,7 @@
   "main": "main.js",
   "scripts": {
     "test": "npm run unit-test",
-    "e2e": "mocha ./test/e2e",
+    "e2e": "mocha --compilers js:babel-core/register --require ./node_modules/babel-polyfill/dist/polyfill.min.js ./test/e2e",
     "unit-test": "mocha --compilers js:babel-core/register ./test/unit",
     "lint": "eslint app test *.js",
     "hot-server": "node -r babel-register server.js --color",
@@ -126,6 +126,7 @@
     "xpath": "0.0.24"
   },
   "devDependencies": {
+    "appium-fake-driver": "^0.1.11",
     "asar": "0.x",
     "babel-core": "6.x",
     "babel-eslint": "7.x",
