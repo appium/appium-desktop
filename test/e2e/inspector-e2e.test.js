@@ -44,14 +44,11 @@ describe('inspector window', function () {
 
     // Set the desired capabilities
     await client.waitForExist('#btnAddDesiredCapability');
-    for (let i=0; i<dcaps.length - 1; i++) {
-      await client.click('#btnAddDesiredCapability');
-    }
-    let i =0;
-    for (let [name, value] of dcaps) {
+    for (let i = 0; i < dcaps.length; i++) {
+      const [name, value] = dcaps[i];
       await client.setValue(`#desiredCapabilityName_${i}`, name);
       await client.setValue(`#desiredCapabilityValue_${i}`, value);
-      i++;
+      await client.click('#btnAddDesiredCapability');
     }
 
     // Set the fake driver server and port
