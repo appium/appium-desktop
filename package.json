@@ -39,8 +39,8 @@
     "package-win": "npm run build && build --win --x64",
     "package-linux": "npm run build && build --linux",
     "package-all": "npm run build && build -mwl",
-    "package-ci": "npm run build && build --dir && npm run e2e && build --publish onTagOrDraft",
-    "package-dir": "npm run build && build --dir",
+    "package-e2e-test": "npm run build && build --dir",
+    "package-ci": "npm run build && npm run package-e2e-test && npm run e2e && build --publish onTagOrDraft",
     "postversion": "git pull --tags && git push && git push --tags"
   },
   "build": {
@@ -129,6 +129,7 @@
   "devDependencies": {
     "appium-fake-driver": "^0.1.11",
     "asar": "0.x",
+    "asyncbox": "^2.3.1",
     "babel-core": "6.x",
     "babel-eslint": "7.x",
     "babel-loader": "6.x",

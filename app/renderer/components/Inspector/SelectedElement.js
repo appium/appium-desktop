@@ -100,9 +100,9 @@ export default class SelectedElement extends Component {
       <Row justify="center" type="flex" align="middle" gutter={10} className={styles.elementActions}>
         <Col>
           <ButtonGroup size="small">
-            <Button onClick={() => applyClientMethod({methodName: 'click', xpath})}>Tap</Button>
-            <Button onClick={() => showSendKeysModal()}>Send Keys</Button>
-            <Button onClick={() => applyClientMethod({methodName: 'clear', xpath})}>Clear</Button>
+            <Button id='btnTapElement' onClick={() => applyClientMethod({methodName: 'click', xpath})}>Tap</Button>
+            <Button id='btnSendKeysToElement' onClick={() => showSendKeysModal()}>Send Keys</Button>
+            <Button id='btnClearElement' onClick={() => applyClientMethod({methodName: 'clear', xpath})}>Clear</Button>
           </ButtonGroup>
         </Col>
       </Row>

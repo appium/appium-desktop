@@ -4,6 +4,7 @@ import path from 'path';
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 
+
 const platform = os.platform();
 
 chai.should();
@@ -18,12 +19,12 @@ if (platform === 'linux') {
   appPath = path.join(__dirname, '..', '..', 'release', 'win-ia32-unpacked', 'Appium.exe');
 }
 
-before(function () {
+before(async function () {
   this.timeout(process.env.TRAVIS || process.env.APPVEYOR ? 10 * 60 * 1000 : 30 * 1000);
   this.app = new Application({
     path: appPath,
   });
-  return this.app.start();
+  await this.app.start();
 });
 
 after(function () {
@@ -33,8 +34,10 @@ after(function () {
 });
 
 describe('application launch', function () {
-  it('shows an initial window', async function () {
-    await this.app.client.getWindowCount().should.eventually.equal(1);
+  let initialWindowCount;
+
+  before(async function () {
+    initialWindowCount = await this.app.client.getWindowCount();
   });
 
   it('starts the server and opens a new session window', async function () {
@@ -47,6 +50,6 @@ describe('application launch', function () {
     source.value.indexOf('Welcome to Appium').should.be.above(0);
     client.element('*[class*="button-container"] button').click();
     await client.pause(500);
-    await client.getWindowCount().should.eventually.equal(2);
+    await client.getWindowCount().should.eventually.equal(initialWindowCount + 1);
   });
 });
