@@ -65,7 +65,7 @@ export default class Source extends Component {
       });
     };
 
-    return <div className={InspectorStyles['tree-container']}>
+    return <div id='sourceContainer' className={InspectorStyles['tree-container']}>
       {source &&
         <Tree onExpand={setExpandedPaths}
           autoExpandParent={false}

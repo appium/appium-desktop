@@ -43,7 +43,7 @@ export default class Inspector extends Component {
       pauseRecording} = this.props;
     const {path} = selectedElement;
 
-    let main = <div className={InspectorStyles['inspector-main']}>
+    let main = <div id='screenshotContainer' className={InspectorStyles['inspector-main']}>
       <div className={InspectorStyles['screenshot-container']}>
         {screenshot && <Screenshot {...this.props} />}
         {screenshotError && `Could not obtain screenshot: ${screenshotError}`}
@@ -64,7 +64,7 @@ export default class Inspector extends Component {
         </Card>
         {this.container && <SourceScrollButtons container={this.container} />}
       </div>
-      <div className={`${InspectorStyles['source-tree-container']} ${InspectorStyles['element-detail-container']}`}>
+      <div id='selectedElementContainer' className={`${InspectorStyles['source-tree-container']} ${InspectorStyles['element-detail-container']}`}>
         <Card
          title={<span><Icon type="tag-o" /> Selected Element</span>}
          className={InspectorStyles['selected-element-card']}>
@@ -77,23 +77,23 @@ export default class Inspector extends Component {
     let controls = <div className={InspectorStyles['inspector-toolbar']}>
       <ButtonGroup size="large">
         <Tooltip title="Back">
-          <Button icon='arrow-left' onClick={() => applyClientMethod({methodName: 'back'})}/>
+          <Button id='btnGoBack' icon='arrow-left' onClick={() => applyClientMethod({methodName: 'back'})}/>
         </Tooltip>
         <Tooltip title="Refresh Source & Screenshot">
-          <Button icon='reload' onClick={() => applyClientMethod({methodName: 'source'})}/>
+          <Button id='btnReload' icon='reload' onClick={() => applyClientMethod({methodName: 'source'})}/>
         </Tooltip>
         {!isRecording &&
          <Tooltip title="Start Recording">
-          <Button icon="eye-o" onClick={startRecording}/>
+          <Button id='btnStartRecording' icon="eye-o" onClick={startRecording}/>
          </Tooltip>
         }
         {isRecording &&
          <Tooltip title="Pause Recording">
-           <Button icon="pause" type="danger" onClick={pauseRecording}/>
+           <Button id='btnPause' icon="pause" type="danger" onClick={pauseRecording}/>
          </Tooltip>
         }
         <Tooltip title="Quit Session & Close Inspector">
-          <Button icon='close' onClick={() => quitSession()}/>
+          <Button id='btnClose' icon='close' onClick={() => quitSession()}/>
         </Tooltip>
       </ButtonGroup>
     </div>;

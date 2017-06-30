@@ -61,6 +61,28 @@ npm run build  # prepare resources
 npm start  # start a production version of the app
 ```
 
+### Running tests
+
+To run unit tests, run the command
+
+```bash
+npm test
+```
+
+Before running e2e tests, run the command
+
+```bash
+npm run package-e2e-test
+```
+
+This will create builds in the `release/` folder that are specific for e2e testing. This only needs to be run whenever you make changes to the application.
+
+To run the e2e tests call 
+
+```bash
+npm run e2e
+```
+
 ### Packaging and Releasing
 
 Appium Desktop uses [Electron Builder](https://github.com/electron-userland/electron-builder/) to build app. Read this document for instructions on how to set up your local environment so that you can build and package the app: https://github.com/electron-userland/electron-builder/wiki/Multi-Platform-Build

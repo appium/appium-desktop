@@ -26,15 +26,15 @@ export default class NewSessionForm extends Component {
       onClick={() => this.getLocalFilePath((filepath) => setCapabilityParam(index, 'value', filepath[0]))} />;
 
     switch (cap.type) {
-      case 'text': return <Input placeholder='Value' value={cap.value} onChange={(e) => setCapabilityParam(index, 'value', e.target.value)} size="large"/>;
-      case 'boolean': return <Switch checkedChildren={'true'} unCheckedChildren={'false'}
+      case 'text': return <Input id={`desiredCapabilityValue_${index}`} placeholder='Value' value={cap.value} onChange={(e) => setCapabilityParam(index, 'value', e.target.value)} size="large"/>;
+      case 'boolean': return <Switch id={`desiredCapabilityValue_${index}`} checkedChildren={'true'} unCheckedChildren={'false'}
         placeholder='Value' checked={cap.value} onChange={(value) => setCapabilityParam(index, 'value', value)} />;
-      case 'number': return <Input placeholder='Value' value={cap.value}
+      case 'number': return <Input id={`desiredCapabilityValue_${index}`} placeholder='Value' value={cap.value}
         onChange={(e) => !isNaN(parseInt(e.target.value, 10)) ? setCapabilityParam(index, 'value', parseInt(e.target.value, 10)) : setCapabilityParam(index, 'value', undefined)} size="large"/>;
-      case 'json_object': return <Input type='textarea' rows={4} placeholder='Value' value={cap.value}
+      case 'json_object': return <Input id={`desiredCapabilityValue_${index}`} type='textarea' rows={4} placeholder='Value' value={cap.value}
         onChange={(e) => setCapabilityParam(index, 'value', e.target.value)} size="large"/>;
       case 'file': return <div className={SessionStyles.fileControlWrapper}>
-        <Input placeholder='Value' value={cap.value} addonAfter={buttonAfter} size="large"/>
+        <Input id={`desiredCapabilityValue_${index}`} placeholder='Value' value={cap.value} addonAfter={buttonAfter} size="large"/>
       </div>;
       default:
         throw `Invalid cap type: ${cap.type}`;
@@ -88,7 +88,7 @@ export default class NewSessionForm extends Component {
           {caps.map((cap, index) => {
             return <div key={index} className={SessionStyles['desired-capabilities-form-container']}>
               <FormItem>
-                <Input placeholder='Name' value={cap.name} onChange={(e) => setCapabilityParam(index, 'name', e.target.value)}/>
+                <Input id={`desiredCapabilityName_${index}`} placeholder='Name' value={cap.name} onChange={(e) => setCapabilityParam(index, 'name', e.target.value)}/>
               </FormItem>
               <FormItem>
                 <Select onChange={(val) => this.handleSetType(index, val)} defaultValue={cap.type} size="large" style={{width: 120}}>
@@ -103,13 +103,13 @@ export default class NewSessionForm extends Component {
                 {this.getCapsControl(cap, index)}
               </FormItem>
               <FormItem>
-                <Button {...{disabled: caps.length <= 1}} icon='delete' onClick={() => removeCapability(index)}/>
+                <Button {...{disabled: caps.length <= 1}} icon='delete' onClick={() => remove(index)}/>
               </FormItem>
             </div>;
           })}
           <div className={SessionStyles.capsFormLastRow}>
             <FormItem>
-              <Button icon='plus' onClick={addCapability} className={SessionStyles['add-desired-capability-button']} />
+              <Button id='btnAddDesiredCapability' icon='plus' onClick={addCapability} className={SessionStyles['add-desired-capability-button']} />
             </FormItem>
           </div>
         </Form>
