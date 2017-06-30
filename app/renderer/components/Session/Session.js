@@ -103,7 +103,9 @@ export default class Session extends Component {
           </div>
           { (!isAttaching && capsUUID) && <Button onClick={() => saveSession(caps, {uuid: capsUUID})} disabled={!isCapsDirty}>Save</Button> }
           {!isAttaching && <Button onClick={requestSaveAsModal}>Save As...</Button>}
-          {!isAttaching && <Button type="primary" onClick={() => newSession(caps)} className={SessionStyles['start-session-button']}>Start Session</Button>}
+          {!isAttaching && <Button type="primary" id='btnStartSession' 
+            onClick={() => newSession(caps)} className={SessionStyles['start-session-button']}>Start Session</Button>
+          }
           {isAttaching &&
             <Button type="primary" disabled={!attachSessId} onClick={() => newSession(null, attachSessId)}>
               Attach to Session
