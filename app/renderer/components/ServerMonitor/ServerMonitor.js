@@ -53,7 +53,7 @@ class StartSessionButton extends Component {
   render () {
     const {serverStatus, startSession} = this.props;
     if (serverStatus !== STATUS_STOPPED && serverStatus !== STATUS_STOPPING) {
-      return <Button className={styles.stopButton}
+      return <Button className={styles.stopButton} id='startNewSessionBtn'
               icon="play-circle-o"
              onClick={startSession}>Start New Session</Button>;
     } else {
@@ -134,7 +134,7 @@ export default class ServerMonitor extends Component {
 
 
     return (
-      <div className={styles.container}>
+      <div className={styles.container} id='serverMonitorContainer'>
         <div className={`${styles.bar} ${styles['bar-'+serverStatus]}`}>
           <img src={'images/appium_small_magenta.png'} className={styles.logo} />
           <div className={`${styles.status} ${styles[serverStatus]}`}>
