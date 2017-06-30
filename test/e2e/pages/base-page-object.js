@@ -1,5 +1,3 @@
-import _ from 'lodash';
-
 export default class InspectorPage {
 
   constructor (client) {
@@ -10,7 +8,6 @@ export default class InspectorPage {
   async open (path) {
     const url = await this.client.url();
     this.originalUrl = url.value;
-    console.log('Navigating to ', `${this.originalUrl}/${path}`);
     await this.client.url(`${this.originalUrl}${path}`);
   }
 
