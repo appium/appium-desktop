@@ -2,22 +2,17 @@ import BasePage from './base-page-object';
 
 export default class MainPage extends BasePage {
 
+  static selectors = {
+    startServerButton: '#startServerBtn',
+    startNewSessionButton: '#startNewSessionBtn',
+    serverMonitorContainer: '#serverMonitorContainer',
+  }
+
   constructor (client) {
     super(client);
+    Object.assign(this, MainPage.selectors);
   }
-
-  get startServerButton () {
-    return '#startServerBtn';
-  }
-
-  get startNewSessionButton () {
-    return '#startNewSessionBtn';
-  }
-
-  get serverMonitorContainer () {
-    return '#serverMonitorContainer';
-  }
-
+  
   async startServer () {
     await this.client.click(this.startServerButton);
   }

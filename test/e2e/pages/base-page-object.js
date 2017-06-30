@@ -1,4 +1,4 @@
-export default class InspectorPage {
+export default class BasePage {
 
   constructor (client) {
     this.client = client;

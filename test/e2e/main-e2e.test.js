@@ -36,27 +36,27 @@ after(function () {
 describe('application launch', function () {
   let initialWindowCount;
 
-  let MainPageObject;
+  let main;
   let client;
 
   before(async function () {
     client = this.app.client;
-    MainPageObject = new MainPage(client);
+    main = new MainPage(client);
     initialWindowCount = await this.app.client.getWindowCount();
   });
 
   it('starts the server and opens a new session window', async function () {
     // Start the server
-    await client.waitForExist(MainPageObject.startServerButton);
-    await MainPageObject.startServer();
+    await client.waitForExist(main.startServerButton);
+    await main.startServer();
 
     // Wait for the server monitor container to be present
-    await client.waitForExist(MainPageObject.serverMonitorContainer);
+    await client.waitForExist(main.serverMonitorContainer);
     const source = await client.source();
     source.value.indexOf('Welcome to Appium').should.be.above(0);
 
     // Start a new session and confirm that it opens a new window
-    await MainPageObject.startNewSession();
+    await main.startNewSession();
     await client.pause(500);
     await client.getWindowCount().should.eventually.equal(initialWindowCount + 1);
   });

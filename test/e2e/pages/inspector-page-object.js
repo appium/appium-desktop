@@ -4,60 +4,25 @@ import BasePage from './base-page-object';
 
 export default class InspectorPage extends BasePage {
 
+  static selectors = {
+    customServerHost: '#customServerHost',
+    customServerPort: '#customServerPort',
+    addDesiredCapabilityButton: '#btnAddDesiredCapability',
+    formSubmitButton: '#btnStartSession',
+    inspectorToolbar: 'div[class*=Inspector__inspector-toolbar]',
+    selectedElementBody: '#selectedElementContainer .ant-card-body',
+    tapSelectedElementButton:  '#selectedElementContainer #btnTapElement',
+    sourceTreeNode: '#sourceContainer .ant-tree-node-content-wrapper',
+    recordedActionsPane: 'div[class*=Inspector__recorded-actions]',
+    startRecordingButton: '#btnStartRecording',
+    pauseRecordingButton: '#btnPause',
+    reloadButton: '#btnReload',
+    screenshotLoadingIndicator: '#screenshotContainer .ant-spin-dot',
+  };
+
   constructor (client) {
     super(client);
-  }
-
-  get customServerHost () {
-    return '#customServerHost';
-  }
-
-  get customServerPort () {
-    return '#customServerPort';
-  }
-
-  get addDesiredCapabilityButton () {
-    return '#btnAddDesiredCapability';
-  }
-
-  get formSubmitButton () {
-    return '#btnStartSession';
-  }
-
-  get inspectorToolbar () {
-    return 'div[class*=Inspector__inspector-toolbar]';
-  }
-
-  get selectedElementBody () {
-    return '#selectedElementContainer .ant-card-body';
-  }
-
-  get tapSelectedElementButton () {
-    return '#selectedElementContainer #btnTapElement';
-  }
-
-  get sourceTreeNode () {
-    return '#sourceContainer .ant-tree-node-content-wrapper';
-  }
-
-  get recordedActionsPane () {
-    return 'div[class*=Inspector__recorded-actions]';
-  }
-
-  get startRecordingButton () {
-    return '#btnStartRecording';
-  }
-
-  get pauseRecordingButton () {
-    return '#btnPause';
-  }
-
-  get reloadButton () {
-    return '#btnReload';
-  }
-
-  get screenshotLoadingIndicator () {
-    return '#screenshotContainer .ant-spin-dot';
+    Object.assign(this, InspectorPage.selectors);
   }
 
   desiredCapabilityNameInput (rowIndex) {
