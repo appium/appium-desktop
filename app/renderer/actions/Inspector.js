@@ -32,6 +32,10 @@ export const SAVED_FRAMEWORK = 'SAVED_FRAMEWORK';
 export const RECORD_ACTION = 'RECORD_ACTION';
 export const SET_SHOW_BOILERPLATE = 'SET_SHOW_BOILERPLATE';
 
+export const SHOW_LOCATOR_TEST_MODAL = 'SHOW_LOCATOR_TEST_MODAL';
+export const HIDE_LOCATOR_TEST_MODAL = 'HIDE_LOCATOR_TEST_MODAL';
+export const SET_LOCATOR_TEST_STRATEGY = 'SET_LOCATOR_TEST_STRATEGY';
+export const SET_LOCATOR_TEST_VALUE = 'SET_LOCATOR_TEST_VALUE';
 
 // Attributes on nodes that we know are unique to the node
 const uniqueAttributes = [
@@ -220,7 +224,6 @@ export function clearRecording () {
 export function getSavedActionFramework () {
   return async (dispatch) => {
     let framework = await settings.get(SAVED_FRAMEWORK);
-    console.log(framework);
     dispatch({type: SET_ACTION_FRAMEWORK, framework});
   };
 }
@@ -257,5 +260,17 @@ export function toggleShowBoilerplate () {
 export function setSessionDetails (sessionDetails) {
   return (dispatch) => {
     dispatch({type: SET_SESSION_DETAILS, sessionDetails});
+  };
+}
+
+export function showLocatorTestModal () {
+  return (dispatch) => {
+    dispatch({type: SHOW_LOCATOR_TEST_MODAL});
+  };
+}
+
+export function hideLocatorTestModal () {
+  return (dispatch) => {
+    dispatch({type: HIDE_LOCATOR_TEST_MODAL});
   };
 }
