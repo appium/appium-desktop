@@ -36,6 +36,8 @@ export const SHOW_LOCATOR_TEST_MODAL = 'SHOW_LOCATOR_TEST_MODAL';
 export const HIDE_LOCATOR_TEST_MODAL = 'HIDE_LOCATOR_TEST_MODAL';
 export const SET_LOCATOR_TEST_STRATEGY = 'SET_LOCATOR_TEST_STRATEGY';
 export const SET_LOCATOR_TEST_VALUE = 'SET_LOCATOR_TEST_VALUE';
+export const SEARCHING_FOR_ELEMENTS = 'SEARCHING_FOR_ELEMENTS';
+export const SEARCHING_FOR_ELEMENTS_COMPLETED = 'SEARCHING_FOR_ELEMENTS_COMPLETED';
 
 // Attributes on nodes that we know are unique to the node
 const uniqueAttributes = [
@@ -272,5 +274,27 @@ export function showLocatorTestModal () {
 export function hideLocatorTestModal () {
   return (dispatch) => {
     dispatch({type: HIDE_LOCATOR_TEST_MODAL});
+  };
+}
+
+export function setLocatorTestValue (locatorTestValue) {
+  return (dispatch) => {
+    dispatch({type: SET_LOCATOR_TEST_VALUE, locatorTestValue});
+  };
+}
+
+export function setLocatorTestStrategy (locatorTestStrategy) {
+  return (dispatch) => {
+    dispatch({type: SET_LOCATOR_TEST_STRATEGY, locatorTestStrategy});
+  };
+}
+
+export function searchForElement (locatorTestStrategy, locatorTestValue) {
+  return (dispatch) => {
+    dispatch({type: SEARCHING_FOR_ELEMENTS});
+    // TODO: Call out to appium.js here and have it search for elements
+    setTimeout(() => {
+      dispatch({type: SEARCHING_FOR_ELEMENTS_COMPLETED});
+    }, 2000);
   };
 }

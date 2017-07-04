@@ -6,7 +6,8 @@ import { SET_SOURCE_AND_SCREENSHOT, QUIT_SESSION_REQUESTED, QUIT_SESSION_DONE,
   SET_FIELD_VALUE, SET_EXPANDED_PATHS, SHOW_SEND_KEYS_MODAL,
   HIDE_SEND_KEYS_MODAL, START_RECORDING, PAUSE_RECORDING, CLEAR_RECORDING,
   SET_ACTION_FRAMEWORK, RECORD_ACTION, CLOSE_RECORDER, SET_SHOW_BOILERPLATE, SET_SESSION_DETAILS, 
-  SHOW_LOCATOR_TEST_MODAL, HIDE_LOCATOR_TEST_MODAL, SET_LOCATOR_TEST_STRATEGY, SET_LOCATOR_TEST_VALUE
+  SHOW_LOCATOR_TEST_MODAL, HIDE_LOCATOR_TEST_MODAL, SET_LOCATOR_TEST_STRATEGY, SET_LOCATOR_TEST_VALUE,
+  SEARCHING_FOR_ELEMENTS, SEARCHING_FOR_ELEMENTS_COMPLETED
 } from '../actions/Inspector';
 
 const DEFAULT_FRAMEWORK = 'java';
@@ -20,6 +21,9 @@ const INITIAL_STATE = {
   actionFramework: DEFAULT_FRAMEWORK,
   sessionDetails: {},
   isLocatorTestModalVisible: false,
+  locatorTestStrategy: 'id',
+  locatorTestValue: '',
+  isSearchingForElements: false,
 };
 
 /**
@@ -183,7 +187,20 @@ export default function inspector (state=INITIAL_STATE, action) {
     case SET_LOCATOR_TEST_VALUE:
       return {
         ...state,
-        locatorTestStrategy: action.locatorTestStrategy
+        locatorTestValue: action.locatorTestValue
+      };
+
+    case SEARCHING_FOR_ELEMENTS:
+      return {
+        ...state,
+        isSearchingForElements: true,
+      };
+
+    case SEARCHING_FOR_ELEMENTS_COMPLETED:
+      return {
+        ...state,
+        isLocatorTestModalVisible: false,
+        isSearchingForElements: false,
       };
 
     default:

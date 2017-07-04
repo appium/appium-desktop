@@ -1,19 +1,51 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import { Modal } from 'antd';
+import { Modal, Input, Select, Row, Col, Spin } from 'antd';
 
-/**
- * Absolute positioned divs that overlay the app screenshot and highlight the bounding
- * boxes of the elements in the app
- */
+const { Option } = Select;
+
 export default class LocatorTestModal extends Component {
 
   render () {
-    const {hideLocatorTestModal, isLocatorTestModalVisible} = this.props;
+    const {hideLocatorTestModal, isLocatorTestModalVisible, searchForElement, isSearchingForElements,
+      setLocatorTestValue, locatorTestValue, setLocatorTestStrategy, locatorTestStrategy} = this.props;
+
+    const locatorStrategies = [
+      ['id', 'Id'],
+      ['xpath', 'XPath'],
+      ['name', 'Name'],
+      ['class name', 'Class Name'],
+      ['accessibility id', 'Accessibility ID'],
+      ['-android uiautomator', 'UIAutomator Selector (Android)'],
+      ['-ios predicate string', 'Predicate String (iOS)'],
+      ['-ios class chain', 'Class Chain (iOS)'],
+    ];
 
     return <Modal visible={isLocatorTestModalVisible} 
       okText='Search'
       cancelText='Cancel'
-      onCancel={hideLocatorTestModal}>Locator Test</Modal>;
+      title='Search for element'
+      confirmLoading={isSearchingForElements}
+      onOk={() => searchForElement(locatorTestStrategy, locatorTestValue)}
+      onCancel={hideLocatorTestModal}>
+        <Row>
+          <Col>
+            Locator Strategy:
+            <Select style={{width: '100%'}} 
+              onChange={(value) => setLocatorTestStrategy(value)}
+              value={locatorTestStrategy}>
+              {locatorStrategies.map(([strategyValue, strategyName]) => (
+                <Option key={strategyValue} value={strategyValue}>{strategyName}</Option>
+              ))}
+            </Select>
+          </Col>
+        </Row>
+        <Row>
+          Selector:
+          <Col>
+            <Input onChange={(e) => setLocatorTestValue(e.target.value)} value={locatorTestValue} />
+          </Col>
+        </Row>
+    </Modal>;
   }
 }
