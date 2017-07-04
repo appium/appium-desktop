@@ -38,6 +38,8 @@ export const SET_LOCATOR_TEST_STRATEGY = 'SET_LOCATOR_TEST_STRATEGY';
 export const SET_LOCATOR_TEST_VALUE = 'SET_LOCATOR_TEST_VALUE';
 export const SEARCHING_FOR_ELEMENTS = 'SEARCHING_FOR_ELEMENTS';
 export const SEARCHING_FOR_ELEMENTS_COMPLETED = 'SEARCHING_FOR_ELEMENTS_COMPLETED';
+export const SET_LOCATOR_TEST_ELEMENT = 'SET_LOCATOR_TEST_ELEMENT';
+export const CLEAR_SEARCH_RESULTS = 'CLEAR_SEARCH_RESULTS';
 
 // Attributes on nodes that we know are unique to the node
 const uniqueAttributes = [
@@ -294,5 +296,17 @@ export function searchForElement (locatorTestStrategy, locatorTestValue) {
     dispatch({type: SEARCHING_FOR_ELEMENTS});
     const {result:elements} = await callClientMethod('elements', [locatorTestStrategy, locatorTestValue]);
     dispatch({type: SEARCHING_FOR_ELEMENTS_COMPLETED, elements});
+  };
+}
+
+export function setLocatorTestElement (elementId) {
+  return (dispatch) => {
+    dispatch({type: SET_LOCATOR_TEST_ELEMENT, elementId});
+  };
+}
+
+export function clearSearchResults () {
+  return (dispatch) => {
+    dispatch({type: CLEAR_SEARCH_RESULTS});
   };
 }

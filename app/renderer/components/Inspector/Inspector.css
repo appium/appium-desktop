@@ -178,3 +178,49 @@
 .framework-dropdown {
     width: 150px;
 }
+
+.locator-test-interactions-container {
+    float: right;
+    margin-top: 0.5em;
+}
+
+.locator-test-interactions-container div {
+    display: inline-block;
+    width: 50%;
+    padding: 4px;
+}
+
+.locator-test-interactions-container .send-keys-container {
+    width: 100%;
+}
+
+.locator-test-interactions-container .send-keys-container input {
+    width: 76%;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.locator-test-interactions-container .send-keys-container button {
+    position: absolute;
+    right: 0;
+    width: 25%;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+.locator-test-interactions-container div button, .locator-test-interactions-container div input {
+    width: 100%;
+}
+
+.back-link-container {
+    margin-bottom: 0.5em;
+}
+
+.locator-search-results {
+    width: 100%;
+}
+
+.locator-strategy-selector {
+    width: 100%;
+    margin-bottom: 1em;
+}

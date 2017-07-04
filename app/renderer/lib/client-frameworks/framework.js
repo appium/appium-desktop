@@ -87,4 +87,8 @@ export default class Framework {
     return this.codeFor_findAndAssign(strategy, locator, localVar);
 
   }
+
+  codeFor_clickElement () {
+    return '';
+  }
 }

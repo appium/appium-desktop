@@ -1,14 +1,31 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import { Modal, Input, Select, Row, Col, Spin } from 'antd';
+import { Modal, Input, Select, Row, Col, Button } from 'antd';
+import InspectorStyles from './Inspector.css';
 
 const { Option } = Select;
 
 export default class LocatorTestModal extends Component {
 
+  onSubmit () {
+    const {locatedElements, locatorTestStrategy, locatorTestValue, searchForElement, clearSearchResults, hideLocatorTestModal} = this.props;
+    if (locatedElements) {
+      hideLocatorTestModal();
+      clearSearchResults();
+    } else {
+      searchForElement(locatorTestStrategy, locatorTestValue);
+    }
+  }
+
+  onCancel () {
+    const {hideLocatorTestModal, clearSearchResults} = this.props;
+    hideLocatorTestModal();
+    clearSearchResults();
+  }
+
   render () {
-    const {hideLocatorTestModal, isLocatorTestModalVisible, searchForElement, isSearchingForElements, locatedElements,
-      setLocatorTestValue, locatorTestValue, setLocatorTestStrategy, locatorTestStrategy} = this.props;
+    const {isLocatorTestModalVisible, isSearchingForElements, locatedElements, applyClientMethod,
+      setLocatorTestValue, locatorTestValue, setLocatorTestStrategy, locatorTestStrategy, setLocatorTestElement, locatorTestElement, clearSearchResults} = this.props;
 
     const locatorStrategies = [
       ['id', 'Id'],
@@ -22,16 +39,16 @@ export default class LocatorTestModal extends Component {
     ];
 
     return <Modal visible={isLocatorTestModalVisible} 
-      okText='Search'
+      okText={locatedElements ? 'Done' : 'Search'}
       cancelText='Cancel'
       title='Search for element'
       confirmLoading={isSearchingForElements}
-      onOk={() => searchForElement(locatorTestStrategy, locatorTestValue)}
-      onCancel={hideLocatorTestModal}>
-        <Row>
+      onOk={(() => this.onSubmit()).bind(this)}
+      onCancel={(() => this.onCancel()).bind(this)}>
+        {!locatedElements && <Row>
           <Col>
             Locator Strategy:
-            <Select style={{width: '100%'}} 
+            <Select className={InspectorStyles['locator-strategy-selector']}
               onChange={(value) => setLocatorTestStrategy(value)}
               value={locatorTestStrategy}>
               {locatorStrategies.map(([strategyValue, strategyName]) => (
@@ -39,24 +56,49 @@ export default class LocatorTestModal extends Component {
               ))}
             </Select>
           </Col>
-        </Row>
-        <Row>
+        </Row>}
+        {!locatedElements && <Row>
           Selector:
           <Col>
             <Input onChange={(e) => setLocatorTestValue(e.target.value)} value={locatorTestValue} />
           </Col>
-        </Row>
-        {locatedElements ? <Row>
+        </Row>}
+        {locatedElements && <Row>
+          <p className={InspectorStyles['back-link-container']}>
+            <a onClick={(e) => e.preventDefault() || clearSearchResults()}>&lt;&lt; Back</a>
+          </p>
           Elements (<span>{locatedElements.length}</span>):
-          <Col>
-            <select style={{width:'100%'}} multiple={true}>
+          <Col> 
+            <select className={InspectorStyles['locator-search-results']}
+              multiple='true'
+              onChange={(e) => setLocatorTestElement(e.target.value)} 
+              value={[locatorTestElement]}>
               {locatedElements.map(({value:elementId}) => (
                 <option key={elementId} value={elementId}>{elementId}</option>
               ))}
               {locatedElements.length === 0 && <option disabled>Could not find any elements</option>}
             </select>
+            {locatedElements.length > 0 && <div className={InspectorStyles['locator-test-interactions-container']}>
+              <div>
+                <Button size='small' 
+                  disabled={!locatorTestElement}
+                  onClick={() => applyClientMethod({methodName: 'clickElement', args: [locatorTestElement]})}>Tap Element
+                </Button>
+              </div>
+              <div>
+                <Button size='small'
+                  disabled={!locatorTestElement}
+                  onClick={() => applyClientMethod({methodName: 'clear', args: [locatorTestElement]})}>Clear
+                </Button>
+              </div>
+              <div className={InspectorStyles['send-keys-container']}>
+                <Input size='small' placeholder='Enter keys'/>
+                <Button size='small'
+                  disabled={!locatorTestElement}>Send Keys</Button>
+              </div>
+            </div>}
           </Col>
-        </Row> : null}
+        </Row>}
     </Modal>;
   }
 }
