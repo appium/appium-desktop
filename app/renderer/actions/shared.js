@@ -37,7 +37,7 @@ export function callClientMethod (...params) {
     throw new Error('Cannot call ipcRenderer from main context');
   }
   let opts;
-  if (typeof(params[params.length - 1]) === 'object') {
+  if (params.length === 3 && typeof(params[params.length - 1]) === 'object') {
     opts = params[params.length - 1];
     params = params.slice(params.length - 1);
   }
