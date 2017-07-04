@@ -6,9 +6,25 @@ const { Option } = Select;
 
 export default class LocatorTestModal extends Component {
 
+  onSubmit () {
+    const {locatedElements, locatorTestStrategy, locatorTestValue, searchForElement, clearSearchResults, hideLocatorTestModal} = this.props;
+    if (locatedElements) {
+      hideLocatorTestModal();
+      clearSearchResults();
+    } else {
+      searchForElement(locatorTestStrategy, locatorTestValue);
+    }
+  }
+
+  onCancel () {
+    const {hideLocatorTestModal, clearSearchResults} = this.props;
+    hideLocatorTestModal();
+    clearSearchResults();
+  }
+
   render () {
-    const {hideLocatorTestModal, isLocatorTestModalVisible, searchForElement, isSearchingForElements, locatedElements, applyClientMethod,
-      setLocatorTestValue, locatorTestValue, setLocatorTestStrategy, locatorTestStrategy, setLocatorTestElement, locatorTestElement} = this.props;
+    const {isLocatorTestModalVisible, isSearchingForElements, locatedElements, applyClientMethod,
+      setLocatorTestValue, locatorTestValue, setLocatorTestStrategy, locatorTestStrategy, setLocatorTestElement, locatorTestElement, clearSearchResults} = this.props;
 
     const locatorStrategies = [
       ['id', 'Id'],
@@ -22,13 +38,13 @@ export default class LocatorTestModal extends Component {
     ];
 
     return <Modal visible={isLocatorTestModalVisible} 
-      okText='Search'
+      okText={locatedElements ? 'Done' : 'Search'}
       cancelText='Cancel'
       title='Search for element'
       confirmLoading={isSearchingForElements}
-      onOk={() => searchForElement(locatorTestStrategy, locatorTestValue)}
-      onCancel={hideLocatorTestModal}>
-        <Row>
+      onOk={(() => this.onSubmit()).bind(this)}
+      onCancel={(() => this.onCancel()).bind(this)}>
+        {!locatedElements && <Row>
           <Col>
             Locator Strategy:
             <Select style={{width: '100%'}} 
@@ -39,14 +55,17 @@ export default class LocatorTestModal extends Component {
               ))}
             </Select>
           </Col>
-        </Row>
-        <Row>
+        </Row>}
+        {!locatedElements && <Row>
           Selector:
           <Col>
             <Input onChange={(e) => setLocatorTestValue(e.target.value)} value={locatorTestValue} />
           </Col>
-        </Row>
-        {locatedElements ? <Row>
+        </Row>}
+        {locatedElements && <Row>
+          <p style={{marginBottom:'1em'}}>
+            <a onClick={(e) => e.preventDefault() || clearSearchResults()}>&lt;&lt; Back</a>
+          </p>
           Elements (<span>{locatedElements.length}</span>):
           <Col> 
             <select onChange={(e) => setLocatorTestElement(e.target.value)} value={[locatorTestElement]} style={{width:'100%'}} multiple={true}>
@@ -61,7 +80,7 @@ export default class LocatorTestModal extends Component {
               onClick={() => applyClientMethod({methodName: 'clickElement', args: [locatorTestElement]})}>Tap Element
             </Button>}
           </Col>
-        </Row> : null}
+        </Row>}
     </Modal>;
   }
 }
