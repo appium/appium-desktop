@@ -199,7 +199,7 @@ export default function inspector (state=INITIAL_STATE, action) {
     case SEARCHING_FOR_ELEMENTS_COMPLETED:
       return {
         ...state,
-        isLocatorTestModalVisible: false,
+        locatedElements: action.elements,
         isSearchingForElements: false,
       };
 

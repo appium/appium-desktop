@@ -7,7 +7,7 @@ const { Option } = Select;
 export default class LocatorTestModal extends Component {
 
   render () {
-    const {hideLocatorTestModal, isLocatorTestModalVisible, searchForElement, isSearchingForElements,
+    const {hideLocatorTestModal, isLocatorTestModalVisible, searchForElement, isSearchingForElements, locatedElements,
       setLocatorTestValue, locatorTestValue, setLocatorTestStrategy, locatorTestStrategy} = this.props;
 
     const locatorStrategies = [
@@ -46,6 +46,17 @@ export default class LocatorTestModal extends Component {
             <Input onChange={(e) => setLocatorTestValue(e.target.value)} value={locatorTestValue} />
           </Col>
         </Row>
+        {locatedElements ? <Row>
+          Elements (<span>{locatedElements.length}</span>):
+          <Col>
+            <select style={{width:'100%'}} multiple={true}>
+              {locatedElements.map(({value:elementId}) => (
+                <option key={elementId} value={elementId}>{elementId}</option>
+              ))}
+              {locatedElements.length === 0 && <option disabled>Could not find any elements</option>}
+            </select>
+          </Col>
+        </Row> : null}
     </Modal>;
   }
 }
