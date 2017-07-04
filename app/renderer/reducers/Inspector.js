@@ -7,7 +7,7 @@ import { SET_SOURCE_AND_SCREENSHOT, QUIT_SESSION_REQUESTED, QUIT_SESSION_DONE,
   HIDE_SEND_KEYS_MODAL, START_RECORDING, PAUSE_RECORDING, CLEAR_RECORDING,
   SET_ACTION_FRAMEWORK, RECORD_ACTION, CLOSE_RECORDER, SET_SHOW_BOILERPLATE, SET_SESSION_DETAILS, 
   SHOW_LOCATOR_TEST_MODAL, HIDE_LOCATOR_TEST_MODAL, SET_LOCATOR_TEST_STRATEGY, SET_LOCATOR_TEST_VALUE,
-  SEARCHING_FOR_ELEMENTS, SEARCHING_FOR_ELEMENTS_COMPLETED
+  SEARCHING_FOR_ELEMENTS, SEARCHING_FOR_ELEMENTS_COMPLETED, SET_LOCATOR_TEST_ELEMENT
 } from '../actions/Inspector';
 
 const DEFAULT_FRAMEWORK = 'java';
@@ -193,6 +193,8 @@ export default function inspector (state=INITIAL_STATE, action) {
     case SEARCHING_FOR_ELEMENTS:
       return {
         ...state,
+        locatedElements: null,
+        locatorTestElement: null,
         isSearchingForElements: true,
       };
 
@@ -201,6 +203,12 @@ export default function inspector (state=INITIAL_STATE, action) {
         ...state,
         locatedElements: action.elements,
         isSearchingForElements: false,
+      };
+
+    case SET_LOCATOR_TEST_ELEMENT:
+      return {
+        ...state,
+        locatorTestElement: action.elementId,
       };
 
     default:
