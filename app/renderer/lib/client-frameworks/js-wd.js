@@ -53,6 +53,10 @@ main().catch(console.log);
   codeFor_back () {
     return `await driver.back();`;
   }
+
+  codeFor_clickElement () {
+    return '';
+  }
 }
 
 JsWdFramework.readableName = "JS - WD (Promise)";
