@@ -74,11 +74,25 @@ export default class LocatorTestModal extends Component {
               ))}
               {locatedElements.length === 0 && <option disabled>Could not find any elements</option>}
             </select>
-            {locatedElements.length > 0 && <Button size='small' 
-              disabled={!locatorTestElement} 
-              style={{float: 'right'}}
-              onClick={() => applyClientMethod({methodName: 'clickElement', args: [locatorTestElement]})}>Tap Element
-            </Button>}
+            {locatedElements.length > 0 && <div style={{float: 'right', marginTop: '0.5em'}}>
+              <div>
+                <Button size='small' 
+                  disabled={!locatorTestElement}
+                  onClick={() => applyClientMethod({methodName: 'clickElement', args: [locatorTestElement]})}>Tap Element
+                </Button>
+                <Button size='small'
+                  disabled={!locatorTestElement}
+                  style={{marginLeft: '0.5em'}} 
+                  onClick={() => applyClientMethod({methodName: 'clear', args: [locatorTestElement]})}>Clear
+                </Button>
+              </div>
+              <div>
+                <Input size='small' placeholder='Enter keys' style={{width: '50%'}}/>
+                <Button size='small'
+                  disabled={!locatorTestElement}
+                  style={{marginLeft: '0.5em'}}>Send Keys</Button>
+              </div>
+            </div>}
           </Col>
         </Row>}
     </Modal>;

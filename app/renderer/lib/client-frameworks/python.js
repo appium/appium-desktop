@@ -58,6 +58,10 @@ driver.quit()`;
   codeFor_back () {
     return `driver.back()`;
   }
+
+  codeFor_clickElement () {
+    return '';
+  }
 }
 
 PythonFramework.readableName = "Python";
