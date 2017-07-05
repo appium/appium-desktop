@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { Modal, Input, Select, Row, Col, Button } from 'antd';
+import InspectorStyles from './Inspector.css';
 
 const { Option } = Select;
 
@@ -47,7 +48,7 @@ export default class LocatorTestModal extends Component {
         {!locatedElements && <Row>
           <Col>
             Locator Strategy:
-            <Select style={{width: '100%'}} 
+            <Select className={InspectorStyles['locator-strategy-selector']}
               onChange={(value) => setLocatorTestStrategy(value)}
               value={locatorTestStrategy}>
               {locatorStrategies.map(([strategyValue, strategyName]) => (
@@ -63,34 +64,37 @@ export default class LocatorTestModal extends Component {
           </Col>
         </Row>}
         {locatedElements && <Row>
-          <p style={{marginBottom:'1em'}}>
+          <p className={InspectorStyles['back-link-container']}>
             <a onClick={(e) => e.preventDefault() || clearSearchResults()}>&lt;&lt; Back</a>
           </p>
           Elements (<span>{locatedElements.length}</span>):
           <Col> 
-            <select onChange={(e) => setLocatorTestElement(e.target.value)} value={[locatorTestElement]} style={{width:'100%'}} multiple={true}>
+            <select className={InspectorStyles['locator-search-results']}
+              multiple='true'
+              onChange={(e) => setLocatorTestElement(e.target.value)} 
+              value={[locatorTestElement]}>
               {locatedElements.map(({value:elementId}) => (
                 <option key={elementId} value={elementId}>{elementId}</option>
               ))}
               {locatedElements.length === 0 && <option disabled>Could not find any elements</option>}
             </select>
-            {locatedElements.length > 0 && <div style={{float: 'right', marginTop: '0.5em'}}>
+            {locatedElements.length > 0 && <div className={InspectorStyles['locator-test-interactions-container']}>
               <div>
                 <Button size='small' 
                   disabled={!locatorTestElement}
                   onClick={() => applyClientMethod({methodName: 'clickElement', args: [locatorTestElement]})}>Tap Element
                 </Button>
+              </div>
+              <div>
                 <Button size='small'
                   disabled={!locatorTestElement}
-                  style={{marginLeft: '0.5em'}} 
                   onClick={() => applyClientMethod({methodName: 'clear', args: [locatorTestElement]})}>Clear
                 </Button>
               </div>
-              <div>
-                <Input size='small' placeholder='Enter keys' style={{width: '50%'}}/>
+              <div className={InspectorStyles['send-keys-container']}>
+                <Input size='small' placeholder='Enter keys'/>
                 <Button size='small'
-                  disabled={!locatorTestElement}
-                  style={{marginLeft: '0.5em'}}>Send Keys</Button>
+                  disabled={!locatorTestElement}>Send Keys</Button>
               </div>
             </div>}
           </Col>
