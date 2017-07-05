@@ -12,6 +12,7 @@ export const SET_SOURCE_AND_SCREENSHOT = 'SET_SOURCE_AND_SCREENSHOT';
 export const SESSION_DONE = 'SESSION_DONE';
 export const SELECT_ELEMENT = 'SELECT_ELEMENT';
 export const UNSELECT_ELEMENT = 'UNSELECT_ELEMENT';
+export const SET_SELECTED_ELEMENT_ID = 'SET_SELECTED_ELEMENT_ID';
 export const METHOD_CALL_REQUESTED = 'METHOD_CALL_REQUESTED';
 export const METHOD_CALL_DONE = 'METHOD_CALL_DONE';
 export const SET_FIELD_VALUE = 'SET_FIELD_VALUE';
@@ -95,9 +96,11 @@ export function bindAppium () {
   };
 }
 
+
 export function selectElement (path) {
-  return (dispatch, getState) => {
+  return async (dispatch, getState) => {
     dispatch({type: SELECT_ELEMENT, path});
+    const selectedElement = getState().inspector.selectedElement;
 
     // Expand all of this element's ancestors so that it's visible in the tree
     let {expandedPaths} = getState().inspector;
@@ -109,8 +112,15 @@ export function selectElement (path) {
         expandedPaths.push(path);
       }
     }
-
     dispatch({type: SET_EXPANDED_PATHS, paths: expandedPaths});
+
+    // Get the information about the element
+    const {elementId} = await callClientMethod({
+      strategy: 'xpath', // TODO: Get the optimal strategy + selector
+      selector: selectedElement.xpath,
+    });
+    dispatch({type: SET_SELECTED_ELEMENT_ID, elementId});
+    
   };
 }
 
@@ -142,7 +152,7 @@ export function applyClientMethod (params) {
                       getState().inspector.isRecording;
     try {
       dispatch({type: METHOD_CALL_REQUESTED});
-      let {source, screenshot, result, sourceError, screenshotError} = await callClientMethod(params.methodName, params.args, params.xpath);
+      let {source, screenshot, result, sourceError, screenshotError} = await callClientMethod(params);
       if (isRecording) {
         // for now just add a fake recorded step of 'finding'
         // the element we are going to interact with. in the

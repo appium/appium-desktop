@@ -11,10 +11,10 @@ if (ipcRenderer) {
    * When we hear back from the main process, resolve the promise
    */
   ipcRenderer.on('appium-client-command-response', (evt, resp) => {
-    const {source, screenshot, result, screenshotError, sourceError, uuid} = resp;
+    const {id:elementId, source, screenshot, result, screenshotError, sourceError, uuid} = resp;
     let promise = clientMethodPromises[uuid];
     if (promise) {
-      promise.resolve({source, screenshot, result, screenshotError, sourceError});
+      promise.resolve({elementId, source, screenshot, result, screenshotError, sourceError});
       delete clientMethodPromises[uuid];
     }
   });
@@ -32,18 +32,15 @@ if (ipcRenderer) {
   });
 }
 
-export function callClientMethod (...params) {
+export function callClientMethod (params) {
   if (!ipcRenderer) {
     throw new Error('Cannot call ipcRenderer from main context');
   }
-  let opts;
-  if (params.length === 3 && typeof(params[params.length - 1]) === 'object') {
-    opts = params[params.length - 1];
-    params = params.slice(params.length - 1);
-  }
-  let [methodName, args, xpath] = params;
   let uuid = UUID.v4();
   let promise = new Promise((resolve, reject) => clientMethodPromises[uuid] = {resolve, reject});
-  ipcRenderer.send('appium-client-command-request', {methodName, args, xpath, uuid, opts});
+  ipcRenderer.send('appium-client-command-request', {
+    ...params,
+    uuid,
+  });
   return promise;
 }
