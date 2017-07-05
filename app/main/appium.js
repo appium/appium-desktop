@@ -270,8 +270,7 @@ function connectClientMethodListener () {
       elementId, // Optional. Element being operated on 
       args = [], // Optional. Arguments passed to method
     } = data;
-    console.log(`Handling client method request with method '${methodName}' ` +
-                `and args ${JSON.stringify(args)}`);
+    
     let renderer = evt.sender;
     let driver = extendedDrivers[renderer.id];
 
@@ -290,14 +289,18 @@ function connectClientMethodListener () {
         let res = {};
         if (methodName) {
           if (elementId) {
-            res = await driver.executeElementCommand(elementId, args);
+            console.log(`Handling client method request with method '${methodName}', args ${JSON.stringify(args)} and elementId ${elementId}`);
+            res = await driver.executeElementCommand(elementId, methodName, args);
           } else {
+            console.log(`Handling client method request with method '${methodName}' and args ${JSON.stringify(args)}`);
             res = await driver.executeMethod(methodName, args);
           }
         } else  {
           if (fetchArray) {
+            console.log(`Fetching elements with selector '${selector}' and strategy ${strategy}`);
             res = await driver.fetchElements(strategy, selector);
           } else {
+            console.log(`Fetching an element with selector '${selector}' and strategy ${strategy}`);
             res = await driver.fetchElement(strategy, selector);
           }
         }
@@ -311,8 +314,10 @@ function connectClientMethodListener () {
     } catch (e) {
       // If the status is '6' that means the session has been terminated
       if (e.status === 6) {
+        console.log('Session terminated: e.status === 6');
         renderer.send('appium-session-done', e);
       }
+      console.log('Caught an exception: ', e);
       renderer.send('appium-client-command-response-error', {e, uuid});
     }
   });

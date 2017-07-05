@@ -56,9 +56,9 @@ export default class AppiumDriverExtender {
     return {variableName, variableType, strategy, selector, elements};
   }
 
-  async executeElementCommand (elementId, methodName, args) {
+  async executeElementCommand (elementId, methodName, args = []) {
     const elCache = this.elementCache[elementId];
-    const res = await elCache.el[methodName].apply(args);
+    const res = await elCache.el[methodName].apply(elCache.el, args);
 
     // Give the source/screenshot time to change before taking the screenshot
     await Bluebird.delay(500);
@@ -72,7 +72,7 @@ export default class AppiumDriverExtender {
     };
   }
 
-  async executeMethod (methodName, args) {
+  async executeMethod (methodName, args = []) {
     let res = {};
     if (methodName !== 'source' && methodName !== 'screenshot') {
       res = await this.driver[methodName].apply(this.driver, args);

@@ -71,10 +71,21 @@ export default function inspector (state=INITIAL_STATE, action) {
       return {
         ...state,
         selectedElement: findElementByPath(action.path, state.source),
+        selectedElementId: null,
+        selectedElementVariableName: null,
+        selectedElementVariableType: null,
       };
 
     case UNSELECT_ELEMENT:
       return omit(state, 'selectedElement');
+
+    case SET_SELECTED_ELEMENT_ID:
+      return {
+        ...state,
+        selectedElementId: action.elementId,
+        selectedElementVariableName: action.variableName,
+        selectedElementVariableType: action.variableType,
+      };
 
     case SELECT_HOVERED_ELEMENT:
       return {
@@ -215,12 +226,6 @@ export default function inspector (state=INITIAL_STATE, action) {
       return {
         ...state,
         locatedElements: null,
-      };
-
-    case SET_SELECTED_ELEMENT_ID:
-      return {
-        ...state,
-        selectedElementId: action.elementId,
       };
 
     default:

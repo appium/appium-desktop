@@ -115,11 +115,11 @@ export function selectElement (path) {
     dispatch({type: SET_EXPANDED_PATHS, paths: expandedPaths});
 
     // Get the information about the element
-    const {elementId} = await callClientMethod({
+    const {elementId, variableName, variableType} = await callClientMethod({
       strategy: 'xpath', // TODO: Get the optimal strategy + selector
       selector: selectedElement.xpath,
     });
-    dispatch({type: SET_SELECTED_ELEMENT_ID, elementId});
+    dispatch({type: SET_SELECTED_ELEMENT_ID, elementId, variableName, variableType});
     
   };
 }

@@ -24,14 +24,14 @@ export default class SelectedElement extends Component {
   }
 
   handleSendKeys () {
-    const {sendKeys, applyClientMethod, hideSendKeysModal, selectedElement} = this.props;
-    const {xpath} = selectedElement;
-    applyClientMethod({methodName: 'sendKeys', xpath, args: [sendKeys]});
+    const {sendKeys, applyClientMethod, hideSendKeysModal, selectedElementId:elementId} = this.props;
+    applyClientMethod({methodName: 'sendKeys', elementId, args: [sendKeys]});
     hideSendKeysModal();
   }
 
   render () {
-    const {applyClientMethod, setFieldValue, sendKeys, selectedElement, sendKeysModalVisible, showSendKeysModal, hideSendKeysModal} = this.props;
+    const {applyClientMethod, setFieldValue, sendKeys, selectedElement, sendKeysModalVisible, showSendKeysModal, 
+      hideSendKeysModal, selectedElementId:elementId} = this.props;
     const {attributes, xpath} = selectedElement;
 
     // Translate attributes into an array so we can iterate over them
@@ -100,9 +100,9 @@ export default class SelectedElement extends Component {
       <Row justify="center" type="flex" align="middle" gutter={10} className={styles.elementActions}>
         <Col>
           <ButtonGroup size="small">
-            <Button id='btnTapElement' onClick={() => applyClientMethod({methodName: 'click', xpath})}>Tap</Button>
-            <Button id='btnSendKeysToElement' onClick={() => showSendKeysModal()}>Send Keys</Button>
-            <Button id='btnClearElement' onClick={() => applyClientMethod({methodName: 'clear', xpath})}>Clear</Button>
+            <Button disabled={!elementId} id='btnTapElement' onClick={() => applyClientMethod({methodName: 'click', elementId})}>Tap</Button>
+            <Button disabled={!elementId} id='btnSendKeysToElement' onClick={() => showSendKeysModal()}>Send Keys</Button>
+            <Button disabled={!elementId} id='btnClearElement' onClick={() => applyClientMethod({methodName: 'clear', elementId})}>Clear</Button>
           </ButtonGroup>
         </Col>
       </Row>
