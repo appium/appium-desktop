@@ -301,10 +301,11 @@ export function setLocatorTestStrategy (locatorTestStrategy) {
   };
 }
 
-export function searchForElement (locatorTestStrategy, locatorTestValue) {
+export function searchForElement (strategy, selector) {
   return async (dispatch) => {
     dispatch({type: SEARCHING_FOR_ELEMENTS});
-    const {result:elements} = await callClientMethod('elements', [locatorTestStrategy, locatorTestValue]);
+    let {elements} = await callClientMethod({strategy, selector, fetchArray: true});
+    elements = elements.map((el) => el.id);
     dispatch({type: SEARCHING_FOR_ELEMENTS_COMPLETED, elements});
   };
 }

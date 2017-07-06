@@ -73,7 +73,7 @@ export default class LocatorTestModal extends Component {
               multiple='true'
               onChange={(e) => setLocatorTestElement(e.target.value)} 
               value={[locatorTestElement]}>
-              {locatedElements.map(({value:elementId}) => (
+              {locatedElements.map((elementId) => (
                 <option key={elementId} value={elementId}>{elementId}</option>
               ))}
               {locatedElements.length === 0 && <option disabled>Could not find any elements</option>}
@@ -82,19 +82,20 @@ export default class LocatorTestModal extends Component {
               <div>
                 <Button size='small' 
                   disabled={!locatorTestElement}
-                  onClick={() => applyClientMethod({methodName: 'clickElement', args: [locatorTestElement]})}>Tap Element
+                  onClick={() => applyClientMethod({methodName: 'click', elementId: locatorTestElement})}>Tap Element
                 </Button>
               </div>
               <div>
                 <Button size='small'
                   disabled={!locatorTestElement}
-                  onClick={() => applyClientMethod({methodName: 'clear', args: [locatorTestElement]})}>Clear
+                  onClick={() => applyClientMethod({methodName: 'clear', elementId: locatorTestElement})}>Clear
                 </Button>
               </div>
               <div className={InspectorStyles['send-keys-container']}>
-                <Input size='small' placeholder='Enter keys'/>
+                <Input size='small' placeholder='Enter keys' onChange={(e) => this.setState({...this.state, sendKeys: e.target.value})}/>
                 <Button size='small'
-                  disabled={!locatorTestElement}>Send Keys</Button>
+                  disabled={!locatorTestElement}
+                  onClick={() => applyClientMethod({methodName: 'sendKeys', elementId: locatorTestElement, args: [this.state.sendKeys || '']})}>Send Keys</Button>
               </div>
             </div>}
           </Col>
