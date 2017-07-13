@@ -35,14 +35,18 @@ ${this.indent(this.chainifyCode(code), 2)}
 `;
   }
 
-  codeFor_findAndAssign (strategy, locator, localVar) {
+  codeFor_findAndAssign (strategy, locator, localVar, isArray) {
     // wdio has its own way of indicating the strategy in the locator string
     switch (strategy) {
       case "xpath": break; // xpath does not need to be updated
       case "accessibility id": locator = `~${locator}`; break;
       default: throw new Error(`Can't handle strategy ${strategy}`);
     }
-    return `let ${localVar} = driver.element(${JSON.stringify(locator)});`;
+    if (isArray) {
+      return `let ${localVar} = driver.elements(${JSON.stringify(locator)});`;
+    } else {
+      return `let ${localVar} = driver.element(${JSON.stringify(locator)});`;
+    }
   }
 
   codeFor_click () {

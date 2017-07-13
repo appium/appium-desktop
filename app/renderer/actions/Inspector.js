@@ -304,7 +304,8 @@ export function setLocatorTestStrategy (locatorTestStrategy) {
 export function searchForElement (strategy, selector) {
   return async (dispatch) => {
     dispatch({type: SEARCHING_FOR_ELEMENTS});
-    let {elements} = await callClientMethod({strategy, selector, fetchArray: true});
+    let {elements, variableName, variableType, source, screenshot, result, screenshotError, sourceError} = await callClientMethod({strategy, selector, fetchArray: true});
+    dispatch({type: RECORD_ACTION, action: 'findAndAssign', params: [strategy, selector, variableName, true]});
     elements = elements.map((el) => el.id);
     dispatch({type: SEARCHING_FOR_ELEMENTS_COMPLETED, elements});
   };

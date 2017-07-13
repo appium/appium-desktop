@@ -32,7 +32,7 @@ ${code}
 driver.quit()`;
   }
 
-  codeFor_findAndAssign (strategy, locator, localVar) {
+  codeFor_findAndAssign (strategy, locator, localVar, isArray) {
     let suffixMap = {
       xpath: "xpath",
       // TODO add other locator strategies
@@ -40,7 +40,11 @@ driver.quit()`;
     if (!suffixMap[strategy]) {
       throw new Error(`Strategy ${strategy} can't be code-gened`);
     }
-    return `${localVar} = driver.find_element_by_${suffixMap[strategy]}(${JSON.stringify(locator)})`;
+    if (isArray) {
+      return `${localVar} = driver.find_elements_by_${suffixMap[strategy]}(${JSON.stringify(locator)})`;
+    } else {
+      return `${localVar} = driver.find_element_by_${suffixMap[strategy]}(${JSON.stringify(locator)})`;
+    }
   }
 
   codeFor_click () {

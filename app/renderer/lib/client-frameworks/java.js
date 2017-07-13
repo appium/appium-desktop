@@ -54,15 +54,21 @@ ${this.indent(code, 4)}
 `;
   }
 
-  codeFor_findAndAssign (strategy, locator, localVar) {
+  // TODO: Change ALL codeFor_findAndAssign to include isArray parameter
+  codeFor_findAndAssign (strategy, locator, localVar, isArray) {
     let suffixMap = {
       xpath: "XPath",
+      // accessibilityId: "accessibility id",
       // TODO add other locator strategies
     };
     if (!suffixMap[strategy]) {
       throw new Error(`Strategy ${strategy} can't be code-gened`);
     }
-    return `MobileElement ${localVar} = (MobileElement) driver.findElementBy${suffixMap[strategy]}(${JSON.stringify(locator)});`;
+    if (isArray) {
+      return `List<MobileElement> ${localVar} = (MobileElement) driver.findElementsBy${suffixMap[strategy]}(${JSON.stringify(locator)});`;
+    } else {
+      return `MobileElement ${localVar} = (MobileElement) driver.findElementBy${suffixMap[strategy]}(${JSON.stringify(locator)});`;
+    }
   }
 
   codeFor_click () {
