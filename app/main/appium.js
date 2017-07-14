@@ -20,7 +20,7 @@ var batchedLogs = [];
 let sessionDrivers = {};
 
 // TODO: Rename this to something more descriptive
-let extendedDrivers = {};
+let appiumHandlers = {};
 
 // Delete saved server args, don't start until a server has been started
 settings.deleteSync('SERVER_ARGS');
@@ -41,7 +41,7 @@ async function killSession (sessionWinID) {
       console.log(`Couldn't close session: ${sessionID || 'unknown session ID'}`);
     }
     delete sessionDrivers[sessionWinID];
-    delete extendedDrivers[sessionWinID];
+    delete appiumHandlers[sessionWinID];
   }
 }
 
@@ -205,7 +205,7 @@ function connectCreateNewSession () {
       accessKey,
       https,
     });
-    extendedDrivers[event.sender.id] = new AppiumMethodHandler(driver);
+    appiumHandlers[event.sender.id] = new AppiumMethodHandler(driver);
 
     // If we're just attaching to an existing session, do that and
     // short-circuit the rest of the logic
@@ -258,7 +258,7 @@ function connectCreateNewSession () {
 
 function connectRestartRecorder () {
   ipcMain.on('appium-restart-recorder', (evt) => {
-    extendedDrivers[evt.sender.id].restart();
+    appiumHandlers[evt.sender.id].restart();
   });
 }
 
@@ -279,7 +279,7 @@ function connectClientMethodListener () {
     } = data;
     
     let renderer = evt.sender;
-    let driver = extendedDrivers[renderer.id];
+    let driver = appiumHandlers[renderer.id];
 
     try {
       if (methodName === 'quit') {
