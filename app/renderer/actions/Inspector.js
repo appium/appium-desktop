@@ -294,7 +294,7 @@ export function setLocatorTestStrategy (locatorTestStrategy) {
 export function searchForElement (locatorTestStrategy, locatorTestValue) {
   return async (dispatch) => {
     dispatch({type: SEARCHING_FOR_ELEMENTS});
-    const {result:elements} = await callClientMethod('elements', [locatorTestStrategy, locatorTestValue]);
+    const {result: elements} = await callClientMethod('elements', [locatorTestStrategy, locatorTestValue]);
     dispatch({type: SEARCHING_FOR_ELEMENTS_COMPLETED, elements});
   };
 }
