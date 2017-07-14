@@ -129,8 +129,11 @@ export function selectElement (path) {
       selector: optimalSelector,
     });
 
-    // TODO: I don't think we need this method anymore. Should be merged with just select element
-    dispatch({type: SET_SELECTED_ELEMENT_ID, elementId, variableName, variableType});
+    // Set the elementId, variableName and variableType for the selected element 
+    // (check first that the selectedElementPath didn't change, to avoid race conditions)
+    if (getState().inspector.selectedElementPath === path) {
+      dispatch({type: SET_SELECTED_ELEMENT_ID, elementId, variableName, variableType});
+    }
     
   };
 }

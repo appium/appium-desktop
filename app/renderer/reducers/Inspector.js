@@ -73,6 +73,7 @@ export default function inspector (state=INITIAL_STATE, action) {
       return {
         ...state,
         selectedElement: findElementByPath(action.path, state.source),
+        selectedElementPath: action.path,
         selectedElementId: null,
         selectedElementVariableName: null,
         selectedElementVariableType: null,
@@ -82,6 +83,10 @@ export default function inspector (state=INITIAL_STATE, action) {
       return {
         ...state,
         selectedElement: undefined,
+        selectedElementPath: null,
+        selectedElementId: null,
+        selectedElementVariableName: null,
+        selectedElementVariableType: null,
       };
 
     case SET_SELECTED_ELEMENT_ID:
