@@ -35,6 +35,8 @@ driver.quit()`;
   codeFor_findAndAssign (strategy, locator, localVar, isArray) {
     let suffixMap = {
       xpath: "xpath",
+      'accessibility id': 'accessibility_id',
+      'id': 'id',
       // TODO add other locator strategies
     };
     if (!suffixMap[strategy]) {

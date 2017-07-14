@@ -32,7 +32,8 @@ driver.quit`;
   codeFor_findAndAssign (strategy, locator, localVar, isArray) {
     let suffixMap = {
       xpath: ":xpath",
-      // TODO add other locator strategies
+      'accessibility id': ':accessibility_id',
+      'id': ':id',
     };
     if (!suffixMap[strategy]) {
       throw new Error(`Strategy ${strategy} can't be code-gened`);

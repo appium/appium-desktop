@@ -30,7 +30,8 @@ main().catch(console.log);
   codeFor_findAndAssign (strategy, locator, localVar, isArray) {
     let suffixMap = {
       xpath: "XPath",
-      // TODO add other locator strategies
+      'accessibility id': 'AccessibilityId',
+      'id': 'Id',
     };
     if (!suffixMap[strategy]) {
       throw new Error(`Strategy ${strategy} can't be code-gened`);

@@ -1,6 +1,8 @@
 import { ipcRenderer } from 'electron';
 import { notification } from 'antd';
 import { push } from 'react-router-redux';
+import _ from 'lodash';
+import { getLocators } from '../components/Inspector/shared';
 import { showError } from './Session';
 import { callClientMethod } from './shared';
 import { getOptimalXPath } from '../util';
@@ -102,7 +104,7 @@ export function bindAppium () {
 export function selectElement (path) {
   return async (dispatch, getState) => {
     dispatch({type: SELECT_ELEMENT, path});
-    const selectedElement = getState().inspector.selectedElement;
+    const {attributes: selectedElementAttributes, xpath: selectedElementXPath} = getState().inspector.selectedElement;
 
     // Expand all of this element's ancestors so that it's visible in the tree
     let {expandedPaths} = getState().inspector;
@@ -116,11 +118,17 @@ export function selectElement (path) {
     }
     dispatch({type: SET_EXPANDED_PATHS, paths: expandedPaths});
 
+    // Find the optimal selection strategy. If none found, fall back to XPath.
+    const strategyMap = _.toPairs(getLocators(selectedElementAttributes));
+    const [optimalStrategy, optimalSelector] = strategyMap.length > 0 ? strategyMap[strategyMap.length - 1] : ['xpath', selectedElementXPath];
+
     // Get the information about the element
     const {elementId, variableName, variableType} = await callClientMethod({
-      strategy: 'xpath', // TODO: Get the optimal strategy + selector
-      selector: selectedElement.xpath,
+      strategy: optimalStrategy,
+      selector: optimalSelector,
     });
+
+    // TODO: I don't think we need this method anymore.
     dispatch({type: SET_SELECTED_ELEMENT_ID, elementId, variableName, variableType});
     
   };
@@ -155,18 +163,16 @@ export function applyClientMethod (params) {
     try {
       dispatch({type: METHOD_CALL_REQUESTED});
       let {source, screenshot, result, sourceError, screenshotError, 
-        variableName, variableType, variableIndex, strategy, selector} = await callClientMethod(params);
+        variableName, variableIndex, strategy, selector} = await callClientMethod(params);
       if (isRecording) {
         if (variableIndex || variableIndex === 0) {
           variableName = `${variableName}[${variableIndex}]`;
         }
 
-        // TODO: Don't do this if it was already assigned
-        // TODO: Get the optimal XPath here
-        
-        /*dispatch({type: RECORD_ACTION, action: 'findAndAssign', params: [strategy, selector, variableName]});
-        dispatch({type: ADD_ASSIGNED_VAR_CACHE, varName: variableName});*/
-        findAndAssign(strategy, selector, variableName, false)(dispatch, getState);
+        // Add 'findAndAssign' line of code
+        if (strategy && selector) {
+          findAndAssign(strategy, selector, variableName, false)(dispatch, getState);
+        }
 
         // now record the actual action
         let args = [variableName];
@@ -328,6 +334,8 @@ export function searchForElement (strategy, selector) {
 export function findAndAssign (strategy, selector, variableName, isArray) {
   return (dispatch, getState) => {
     const {assignedVarCache} = getState().inspector;
+
+    // If this call to 'findAndAssign' for this variable wasn't done already, do it now
     if (!assignedVarCache[variableName]) {
       dispatch({type: RECORD_ACTION, action: 'findAndAssign', params: [strategy, selector, variableName, isArray]});
       dispatch({type: ADD_ASSIGNED_VAR_CACHE, varName: variableName});

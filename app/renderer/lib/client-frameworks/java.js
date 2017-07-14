@@ -54,12 +54,11 @@ ${this.indent(code, 4)}
 `;
   }
 
-  // TODO: Change ALL codeFor_findAndAssign to include isArray parameter
   codeFor_findAndAssign (strategy, locator, localVar, isArray) {
     let suffixMap = {
       xpath: "XPath",
-      // accessibilityId: "accessibility id",
-      // TODO add other locator strategies
+      'accessibility id': 'AccessibilityId',
+      'id': 'Id',
     };
     if (!suffixMap[strategy]) {
       throw new Error(`Strategy ${strategy} can't be code-gened`);
@@ -71,7 +70,6 @@ ${this.indent(code, 4)}
     }
   }
 
-  // TODO: Add varName to all codeFor
   codeFor_click (varName) {
     return `${varName}.click();`;
   }

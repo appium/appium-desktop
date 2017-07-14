@@ -1,3 +1,5 @@
+import _ from 'lodash';
+
 export function parseCoordinates (element) {
   let {bounds, x, y, width, height} = element.attributes || {};
 
@@ -13,4 +15,22 @@ export function parseCoordinates (element) {
   } else { 
     return {};
   } 
+}
+
+// Map of the optimal strategies. 
+const STRATEGY_MAPPINGS = [
+  ['name', 'accessibility id'],
+  ["content-desc", 'accessibility id'],
+  ['id', 'id'],
+  ["resource-id", 'id'],
+];
+
+export function getLocators (attributes) {
+  const res = {};
+  for (let [strategyAlias, strategy] of STRATEGY_MAPPINGS) {
+    if (attributes[strategyAlias]) {
+      res[strategy] = attributes[strategyAlias];
+    }
+  }
+  return res;
 }

@@ -40,6 +40,7 @@ ${this.indent(this.chainifyCode(code), 2)}
     switch (strategy) {
       case "xpath": break; // xpath does not need to be updated
       case "accessibility id": locator = `~${locator}`; break;
+      case "id": locator = `#{locator}`; break;
       default: throw new Error(`Can't handle strategy ${strategy}`);
     }
     if (isArray) {
