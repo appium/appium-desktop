@@ -7,7 +7,7 @@ import { SET_SOURCE_AND_SCREENSHOT, QUIT_SESSION_REQUESTED, QUIT_SESSION_DONE,
   HIDE_SEND_KEYS_MODAL, START_RECORDING, PAUSE_RECORDING, CLEAR_RECORDING,
   SET_ACTION_FRAMEWORK, RECORD_ACTION, CLOSE_RECORDER, SET_SHOW_BOILERPLATE, SET_SESSION_DETAILS, 
   SHOW_LOCATOR_TEST_MODAL, HIDE_LOCATOR_TEST_MODAL, SET_LOCATOR_TEST_STRATEGY, SET_LOCATOR_TEST_VALUE,
-  SEARCHING_FOR_ELEMENTS, SEARCHING_FOR_ELEMENTS_COMPLETED, SET_LOCATOR_TEST_ELEMENT, CLEAR_SEARCH_RESULTS
+  SEARCHING_FOR_ELEMENTS, SEARCHING_FOR_ELEMENTS_COMPLETED, SET_LOCATOR_TEST_ELEMENT, CLEAR_SEARCH_RESULTS, ADD_ASSIGNED_VAR_CACHE
 } from '../actions/Inspector';
 
 const DEFAULT_FRAMEWORK = 'java';
@@ -24,6 +24,7 @@ const INITIAL_STATE = {
   locatorTestStrategy: 'id',
   locatorTestValue: '',
   isSearchingForElements: false,
+  assignedVarCache: {},
 };
 
 /**
@@ -163,6 +164,15 @@ export default function inspector (state=INITIAL_STATE, action) {
           ...state.recordedActions,
           {action: action.action, params: action.params}
         ]
+      };
+
+    case ADD_ASSIGNED_VAR_CACHE:
+      return {
+        ...state,
+        assignedVarCache: {
+          ...state.assignedVarCache,
+          [action.varName]: true,
+        }
       };
 
     case CLOSE_RECORDER:

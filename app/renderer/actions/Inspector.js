@@ -42,6 +42,8 @@ export const SEARCHING_FOR_ELEMENTS_COMPLETED = 'SEARCHING_FOR_ELEMENTS_COMPLETE
 export const SET_LOCATOR_TEST_ELEMENT = 'SET_LOCATOR_TEST_ELEMENT';
 export const CLEAR_SEARCH_RESULTS = 'CLEAR_SEARCH_RESULTS';
 
+export const ADD_ASSIGNED_VAR_CACHE = 'ADD_ASSIGNED_VAR_CACHE';
+
 // Attributes on nodes that we know are unique to the node
 const uniqueAttributes = [
   'name',
@@ -155,16 +157,6 @@ export function applyClientMethod (params) {
       let {source, screenshot, result, sourceError, screenshotError, 
         variableName, variableType, variableIndex, strategy, selector} = await callClientMethod(params);
       if (isRecording) {
-        // for now just add a fake recorded step of 'finding'
-        // the element we are going to interact with. in the
-        // future we'll want to adjust this to use the locator
-        // strategy we recommend to the user, not just xpath
-        /*if (params.xpath) {
-          // also make sure we only do this optionally in case we're calling
-          // a global driver method that isn't operating on an element
-          recordAction('findElement', ['xpath', params.xpath])(dispatch);
-        }*/
-
         if (variableIndex || variableIndex === 0) {
           variableName = `${variableName}[${variableIndex}]`;
         }
@@ -172,9 +164,9 @@ export function applyClientMethod (params) {
         // TODO: Don't do this if it was already assigned
         // TODO: Get the optimal XPath here
         
-        if (variableType !== 'array') {
-          dispatch({type: RECORD_ACTION, action: 'findAndAssign', params: [strategy, selector, variableName]});
-        }
+        /*dispatch({type: RECORD_ACTION, action: 'findAndAssign', params: [strategy, selector, variableName]});
+        dispatch({type: ADD_ASSIGNED_VAR_CACHE, varName: variableName});*/
+        findAndAssign(strategy, selector, variableName, false)(dispatch, getState);
 
         // now record the actual action
         let args = [variableName];
@@ -189,6 +181,12 @@ export function applyClientMethod (params) {
       showError(error, methodName, 10);
       dispatch({type: METHOD_CALL_DONE});
     }
+  };
+}
+
+export function addAssignedVarCache (varName) {
+  return (dispatch) => {
+    dispatch({type: ADD_ASSIGNED_VAR_CACHE, varName});
   };
 }
 
@@ -316,15 +314,29 @@ export function setLocatorTestStrategy (locatorTestStrategy) {
 }
 
 export function searchForElement (strategy, selector) {
-  return async (dispatch) => {
+  return async (dispatch, getState) => {
     dispatch({type: SEARCHING_FOR_ELEMENTS});
-    let {elements, variableName, variableType, source, screenshot, result, screenshotError, sourceError} = await callClientMethod({strategy, selector, fetchArray: true});
-    dispatch({type: RECORD_ACTION, action: 'findAndAssign', params: [strategy, selector, variableName, true]});
+    let {elements, variableName} = await callClientMethod({strategy, selector, fetchArray: true});
+    findAndAssign(strategy, selector, variableName, true)(dispatch, getState);
     elements = elements.map((el) => el.id);
     dispatch({type: SEARCHING_FOR_ELEMENTS_COMPLETED, elements});
   };
 }
 
+// TODO: Add an action that clears the assignedVarCache when recorder is cleared
+
+export function findAndAssign (strategy, selector, variableName, isArray) {
+  return (dispatch, getState) => {
+    const {assignedVarCache} = getState().inspector;
+    if (!assignedVarCache[variableName]) {
+      dispatch({type: RECORD_ACTION, action: 'findAndAssign', params: [strategy, selector, variableName, isArray]});
+      dispatch({type: ADD_ASSIGNED_VAR_CACHE, varName: variableName});
+    }
+  };
+}
+
+
+// TODO: Is this obsolete? I don't think we use this.
 export function setLocatorTestElement (elementId) {
   return (dispatch) => {
     dispatch({type: SET_LOCATOR_TEST_ELEMENT, elementId});
