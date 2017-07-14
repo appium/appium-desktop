@@ -15,14 +15,10 @@ export default class AppiumMethodHandler {
     }
     let id = element.value;
 
-    // Give the element a name that is used in recorder (el1, el2, el3, ...)
-    let variableName = `el${this.elVariableCounter++}`;
-
     // Cache this ID along with it's variable name, variable type and strategy/selector
     let cachedEl = this.elementCache[id] = {
       el: element,
       variableType: 'string',
-      variableName,
       strategy,
       selector,
       id,
@@ -62,6 +58,11 @@ export default class AppiumMethodHandler {
 
   async executeElementCommand (elementId, methodName, args = []) {
     const elCache = this.elementCache[elementId];
+
+    // Give the cached element a variable name (el1, el2, el3,...) the first time it's used
+    if (!elCache.variableName && elCache.variableType === 'string') {
+      elCache.variableName = `el${this.elVariableCounter++}`;
+    }
     const res = await elCache.el[methodName].apply(elCache.el, args);
 
     // Give the source/screenshot time to change before taking the screenshot
@@ -117,7 +118,13 @@ export default class AppiumMethodHandler {
   }
 
   restart () {
-    this.elementCache = {};
+    // Clear the variable names and start over (el1, el2, els1, els2, etc...)
+    this.elementCache = this.elementCache.map((elCache) => ({
+      ...elCache,
+      variableName: undefined,
+    }));
+
+    // Restart the variable counter
     this.elVariableCounter = 1;
     this.elArrayVariableCounter = 1;   
   }

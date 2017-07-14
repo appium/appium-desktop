@@ -175,8 +175,8 @@ export function applyClientMethod (params) {
           variableName = `${variableName}[${variableIndex}]`;
         }
 
-        // Add 'findAndAssign' line of code
-        if (strategy && selector) {
+        // Add 'findAndAssign' line of code. Don't do it for arrays though. Arrays already have 'find' expression
+        if (strategy && selector && (!variableIndex || variableIndex === 0)) {
           findAndAssign(strategy, selector, variableName, false)(dispatch, getState);
         }
 
@@ -265,7 +265,6 @@ export function clearRecording () {
     dispatch({type: CLEAR_RECORDING});
     ipcRenderer.send('appium-restart-recorder'); // Tell the main thread to start the variable count from 1 
     dispatch({type: CLEAR_ASSIGNED_VAR_CACHE}); // Get rid of the variable cache
-    dispatch({type: UNSELECT_ELEMENT}); // Unselect the element so that it doesn't re-use stale element ID
   };
 }
 
