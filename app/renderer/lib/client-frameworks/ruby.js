@@ -34,6 +34,11 @@ driver.quit`;
       xpath: ":xpath",
       'accessibility id': ':accessibility_id',
       'id': ':id',
+      'name': ':name',
+      'class name': ':class_name',
+      '-android uiautomator': ':uiautomation',
+      '-ios predicate string': ':predicate',
+      '-ios class chain': ':class_chain',
     };
     if (!suffixMap[strategy]) {
       throw new Error(`Strategy ${strategy} can't be code-gened`);

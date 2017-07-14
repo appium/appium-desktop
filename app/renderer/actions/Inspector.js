@@ -333,10 +333,15 @@ export function setLocatorTestStrategy (locatorTestStrategy) {
 export function searchForElement (strategy, selector) {
   return async (dispatch, getState) => {
     dispatch({type: SEARCHING_FOR_ELEMENTS});
-    let {elements, variableName} = await callClientMethod({strategy, selector, fetchArray: true});
-    findAndAssign(strategy, selector, variableName, true)(dispatch, getState);
-    elements = elements.map((el) => el.id);
-    dispatch({type: SEARCHING_FOR_ELEMENTS_COMPLETED, elements});
+    try {
+      let {elements, variableName} = await callClientMethod({strategy, selector, fetchArray: true});
+      findAndAssign(strategy, selector, variableName, true)(dispatch, getState);
+      elements = elements.map((el) => el.id);
+      dispatch({type: SEARCHING_FOR_ELEMENTS_COMPLETED, elements});
+    } catch (error) {
+      dispatch({type: SEARCHING_FOR_ELEMENTS_COMPLETED});
+      showError(error, 10);
+    }
   };
 }
 

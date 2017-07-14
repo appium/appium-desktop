@@ -32,6 +32,11 @@ main().catch(console.log);
       xpath: "XPath",
       'accessibility id': 'AccessibilityId',
       'id': 'Id',
+      'name': 'Name',
+      'class name': 'ClassName',
+      '-android uiautomator': 'AndroidUIAutomator',
+      '-ios predicate string': 'IosUIAutomation',
+      '-ios class chain': 'IosClassChain',
     };
     if (!suffixMap[strategy]) {
       throw new Error(`Strategy ${strategy} can't be code-gened`);

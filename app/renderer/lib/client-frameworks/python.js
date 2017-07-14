@@ -37,7 +37,11 @@ driver.quit()`;
       xpath: "xpath",
       'accessibility id': 'accessibility_id',
       'id': 'id',
-      // TODO add other locator strategies
+      'name': 'name', // TODO: How does Python use name selector
+      'class name': 'class_name',
+      '-android uiautomator': 'AndroidUIAutomator',
+      '-ios predicate string': 'ios_predicate',
+      '-ios class chain': 'ios_uiautomation', // TODO: Could not find iOS UIAutomation
     };
     if (!suffixMap[strategy]) {
       throw new Error(`Strategy ${strategy} can't be code-gened`);

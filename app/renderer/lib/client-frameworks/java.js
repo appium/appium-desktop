@@ -59,6 +59,11 @@ ${this.indent(code, 4)}
       xpath: "XPath",
       'accessibility id': 'AccessibilityId',
       'id': 'Id',
+      'class name': 'ClassName',
+      'name': 'Name',
+      '-android uiautomator': 'AndroidUIAutomator',
+      '-ios predicate string': 'IosNsPredicate',
+      '-ios class chain': 'IosClassChain',
     };
     if (!suffixMap[strategy]) {
       throw new Error(`Strategy ${strategy} can't be code-gened`);
