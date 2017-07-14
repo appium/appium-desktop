@@ -176,7 +176,7 @@ export function applyClientMethod (params) {
         }
 
         // Add 'findAndAssign' line of code. Don't do it for arrays though. Arrays already have 'find' expression
-        if (strategy && selector && (!variableIndex || variableIndex === 0)) {
+        if (strategy && selector && !variableIndex && variableIndex !== 0) {
           findAndAssign(strategy, selector, variableName, false)(dispatch, getState);
         }
 
