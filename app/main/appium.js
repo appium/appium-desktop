@@ -19,7 +19,6 @@ var batchedLogs = [];
 
 let sessionDrivers = {};
 
-// TODO: Rename this to something more descriptive
 let appiumHandlers = {};
 
 // Delete saved server args, don't start until a server has been started
