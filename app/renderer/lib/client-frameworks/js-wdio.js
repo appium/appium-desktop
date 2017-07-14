@@ -50,16 +50,16 @@ ${this.indent(this.chainifyCode(code), 2)}
     }
   }
 
-  codeFor_click (varName) {
-    return `${varName}.click();`;
+  codeFor_click (varName, varIndex) {
+    return `${this.getVarName(varName, varIndex)}.click();`;
   }
 
-  codeFor_clear (varName) {
-    return `${varName}.clearElement();`;
+  codeFor_clear (varName, varIndex) {
+    return `${this.getVarName(varName, varIndex)}.clearElement();`;
   }
 
-  codeFor_sendKeys (varName, text) {
-    return `${varName}.setValue(${JSON.stringify(text)});`;
+  codeFor_sendKeys (varName, varIndex, text) {
+    return `${this.getVarName(varName, varIndex)}.setValue(${JSON.stringify(text)});`;
   }
 
   codeFor_back () {

@@ -45,16 +45,16 @@ driver.quit`;
     }
   }
 
-  codeFor_click (varName) {
-    return `${varName}.click`;
+  codeFor_click (varName, varIndex) {
+    return `${this.getVarName(varName, varIndex)}.click`;
   }
 
-  codeFor_clear (varName) {
-    return `${varName}.clear`;
+  codeFor_clear (varName, varIndex) {
+    return `${this.getVarName(varName, varIndex)}.clear`;
   }
 
-  codeFor_sendKeys (varName, text) {
-    return `${varName}.send_keys ${JSON.stringify(text)}`;
+  codeFor_sendKeys (varName, varIndex, text) {
+    return `${this.getVarName(varName, varIndex)}.send_keys ${JSON.stringify(text)}`;
   }
 
   codeFor_back () {

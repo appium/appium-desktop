@@ -171,17 +171,13 @@ export function applyClientMethod (params) {
       let {source, screenshot, result, sourceError, screenshotError, 
         variableName, variableIndex, strategy, selector} = await callClientMethod(params);
       if (isRecording) {
-        if (variableIndex || variableIndex === 0) {
-          variableName = `${variableName}[${variableIndex}]`;
-        }
-
         // Add 'findAndAssign' line of code. Don't do it for arrays though. Arrays already have 'find' expression
         if (strategy && selector && !variableIndex && variableIndex !== 0) {
           findAndAssign(strategy, selector, variableName, false)(dispatch, getState);
         }
 
         // now record the actual action
-        let args = [variableName];
+        let args = [variableName, variableIndex];
         args = args.concat(params.args || []);
         dispatch({type: RECORD_ACTION, action: params.methodName, params: args });
       }

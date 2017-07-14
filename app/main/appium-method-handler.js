@@ -1,4 +1,5 @@
 import Bluebird from 'bluebird';
+import _ from 'lodash';
 
 export default class AppiumMethodHandler {
   constructor (driver) {
@@ -119,10 +120,9 @@ export default class AppiumMethodHandler {
 
   restart () {
     // Clear the variable names and start over (el1, el2, els1, els2, etc...)
-    this.elementCache = this.elementCache.map((elCache) => ({
-      ...elCache,
-      variableName: undefined,
-    }));
+    for (let elCache of _.toPairs(this.elementCache)) {
+      delete elCache.variableName;
+    }
 
     // Restart the variable counter
     this.elVariableCounter = 1;

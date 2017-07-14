@@ -49,16 +49,16 @@ driver.quit()`;
     }
   }
 
-  codeFor_click () {
-    return `${this.lastAssignedVar}.click()`;
+  codeFor_click (varName, varIndex) {
+    return `${this.getVarName(varName, varIndex)}.click()`;
   }
 
-  codeFor_clear () {
-    return `${this.lastAssignedVar}.clear()`;
+  codeFor_clear (varName, varIndex) {
+    return `${this.getVarName(varName, varIndex)}.clear()`;
   }
 
-  codeFor_sendKeys (text) {
-    return `${this.lastAssignedVar}.send_keys(${JSON.stringify(text)})`;
+  codeFor_sendKeys (varName, varIndex, text) {
+    return `${this.getVarName(varName, varIndex)}.send_keys(${JSON.stringify(text)})`;
   }
 
   codeFor_back () {

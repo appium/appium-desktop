@@ -43,16 +43,16 @@ main().catch(console.log);
     }
   }
 
-  codeFor_click (varName) {
-    return `await ${varName}.click();`;
+  codeFor_click (varName, varIndex) {
+    return `await ${this.getVarName(varName, varIndex)}.click();`;
   }
 
-  codeFor_clear (varName) {
-    return `await ${varName}.clear();`;
+  codeFor_clear (varName, varIndex) {
+    return `await ${this.getVarName(varName, varIndex)}.clear();`;
   }
 
-  codeFor_sendKeys (varName, text) {
-    return `await ${varName}.sendKeys(${JSON.stringify(text)});`;
+  codeFor_sendKeys (varName, varIndex, text) {
+    return `await ${this.getVarName(varName, varIndex)}.sendKeys(${JSON.stringify(text)});`;
   }
 
   codeFor_back () {

@@ -70,16 +70,23 @@ ${this.indent(code, 4)}
     }
   }
 
-  codeFor_click (varName) {
-    return `${varName}.click();`;
+  getVarName (varName, varIndex) {
+    if (varIndex || varIndex === 0) {
+      return `${varName}.get(varIndex)`;
+    } 
+    return varName;
   }
 
-  codeFor_clear (varName) {
-    return `${varName}.clear();`;
+  codeFor_click (varName, varIndex) {
+    return `${this.getVarName(varName, varIndex)}.click();`;
   }
 
-  codeFor_sendKeys (varName, text) {
-    return `${varName}.sendKeys(${JSON.stringify(text)});`;
+  codeFor_clear (varName, varIndex) {
+    return `${this.getVarName(varName, varIndex)}.clear();`;
+  }
+
+  codeFor_sendKeys (varName, varIndex, text) {
+    return `${this.getVarName(varName, varIndex)}.sendKeys(${JSON.stringify(text)});`;
   }
 
   codeFor_back () {
