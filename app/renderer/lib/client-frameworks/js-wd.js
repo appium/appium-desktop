@@ -42,25 +42,22 @@ main().catch(console.log);
     }
   }
 
-  codeFor_click () {
-    return `await ${this.lastAssignedVar}.click();`;
+  codeFor_click (varName) {
+    return `await ${varName}.click();`;
   }
 
-  codeFor_clear () {
-    return `await ${this.lastAssignedVar}.clear();`;
+  codeFor_clear (varName) {
+    return `await ${varName}.clear();`;
   }
 
-  codeFor_sendKeys (text) {
-    return `await ${this.lastAssignedVar}.sendKeys(${JSON.stringify(text)});`;
+  codeFor_sendKeys (varName, text) {
+    return `await ${varName}.sendKeys(${JSON.stringify(text)});`;
   }
 
   codeFor_back () {
     return `await driver.back();`;
   }
 
-  codeFor_clickElement () {
-    return '';
-  }
 }
 
 JsWdFramework.readableName = "JS - WD (Promise)";

@@ -178,7 +178,7 @@ export function applyClientMethod (params) {
 
         // now record the actual action
         let args = [variableName];
-        args.concat(params.args || []);
+        args = args.concat(params.args || []);
         dispatch({type: RECORD_ACTION, action: params.methodName, params: args });
       }
       dispatch({type: METHOD_CALL_DONE});

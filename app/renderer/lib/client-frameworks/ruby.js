@@ -44,24 +44,20 @@ driver.quit`;
     }
   }
 
-  codeFor_click () {
-    return `${this.lastAssignedVar}.click`;
+  codeFor_click (varName) {
+    return `${varName}.click`;
   }
 
-  codeFor_clear () {
-    return `${this.lastAssignedVar}.clear`;
+  codeFor_clear (varName) {
+    return `${varName}.clear`;
   }
 
-  codeFor_sendKeys (text) {
-    return `${this.lastAssignedVar}.send_keys ${JSON.stringify(text)}`;
+  codeFor_sendKeys (varName, text) {
+    return `${varName}.send_keys ${JSON.stringify(text)}`;
   }
 
   codeFor_back () {
     return `driver.back`;
-  }
-
-  codeFor_clickElement () {
-    return ''; // TODO: Implement this in a future PR
   }
 }
 

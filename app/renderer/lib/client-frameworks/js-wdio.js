@@ -49,24 +49,20 @@ ${this.indent(this.chainifyCode(code), 2)}
     }
   }
 
-  codeFor_click () {
-    return `${this.lastAssignedVar}.click();`;
+  codeFor_click (varName) {
+    return `${varName}.click();`;
   }
 
-  codeFor_clear () {
-    return `${this.lastAssignedVar}.clearElement();`;
+  codeFor_clear (varName) {
+    return `${varName}.clearElement();`;
   }
 
-  codeFor_sendKeys (text) {
-    return `${this.lastAssignedVar}.setValue(${JSON.stringify(text)});`;
+  codeFor_sendKeys (varName, text) {
+    return `${varName}.setValue(${JSON.stringify(text)});`;
   }
 
   codeFor_back () {
     return `driver.back();`;
-  }
-
-  codeFor_clickElement () {
-    return '';
   }
 }
 

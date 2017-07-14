@@ -76,20 +76,16 @@ ${this.indent(code, 4)}
     return `${varName}.click();`;
   }
 
-  codeFor_clear () {
-    return `${this.lastAssignedVar}.clear();`;
+  codeFor_clear (varName) {
+    return `${varName}.clear();`;
   }
 
-  codeFor_sendKeys (text) {
-    return `${this.lastAssignedVar}.sendKeys(${JSON.stringify(text)});`;
+  codeFor_sendKeys (varName, text) {
+    return `${varName}.sendKeys(${JSON.stringify(text)});`;
   }
 
   codeFor_back () {
     return `driver.navigate().back();`;
-  }
-
-  codeFor_clickElement () {
-    return '';
   }
 }
 
