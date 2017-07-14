@@ -19,11 +19,13 @@ export default class AppiumDriverExtender {
     // Give the element a name that is used in recorder (el1, el2, el3, ...)
     let variableName = `el${this.elVariableCounter++}`;
 
-    // Cache this ID along with it's variable name and variable type
+    // Cache this ID along with it's variable name, variable type and strategy/selector
     let cachedEl = this.elementCache[id] = {
       el: element,
       variableType: 'string',
       variableName,
+      strategy,
+      selector,
       id,
     };
 
@@ -43,11 +45,15 @@ export default class AppiumDriverExtender {
 
     // Cache the elements that we find
     let elements = els.map((el, index) => {
+      console.log('Caching', strategy, selector);
       const res = {
         el,
-        variableName: `${variableName}[${index}]`,
+        variableName,
+        variableIndex: index,
         variableType: 'string',
         id: el.value,
+        strategy,
+        selector,
       };
       this.elementCache[el.value] = res;
       return res;
@@ -64,6 +70,7 @@ export default class AppiumDriverExtender {
     await Bluebird.delay(500);
 
     let sourceAndScreenshot = await this._getSourceAndScreenshot();
+    console.log('!!!!sending back', elCache);
 
     return {
       ...sourceAndScreenshot,

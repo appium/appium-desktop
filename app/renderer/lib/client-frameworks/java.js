@@ -71,8 +71,9 @@ ${this.indent(code, 4)}
     }
   }
 
-  codeFor_click () {
-    return `${this.lastAssignedVar}.click();`;
+  // TODO: Add varName to all codeFor
+  codeFor_click (varName) {
+    return `${varName}.click();`;
   }
 
   codeFor_clear () {

@@ -152,20 +152,34 @@ export function applyClientMethod (params) {
                       getState().inspector.isRecording;
     try {
       dispatch({type: METHOD_CALL_REQUESTED});
-      let {source, screenshot, result, sourceError, screenshotError} = await callClientMethod(params);
+      let {source, screenshot, result, sourceError, screenshotError, 
+        variableName, variableType, variableIndex, strategy, selector} = await callClientMethod(params);
       if (isRecording) {
         // for now just add a fake recorded step of 'finding'
         // the element we are going to interact with. in the
         // future we'll want to adjust this to use the locator
         // strategy we recommend to the user, not just xpath
-        if (params.xpath) {
+        /*if (params.xpath) {
           // also make sure we only do this optionally in case we're calling
           // a global driver method that isn't operating on an element
           recordAction('findElement', ['xpath', params.xpath])(dispatch);
+        }*/
+
+        if (variableIndex || variableIndex === 0) {
+          variableName = `${variableName}[${variableIndex}]`;
         }
+
+        // TODO: Don't do this if it was already assigned
+        // TODO: Get the optimal XPath here
+        
+        if (variableType !== 'array') {
+          dispatch({type: RECORD_ACTION, action: 'findAndAssign', params: [strategy, selector, variableName]});
+        }
+
         // now record the actual action
-        let args = params.args || [];
-        recordAction(params.methodName, args)(dispatch);
+        let args = [variableName];
+        args.concat(params.args || []);
+        dispatch({type: RECORD_ACTION, action: params.methodName, params: args });
       }
       dispatch({type: METHOD_CALL_DONE});
       dispatch({type: SET_SOURCE_AND_SCREENSHOT, source: source && xmlToJSON(source), screenshot, sourceError, screenshotError});

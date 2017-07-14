@@ -11,10 +11,11 @@ if (ipcRenderer) {
    * When we hear back from the main process, resolve the promise
    */
   ipcRenderer.on('appium-client-command-response', (evt, resp) => {
-    const {id:elementId, elements, variableName, variableType, source, screenshot, result, screenshotError, sourceError, uuid} = resp;
+    // TODO: Get rid of the destructuring and just send the whole object back
+    const {id:elementId, elements, variableName, variableType, variableIndex, source, screenshot, result, strategy, selector, screenshotError, sourceError, uuid} = resp;
     let promise = clientMethodPromises[uuid];
     if (promise) {
-      promise.resolve({elementId, elements, variableName, variableType, source, screenshot, result, screenshotError, sourceError});
+      promise.resolve({elementId, elements, variableName, variableType, variableIndex, source, screenshot, strategy, selector, result, screenshotError, sourceError});
       delete clientMethodPromises[uuid];
     }
   });

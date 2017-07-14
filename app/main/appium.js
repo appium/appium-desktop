@@ -5,7 +5,6 @@ import { main as appiumServer } from 'appium';
 import { getDefaultArgs, getParser } from 'appium/build/lib/parser';
 import path from 'path';
 import wd from 'wd';
-import Bluebird from 'bluebird';
 import settings from '../settings';
 import autoUpdaterController from './auto-updater';
 import AppiumDriverExtender from './appium-driver-extender';
