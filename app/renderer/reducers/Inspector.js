@@ -45,6 +45,7 @@ export default function inspector (state=INITIAL_STATE, action) {
       return {
         ...state,
         source: action.source,
+        sourceXML: action.sourceXML,
         sourceError: action.sourceError,
         screenshot: action.screenshot,
         screenshotError: action.screenshotError,

@@ -26,7 +26,7 @@ export default class SelectedElement extends Component {
 
   render () {
     const {applyClientMethod, setFieldValue, sendKeys, selectedElement, sendKeysModalVisible, showSendKeysModal, 
-      hideSendKeysModal, selectedElementId:elementId} = this.props;
+      hideSendKeysModal, selectedElementId:elementId, sourceXML} = this.props;
     const {attributes, xpath} = selectedElement;
 
     // Get the columns for the attributes table
@@ -62,7 +62,7 @@ export default class SelectedElement extends Component {
     }];
 
     // Get the data for the strategies table
-    let findDataSource = _.toPairs(getLocators(attributes)).map(([key, selector]) => ({
+    let findDataSource = _.toPairs(getLocators(attributes, sourceXML)).map(([key, selector]) => ({
       key,
       selector,
       find: key,

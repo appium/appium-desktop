@@ -105,7 +105,9 @@ export function bindAppium () {
 export function selectElement (path) {
   return async (dispatch, getState) => {
     dispatch({type: SELECT_ELEMENT, path});
-    const {attributes: selectedElementAttributes, xpath: selectedElementXPath} = getState().inspector.selectedElement;
+    const state = getState().inspector;
+    const {attributes: selectedElementAttributes, xpath: selectedElementXPath} = state.selectedElement;
+    const {sourceXML} = state;
 
     // Expand all of this element's ancestors so that it's visible in the tree
     let {expandedPaths} = getState().inspector;
@@ -120,7 +122,7 @@ export function selectElement (path) {
     dispatch({type: SET_EXPANDED_PATHS, paths: expandedPaths});
 
     // Find the optimal selection strategy. If none found, fall back to XPath.
-    const strategyMap = _.toPairs(getLocators(selectedElementAttributes));
+    const strategyMap = _.toPairs(getLocators(selectedElementAttributes, sourceXML));
     const [optimalStrategy, optimalSelector] = strategyMap.length > 0 ? strategyMap[strategyMap.length - 1] : ['xpath', selectedElementXPath];
 
     // Get the information about the element
@@ -184,7 +186,14 @@ export function applyClientMethod (params) {
         dispatch({type: RECORD_ACTION, action: params.methodName, params: args });
       }
       dispatch({type: METHOD_CALL_DONE});
-      dispatch({type: SET_SOURCE_AND_SCREENSHOT, source: source && xmlToJSON(source), screenshot, sourceError, screenshotError});
+      dispatch({
+        type: SET_SOURCE_AND_SCREENSHOT, 
+        source: source && xmlToJSON(source), 
+        sourceXML: source,
+        screenshot, 
+        sourceError, 
+        screenshotError,
+      });
       return result;
     } catch (error) {
       let methodName = params.methodName === 'click' ? 'tap' : params.methodName;
