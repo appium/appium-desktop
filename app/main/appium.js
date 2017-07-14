@@ -7,7 +7,7 @@ import path from 'path';
 import wd from 'wd';
 import settings from '../settings';
 import autoUpdaterController from './auto-updater';
-import AppiumDriverExtender from './appium-driver-extender';
+import AppiumMethodHandler from './appium-method-handler';
 import request from 'request-promise';
 
 const LOG_SEND_INTERVAL_MS = 250;
@@ -18,6 +18,8 @@ var logWatcher = null;
 var batchedLogs = [];
 
 let sessionDrivers = {};
+
+// TODO: Rename this to something more descriptive
 let extendedDrivers = {};
 
 // Delete saved server args, don't start until a server has been started
@@ -203,7 +205,7 @@ function connectCreateNewSession () {
       accessKey,
       https,
     });
-    extendedDrivers[event.sender.id] = new AppiumDriverExtender(driver);
+    extendedDrivers[event.sender.id] = new AppiumMethodHandler(driver);
 
     // If we're just attaching to an existing session, do that and
     // short-circuit the rest of the logic
@@ -251,6 +253,12 @@ function connectCreateNewSession () {
       await killSession(event.sender);
       event.sender.send('appium-new-session-failed', e);
     }
+  });
+}
+
+function connectRestartRecorder () {
+  ipcMain.on('appium-restart-recorder', (evt) => {
+    extendedDrivers[evt.sender.id].restart();
   });
 }
 
@@ -345,6 +353,7 @@ function initializeIpc (win) {
   connectCreateNewSession(win);
   connectClientMethodListener(win);
   connectGetSessionsListener();
+  connectRestartRecorder();
 
   autoUpdaterController.setMainWindow(win);
   autoUpdaterController.checkForUpdates();

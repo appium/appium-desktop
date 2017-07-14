@@ -45,6 +45,7 @@ export const SET_LOCATOR_TEST_ELEMENT = 'SET_LOCATOR_TEST_ELEMENT';
 export const CLEAR_SEARCH_RESULTS = 'CLEAR_SEARCH_RESULTS';
 
 export const ADD_ASSIGNED_VAR_CACHE = 'ADD_ASSIGNED_VAR_CACHE';
+export const CLEAR_ASSIGNED_VAR_CACHE = 'CLEAR_ASSIGNED_VAR_CACHE';
 
 // Attributes on nodes that we know are unique to the node
 const uniqueAttributes = [
@@ -128,7 +129,7 @@ export function selectElement (path) {
       selector: optimalSelector,
     });
 
-    // TODO: I don't think we need this method anymore.
+    // TODO: I don't think we need this method anymore. Should be merged with just select element
     dispatch({type: SET_SELECTED_ELEMENT_ID, elementId, variableName, variableType});
     
   };
@@ -250,6 +251,9 @@ export function pauseRecording () {
 export function clearRecording () {
   return (dispatch) => {
     dispatch({type: CLEAR_RECORDING});
+    ipcRenderer.send('appium-restart-recorder'); // Tell the main thread to start the variable count from 1 
+    dispatch({type: CLEAR_ASSIGNED_VAR_CACHE}); // Get rid of the variable cache
+    dispatch({type: UNSELECT_ELEMENT}); // Unselect the element so that it doesn't re-use stale element ID
   };
 }
 

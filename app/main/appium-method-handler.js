@@ -1,10 +1,9 @@
 import Bluebird from 'bluebird';
 
-// TODO: Rename this to AppiumElementCacher
-export default class AppiumDriverExtender {
+export default class AppiumMethodHandler {
   constructor (driver) {
-    this.elementCache = {};
     this.driver = driver;
+    this.elementCache = {};
     this.elVariableCounter = 1;
     this.elArrayVariableCounter = 1;
   }
@@ -45,7 +44,6 @@ export default class AppiumDriverExtender {
 
     // Cache the elements that we find
     let elements = els.map((el, index) => {
-      console.log('Caching', strategy, selector);
       const res = {
         el,
         variableName,
@@ -70,7 +68,6 @@ export default class AppiumDriverExtender {
     await Bluebird.delay(500);
 
     let sourceAndScreenshot = await this._getSourceAndScreenshot();
-    console.log('!!!!sending back', elCache);
 
     return {
       ...sourceAndScreenshot,
@@ -117,6 +114,12 @@ export default class AppiumDriverExtender {
     }
 
     return {source, sourceError, screenshot, screenshotError};
+  }
+
+  restart () {
+    this.elementCache = {};
+    this.elVariableCounter = 1;
+    this.elArrayVariableCounter = 1;   
   }
 
 }
