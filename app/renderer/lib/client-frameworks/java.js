@@ -97,10 +97,6 @@ ${this.indent(code, 4)}
   codeFor_back () {
     return `driver.navigate().back();`;
   }
-
-  codeFor_clickElement () {
-    return '';
-  }
 }
 
 JavaFramework.readableName = "Java - JUnit";

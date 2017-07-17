@@ -37,15 +37,6 @@ export function callClientMethod (params) {
   if (!ipcRenderer) {
     throw new Error('Cannot call ipcRenderer from main context');
   }
-<<<<<<< HEAD
-=======
-  let opts;
-  if (params.length === 3 && typeof(params[params.length - 1]) === 'object') {
-    opts = params[params.length - 1];
-    params = params.slice(params.length - 1);
-  }
-  let [methodName, args, xpath] = params;
->>>>>>> master
   let uuid = UUID.v4();
   let promise = new Promise((resolve, reject) => clientMethodPromises[uuid] = {resolve, reject});
   ipcRenderer.send('appium-client-command-request', {

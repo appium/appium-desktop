@@ -65,10 +65,6 @@ driver.quit`;
   codeFor_back () {
     return `driver.back`;
   }
-
-  codeFor_clickElement () {
-    return ''; // TODO: Implement this in a future PR
-  }
 }
 
 RubyFramework.readableName = "Ruby";
