@@ -43,8 +43,8 @@ export default class Inspector extends Component {
       pauseRecording, showLocatorTestModal} = this.props;
     const {path} = selectedElement;
 
-    let main = <div id='screenshotContainer' className={InspectorStyles['inspector-main']}>
-      <div className={InspectorStyles['screenshot-container']}>
+    let main = <div className={InspectorStyles['inspector-main']}>
+      <div id='screenshotContainer' className={InspectorStyles['screenshot-container']}>
         {screenshot && <Screenshot {...this.props} />}
         {screenshotError && `Could not obtain screenshot: ${screenshotError}`}
         {!screenshot && !screenshotError &&
@@ -53,7 +53,7 @@ export default class Inspector extends Component {
           </Spin>
         }
       </div>
-      <div className={InspectorStyles['source-tree-container']} ref={(div) => this.container = div} >
+      <div id='sourceTreeContainer' className={InspectorStyles['source-tree-container']} ref={(div) => this.container = div} >
         {showRecord &&
           <RecordedActions {...this.props} />
         }

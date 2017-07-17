@@ -43,9 +43,12 @@ export const SEARCHING_FOR_ELEMENTS = 'SEARCHING_FOR_ELEMENTS';
 export const SEARCHING_FOR_ELEMENTS_COMPLETED = 'SEARCHING_FOR_ELEMENTS_COMPLETED';
 export const SET_LOCATOR_TEST_ELEMENT = 'SET_LOCATOR_TEST_ELEMENT';
 export const CLEAR_SEARCH_RESULTS = 'CLEAR_SEARCH_RESULTS';
+<<<<<<< HEAD
 
 export const ADD_ASSIGNED_VAR_CACHE = 'ADD_ASSIGNED_VAR_CACHE';
 export const CLEAR_ASSIGNED_VAR_CACHE = 'CLEAR_ASSIGNED_VAR_CACHE';
+=======
+>>>>>>> master
 
 // Attributes on nodes that we know are unique to the node
 const uniqueAttributes = [
@@ -330,6 +333,7 @@ export function setLocatorTestStrategy (locatorTestStrategy) {
   };
 }
 
+<<<<<<< HEAD
 export function searchForElement (strategy, selector) {
   return async (dispatch, getState) => {
     dispatch({type: SEARCHING_FOR_ELEMENTS});
@@ -361,6 +365,16 @@ export function findAndAssign (strategy, selector, variableName, isArray) {
 
 
 // TODO: Is this obsolete? I don't think we use this.
+=======
+export function searchForElement (locatorTestStrategy, locatorTestValue) {
+  return async (dispatch) => {
+    dispatch({type: SEARCHING_FOR_ELEMENTS});
+    const {result: elements} = await callClientMethod('elements', [locatorTestStrategy, locatorTestValue]);
+    dispatch({type: SEARCHING_FOR_ELEMENTS_COMPLETED, elements});
+  };
+}
+
+>>>>>>> master
 export function setLocatorTestElement (elementId) {
   return (dispatch) => {
     dispatch({type: SET_LOCATOR_TEST_ELEMENT, elementId});

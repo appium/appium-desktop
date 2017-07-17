@@ -1,9 +1,16 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
+<<<<<<< HEAD
 import { Modal, Input, Select, Row, Col, Button } from 'antd';
 import InspectorStyles from './Inspector.css';
 
 const { Option } = Select;
+=======
+import { Modal } from 'antd';
+import LocatedElements from './LocatedElements';
+import ElementLocator from './ElementLocator';
+
+>>>>>>> master
 
 export default class LocatorTestModal extends Component {
 
@@ -24,6 +31,7 @@ export default class LocatorTestModal extends Component {
   }
 
   render () {
+<<<<<<< HEAD
     const {isLocatorTestModalVisible, isSearchingForElements, locatedElements, applyClientMethod,
       setLocatorTestValue, locatorTestValue, setLocatorTestStrategy, locatorTestStrategy, setLocatorTestElement, locatorTestElement, clearSearchResults} = this.props;
 
@@ -37,12 +45,16 @@ export default class LocatorTestModal extends Component {
       ['-ios predicate string', 'Predicate String (iOS)'],
       ['-ios class chain', 'Class Chain (iOS)'],
     ];
+=======
+    const {isLocatorTestModalVisible, isSearchingForElements, locatedElements} = this.props;
+>>>>>>> master
 
     return <Modal visible={isLocatorTestModalVisible} 
       okText={locatedElements ? 'Done' : 'Search'}
       cancelText='Cancel'
       title='Search for element'
       confirmLoading={isSearchingForElements}
+<<<<<<< HEAD
       onOk={(() => this.onSubmit()).bind(this)}
       onCancel={(() => this.onCancel()).bind(this)}>
         {!locatedElements && <Row>
@@ -100,6 +112,12 @@ export default class LocatorTestModal extends Component {
             </div>}
           </Col>
         </Row>}
+=======
+      onOk={this.onSubmit.bind(this)}
+      onCancel={this.onCancel.bind(this)}>
+        {!locatedElements && <ElementLocator {...this.props} />}
+        {locatedElements && <LocatedElements {...this.props} />}
+>>>>>>> master
     </Modal>;
   }
 }

@@ -70,6 +70,10 @@ ${this.indent(this.chainifyCode(code), 2)}
   codeFor_back () {
     return `driver.back();`;
   }
+
+  codeFor_clickElement () {
+    return '';
+  }
 }
 
 JsWdIoFramework.readableName = "JS - Webdriver.io";

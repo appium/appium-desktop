@@ -142,13 +142,13 @@ the Appium Desktop Inspector.
 
 #### Attach to an Existing Session
 
-If you click on the "Attach to Session..." tab, you can select an existing 
-session from a list of currently running sessions on your selected server, or you 
-can input a session ID of a currently-running session.  That session should be 
-running on the server details you specified in the server type section above. 
-Attaching to an existing session is possible because the Inspector is just an 
-Appium client. This could be useful if you want to debug the middle of a running 
-test. When you quit the Inspector window of an existing session, Appium Desktop 
+If you click on the "Attach to Session..." tab, you can select an existing
+session from a list of currently running sessions on your selected server, or you
+can input a session ID of a currently-running session.  That session should be
+running on the server details you specified in the server type section above.
+Attaching to an existing session is possible because the Inspector is just an
+Appium client. This could be useful if you want to debug the middle of a running
+test. When you quit the Inspector window of an existing session, Appium Desktop
 will not quit the session as it does normally.
 
 ### The Inspector
@@ -180,6 +180,55 @@ command to Appium, which will execute it. If the action is successful, a new
 screenshot will be generated and you should see the updated state and XML of
 your app. If it's not successful, you'll have an opportunity to see the error
 message.
+
+The top of the Inspector window contains a small toolbar with icons
+representing the ability to take certain actions in the Inspector:
+
+* Back (call `driver.back`)
+* Refresh (refresh the source and screenshot)
+* Start Recording (open the recorder, see the next section for more information on the recorder)
+* Quit the session (call `driver.quit` and close the Inspector)
+
+### The Recorder
+
+Appium Desktop comes with a very basic action recorder, that watches for
+actions taken using Appium Desktop and displays language-and-framework-specific
+code that represents those actions. The code can then be copied-and-pasted into
+the appropriate Appium client code and used for tests.
+
+**NB:** the goal of the Recorder is not to produce production-ready test code.
+It is designed as a tool to help explore the Appium API, and demonstrate how
+certain automation behaviors correspond to method calls in a particular
+language and Appium library. In sum, it is a learning tool, not a robust code
+generation feature, and should be used as such.
+
+When you start recording, the Inspector will show an additional window:
+
+![Inspector window with recorder](docs/images/screen-recorder-empty.png)
+
+At first, the Recorder will show no code. You will first have to take some
+action, like finding an element in the hierarchy and tapping on it, or sending
+keystrokes to it. When you do this, code will appear in the recorder window,
+corresponding to the particular language and framework you have chosen (which
+can be adjusted in the drop-down menu at the top right of the Recorder):
+
+![Recorder with code](docs/images/screen-recorder-detail.png)
+
+This code can be copied to your clipboard using the appropriate button at the
+top right of the Recorder pane. Note that by default what is shown are simply
+lines of code corresponding to the specific actions you have taken while
+recording---in general you cannot paste these lines into an empty text file and
+run the code. To run Appium test scripts in code requires that various
+dependencies (like the Appium client libraries) be installed, and that script
+boilerplate (like instantiating a driver and initializing a session) be
+present. To show this additional code, you can click the "Show Boilerplate"
+button. With boilerplate code shown, it is possible to copy and paste the code
+into a new file and run it.
+
+![Recorder with boilerplate](docs/images/screen-recorder-boilerplate.png)
+
+The power of the Recorder will continue to grow as we add more languages,
+frameworks, and actions to Appium Desktop.
 
 ### Conclusion
 

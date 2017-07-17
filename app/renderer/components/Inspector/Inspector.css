@@ -120,6 +120,7 @@
 
 .inspector-main .source-tree-container .source-tree-card {
     height: 100%;
+    padding-bottom: 3em;
 }
 
 .highlighter-box {
