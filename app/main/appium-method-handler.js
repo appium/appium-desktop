@@ -58,13 +58,13 @@ export default class AppiumMethodHandler {
   }
 
   async executeElementCommand (elementId, methodName, args = []) {
-    const elCache = this.elementCache[elementId];
+    const cachedEl = this.elementCache[elementId];
 
     // Give the cached element a variable name (el1, el2, el3,...) the first time it's used
-    if (!elCache.variableName && elCache.variableType === 'string') {
-      elCache.variableName = `el${this.elVariableCounter++}`;
+    if (!cachedEl.variableName && cachedEl.variableType === 'string') {
+      cachedEl.variableName = `el${this.elVariableCounter++}`;
     }
-    const res = await elCache.el[methodName].apply(elCache.el, args);
+    const res = await cachedEl.el[methodName].apply(cachedEl.el, args);
 
     // Give the source/screenshot time to change before taking the screenshot
     await Bluebird.delay(500);
@@ -73,7 +73,7 @@ export default class AppiumMethodHandler {
 
     return {
       ...sourceAndScreenshot,
-      ...elCache,
+      ...cachedEl,
       res,
     };
   }

@@ -344,8 +344,6 @@ export function searchForElement (strategy, selector) {
   };
 }
 
-// TODO: Add an action that clears the assignedVarCache when recorder is cleared
-
 export function findAndAssign (strategy, selector, variableName, isArray) {
   return (dispatch, getState) => {
     const {assignedVarCache} = getState().inspector;
