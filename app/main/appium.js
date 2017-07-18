@@ -301,7 +301,7 @@ function connectClientMethodListener () {
             console.log(`Handling client method request with method '${methodName}' and args ${JSON.stringify(args)}`);
             res = await driver.executeMethod(methodName, args);
           }
-        } else  {
+        } else  if (strategy && selector) {
           if (fetchArray) {
             console.log(`Fetching elements with selector '${selector}' and strategy ${strategy}`);
             res = await driver.fetchElements(strategy, selector);

@@ -77,7 +77,7 @@ ${this.indent(code, 4)}
 
   getVarName (varName, varIndex) {
     if (varIndex || varIndex === 0) {
-      return `${varName}.get(varIndex)`;
+      return `${varName}.get(${varIndex})`;
     } 
     return varName;
   }

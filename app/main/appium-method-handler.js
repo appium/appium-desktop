@@ -16,7 +16,7 @@ export default class AppiumMethodHandler {
     }
     let id = element.value;
 
-    // Cache this ID along with it's variable name, variable type and strategy/selector
+    // Cache this ID along with its variable name, variable type and strategy/selector
     let cachedEl = this.elementCache[id] = {
       el: element,
       variableType: 'string',
