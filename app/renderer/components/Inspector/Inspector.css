@@ -112,8 +112,7 @@
     flex: 2;
 }
 
-.inspector-main .source-tree-card :global(.ant-card-body::-webkit-scrollbar),
-.inspector-main .recorded-actions :global(.ant-card-body::-webkit-scrollbar) {
+.inspector-main :global(.ant-card-body::-webkit-scrollbar) {
     background: transparent;
     width: 14px;
 }
@@ -152,6 +151,16 @@
 
 .elementActions {
     margin-bottom: 20px;
+}
+
+.selected-element-card {
+    display: flex;
+    flex-direction: column;
+}
+
+.selected-element-card :global(.ant-card-body) {
+    flex: 1;
+    overflow: auto;
 }
 
 .sourceTag {
