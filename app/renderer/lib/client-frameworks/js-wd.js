@@ -27,36 +27,43 @@ main().catch(console.log);
 `;
   }
 
-  codeFor_findAndAssign (strategy, locator, localVar) {
+  codeFor_findAndAssign (strategy, locator, localVar, isArray) {
     let suffixMap = {
       xpath: "XPath",
-      // TODO add other locator strategies
+      'accessibility id': 'AccessibilityId',
+      'id': 'Id',
+      'name': 'Name',
+      'class name': 'ClassName',
+      '-android uiautomator': 'AndroidUIAutomator',
+      '-ios predicate string': 'IosUIAutomation',
+      '-ios class chain': 'IosClassChain',
     };
     if (!suffixMap[strategy]) {
       throw new Error(`Strategy ${strategy} can't be code-gened`);
     }
-    return `let ${localVar} = await driver.elementBy${suffixMap[strategy]}(${JSON.stringify(locator)});`;
+    if (isArray) {
+      return `let ${localVar} = await driver.elementsBy${suffixMap[strategy]}(${JSON.stringify(locator)});`;
+    } else {
+      return `let ${localVar} = await driver.elementBy${suffixMap[strategy]}(${JSON.stringify(locator)});`;
+    }
   }
 
-  codeFor_click () {
-    return `await ${this.lastAssignedVar}.click();`;
+  codeFor_click (varName, varIndex) {
+    return `await ${this.getVarName(varName, varIndex)}.click();`;
   }
 
-  codeFor_clear () {
-    return `await ${this.lastAssignedVar}.clear();`;
+  codeFor_clear (varName, varIndex) {
+    return `await ${this.getVarName(varName, varIndex)}.clear();`;
   }
 
-  codeFor_sendKeys (text) {
-    return `await ${this.lastAssignedVar}.sendKeys(${JSON.stringify(text)});`;
+  codeFor_sendKeys (varName, varIndex, text) {
+    return `await ${this.getVarName(varName, varIndex)}.sendKeys(${JSON.stringify(text)});`;
   }
 
   codeFor_back () {
     return `await driver.back();`;
   }
 
-  codeFor_clickElement () {
-    return '';
-  }
 }
 
 JsWdFramework.readableName = "JS - WD (Promise)";

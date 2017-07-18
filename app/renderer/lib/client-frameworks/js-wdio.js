@@ -35,34 +35,40 @@ ${this.indent(this.chainifyCode(code), 2)}
 `;
   }
 
-  codeFor_findAndAssign (strategy, locator, localVar) {
+  codeFor_findAndAssign (strategy, locator, localVar, isArray) {
     // wdio has its own way of indicating the strategy in the locator string
     switch (strategy) {
       case "xpath": break; // xpath does not need to be updated
       case "accessibility id": locator = `~${locator}`; break;
+      case "id": locator = `#{locator}`; break;
+      case "name": locator = `name={locator}`; break;
+      case "class name": locator = `#{locator}`; break;
+      case "-android uiautomator": locator = `android={locator}`; break;
+      case "-ios predicate string": locator = `ios={locator}`; break;
+      case "-ios class chain": locator = `ios={locator}`; break; // TODO: Handle IOS class chain properly. Not all libs support it. Or take it out
       default: throw new Error(`Can't handle strategy ${strategy}`);
     }
-    return `let ${localVar} = driver.element(${JSON.stringify(locator)});`;
+    if (isArray) {
+      return `let ${localVar} = driver.elements(${JSON.stringify(locator)});`;
+    } else {
+      return `let ${localVar} = driver.element(${JSON.stringify(locator)});`;
+    }
   }
 
-  codeFor_click () {
-    return `${this.lastAssignedVar}.click();`;
+  codeFor_click (varName, varIndex) {
+    return `${this.getVarName(varName, varIndex)}.click();`;
   }
 
-  codeFor_clear () {
-    return `${this.lastAssignedVar}.clearElement();`;
+  codeFor_clear (varName, varIndex) {
+    return `${this.getVarName(varName, varIndex)}.clearElement();`;
   }
 
-  codeFor_sendKeys (text) {
-    return `${this.lastAssignedVar}.setValue(${JSON.stringify(text)});`;
+  codeFor_sendKeys (varName, varIndex, text) {
+    return `${this.getVarName(varName, varIndex)}.setValue(${JSON.stringify(text)});`;
   }
 
   codeFor_back () {
     return `driver.back();`;
-  }
-
-  codeFor_clickElement () {
-    return '';
   }
 }
 

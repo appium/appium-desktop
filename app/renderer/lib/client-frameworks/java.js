@@ -54,35 +54,48 @@ ${this.indent(code, 4)}
 `;
   }
 
-  codeFor_findAndAssign (strategy, locator, localVar) {
+  codeFor_findAndAssign (strategy, locator, localVar, isArray) {
     let suffixMap = {
       xpath: "XPath",
-      // TODO add other locator strategies
+      'accessibility id': 'AccessibilityId',
+      'id': 'Id',
+      'class name': 'ClassName',
+      'name': 'Name',
+      '-android uiautomator': 'AndroidUIAutomator',
+      '-ios predicate string': 'IosNsPredicate',
+      '-ios class chain': 'IosClassChain',
     };
     if (!suffixMap[strategy]) {
       throw new Error(`Strategy ${strategy} can't be code-gened`);
     }
-    return `MobileElement ${localVar} = (MobileElement) driver.findElementBy${suffixMap[strategy]}(${JSON.stringify(locator)});`;
+    if (isArray) {
+      return `List<MobileElement> ${localVar} = (MobileElement) driver.findElementsBy${suffixMap[strategy]}(${JSON.stringify(locator)});`;
+    } else {
+      return `MobileElement ${localVar} = (MobileElement) driver.findElementBy${suffixMap[strategy]}(${JSON.stringify(locator)});`;
+    }
   }
 
-  codeFor_click () {
-    return `${this.lastAssignedVar}.click();`;
+  getVarName (varName, varIndex) {
+    if (varIndex || varIndex === 0) {
+      return `${varName}.get(${varIndex})`;
+    } 
+    return varName;
   }
 
-  codeFor_clear () {
-    return `${this.lastAssignedVar}.clear();`;
+  codeFor_click (varName, varIndex) {
+    return `${this.getVarName(varName, varIndex)}.click();`;
   }
 
-  codeFor_sendKeys (text) {
-    return `${this.lastAssignedVar}.sendKeys(${JSON.stringify(text)});`;
+  codeFor_clear (varName, varIndex) {
+    return `${this.getVarName(varName, varIndex)}.clear();`;
+  }
+
+  codeFor_sendKeys (varName, varIndex, text) {
+    return `${this.getVarName(varName, varIndex)}.sendKeys(${JSON.stringify(text)});`;
   }
 
   codeFor_back () {
     return `driver.navigate().back();`;
-  }
-
-  codeFor_clickElement () {
-    return '';
   }
 }
 

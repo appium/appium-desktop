@@ -32,35 +32,41 @@ ${code}
 driver.quit()`;
   }
 
-  codeFor_findAndAssign (strategy, locator, localVar) {
+  codeFor_findAndAssign (strategy, locator, localVar, isArray) {
     let suffixMap = {
       xpath: "xpath",
-      // TODO add other locator strategies
+      'accessibility id': 'accessibility_id',
+      'id': 'id',
+      'name': 'name', // TODO: How does Python use name selector
+      'class name': 'class_name',
+      '-android uiautomator': 'AndroidUIAutomator',
+      '-ios predicate string': 'ios_predicate',
+      '-ios class chain': 'ios_uiautomation', // TODO: Could not find iOS UIAutomation
     };
     if (!suffixMap[strategy]) {
       throw new Error(`Strategy ${strategy} can't be code-gened`);
     }
-    return `${localVar} = driver.find_element_by_${suffixMap[strategy]}(${JSON.stringify(locator)})`;
+    if (isArray) {
+      return `${localVar} = driver.find_elements_by_${suffixMap[strategy]}(${JSON.stringify(locator)})`;
+    } else {
+      return `${localVar} = driver.find_element_by_${suffixMap[strategy]}(${JSON.stringify(locator)})`;
+    }
   }
 
-  codeFor_click () {
-    return `${this.lastAssignedVar}.click()`;
+  codeFor_click (varName, varIndex) {
+    return `${this.getVarName(varName, varIndex)}.click()`;
   }
 
-  codeFor_clear () {
-    return `${this.lastAssignedVar}.clear()`;
+  codeFor_clear (varName, varIndex) {
+    return `${this.getVarName(varName, varIndex)}.clear()`;
   }
 
-  codeFor_sendKeys (text) {
-    return `${this.lastAssignedVar}.send_keys(${JSON.stringify(text)})`;
+  codeFor_sendKeys (varName, varIndex, text) {
+    return `${this.getVarName(varName, varIndex)}.send_keys(${JSON.stringify(text)})`;
   }
 
   codeFor_back () {
     return `driver.back()`;
-  }
-
-  codeFor_clickElement () {
-    return '';
   }
 }
 

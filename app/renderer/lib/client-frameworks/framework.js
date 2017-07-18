@@ -72,6 +72,13 @@ export default class Framework {
     return [this.localVarCache[key], wasNew];
   }
 
+  getVarName (varName, varIndex) {
+    if (varIndex || varIndex === 0) {
+      return `${varName}[${varIndex}]`;
+    }
+    return varName;
+  }
+
   codeFor_findAndAssign () {
     throw new Error("Need to implement codeFor_findAndAssign");
   }

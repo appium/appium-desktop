@@ -1,13 +1,14 @@
 import { omit } from 'lodash';
 
 import { SET_SOURCE_AND_SCREENSHOT, QUIT_SESSION_REQUESTED, QUIT_SESSION_DONE,
-  SESSION_DONE, SELECT_ELEMENT, UNSELECT_ELEMENT, SELECT_HOVERED_ELEMENT,
+  SESSION_DONE, SELECT_ELEMENT, UNSELECT_ELEMENT, SELECT_HOVERED_ELEMENT, SET_SELECTED_ELEMENT_ID,
   UNSELECT_HOVERED_ELEMENT, METHOD_CALL_REQUESTED, METHOD_CALL_DONE,
   SET_FIELD_VALUE, SET_EXPANDED_PATHS, SHOW_SEND_KEYS_MODAL,
   HIDE_SEND_KEYS_MODAL, START_RECORDING, PAUSE_RECORDING, CLEAR_RECORDING,
   SET_ACTION_FRAMEWORK, RECORD_ACTION, CLOSE_RECORDER, SET_SHOW_BOILERPLATE, SET_SESSION_DETAILS, 
   SHOW_LOCATOR_TEST_MODAL, HIDE_LOCATOR_TEST_MODAL, SET_LOCATOR_TEST_STRATEGY, SET_LOCATOR_TEST_VALUE,
-  SEARCHING_FOR_ELEMENTS, SEARCHING_FOR_ELEMENTS_COMPLETED, SET_LOCATOR_TEST_ELEMENT, CLEAR_SEARCH_RESULTS
+  SEARCHING_FOR_ELEMENTS, SEARCHING_FOR_ELEMENTS_COMPLETED, SET_LOCATOR_TEST_ELEMENT, CLEAR_SEARCH_RESULTS, 
+  ADD_ASSIGNED_VAR_CACHE, CLEAR_ASSIGNED_VAR_CACHE,
 } from '../actions/Inspector';
 
 const DEFAULT_FRAMEWORK = 'java';
@@ -24,6 +25,7 @@ const INITIAL_STATE = {
   locatorTestStrategy: 'id',
   locatorTestValue: '',
   isSearchingForElements: false,
+  assignedVarCache: {},
 };
 
 /**
@@ -43,6 +45,7 @@ export default function inspector (state=INITIAL_STATE, action) {
       return {
         ...state,
         source: action.source,
+        sourceXML: action.sourceXML,
         sourceError: action.sourceError,
         screenshot: action.screenshot,
         screenshotError: action.screenshotError,
@@ -71,10 +74,29 @@ export default function inspector (state=INITIAL_STATE, action) {
       return {
         ...state,
         selectedElement: findElementByPath(action.path, state.source),
+        selectedElementPath: action.path,
+        selectedElementId: null,
+        selectedElementVariableName: null,
+        selectedElementVariableType: null,
       };
 
     case UNSELECT_ELEMENT:
-      return omit(state, 'selectedElement');
+      return {
+        ...state,
+        selectedElement: undefined,
+        selectedElementPath: null,
+        selectedElementId: null,
+        selectedElementVariableName: null,
+        selectedElementVariableType: null,
+      };
+
+    case SET_SELECTED_ELEMENT_ID:
+      return {
+        ...state,
+        selectedElementId: action.elementId,
+        selectedElementVariableName: action.variableName,
+        selectedElementVariableType: action.variableType,
+      };
 
     case SELECT_HOVERED_ELEMENT:
       return {
@@ -152,6 +174,21 @@ export default function inspector (state=INITIAL_STATE, action) {
           ...state.recordedActions,
           {action: action.action, params: action.params}
         ]
+      };
+
+    case ADD_ASSIGNED_VAR_CACHE:
+      return {
+        ...state,
+        assignedVarCache: {
+          ...state.assignedVarCache,
+          [action.varName]: true,
+        }
+      };
+
+    case CLEAR_ASSIGNED_VAR_CACHE:
+      return {
+        ...state,
+        assignedVarCache: [],
       };
 
     case CLOSE_RECORDER:

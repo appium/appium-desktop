@@ -1,6 +1,8 @@
 import { ipcRenderer } from 'electron';
 import { notification } from 'antd';
 import { push } from 'react-router-redux';
+import _ from 'lodash';
+import { getLocators } from '../components/Inspector/shared';
 import { showError } from './Session';
 import { callClientMethod } from './shared';
 import { getOptimalXPath } from '../util';
@@ -12,6 +14,7 @@ export const SET_SOURCE_AND_SCREENSHOT = 'SET_SOURCE_AND_SCREENSHOT';
 export const SESSION_DONE = 'SESSION_DONE';
 export const SELECT_ELEMENT = 'SELECT_ELEMENT';
 export const UNSELECT_ELEMENT = 'UNSELECT_ELEMENT';
+export const SET_SELECTED_ELEMENT_ID = 'SET_SELECTED_ELEMENT_ID';
 export const METHOD_CALL_REQUESTED = 'METHOD_CALL_REQUESTED';
 export const METHOD_CALL_DONE = 'METHOD_CALL_DONE';
 export const SET_FIELD_VALUE = 'SET_FIELD_VALUE';
@@ -40,6 +43,8 @@ export const SEARCHING_FOR_ELEMENTS = 'SEARCHING_FOR_ELEMENTS';
 export const SEARCHING_FOR_ELEMENTS_COMPLETED = 'SEARCHING_FOR_ELEMENTS_COMPLETED';
 export const SET_LOCATOR_TEST_ELEMENT = 'SET_LOCATOR_TEST_ELEMENT';
 export const CLEAR_SEARCH_RESULTS = 'CLEAR_SEARCH_RESULTS';
+export const ADD_ASSIGNED_VAR_CACHE = 'ADD_ASSIGNED_VAR_CACHE';
+export const CLEAR_ASSIGNED_VAR_CACHE = 'CLEAR_ASSIGNED_VAR_CACHE';
 
 // Attributes on nodes that we know are unique to the node
 const uniqueAttributes = [
@@ -95,9 +100,13 @@ export function bindAppium () {
   };
 }
 
+
 export function selectElement (path) {
-  return (dispatch, getState) => {
+  return async (dispatch, getState) => {
     dispatch({type: SELECT_ELEMENT, path});
+    const state = getState().inspector;
+    const {attributes: selectedElementAttributes, xpath: selectedElementXPath} = state.selectedElement;
+    const {sourceXML} = state;
 
     // Expand all of this element's ancestors so that it's visible in the tree
     let {expandedPaths} = getState().inspector;
@@ -109,8 +118,24 @@ export function selectElement (path) {
         expandedPaths.push(path);
       }
     }
-
     dispatch({type: SET_EXPANDED_PATHS, paths: expandedPaths});
+
+    // Find the optimal selection strategy. If none found, fall back to XPath.
+    const strategyMap = _.toPairs(getLocators(selectedElementAttributes, sourceXML));
+    const [optimalStrategy, optimalSelector] = strategyMap.length > 0 ? strategyMap[strategyMap.length - 1] : ['xpath', selectedElementXPath];
+
+    // Get the information about the element
+    const {elementId, variableName, variableType} = await callClientMethod({
+      strategy: optimalStrategy,
+      selector: optimalSelector,
+    });
+
+    // Set the elementId, variableName and variableType for the selected element 
+    // (check first that the selectedElementPath didn't change, to avoid race conditions)
+    if (getState().inspector.selectedElementPath === path) {
+      dispatch({type: SET_SELECTED_ELEMENT_ID, elementId, variableName, variableType});
+    }
+    
   };
 }
 
@@ -142,29 +167,40 @@ export function applyClientMethod (params) {
                       getState().inspector.isRecording;
     try {
       dispatch({type: METHOD_CALL_REQUESTED});
-      let {source, screenshot, result, sourceError, screenshotError} = await callClientMethod(params.methodName, params.args, params.xpath);
+      let {source, screenshot, result, sourceError, screenshotError, 
+        variableName, variableIndex, strategy, selector} = await callClientMethod(params);
       if (isRecording) {
-        // for now just add a fake recorded step of 'finding'
-        // the element we are going to interact with. in the
-        // future we'll want to adjust this to use the locator
-        // strategy we recommend to the user, not just xpath
-        if (params.xpath) {
-          // also make sure we only do this optionally in case we're calling
-          // a global driver method that isn't operating on an element
-          recordAction('findElement', ['xpath', params.xpath])(dispatch);
+        // Add 'findAndAssign' line of code. Don't do it for arrays though. Arrays already have 'find' expression
+        if (strategy && selector && !variableIndex && variableIndex !== 0) {
+          findAndAssign(strategy, selector, variableName, false)(dispatch, getState);
         }
+
         // now record the actual action
-        let args = params.args || [];
-        recordAction(params.methodName, args)(dispatch);
+        let args = [variableName, variableIndex];
+        args = args.concat(params.args || []);
+        dispatch({type: RECORD_ACTION, action: params.methodName, params: args });
       }
       dispatch({type: METHOD_CALL_DONE});
-      dispatch({type: SET_SOURCE_AND_SCREENSHOT, source: source && xmlToJSON(source), screenshot, sourceError, screenshotError});
+      dispatch({
+        type: SET_SOURCE_AND_SCREENSHOT, 
+        source: source && xmlToJSON(source), 
+        sourceXML: source,
+        screenshot, 
+        sourceError, 
+        screenshotError,
+      });
       return result;
     } catch (error) {
       let methodName = params.methodName === 'click' ? 'tap' : params.methodName;
       showError(error, methodName, 10);
       dispatch({type: METHOD_CALL_DONE});
     }
+  };
+}
+
+export function addAssignedVarCache (varName) {
+  return (dispatch) => {
+    dispatch({type: ADD_ASSIGNED_VAR_CACHE, varName});
   };
 }
 
@@ -222,6 +258,8 @@ export function pauseRecording () {
 export function clearRecording () {
   return (dispatch) => {
     dispatch({type: CLEAR_RECORDING});
+    ipcRenderer.send('appium-restart-recorder'); // Tell the main thread to start the variable count from 1 
+    dispatch({type: CLEAR_ASSIGNED_VAR_CACHE}); // Get rid of the variable cache
   };
 }
 
@@ -291,14 +329,35 @@ export function setLocatorTestStrategy (locatorTestStrategy) {
   };
 }
 
-export function searchForElement (locatorTestStrategy, locatorTestValue) {
-  return async (dispatch) => {
+export function searchForElement (strategy, selector) {
+  return async (dispatch, getState) => {
     dispatch({type: SEARCHING_FOR_ELEMENTS});
-    const {result: elements} = await callClientMethod('elements', [locatorTestStrategy, locatorTestValue]);
-    dispatch({type: SEARCHING_FOR_ELEMENTS_COMPLETED, elements});
+    try {
+      let {elements, variableName} = await callClientMethod({strategy, selector, fetchArray: true});
+      findAndAssign(strategy, selector, variableName, true)(dispatch, getState);
+      elements = elements.map((el) => el.id);
+      dispatch({type: SEARCHING_FOR_ELEMENTS_COMPLETED, elements});
+    } catch (error) {
+      dispatch({type: SEARCHING_FOR_ELEMENTS_COMPLETED});
+      showError(error, 10);
+    }
   };
 }
 
+export function findAndAssign (strategy, selector, variableName, isArray) {
+  return (dispatch, getState) => {
+    const {assignedVarCache} = getState().inspector;
+
+    // If this call to 'findAndAssign' for this variable wasn't done already, do it now
+    if (!assignedVarCache[variableName]) {
+      dispatch({type: RECORD_ACTION, action: 'findAndAssign', params: [strategy, selector, variableName, isArray]});
+      dispatch({type: ADD_ASSIGNED_VAR_CACHE, varName: variableName});
+    }
+  };
+}
+
+
+// TODO: Is this obsolete? I don't think we use this.
 export function setLocatorTestElement (elementId) {
   return (dispatch) => {
     dispatch({type: SET_LOCATOR_TEST_ELEMENT, elementId});

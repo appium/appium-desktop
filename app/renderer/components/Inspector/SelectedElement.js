@@ -1,16 +1,11 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
+import _ from 'lodash';
+import { getLocators } from './shared';
 import styles from './Inspector.css';
 import { Button, Row, Col, Input, Modal, Table, Alert } from 'antd';
 
 const ButtonGroup = Button.Group;
-
-const STRATEGY_MAPPINGS = {
-  name: 'accessibility id',
-  "content-desc": 'accessibility id',
-  id: 'id',
-  "resource-id": 'id',
-};
 
 /**
  * Shows details of the currently selected element and shows methods that can
@@ -24,28 +19,18 @@ export default class SelectedElement extends Component {
   }
 
   handleSendKeys () {
-    const {sendKeys, applyClientMethod, hideSendKeysModal, selectedElement} = this.props;
-    const {xpath} = selectedElement;
-    applyClientMethod({methodName: 'sendKeys', xpath, args: [sendKeys]});
+    const {sendKeys, applyClientMethod, hideSendKeysModal, selectedElementId:elementId} = this.props;
+    applyClientMethod({methodName: 'sendKeys', elementId, args: [sendKeys]});
     hideSendKeysModal();
   }
 
   render () {
-    const {applyClientMethod, setFieldValue, sendKeys, selectedElement, sendKeysModalVisible, showSendKeysModal, hideSendKeysModal} = this.props;
+    const {applyClientMethod, setFieldValue, sendKeys, selectedElement, sendKeysModalVisible, showSendKeysModal, 
+      hideSendKeysModal, selectedElementId:elementId, sourceXML} = this.props;
     const {attributes, xpath} = selectedElement;
 
-    // Translate attributes into an array so we can iterate over them
-    let attrArray = Object
-      .keys(attributes || {})
-      .filter((attrName) => attrName !== 'path')
-      .map((attrName) => {
-        return {
-          name: attrName,
-          value: attributes[attrName],
-        };
-      });
-
-    let columns = [{
+    // Get the columns for the attributes table
+    let attributeColumns = [{
       title: 'Attribute',
       dataIndex: 'name',
       key: 'name',
@@ -56,14 +41,15 @@ export default class SelectedElement extends Component {
       key: 'value'
     }];
 
-    let dataSource = attrArray.map((attr) => {
-      return {
-        key: attr.name,
-        name: attr.name,
-        value: attr.value,
-      };
-    });
+    // Get the data for the attributes table
+    let attrArray = _.toPairs(attributes).filter(([key]) => key !== 'path');
+    let dataSource = attrArray.map(([key, value]) => ({
+      key,
+      value,
+      name: key,
+    }));
 
+    // Get the columns for the strategies table
     let findColumns = [{
       title: 'Find By',
       dataIndex: 'find',
@@ -75,34 +61,35 @@ export default class SelectedElement extends Component {
       key: 'selector'
     }];
 
-    let findDataSource = [], showXpathWarning = false;
+    // Get the data for the strategies table
+    let findDataSource = _.toPairs(getLocators(attributes, sourceXML)).map(([key, selector]) => ({
+      key,
+      selector,
+      find: key,
+    }));
 
-    for (let key of Object.keys(STRATEGY_MAPPINGS)) {
-      if (attributes[key]) {
-        findDataSource.push({
-          key: STRATEGY_MAPPINGS[key],
-          find: STRATEGY_MAPPINGS[key],
-          selector: attributes[key]
-        });
-      }
+    // If XPath is the only provided data source, warn the user about it's brittleness
+    let showXpathWarning = false;
+    if (findDataSource.length === 0) {
+      showXpathWarning = true;
     }
 
-    if (!findDataSource.length && xpath) {
+    // Add XPath to the data source as well
+    if (xpath) {
       findDataSource.push({
         key: 'xpath',
         find: 'xpath',
         selector: xpath,
       });
-      showXpathWarning = true;
     }
 
     return <div>
       <Row justify="center" type="flex" align="middle" gutter={10} className={styles.elementActions}>
         <Col>
           <ButtonGroup size="small">
-            <Button id='btnTapElement' onClick={() => applyClientMethod({methodName: 'click', xpath})}>Tap</Button>
-            <Button id='btnSendKeysToElement' onClick={() => showSendKeysModal()}>Send Keys</Button>
-            <Button id='btnClearElement' onClick={() => applyClientMethod({methodName: 'clear', xpath})}>Clear</Button>
+            <Button disabled={!elementId} id='btnTapElement' onClick={() => applyClientMethod({methodName: 'click', elementId})}>Tap</Button>
+            <Button disabled={!elementId} id='btnSendKeysToElement' onClick={() => showSendKeysModal()}>Send Keys</Button>
+            <Button disabled={!elementId} id='btnClearElement' onClick={() => applyClientMethod({methodName: 'clear', elementId})}>Clear</Button>
           </ButtonGroup>
         </Col>
       </Row>
@@ -120,7 +107,7 @@ export default class SelectedElement extends Component {
       }
       {dataSource.length > 0 &&
       <Row>
-        <Table columns={columns} dataSource={dataSource} size="small" pagination={false} />
+        <Table columns={attributeColumns} dataSource={dataSource} size="small" pagination={false} />
       </Row>
       }
       <Modal title='Send Keys'

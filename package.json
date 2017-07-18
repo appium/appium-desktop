@@ -23,6 +23,7 @@
   "scripts": {
     "test": "npm run unit-test",
     "e2e": "mocha --timeout 600000 --compilers js:babel-core/register --require ./node_modules/babel-polyfill/dist/polyfill.min.js ./test/e2e",
+    "integration": "mocha --timeout 600000 --compilers js:babel-core/register --require ./node_modules/babel-polyfill/dist/polyfill.min.js ./test/integration",
     "unit-test": "mocha --compilers js:babel-core/register ./test/unit",
     "lint": "eslint app test *.js",
     "hot-server": "node -r babel-register server.js --color",
@@ -40,7 +41,7 @@
     "package-linux": "npm run build && build --linux",
     "package-all": "npm run build && build -mwl",
     "package-e2e-test": "npm run build && build --dir",
-    "package-ci": "npm run build && npm run package-e2e-test && npm run e2e && build --publish onTagOrDraft",
+    "package-ci": "npm run integration && npm run build && npm run package-e2e-test && npm run e2e && build --publish onTagOrDraft",
     "postversion": "git pull --tags && git push && git push --tags"
   },
   "build": {

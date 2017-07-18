@@ -5,9 +5,9 @@ import { main as appiumServer } from 'appium';
 import { getDefaultArgs, getParser } from 'appium/build/lib/parser';
 import path from 'path';
 import wd from 'wd';
-import Bluebird from 'bluebird';
 import settings from '../settings';
 import autoUpdaterController from './auto-updater';
+import AppiumMethodHandler from './appium-method-handler';
 import request from 'request-promise';
 
 const LOG_SEND_INTERVAL_MS = 250;
@@ -18,6 +18,8 @@ var logWatcher = null;
 var batchedLogs = [];
 
 let sessionDrivers = {};
+
+let appiumHandlers = {};
 
 // Delete saved server args, don't start until a server has been started
 settings.deleteSync('SERVER_ARGS');
@@ -38,6 +40,7 @@ async function killSession (sessionWinID) {
       console.log(`Couldn't close session: ${sessionID || 'unknown session ID'}`);
     }
     delete sessionDrivers[sessionWinID];
+    delete appiumHandlers[sessionWinID];
   }
 }
 
@@ -201,11 +204,12 @@ function connectCreateNewSession () {
       accessKey,
       https,
     });
+    appiumHandlers[event.sender.id] = new AppiumMethodHandler(driver);
 
     // If we're just attaching to an existing session, do that and
     // short-circuit the rest of the logic
     if (attachSessId) {
-      sessionDrivers[event.sender.id]._isAttachedSession = true;
+      driver._isAttachedSession = true;
       try {
         await driver.attach(attachSessId);
         // get the session capabilities to prove things are working
@@ -251,18 +255,30 @@ function connectCreateNewSession () {
   });
 }
 
+function connectRestartRecorder () {
+  ipcMain.on('appium-restart-recorder', (evt) => {
+    appiumHandlers[evt.sender.id].restart();
+  });
+}
+
 /**
  * When a Session Window makes method request, find it's corresponding driver, execute requested method
  * and send back the result
  */
 function connectClientMethodListener () {
   ipcMain.on('appium-client-command-request', async (evt, data) => {
-    const {methodName, args = [], xpath, uuid} = data;
-    console.log(`Handling client method request with method '${methodName}' ` +
-                `and args ${JSON.stringify(args)}`);
+    const {
+      uuid, // Transaction ID
+      methodName, // Optional. Name of method being provided
+      strategy, // Optional. Element locator strategy
+      selector, // Optional. Element fetch selector
+      fetchArray = false, // Optional. Are we fetching an array of elements or just one?
+      elementId, // Optional. Element being operated on 
+      args = [], // Optional. Arguments passed to method
+    } = data;
+    
     let renderer = evt.sender;
-    let driver = sessionDrivers[renderer.id];
-    let source, screenshot;
+    let driver = appiumHandlers[renderer.id];
 
     try {
       if (methodName === 'quit') {
@@ -276,51 +292,38 @@ function connectClientMethodListener () {
           result: null
         });
       } else {
-
-        // Execute the requested method
-        let result;
-        if (methodName !== 'source') {
-          if (xpath) {
-            result = await driver.elementByXPath(xpath)[methodName](...args);
+        let res = {};
+        if (methodName) {
+          if (elementId) {
+            console.log(`Handling client method request with method '${methodName}', args ${JSON.stringify(args)} and elementId ${elementId}`);
+            res = await driver.executeElementCommand(elementId, methodName, args);
           } else {
-            result = await driver[methodName](...args);
+            console.log(`Handling client method request with method '${methodName}' and args ${JSON.stringify(args)}`);
+            res = await driver.executeMethod(methodName, args);
+          }
+        } else  if (strategy && selector) {
+          if (fetchArray) {
+            console.log(`Fetching elements with selector '${selector}' and strategy ${strategy}`);
+            res = await driver.fetchElements(strategy, selector);
+          } else {
+            console.log(`Fetching an element with selector '${selector}' and strategy ${strategy}`);
+            res = await driver.fetchElement(strategy, selector);
           }
         }
 
-        // Give method time to finish altering the source before getting source and screenshot
-        await Bluebird.delay(500);
-
-        // Try getting the source
-        let source;
-        let sourceError;
-        try {
-          source = await driver.source();
-        } catch (e) {
-          if (e.status === 6) {
-            throw e;
-          }
-          sourceError = e;
-        }
-
-        // Try getting the screenshot
-        let screenshot;
-        let screenshotError;
-        try {
-          screenshot = await driver.takeScreenshot();
-        } catch (e) {
-          if (e.status === 6) {
-            throw e;
-          }
-          screenshotError = e;
-        }
-        renderer.send('appium-client-command-response', {source, screenshot, uuid, result, sourceError, screenshotError});
+        renderer.send('appium-client-command-response', {
+          ...res,
+          uuid,
+        });
       }
 
     } catch (e) {
       // If the status is '6' that means the session has been terminated
       if (e.status === 6) {
+        console.log('Session terminated: e.status === 6');
         renderer.send('appium-session-done', e);
       }
+      console.log('Caught an exception: ', e);
       renderer.send('appium-client-command-response-error', {e, uuid});
     }
   });
@@ -349,6 +352,7 @@ function initializeIpc (win) {
   connectCreateNewSession(win);
   connectClientMethodListener(win);
   connectGetSessionsListener();
+  connectRestartRecorder();
 
   autoUpdaterController.setMainWindow(win);
   autoUpdaterController.checkForUpdates();
