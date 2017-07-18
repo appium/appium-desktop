@@ -15,13 +15,48 @@ export default class SelectedElement extends Component {
 
   constructor (props) {
     super(props);
+    this.state = {};
     this.handleSendKeys = this.handleSendKeys.bind(this);
+    this.debouncedCalculateContainerStyles = _.debounce(this.calculateContainerStyles.bind(this), 300);
+  }
+
+  componentDidMount () {
+    window.addEventListener('resize', this.debouncedCalculateContainerStyles);
+    this.calculateContainerStyles();
+  }
+
+  componentDidUnmount () {
+    window.removeEventListener('resize', this.debouncedCalculateContainerStyles);
   }
 
   handleSendKeys () {
     const {sendKeys, applyClientMethod, hideSendKeysModal, selectedElementId:elementId} = this.props;
     applyClientMethod({methodName: 'sendKeys', elementId, args: [sendKeys]});
     hideSendKeysModal();
+  }
+
+  /**
+   * Callback when window is resized or when component mounts
+   * 
+   * This calculates what the height of the selectedElement info should be. This is a hack
+   * fix because antd CSS is a little tricky to deal with.
+   * 
+   * This gets the distance of the top of the container from the top of the page and then
+   * sets the height to that minus a 10px buffer. Overflow is set to auto so that it's scrollable.
+   * 
+   * If we don't do this, overflow is clipped and we can't scroll selected elements
+   */
+  calculateContainerStyles () {
+    if (this.selectedElContainer) {
+      const distanceFromTop = this.selectedElContainer.getBoundingClientRect().top + window.scrollY;
+      this.setState({
+        containerStyle: {
+          height: window.innerHeight - distanceFromTop - 10,
+          overflow: 'auto',
+          paddingBottom: '1em',
+        }
+      });
+    }
   }
 
   render () {
@@ -93,6 +128,7 @@ export default class SelectedElement extends Component {
           </ButtonGroup>
         </Col>
       </Row>
+      <div style={this.state.containerStyle} ref={(el) => this.selectedElContainer=el}>
       {findDataSource.length > 0 && <Table columns={findColumns} dataSource={findDataSource} size="small" pagination={false} />}
       <br />
       {showXpathWarning &&
@@ -110,6 +146,8 @@ export default class SelectedElement extends Component {
         <Table columns={attributeColumns} dataSource={dataSource} size="small" pagination={false} />
       </Row>
       }
+      </div>
+
       <Modal title='Send Keys'
         visible={sendKeysModalVisible}
         okText='Send Keys'
