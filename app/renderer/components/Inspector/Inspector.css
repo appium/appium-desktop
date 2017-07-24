@@ -234,3 +234,9 @@
     width: 100%;
     margin-bottom: 1em;
 }
+.coordinatesContainer {
+    position: absolute;
+    background:rgba(255,250,205,0.8);
+    z-index: 10000000;
+    padding: 2px;
+}

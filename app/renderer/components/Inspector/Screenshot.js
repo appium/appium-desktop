@@ -84,7 +84,7 @@ export default class Screenshot extends Component {
 
   render () {
     const {source, screenshot, methodCallInProgress, screenshotInteractionMode} = this.props;
-    const {scaleRatio} = this.state;
+    const {scaleRatio, x, y} = this.state;
 
     // Recurse through the 'source' JSON and render a highlighter rect for each element
     const highlighterRects = [];
@@ -125,6 +125,10 @@ export default class Screenshot extends Component {
     // Show the screenshot and highlighter rects. Show loading indicator if a method call is in progress.
     return <Spin size='large' spinning={!!methodCallInProgress}>
       <Actions {...this.props} />
+      {x !== undefined ? <div className={styles.coordinatesContainer}>
+        <p>X: {Math.round(x * 100) / 100}</p>
+        <p>Y: {Math.round(y * 100) / 100}</p>
+      </div> : null}
       <div ref={(containerEl) => { this.containerEl = containerEl; }}
         style={screenshotStyle} 
         onClick={this.handleScreenshotClick.bind(this)}
