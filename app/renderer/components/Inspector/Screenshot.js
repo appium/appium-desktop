@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { debounce } from 'lodash';
 import HighlighterRect from './HighlighterRect';
+import Actions from './Actions';
 import { Spin } from 'antd';
 import styles from './Inspector.css';
 import { parseCoordinates } from './shared';
@@ -34,6 +35,15 @@ export default class Screenshot extends Component {
 
   }
 
+  handleScreenshotClick (e) {
+    const {screenshotInteractionMode} = this.props;
+    if (screenshotInteractionMode === 'tap') {
+      const offsetX = e.nativeEvent.offsetX;
+      const offsetY = e.nativeEvent.offsetY;
+      console.log('!!!!', offsetX, offsetY);
+    }
+  }
+
   componentDidMount () {
     // When DOM is ready, calculate the image scale ratio and re-calculate it whenever the window is resized
     this.updateScaleRatio();
@@ -45,7 +55,7 @@ export default class Screenshot extends Component {
   }
 
   render () {
-    const {source, screenshot, methodCallInProgress} = this.props;
+    const {source, screenshot, methodCallInProgress, screenshotInteractionMode} = this.props;
     const {scaleRatio} = this.state;
 
     // Recurse through the 'source' JSON and render a highlighter rect for each element
@@ -58,6 +68,7 @@ export default class Screenshot extends Component {
                            this.containerEl.getBoundingClientRect().left;
     }
 
+    // TODO: Refactor this into a separate component
     let recursive = (element, zIndex = 0) => {
       if (!element) {
         return;
@@ -75,13 +86,23 @@ export default class Screenshot extends Component {
       }
     };
 
+    // If we're tapping or swiping, show the 'touch' cursor style
+    const screenshotStyle = {};
+    if (screenshotInteractionMode === 'tap' || screenshotInteractionMode === 'swipe') {
+      screenshotStyle.cursor = 'crosshair'; // TODO: Change this to touch
+    }
+
     recursive(source);
 
     // Show the screenshot and highlighter rects. Show loading indicator if a method call is in progress.
     return <Spin size='large' spinning={!!methodCallInProgress}>
-      <div ref={(containerEl) => { this.containerEl = containerEl; }} className={styles.screenshotBox}>
+      <Actions {...this.props} />
+      <div ref={(containerEl) => { this.containerEl = containerEl; }}
+        style={screenshotStyle} 
+        onClick={this.handleScreenshotClick.bind(this)}
+        className={styles.screenshotBox}>
         <img src={`data:image/gif;base64,${screenshot}`} id="screenshot" />
-        {highlighterRects}
+        {screenshotInteractionMode === 'select' && highlighterRects}
       </div>
     </Spin>;
   }

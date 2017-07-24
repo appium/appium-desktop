@@ -49,7 +49,7 @@
 .inspector-main .screenshot-container .screenshotBox {
     width: 100%;
     height: 100%;
-    text-align: center;
+    text-align: left;
     padding-bottom: 13px;
     position: relative;
     overflow: hidden;

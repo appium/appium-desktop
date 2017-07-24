@@ -45,6 +45,7 @@ export const SET_LOCATOR_TEST_ELEMENT = 'SET_LOCATOR_TEST_ELEMENT';
 export const CLEAR_SEARCH_RESULTS = 'CLEAR_SEARCH_RESULTS';
 export const ADD_ASSIGNED_VAR_CACHE = 'ADD_ASSIGNED_VAR_CACHE';
 export const CLEAR_ASSIGNED_VAR_CACHE = 'CLEAR_ASSIGNED_VAR_CACHE';
+export const SET_SCREENSHOT_INTERACTION_MODE = 'SET_SCREENSHOT_INTERACTION_MODE';
 
 // Attributes on nodes that we know are unique to the node
 const uniqueAttributes = [
@@ -367,5 +368,11 @@ export function setLocatorTestElement (elementId) {
 export function clearSearchResults () {
   return (dispatch) => {
     dispatch({type: CLEAR_SEARCH_RESULTS});
+  };
+}
+
+export function selectScreenshotInteractionMode (screenshotInteractionMode) {
+  return (dispatch) => {
+    dispatch({type: SET_SCREENSHOT_INTERACTION_MODE, screenshotInteractionMode });
   };
 }
