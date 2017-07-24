@@ -1,5 +1,6 @@
 import Bluebird from 'bluebird';
 import _ from 'lodash';
+import wd from 'wd';
 
 export default class AppiumMethodHandler {
   constructor (driver) {
@@ -80,7 +81,12 @@ export default class AppiumMethodHandler {
 
   async executeMethod (methodName, args = []) {
     let res = {};
-    if (methodName !== 'source' && methodName !== 'screenshot') {
+
+    // Specially handle the tap method (TODO: Add swipe here too)
+    if (methodName === 'tap') {
+      res = await (new wd.TouchAction(this.driver)).tap({x: args[0], y: args[1]}).perform();
+      // res = await (new wd.TouchAction(driver)).press({el: el}).release();
+    } else if (methodName !== 'source' && methodName !== 'screenshot') {
       res = await this.driver[methodName].apply(this.driver, args);
     }
 
@@ -94,7 +100,7 @@ export default class AppiumMethodHandler {
       res,
     };
   }
-
+  
   async _getSourceAndScreenshot () {
     let source, sourceError, screenshot, screenshotError;
     try {

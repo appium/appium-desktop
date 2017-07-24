@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Radio, Icon } from 'antd';
+import { Radio } from 'antd';
 
 
 /**

@@ -35,13 +35,41 @@ export default class Screenshot extends Component {
 
   }
 
-  handleScreenshotClick (e) {
-    const {screenshotInteractionMode} = this.props;
+  handleScreenshotClick () {
+    const {screenshotInteractionMode, applyClientMethod} = this.props;
+    const {x, y} = this.state;
+
     if (screenshotInteractionMode === 'tap') {
+      applyClientMethod({
+        methodName: 'tap',
+        args: [x, y],
+      });
+    }
+  }
+
+  handleMouseMove (e) {
+    const {screenshotInteractionMode} = this.props;
+    const {scaleRatio} = this.state;
+
+    if (screenshotInteractionMode !== 'select') {
       const offsetX = e.nativeEvent.offsetX;
       const offsetY = e.nativeEvent.offsetY;
-      console.log('!!!!', offsetX, offsetY);
+      const x = offsetX * scaleRatio;
+      const y = offsetY * scaleRatio;
+      this.setState({
+        ...this.state,
+        x,
+        y,
+      });
     }
+  }
+
+  handleMouseOut () {
+    this.setState({
+      ...this.state,
+      x: undefined,
+      y: undefined,
+    });
   }
 
   componentDidMount () {
@@ -100,6 +128,8 @@ export default class Screenshot extends Component {
       <div ref={(containerEl) => { this.containerEl = containerEl; }}
         style={screenshotStyle} 
         onClick={this.handleScreenshotClick.bind(this)}
+        onMouseMove={this.handleMouseMove.bind(this)}
+        onMouseOut={this.handleMouseOut.bind(this)}
         className={styles.screenshotBox}>
         <img src={`data:image/gif;base64,${screenshot}`} id="screenshot" />
         {screenshotInteractionMode === 'select' && highlighterRects}
