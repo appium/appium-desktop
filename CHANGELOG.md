@@ -1,24 +1,11 @@
-## [1.1.0-beta.4](https://github.com/appium/appium-desktop/compare/v1.1.0-beta.4...v1.1.0-beta.3) (2017-06-26)
+## [1.1.0](https://github.com/appium/appium-desktop/compare/v1.0.0...v1.1.0) (2017-07-24)
 
 ### Changes
-* Fix:  Draggable app area and window controls issues in Windows and Linux (#229)
-
-## [1.1.0-beta.3](https://github.com/appium/appium-desktop/compare/v1.1.0-beta.3...v1.1.0-beta.2) (2017-06-26)
-
-### Changes
-* Fix: Resize inspector if it was previously too small (#225)
 * Feature: Can record actions in Java, JS, Python, and Ruby (#224)
-
-## [1.1.0-beta.2](https://github.com/appium/appium-desktop/compare/v1.1.0-beta.2...v1.1.0-beta.1) (2017-05-12)
-
-### Changes
-* Fix: Previous version had wrong Appium Version on Mac (1.6.4 instead of 1.6.5)
-
-## [1.1.0-beta.1](https://github.com/appium/appium-desktop/compare/v1.0.0...v1.1.0-beta.1) (2017-05-08)
-
-### Changes
 * Feature: Updated to Appium 1.6.5 (#208)
 * Feature: Show a list of currently running sessions when attaching sessions (#196)
+* Fix: Draggable app area and window controls issues in Windows and Linux (#229)
+* Fix: Resize inspector if it was previously too small (#225)
 * Fix: Pegged ANTD version to prevent errors (#198) 
 
 ## [1.0.0](https://github.com/appium/appium-desktop/compare/v1.0.0-beta.6...v1.0.0) (2017-04-07)
