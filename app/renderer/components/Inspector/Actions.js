@@ -8,8 +8,8 @@ import { Radio } from 'antd';
 export default class Actions extends Component {
 
   handleScreenshotInteractionChange (e) {
-    const {selectScreenshotInteractionMode} = this.props;
-    
+    const {selectScreenshotInteractionMode, clearSwipeAction} = this.props;
+    clearSwipeAction(); // When the action changes, reset the swipe action
     selectScreenshotInteractionMode(e.target.value);
   }
 

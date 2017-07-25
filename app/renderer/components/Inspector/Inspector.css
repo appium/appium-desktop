@@ -240,3 +240,29 @@
     z-index: 10000000;
     padding: 2px;
 }
+.swipeInstructions {
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 100000000;
+    background-color: white;
+    padding: 4px;
+    width: 10em;
+}
+.swipeSvg {
+    position: absolute;
+    z-index: 100000000;
+    top: 0;
+    height: 100%;
+}
+
+.swipeSvg line {
+    stroke-width: 15;
+    stroke: rgba(255,250,205,0.6);
+    stroke-linecap: round;
+}
+
+.swipeSvg circle {
+    r: 7.5;
+    fill: rgba(255,250,205,0.8);
+}

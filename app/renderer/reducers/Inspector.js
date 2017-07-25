@@ -9,6 +9,7 @@ import { SET_SOURCE_AND_SCREENSHOT, QUIT_SESSION_REQUESTED, QUIT_SESSION_DONE,
   SHOW_LOCATOR_TEST_MODAL, HIDE_LOCATOR_TEST_MODAL, SET_LOCATOR_TEST_STRATEGY, SET_LOCATOR_TEST_VALUE,
   SEARCHING_FOR_ELEMENTS, SEARCHING_FOR_ELEMENTS_COMPLETED, SET_LOCATOR_TEST_ELEMENT, CLEAR_SEARCH_RESULTS, 
   ADD_ASSIGNED_VAR_CACHE, CLEAR_ASSIGNED_VAR_CACHE, SET_SCREENSHOT_INTERACTION_MODE,
+  SET_SWIPE_START, SET_SWIPE_END, SET_SWIPE_DURATION, CLEAR_SWIPE_ACTION, SHOW_SWIPE_DURATION_MODAL, HIDE_SWIPE_DURATION_MODAL
 } from '../actions/Inspector';
 
 const DEFAULT_FRAMEWORK = 'java';
@@ -27,6 +28,8 @@ const INITIAL_STATE = {
   isSearchingForElements: false,
   assignedVarCache: {},
   screenshotInteractionMode: 'select',
+  isShowingSwipeDurationModal: false,
+  swipeDurationMillis: 500,
 };
 
 /**
@@ -259,6 +262,50 @@ export default function inspector (state=INITIAL_STATE, action) {
       return {
         ...state,
         screenshotInteractionMode: action.screenshotInteractionMode,
+      };
+
+    case SET_SWIPE_START:
+      return {
+        ...state,
+        swipeStart: {
+          x: action.swipeStartX,
+          y: action.swipeStartY,
+        },
+      };
+
+    case SET_SWIPE_END:
+      return {
+        ...state,
+        swipeEnd: {
+          x: action.swipeEndX,
+          y: action.swipeEndY,
+          swipeDurationMillis: 500, // Default swipe duration to half a second
+        },
+      };
+
+    case SET_SWIPE_DURATION:
+      return {
+        ...state,
+        swipeDurationMillis: action.swipeDurationMillis,
+      };
+
+    case CLEAR_SWIPE_ACTION:
+      return {
+        ...state,
+        swipeStart: null,
+        swipeEnd: null,
+        swipeDurationMillis: 500,
+        isShowingSwipeDurationModal: false,
+      };
+
+    case SHOW_SWIPE_DURATION_MODAL:
+      return {
+        isShowingSwipeDurationModal: true,
+      };
+
+    case HIDE_SWIPE_DURATION_MODAL:
+      return {
+        isShowingSwipeDurationModal: false,
       };
 
     default:

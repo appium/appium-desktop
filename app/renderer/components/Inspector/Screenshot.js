@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { debounce } from 'lodash';
 import HighlighterRect from './HighlighterRect';
 import Actions from './Actions';
-import { Spin } from 'antd';
+import { Spin, Modal, InputNumber } from 'antd';
 import styles from './Inspector.css';
 import { parseCoordinates } from './shared';
 
@@ -36,7 +36,8 @@ export default class Screenshot extends Component {
   }
 
   handleScreenshotClick () {
-    const {screenshotInteractionMode, applyClientMethod} = this.props;
+    const {screenshotInteractionMode, applyClientMethod, 
+      swipeStart, swipeEnd, setSwipeStart, setSwipeEnd} = this.props;
     const {x, y} = this.state;
 
     if (screenshotInteractionMode === 'tap') {
@@ -44,6 +45,12 @@ export default class Screenshot extends Component {
         methodName: 'tap',
         args: [x, y],
       });
+    } else if (screenshotInteractionMode === 'swipe') {
+      if (!swipeStart) {
+        setSwipeStart(x, y);
+      } else if (!swipeEnd) {
+        setSwipeEnd(x, y);
+      }
     }
   }
 
@@ -72,6 +79,14 @@ export default class Screenshot extends Component {
     });
   }
 
+  handleDoSwipe () {
+    const {swipeStart, swipeEnd, swipeDuration, clearSwipeAction, applyClientMethod} = this.props;
+    applyClientMethod({
+      methodName: 'swipe',
+    });
+    clearSwipeAction();
+  }
+
   componentDidMount () {
     // When DOM is ready, calculate the image scale ratio and re-calculate it whenever the window is resized
     this.updateScaleRatio();
@@ -83,7 +98,8 @@ export default class Screenshot extends Component {
   }
 
   render () {
-    const {source, screenshot, methodCallInProgress, screenshotInteractionMode} = this.props;
+    const {source, screenshot, methodCallInProgress, screenshotInteractionMode, 
+      swipeStart, swipeEnd, swipeDurationMillis, clearSwipeAction, setSwipeDuration} = this.props;
     const {scaleRatio, x, y} = this.state;
 
     // Recurse through the 'source' JSON and render a highlighter rect for each element
@@ -137,6 +153,33 @@ export default class Screenshot extends Component {
         className={styles.screenshotBox}>
         <img src={`data:image/gif;base64,${screenshot}`} id="screenshot" />
         {screenshotInteractionMode === 'select' && highlighterRects}
+        {screenshotInteractionMode === 'swipe' && <div>
+          <div className={styles.swipeInstructions}>
+            {!swipeStart && <p>Click swipe start</p>}
+            {swipeStart && !swipeEnd && <p>Click swipe end</p>}
+            {swipeStart && swipeEnd && <Modal 
+              title='Set swipe duration'
+              okText='Ok'
+              cancelText='Cancel'
+              onOk={this.handleDoSwipe.bind(this)}
+              onCancel={clearSwipeAction}
+              visible={swipeStart && swipeEnd}>
+              <InputNumber min='1' size='100' value={swipeDurationMillis} onChange={(e) => setSwipeDuration(e.target.value)} />&nbsp;ms
+            </Modal>}
+          </div>
+          <svg className={styles.swipeSvg}>
+            {swipeStart && !swipeEnd && <circle 
+              cx={swipeStart.x / scaleRatio} 
+              cy={swipeStart.y / scaleRatio} 
+            />}
+            {swipeStart && swipeEnd && <line
+               x1={swipeStart.x / scaleRatio}
+               y1={swipeStart.y / scaleRatio}
+               x2={swipeEnd.x / scaleRatio}
+               y2={swipeEnd.y / scaleRatio}
+            />}
+          </svg>
+        </div>}
       </div>
     </Spin>;
   }
