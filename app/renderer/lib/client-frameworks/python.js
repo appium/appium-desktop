@@ -68,6 +68,10 @@ driver.quit()`;
   codeFor_back () {
     return `driver.back()`;
   }
+
+  codeFor_tap (varNameIgnore, varIndexIgnore, x, y) {
+    return `TouchAction(driver).tap([(${x}, ${y})])`;
+  }
 }
 
 PythonFramework.readableName = "Python";

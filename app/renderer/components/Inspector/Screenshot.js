@@ -65,8 +65,8 @@ export default class Screenshot extends Component {
       const y = offsetY * scaleRatio;
       this.setState({
         ...this.state,
-        x,
-        y,
+        x: Math.round(x * 100) / 100,
+        y: Math.round(y * 100) / 100,
       });
     }
   }
@@ -142,8 +142,8 @@ export default class Screenshot extends Component {
     return <Spin size='large' spinning={!!methodCallInProgress}>
       <Actions {...this.props} />
       {x !== undefined ? <div className={styles.coordinatesContainer}>
-        <p>X: {Math.round(x * 100) / 100}</p>
-        <p>Y: {Math.round(y * 100) / 100}</p>
+        <p>X: {x}</p>
+        <p>Y: {y}</p>
       </div> : null}
       <div ref={(containerEl) => { this.containerEl = containerEl; }}
         style={screenshotStyle} 

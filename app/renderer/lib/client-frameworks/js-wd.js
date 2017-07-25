@@ -64,6 +64,10 @@ main().catch(console.log);
     return `await driver.back();`;
   }
 
+  codeFor_tap (varNameIgnore, varIndexIgnore, x, y) {
+    return `await (new TouchAction(driver)).tap({x: ${x}, y: ${y}}).perform()`;
+  }
+
 }
 
 JsWdFramework.readableName = "JS - WD (Promise)";

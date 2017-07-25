@@ -65,6 +65,10 @@ driver.quit`;
   codeFor_back () {
     return `driver.back`;
   }
+
+  codeFor_tap (varNameIgnore, varIndexIgnore, x, y) {
+    return `TouchAction.new.tap(x: ${x}, y: ${y}).perform`;
+  }
 }
 
 RubyFramework.readableName = "Ruby";

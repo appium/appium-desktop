@@ -97,6 +97,10 @@ ${this.indent(code, 4)}
   codeFor_back () {
     return `driver.navigate().back();`;
   }
+
+  codeFor_tap (varNameIgnore, varIndexIgnore, x, y) {
+    return `(new TouchAction(driver)).tap(${x}, ${y}).perform()`;
+  }
 }
 
 JavaFramework.readableName = "Java - JUnit";
