@@ -324,7 +324,7 @@ function connectClientMethodListener () {
         renderer.send('appium-session-done', e);
       }
       console.log('Caught an exception: ', e);
-      renderer.send('appium-client-command-response-error', {e, uuid});
+      renderer.send('appium-client-command-response-error', {e: e.message, uuid});
     }
   });
 }

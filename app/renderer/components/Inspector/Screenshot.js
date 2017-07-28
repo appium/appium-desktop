@@ -137,7 +137,7 @@ export default class Screenshot extends Component {
     // If we're tapping or swiping, show the 'touch' cursor style
     const screenshotStyle = {};
     if (screenshotInteractionMode === 'tap' || screenshotInteractionMode === 'swipe') {
-      screenshotStyle.cursor = 'crosshair'; // TODO: Change this to touch
+      screenshotStyle.cursor = 'crosshair';
     }
 
     recursive(source);

@@ -254,6 +254,7 @@
     z-index: 100000000;
     top: 0;
     height: 100%;
+    width: 100%;
 }
 
 .swipeSvg line {

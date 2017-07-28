@@ -62,8 +62,6 @@ export function getCapsObject (caps) {
 }
 
 export function showError (e, methodName, secs = 5) {
-  // TODO: Investigate this. For some reason it's not getting the proper error object and it's always
-  // "Could not start session"
   let errMessage;
   if (e['jsonwire-error'] && e['jsonwire-error'].status === 7) {
     errMessage = `Failed to find element for '${methodName}'. Please refresh page and try again.`;

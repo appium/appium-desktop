@@ -27,7 +27,7 @@ if (ipcRenderer) {
     const {e, uuid} = resp;
     let promise = clientMethodPromises[uuid];
     if (promise) {
-      promise.reject(e);
+      promise.reject(new Error(e));
       delete clientMethodPromises[uuid];
     }
   });
