@@ -68,8 +68,8 @@ export default class Screenshot extends Component {
       const y = offsetY * scaleRatio;
       this.setState({
         ...this.state,
-        x: Math.round(x * 100) / 100,
-        y: Math.round(y * 100) / 100,
+        x: Math.round(x),
+        y: Math.round(y),
       });
     }
   }
