@@ -49,10 +49,7 @@ export const SET_SCREENSHOT_INTERACTION_MODE = 'SET_SCREENSHOT_INTERACTION_MODE'
 
 export const SET_SWIPE_START = 'SET_SWIPE_START';
 export const SET_SWIPE_END = 'SET_SWIPE_END';
-export const SET_SWIPE_DURATION = 'SET_SWIPE_DURATION';
 export const CLEAR_SWIPE_ACTION = 'CLEAR_SWIPE_ACTION';
-export const SHOW_SWIPE_DURATION_MODAL = 'SHOW_SWIPE_DURATION_MODAL';
-export const HIDE_SWIPE_DURATION_MODAL = 'HIDE_SWIPE_DURATION_MODAL';
 
 // Attributes on nodes that we know are unique to the node
 const uniqueAttributes = [
@@ -396,26 +393,8 @@ export function setSwipeEnd (swipeEndX, swipeEndY) {
   };
 }
 
-export function setSwipeDuration (swipeDurationMillis) {
-  return (dispatch) => {
-    dispatch({type: SET_SWIPE_DURATION, swipeDurationMillis});
-  };
-}
-
 export function clearSwipeAction () {
   return (dispatch) => {
     dispatch({type: CLEAR_SWIPE_ACTION});
-  };
-}
-
-export function showSwipeDurationModal () {
-  return (dispatch) => {
-    dispatch({type: SHOW_SWIPE_DURATION_MODAL});
-  };
-}
-
-export function hideSwipeDurationModal () {
-  return (dispatch) => {
-    dispatch({type: HIDE_SWIPE_DURATION_MODAL});
   };
 }
