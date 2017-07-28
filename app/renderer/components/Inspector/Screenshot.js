@@ -80,9 +80,10 @@ export default class Screenshot extends Component {
   }
 
   handleDoSwipe () {
-    const {swipeStart, swipeEnd, swipeDuration, clearSwipeAction, applyClientMethod} = this.props;
+    const {swipeStart, swipeEnd, clearSwipeAction, applyClientMethod} = this.props;
     applyClientMethod({
       methodName: 'swipe',
+      args: [swipeStart.x, swipeStart.y, swipeEnd.x - swipeStart.x, swipeEnd.y - swipeStart.y],
     });
     clearSwipeAction();
   }
