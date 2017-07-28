@@ -144,37 +144,41 @@ export default class Screenshot extends Component {
 
     // Show the screenshot and highlighter rects. Show loading indicator if a method call is in progress.
     return <Spin size='large' spinning={!!methodCallInProgress}>
-      <Actions {...this.props} />
-      {x !== undefined ? <div className={styles.coordinatesContainer}>
-        <p>X: {x}</p>
-        <p>Y: {y}</p>
-      </div> : null}
-      <div ref={(containerEl) => { this.containerEl = containerEl; }}
-        style={screenshotStyle} 
-        onClick={this.handleScreenshotClick.bind(this)}
-        onMouseMove={this.handleMouseMove.bind(this)}
-        onMouseOut={this.handleMouseOut.bind(this)}
-        className={styles.screenshotBox}>
-        <img src={`data:image/gif;base64,${screenshot}`} id="screenshot" />
-        {screenshotInteractionMode === 'select' && highlighterRects}
-        {screenshotInteractionMode === 'swipe' && <div>
-          <div className={styles.swipeInstructions}>
-            {!swipeStart && <p>Click swipe start</p>}
-            {swipeStart && !swipeEnd && <p>Click swipe end</p>}
-          </div>
-          <svg className={styles.swipeSvg}>
-            {swipeStart && !swipeEnd && <circle 
-              cx={swipeStart.x / scaleRatio} 
-              cy={swipeStart.y / scaleRatio} 
-            />}
-            {swipeStart && swipeEnd && <line
-               x1={swipeStart.x / scaleRatio}
-               y1={swipeStart.y / scaleRatio}
-               x2={swipeEnd.x / scaleRatio}
-               y2={swipeEnd.y / scaleRatio}
-            />}
-          </svg>
-        </div>}
+      <div className={styles.innerScreenshotContainer}>
+        <div className={styles.screenshotActionsPanel}>
+          <Actions {...this.props} />
+        </div>
+        <div ref={(containerEl) => { this.containerEl = containerEl; }}
+          style={screenshotStyle} 
+          onClick={this.handleScreenshotClick.bind(this)}
+          onMouseMove={this.handleMouseMove.bind(this)}
+          onMouseOut={this.handleMouseOut.bind(this)}
+          className={styles.screenshotBox}>
+          {x !== undefined ? <div className={styles.coordinatesContainer}>
+            <p>X: {x}</p>
+            <p>Y: {y}</p>
+          </div> : null}
+          <img src={`data:image/gif;base64,${screenshot}`} id="screenshot" />
+          {screenshotInteractionMode === 'select' && highlighterRects}
+          {screenshotInteractionMode === 'swipe' && <div>
+            {(!swipeStart || !swipeEnd) && <div className={styles.swipeInstructions}>
+              {!swipeStart && <p>Click swipe start</p>}
+              {swipeStart && !swipeEnd && <p>Click swipe end</p>}
+            </div>}
+            <svg className={styles.swipeSvg}>
+              {swipeStart && !swipeEnd && <circle 
+                cx={swipeStart.x / scaleRatio} 
+                cy={swipeStart.y / scaleRatio} 
+              />}
+              {swipeStart && swipeEnd && <line
+                x1={swipeStart.x / scaleRatio}
+                y1={swipeStart.y / scaleRatio}
+                x2={swipeEnd.x / scaleRatio}
+                y2={swipeEnd.y / scaleRatio}
+              />}
+            </svg>
+          </div>}
+        </div>
       </div>
     </Spin>;
   }
