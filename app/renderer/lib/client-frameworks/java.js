@@ -101,6 +101,10 @@ ${this.indent(code, 4)}
   codeFor_tap (varNameIgnore, varIndexIgnore, x, y) {
     return `(new TouchAction(driver)).tap(${x}, ${y}).perform()`;
   }
+
+  codeFor_swipe (varNameIgnore, varIndexIgnore, x1, y1, x2, y2) {
+    return `(new TouchAction(driver)).press({x: ${x1}, y: ${y1}}).moveTo({x: ${x2}: y: ${y2}}).release().perform()`;
+  }
 }
 
 JavaFramework.readableName = "Java - JUnit";

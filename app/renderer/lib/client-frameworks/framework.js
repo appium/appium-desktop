@@ -98,4 +98,8 @@ export default class Framework {
   codeFor_tap () {
     throw new Error("Need to implement codeFor_tap");
   }
+
+  codeFor_swipe () {
+    throw new Error("Need to implement codeFor_tap");
+  }
 }
