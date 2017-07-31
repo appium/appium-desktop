@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import NewSessionForm from './NewSessionForm';
 import SavedSessions from './SavedSessions';
 import AttachToSession from './AttachToSession';
-import { Tabs, Form, Input, Button, Spin, Card, Icon } from 'antd';
+import { Tabs, Form, Input, Button, Spin, Card, Icon, Col, Checkbox } from 'antd';
 import { ServerTypes } from '../../actions/Session';
 import SessionStyles from './Session.css';
 
@@ -50,12 +50,21 @@ export default class Session extends Component {
             </TabPane>
             <TabPane tab='Custom Server' key={ServerTypes.remote}>
               <Form>
-                <FormItem>
-                  <Input id='customServerHost' placeholder='127.0.0.1' addonBefore="Remote Host" value={server.remote.hostname} onChange={(e) => setServerParam('hostname', e.target.value)} size="large" />
-                </FormItem>
-                <FormItem>
-                  <Input id='customServerPort' placeholder='4723' addonBefore="Remote Port" value={server.remote.port} onChange={(e) => setServerParam('port', e.target.value)} size="large" />
-                </FormItem>
+                <Col span={24}>
+                  <FormItem>
+                    <Input id='customServerHost' placeholder='127.0.0.1' addonBefore="Remote Host" value={server.remote.hostname} onChange={(e) => setServerParam('hostname', e.target.value)} size="large" />                   
+                  </FormItem>
+                </Col>
+                <Col span={12}>
+                  <FormItem>
+                    <Input className={SessionStyles.customServerPort} id='customServerPort' placeholder='4723' addonBefore="Remote Port" value={server.remote.port} onChange={(e) => setServerParam('port', e.target.value)} size="large" />
+                  </FormItem>
+                </Col>  
+                <Col span={12}>
+                  <FormItem>
+                    <Checkbox id='customServerSSL' value={server.remote.ssl} onChange={(e) => setServerParam('ssl', e.target.checked)}>SSL</Checkbox>
+                  </FormItem>
+                </Col>
               </Form>
             </TabPane>
             <TabPane tab={sauceTabHead} key={ServerTypes.sauce}>

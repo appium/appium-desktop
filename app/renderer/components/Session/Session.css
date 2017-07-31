@@ -134,3 +134,7 @@
 .selected {
   background-color: #d6e8ff;
 }
+
+ .customServerPort {
+    width: 98% !important;
+ }

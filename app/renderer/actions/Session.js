@@ -164,6 +164,7 @@ export function newSession (caps, attachSessId = null) {
       case ServerTypes.remote:
         host = session.server.remote.hostname;
         port = session.server.remote.port;
+        https = session.server.remote.ssl;
         break;
       case ServerTypes.sauce:
         host = 'ondemand.saucelabs.com';
