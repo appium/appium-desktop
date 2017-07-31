@@ -182,7 +182,7 @@ export function newSession (caps, attachSessId = null) {
         https = false;
         break;
       case ServerTypes.testobject:
-        host = process.env.TESTOBJECT_HOST || 'appium.testobject.com';
+        host = process.env.TESTOBJECT_HOST || `${session.server.testobject.dataCenter || 'us1'}.appium.testobject.com`;
         port = 443;
         https = true;
         if (caps) {
