@@ -1,21 +1,17 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { debounce } from 'lodash';
-import HighlighterRects from './HighlighterRects';
-import Actions from './Actions';
-import { Spin } from 'antd';
+import HighlighterRect from './HighlighterRect';
 import B from 'bluebird';
-import styles from './Inspector.css';
 import { parseCoordinates } from './shared';
 
 /**
  * Shows screenshot of running application and divs that highlight the elements' bounding boxes
  */
-export default class Screenshot extends Component {
+export default class HighlighterRects extends Component {
 
   constructor (props) {
     super(props);
-    this.containerEl = null;
     this.state = {
       scaleRatio: 1,
     };
@@ -26,7 +22,7 @@ export default class Screenshot extends Component {
    * Calculates the ratio that the image is being scaled by
    */
   updateScaleRatio () {
-    const screenshotEl = this.containerEl.querySelector('img');
+    const screenshotEl = this.props.containerEl.querySelector('img');
 
     // now update scale ratio
     const {x1, x2} = parseCoordinates(this.props.source.children[0].children[0]);
@@ -102,9 +98,36 @@ export default class Screenshot extends Component {
   }
 
   render () {
-    const {screenshot, methodCallInProgress, screenshotInteractionMode, 
-      swipeStart, swipeEnd} = this.props;
-    const {scaleRatio, x, y} = this.state;
+    const {source, screenshotInteractionMode, containerEl} = this.props;
+    const {scaleRatio} = this.state;
+
+    // Recurse through the 'source' JSON and render a highlighter rect for each element
+    const highlighterRects = [];
+
+    let highlighterXOffset = 0;
+    if (containerEl) {
+      const screenshotEl = containerEl.querySelector('img');
+      highlighterXOffset = screenshotEl.getBoundingClientRect().left -
+                           containerEl.getBoundingClientRect().left;
+    }
+
+    // TODO: Refactor this into a separate component
+    let recursive = (element, zIndex = 0) => {
+      if (!element) {
+        return;
+      }
+      highlighterRects.push(<HighlighterRect {...this.props}
+        element={element}
+        zIndex={zIndex}
+        scaleRatio={scaleRatio}
+        key={element.path}
+        xOffset={highlighterXOffset}
+      />);
+
+      for (let childEl of element.children) {
+        recursive(childEl, zIndex + 1);
+      }
+    };
 
     // If we're tapping or swiping, show the 'crosshair' cursor style
     const screenshotStyle = {};
@@ -112,44 +135,8 @@ export default class Screenshot extends Component {
       screenshotStyle.cursor = 'crosshair';
     }
 
-    // Show the screenshot and highlighter rects. Show loading indicator if a method call is in progress.
-    return <Spin size='large' spinning={!!methodCallInProgress}>
-      <div className={styles.innerScreenshotContainer}>
-        <div className={styles.screenshotActionsPanel}>
-          <Actions {...this.props} />
-        </div>
-        <div ref={(containerEl) => { this.containerEl = containerEl; }}
-          style={screenshotStyle} 
-          onClick={this.handleScreenshotClick.bind(this)}
-          onMouseMove={this.handleMouseMove.bind(this)}
-          onMouseOut={this.handleMouseOut.bind(this)}
-          className={styles.screenshotBox}>
-          {x !== null && <div className={styles.coordinatesContainer}>
-            <p>X: {x}</p>
-            <p>Y: {y}</p>
-          </div>}
-          <img src={`data:image/gif;base64,${screenshot}`} id="screenshot" />
-          {screenshotInteractionMode === 'select' && this.containerEl && <HighlighterRects {...this.props} containerEl={this.containerEl} />}
-          {screenshotInteractionMode === 'swipe' && <div>
-            {(!swipeStart || !swipeEnd) && <div className={styles.swipeInstructions}>
-              {!swipeStart && <p>Click swipe start</p>}
-              {swipeStart && !swipeEnd && <p>Click swipe end</p>}
-            </div>}
-            <svg className={styles.swipeSvg}>
-              {swipeStart && !swipeEnd && <circle 
-                cx={swipeStart.x / scaleRatio} 
-                cy={swipeStart.y / scaleRatio} 
-              />}
-              {swipeStart && swipeEnd && <line
-                x1={swipeStart.x / scaleRatio}
-                y1={swipeStart.y / scaleRatio}
-                x2={swipeEnd.x / scaleRatio}
-                y2={swipeEnd.y / scaleRatio}
-              />}
-            </svg>
-          </div>}
-        </div>
-      </div>
-    </Spin>;
+    recursive(source);
+
+    return <div>{ highlighterRects }</div>;
   }
 }

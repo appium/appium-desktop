@@ -82,12 +82,18 @@ export default class AppiumMethodHandler {
   async executeMethod (methodName, args = []) {
     let res = {};
 
-    // Specially handle the tap method
+    // Specially handle the tap and swipe method
     if (methodName === 'tap') {
-      res = await (new wd.TouchAction(this.driver)).tap({x: args[0], y: args[1]}).perform();
+      res = await (new wd.TouchAction(this.driver))
+        .tap({x: args[0], y: args[1]})
+        .perform();
     } else if (methodName === 'swipe') {
       const [startX, startY, endX, endY]  = args;
-      res = await (new wd.TouchAction(this.driver)).press({x: startX, y: startY}).moveTo({x: endX, y: endY}).release().perform();
+      res = await (new wd.TouchAction(this.driver))
+        .press({x: startX, y: startY})
+        .moveTo({x: endX, y: endY})
+        .release()
+        .perform();
     } else if (methodName !== 'source' && methodName !== 'screenshot') {
       res = await this.driver[methodName].apply(this.driver, args);
     }
