@@ -6,6 +6,7 @@ import styles from './ServerMonitor.css';
 import AnsiConverter from 'ansi-to-html';
 
 const convert = new AnsiConverter({fg: '#bbb', bg: '#222'});
+const MAX_LOGS_RENDERED = 1000;
 
 function leveler (level) {
   switch (level) {
@@ -63,6 +64,7 @@ class StartSessionButton extends Component {
 }
 
 export default class ServerMonitor extends Component {
+
   static propTypes = {
     stopServer: PropTypes.func.isRequired,
     closeMonitor: PropTypes.func.isRequired,
@@ -106,7 +108,7 @@ export default class ServerMonitor extends Component {
         throw new Error(`Bad status: ${serverStatus}`);
     }
 
-    let logLineSection = logLines.map((line, i) => {
+    let logLineSection = logLines.slice(logLines.length - MAX_LOGS_RENDERED).map((line, i) => {
       let icn = leveler(line.level);
       return (
         <div key={i}>
