@@ -47,6 +47,10 @@ export const ADD_ASSIGNED_VAR_CACHE = 'ADD_ASSIGNED_VAR_CACHE';
 export const CLEAR_ASSIGNED_VAR_CACHE = 'CLEAR_ASSIGNED_VAR_CACHE';
 export const SET_SCREENSHOT_INTERACTION_MODE = 'SET_SCREENSHOT_INTERACTION_MODE';
 
+export const SET_SWIPE_START = 'SET_SWIPE_START';
+export const SET_SWIPE_END = 'SET_SWIPE_END';
+export const CLEAR_SWIPE_ACTION = 'CLEAR_SWIPE_ACTION';
+
 // Attributes on nodes that we know are unique to the node
 const uniqueAttributes = [
   'name',
@@ -374,5 +378,23 @@ export function clearSearchResults () {
 export function selectScreenshotInteractionMode (screenshotInteractionMode) {
   return (dispatch) => {
     dispatch({type: SET_SCREENSHOT_INTERACTION_MODE, screenshotInteractionMode });
+  };
+}
+
+export function setSwipeStart (swipeStartX, swipeStartY) {
+  return (dispatch) => {
+    dispatch({type: SET_SWIPE_START, swipeStartX, swipeStartY});
+  };
+}
+
+export function setSwipeEnd (swipeEndX, swipeEndY) {
+  return (dispatch) => {
+    dispatch({type: SET_SWIPE_END, swipeEndX, swipeEndY});
+  };
+}
+
+export function clearSwipeAction () {
+  return (dispatch) => {
+    dispatch({type: CLEAR_SWIPE_ACTION});
   };
 }

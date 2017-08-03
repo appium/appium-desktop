@@ -68,6 +68,18 @@ driver.quit()`;
   codeFor_back () {
     return `driver.back()`;
   }
+
+  codeFor_tap (varNameIgnore, varIndexIgnore, x, y) {
+    return `TouchAction(driver).tap([(${x}, ${y})])`;
+  }
+
+  codeFor_swipe (varNameIgnore, varIndexIgnore, x1, y1, x2, y2) {
+    return `TouchAction(driver)
+  .press({x: ${x1}, y: ${y1}})
+  .moveTo({x: ${x2}: y: ${y2}})
+  .release()
+    `;
+  }
 }
 
 PythonFramework.readableName = "Python";

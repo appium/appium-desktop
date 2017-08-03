@@ -278,7 +278,7 @@ function connectClientMethodListener () {
     } = data;
     
     let renderer = evt.sender;
-    let driver = appiumHandlers[renderer.id];
+    let methodHandler = appiumHandlers[renderer.id];
 
     try {
       if (methodName === 'quit') {
@@ -296,18 +296,18 @@ function connectClientMethodListener () {
         if (methodName) {
           if (elementId) {
             console.log(`Handling client method request with method '${methodName}', args ${JSON.stringify(args)} and elementId ${elementId}`);
-            res = await driver.executeElementCommand(elementId, methodName, args);
+            res = await methodHandler.executeElementCommand(elementId, methodName, args);
           } else {
             console.log(`Handling client method request with method '${methodName}' and args ${JSON.stringify(args)}`);
-            res = await driver.executeMethod(methodName, args);
+            res = await methodHandler.executeMethod(methodName, args);
           }
         } else  if (strategy && selector) {
           if (fetchArray) {
             console.log(`Fetching elements with selector '${selector}' and strategy ${strategy}`);
-            res = await driver.fetchElements(strategy, selector);
+            res = await methodHandler.fetchElements(strategy, selector);
           } else {
             console.log(`Fetching an element with selector '${selector}' and strategy ${strategy}`);
-            res = await driver.fetchElement(strategy, selector);
+            res = await methodHandler.fetchElement(strategy, selector);
           }
         }
 
@@ -324,7 +324,7 @@ function connectClientMethodListener () {
         renderer.send('appium-session-done', e);
       }
       console.log('Caught an exception: ', e);
-      renderer.send('appium-client-command-response-error', {e, uuid});
+      renderer.send('appium-client-command-response-error', {e: e.message, uuid});
     }
   });
 }

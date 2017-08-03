@@ -234,3 +234,47 @@
     width: 100%;
     margin-bottom: 1em;
 }
+.coordinatesContainer {
+    position: absolute;
+    background:rgba(255,250,205,0.8);
+    z-index: 10000000;
+    padding: 2px;
+}
+.swipeInstructions {
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 100000000;
+    background-color: white;
+    padding: 4px;
+    width: 10em;
+}
+.swipeSvg {
+    position: absolute;
+    z-index: 100000000;
+    top: 0;
+    height: 100%;
+    width: 100%;
+}
+
+.swipeSvg line {
+    stroke-width: 15;
+    stroke: rgba(255,153,153,0.8);
+    stroke-linecap: round;
+}
+
+.swipeSvg circle {
+    r: 10;
+    fill: rgba(255,153,153,0.8);
+}
+
+ .innerScreenshotContainer {
+    display: flex; 
+    flex-direction: column;
+    height: 100%;
+ }
+
+ .innerScreenshotContainer .screenshotActionsPanel {
+    margin-bottom: 2px;
+    margin: 0 auto 2px auto;
+ }

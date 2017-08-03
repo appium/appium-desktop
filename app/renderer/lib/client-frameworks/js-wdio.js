@@ -70,6 +70,18 @@ ${this.indent(this.chainifyCode(code), 2)}
   codeFor_back () {
     return `driver.back();`;
   }
+
+  codeFor_tap (varNameIgnore, varIndexIgnore, x, y) {
+    return `driver.touchAction({actions: 'tap', x: ${x}, y: ${y}})`;
+  }
+
+  codeFor_swipe (varNameIgnore, varIndexIgnore, x1, y1, x2, y2) {
+    return `driver.touchAction([
+  {action: 'press', x: ${x1}, y: ${y1}},
+  {action: 'moveTo', x: ${x2}, y: ${y2}},
+  'release'
+];`;
+  }
 }
 
 JsWdIoFramework.readableName = "JS - Webdriver.io";
