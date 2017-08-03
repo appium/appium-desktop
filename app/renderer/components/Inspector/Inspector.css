@@ -276,4 +276,5 @@
 
  .innerScreenshotContainer .screenshotActionsPanel {
     margin-bottom: 2px;
+    margin: 0 auto 2px auto;
  }
