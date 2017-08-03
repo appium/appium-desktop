@@ -1,6 +1,6 @@
 import { SERVER_START_REQ, SERVER_START_OK, SERVER_START_ERR, GET_PRESETS,
          UPDATE_ARGS, SWITCH_TAB, PRESET_SAVE_REQ, PRESET_SAVE_OK,
-         PRESET_DELETE_REQ, PRESET_DELETE_OK
+         PRESET_DELETE_REQ, PRESET_DELETE_OK, SET_LOGFILE_PATH,
        } from '../actions/StartServer';
 
 import { ipcRenderer } from 'electron';
@@ -50,6 +50,8 @@ export default function startServer (state = initialState, action) {
       return {...state, presetDeleting: true};
     case PRESET_DELETE_OK:
       return {...state, presetDeleting: false, presets: action.presets};
+    case SET_LOGFILE_PATH:
+      return {...state, logfilePath: action.logfilePath};
     default:
       return state;
   }

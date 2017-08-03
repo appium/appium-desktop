@@ -1,4 +1,4 @@
-import { ipcRenderer } from 'electron';
+import { ipcRenderer, shell } from 'electron';
 import { push } from 'react-router-redux';
 
 export const SERVER_STOP_REQ = 'SERVER_STOP_REQ';
@@ -85,5 +85,16 @@ export function startSession () {
   return (dispatch) => {
     dispatch({type: START_SESSION_REQUEST});
     ipcRenderer.send('create-new-session-window');
+  };
+}
+
+export function getRawLogs () {
+  return (dispatch, getState) => {
+    const logfilePath = getState().startServer.logfilePath;
+    if (logfilePath) {
+      shell.openExternal(`file://${logfilePath}`);
+    } else {
+      alert('An error has occurred: Logs not available');
+    }
   };
 }

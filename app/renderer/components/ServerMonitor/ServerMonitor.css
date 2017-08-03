@@ -57,11 +57,18 @@
   margin-right: 10px;
 }
 
-.stopButton {
+
+.serverButton {
   color: #a0a0a0 !important;
   background-image: none !important;
   background-color: #252525 !important;
   border-color: #a0a0a0 !important;
+}
+
+.getRawLogsButton {
+  position: absolute;
+  right: 0;
+  margin: 0 1em 0 0;
 }
 
 .term {

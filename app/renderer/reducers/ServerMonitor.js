@@ -18,6 +18,7 @@ const initialState = {
 };
 
 export default function serverMonitor (state = initialState, action) {
+  let logLines;
   switch (action.type) {
     case SERVER_STOP_REQ:
       return {...state, serverStatus: STATUS_STOPPING};
@@ -40,8 +41,7 @@ export default function serverMonitor (state = initialState, action) {
         sessionId: action.sessionUUID,
       };
     case LOGS_RECEIVED:
-      // TODO: We should dump logs to a txt file that can be exported
-      var logLines = state.logLines.concat(action.logs.map((l) => {
+      logLines = state.logLines.concat(action.logs.map((l) => {
         // attach a timestamp to each log line here when it comes in
         l.timestamp = moment().format('YYYY-MM-DD hh:mm:ss');
         return l;

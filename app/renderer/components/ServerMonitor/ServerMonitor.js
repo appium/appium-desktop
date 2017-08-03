@@ -31,15 +31,15 @@ class StopButton extends Component {
 
   render () {
     const {serverStatus, stopServer, closeMonitor} = this.props;
-    let btn = <Button icon="pause-circle-o" className={styles.stopButton}
+    let btn = <Button icon="pause-circle-o" className={styles.serverButton}
                onClick={stopServer}>Stop Server</Button>;
     if (serverStatus === STATUS_STOPPED) {
-      btn = <Button className={styles.stopButton}
+      btn = <Button className={styles.serverButton}
              icon="close-circle-o"
              onClick={closeMonitor}>Close Logs</Button>;
     } else if (serverStatus === STATUS_STOPPING) {
       btn = <Button icon="pause-circle-o"
-             className={styles.stopButton} type="disabled">Stopping...</Button>;
+             className={styles.serverButton} type="disabled">Stopping...</Button>;
     }
     return btn;
   }
@@ -54,12 +54,20 @@ class StartSessionButton extends Component {
   render () {
     const {serverStatus, startSession} = this.props;
     if (serverStatus !== STATUS_STOPPED && serverStatus !== STATUS_STOPPING) {
-      return <Button className={styles.stopButton} id='startNewSessionBtn'
+      return <Button className={styles.serverButton} id='startNewSessionBtn'
               icon="play-circle-o"
              onClick={startSession}>Start New Session</Button>;
     } else {
       return null;
     }
+  }
+}
+
+class GetRawLogsButton extends Component {
+  render () {
+    return <Button className={`${styles.getRawLogsButton} ${styles.serverButton}`}
+             icon="file-text"
+             onClick={() => this.props.getRawLogs()}>Get raw logs</Button>;
   }
 }
 
@@ -149,6 +157,7 @@ export default class ServerMonitor extends Component {
           </div>
         </div>
         <div className={termClass} ref={(c) => this._term = c}>
+          <GetRawLogsButton {...this.props} />
           {logLineSection}
           {lastSection}
         </div>
