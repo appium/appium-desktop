@@ -16,7 +16,7 @@ export default class NewSessionForm extends Component {
     return caps && <Card title={title || "JSON Representation"}
       className={SessionCSS['formatted-caps']}>
       <div className={SessionCSS.capsEditorControls}>
-        {isEditingDesiredCaps && <Button onClick={abortDesiredCapsEditor} icon='close' shape='square' className={SessionCSS.capsEditorButton} /> }
+        {isEditingDesiredCaps && <Button onClick={abortDesiredCapsEditor} icon='close' className={SessionCSS.capsEditorButton} /> }
         {isEditingDesiredCaps && <Button onClick={saveRawDesiredCaps} icon='save'  className={SessionCSS.capsEditorButton} /> }
         {!isEditingDesiredCaps && <Button onClick={startDesiredCapsEditor} icon='edit' /> }
       </div>
