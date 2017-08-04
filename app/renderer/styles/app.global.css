@@ -46,3 +46,22 @@ body::-webkit-scrollbar {
 body::-webkit-scrollbar-corner {
   background: transparent;
 }
+
+.ant-input-group .ant-select {
+  height: 100%;
+}
+
+.ant-input-group .ant-select-selection {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  height: 100%;
+  padding-top: 0;
+}
+
+.ant-input-group .ant-select-selection .ant-select-selection-selected-value {
+  padding-top: 2px;
+}
+
+.ant-input-group .select-container {
+  height: 32px;
+}

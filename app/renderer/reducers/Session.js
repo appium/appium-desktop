@@ -19,7 +19,9 @@ const INITIAL_STATE = {
     local: {},
     remote: {},
     sauce: {},
-    testobject: {},
+    testobject: {
+      dataCenter: 'US',
+    },
   },
   attachSessId: null,
 

@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import NewSessionForm from './NewSessionForm';
 import SavedSessions from './SavedSessions';
 import AttachToSession from './AttachToSession';
-import { Tabs, Form, Input, Button, Spin, Card, Icon } from 'antd';
+import { Tabs, Form, Input, Button, Spin, Card, Icon, Col, Checkbox, Select } from 'antd';
 import { ServerTypes } from '../../actions/Session';
 import SessionStyles from './Session.css';
 
@@ -50,12 +50,21 @@ export default class Session extends Component {
             </TabPane>
             <TabPane tab='Custom Server' key={ServerTypes.remote}>
               <Form>
-                <FormItem>
-                  <Input id='customServerHost' placeholder='127.0.0.1' addonBefore="Remote Host" value={server.remote.hostname} onChange={(e) => setServerParam('hostname', e.target.value)} size="large" />
-                </FormItem>
-                <FormItem>
-                  <Input id='customServerPort' placeholder='4723' addonBefore="Remote Port" value={server.remote.port} onChange={(e) => setServerParam('port', e.target.value)} size="large" />
-                </FormItem>
+                <Col span={24}>
+                  <FormItem>
+                    <Input id='customServerHost' placeholder='127.0.0.1' addonBefore="Remote Host" value={server.remote.hostname} onChange={(e) => setServerParam('hostname', e.target.value)} size="large" />                   
+                  </FormItem>
+                </Col>
+                <Col span={12}>
+                  <FormItem>
+                    <Input className={SessionStyles.customServerPort} id='customServerPort' placeholder='4723' addonBefore="Remote Port" value={server.remote.port} onChange={(e) => setServerParam('port', e.target.value)} size="large" />
+                  </FormItem>
+                </Col>  
+                <Col span={12}>
+                  <FormItem>
+                    <Checkbox id='customServerSSL' value={server.remote.ssl} onChange={(e) => setServerParam('ssl', e.target.checked)}>SSL</Checkbox>
+                  </FormItem>
+                </Col>
               </Form>
             </TabPane>
             <TabPane tab={sauceTabHead} key={ServerTypes.sauce}>
@@ -72,6 +81,17 @@ export default class Session extends Component {
               <Form>
                 <FormItem>
                   <Input id='testObjectPassword' type='password' placeholder={process.env.TESTOBJECT_API_KEY ? 'Using data found in $TESTOBJECT_API_KEY' : 'testobject-api-key'} addonBefore="TestObject API Key" value={server.testobject.apiKey} onChange={(e) => setServerParam('apiKey', e.target.value)} />
+                </FormItem>
+                <FormItem>
+                  <div className="ant-input-wrapper ant-input-group">
+                    <div className="ant-input-group-addon">TestObject Data Center</div>
+                    <div className="select-container">
+                      <Select defaultValue='us1' id='testObjectDataCenter' addonBefore='TestObject Data Center' value={server.testobject.dataCenter} onChange={(value) => setServerParam('dataCenter', value)}>
+                        <Select.Option value='us1'>US</Select.Option>
+                        <Select.Option value='eu1'>EU</Select.Option>
+                      </Select>
+                    </div>
+                  </div>
                 </FormItem>
               </Form>
             </TabPane>
