@@ -1,3 +1,14 @@
+## [1.2.0-beta.1](https://github.com/appium/appium-desktop/compare/v1.1.1...v1.2.0-beta.1) (2017-08-04)
+
+### Changes
+* Feature: Add locator modal to search for elements and perform basic interactions on them (#244)
+* Feature: Add interactive swipe and tap (#260)
+* Feature: Add HTTPS option, and TO data center options (#262)
+* Feature: Write raw logs to file that can be opened by user (#263)
+* Fix: Added padding to bottom of source tree (#247)
+* Fix: Make selected element card scrollable (#236)
+* Fix: Limit number of rendered logs to 1000 (#263)
+
 ## [1.1.1](https://github.com/appium/appium-desktop/compare/v1.1.0...v1.1.1) (2017-07-27)
 
 ### Changes
