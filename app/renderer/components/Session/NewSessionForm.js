@@ -103,7 +103,7 @@ export default class NewSessionForm extends Component {
                 {this.getCapsControl(cap, index)}
               </FormItem>
               <FormItem>
-                <Button {...{disabled: caps.length <= 1}} icon='delete' onClick={() => remove(index)}/>
+                <Button {...{disabled: caps.length <= 1}} icon='delete' onClick={() => removeCapability(index)}/>
               </FormItem>
             </div>;
           })}
