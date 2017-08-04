@@ -3,7 +3,7 @@ import settings from '../../settings';
 import { v4 as UUID } from 'uuid';
 import { push } from 'react-router-redux';
 import { notification } from 'antd';
-import { debounce } from 'lodash';
+import { debounce, toPairs } from 'lodash';
 import { setSessionDetails } from './Inspector';
 
 export const NEW_SESSION_REQUESTED = 'NEW_SESSION_REQUESTED';
@@ -45,6 +45,7 @@ export const ENABLE_DESIRED_CAPS_EDITOR = 'ENABLE_DESIRED_CAPS_EDITOR';
 export const ABORT_DESIRED_CAPS_EDITOR = 'ABORT_DESIRED_CAPS_EDITOR';
 export const SAVE_RAW_DESIRED_CAPS = 'SAVE_RAW_DESIRED_CAPS';
 export const SET_RAW_DESIRED_CAPS = 'SET_RAW_DESIRED_CAPS';
+export const SHOW_DESIRED_CAPS_JSON_ERROR = 'SHOW_DESIRED_CAPS_JSON_ERROR';
 
 export const ServerTypes = {
   local: 'local',
@@ -439,13 +440,55 @@ export function abortDesiredCapsEditor () {
 }
 
 export function saveRawDesiredCaps () {
-  return (dispatch) => {
-    dispatch({type: SAVE_RAW_DESIRED_CAPS});
+  return (dispatch, getState) => {
+    const state = getState().session;
+    const {rawDesiredCaps, caps: capsArray} = state;
+    try {
+      const newCaps = JSON.parse(rawDesiredCaps);
+
+      // Transform the current caps array to an object
+      let caps = {};
+      for (let {type, name, value} of capsArray) {
+        caps[name] = {type, value};
+      }
+
+      // Translate the caps JSON to array format
+      let newCapsArray = toPairs(newCaps).map(([name, value]) => ({
+        type: (() => {
+          let type = typeof value;
+
+          // If we already have this cap and it's file type, keep the type the same
+          if (caps[name] && caps[name].type === 'file' && type === 'string') {
+            return 'file';
+          } else if (type === 'string') {
+            return 'text';
+          } else {
+            return type;
+          }
+        })(),
+        name,
+        value,
+      }));
+      dispatch({type: SAVE_RAW_DESIRED_CAPS, caps: newCapsArray});
+    } catch (e) {
+      dispatch({type: SHOW_DESIRED_CAPS_JSON_ERROR, message: e.message});
+    }
   };
 }
 
 export function setRawDesiredCaps (rawDesiredCaps) {
-  return (dispatch) => {
-    dispatch({type: SET_RAW_DESIRED_CAPS, rawDesiredCaps});
+  return (dispatch, getState) => {
+    const state = getState().session;
+    let isValidCapsJson = true;
+    let invalidCapsJsonReason;
+    if (state.isValidatingCapsJson) {
+      try {
+        JSON.parse(rawDesiredCaps);
+      } catch (e) {
+        isValidCapsJson = false;
+        invalidCapsJsonReason = e.message;
+      }
+    }
+    dispatch({type: SET_RAW_DESIRED_CAPS, rawDesiredCaps, isValidCapsJson, invalidCapsJsonReason});
   };
 }

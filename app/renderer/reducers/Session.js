@@ -1,4 +1,4 @@
-import {omit, toPairs} from 'lodash';
+import {omit} from 'lodash';
 import formatJSON from 'format-json';
 
 import { NEW_SESSION_REQUESTED, NEW_SESSION_BEGAN, NEW_SESSION_DONE,
@@ -9,7 +9,7 @@ import { NEW_SESSION_REQUESTED, NEW_SESSION_BEGAN, NEW_SESSION_DONE,
         DELETE_SAVED_SESSION_REQUESTED, DELETE_SAVED_SESSION_DONE,
         CHANGE_SERVER_TYPE, SET_SERVER_PARAM, SET_SERVER, SET_ATTACH_SESS_ID,
         GET_SESSIONS_REQUESTED, GET_SESSIONS_DONE,
-        ENABLE_DESIRED_CAPS_EDITOR, ABORT_DESIRED_CAPS_EDITOR, SAVE_RAW_DESIRED_CAPS, SET_RAW_DESIRED_CAPS,
+        ENABLE_DESIRED_CAPS_EDITOR, ABORT_DESIRED_CAPS_EDITOR, SAVE_RAW_DESIRED_CAPS, SET_RAW_DESIRED_CAPS, SHOW_DESIRED_CAPS_JSON_ERROR,
         ServerTypes } from '../actions/Session';
 
 // Make sure there's always at least one cap
@@ -41,14 +41,6 @@ const INITIAL_STATE = {
 };
 
 let nextState;
-
-function getCapType (value) {
-  let type = typeof(value);
-  if (type === 'string') {
-    type = 'text';
-  }
-  return type;
-}
 
 export default function session (state = INITIAL_STATE, action) {
   switch (action.type) {
@@ -238,58 +230,30 @@ export default function session (state = INITIAL_STATE, action) {
       return {
         ...state,
         isEditingDesiredCaps: false,
-        rawDesiredCaps: undefined,
+        rawDesiredCaps: null,
       };
 
     case SAVE_RAW_DESIRED_CAPS:
-      const {rawDesiredCaps} = state;
-      try {
-        const newCaps = JSON.parse(rawDesiredCaps);
+      return {
+        ...state,
+        isEditingDesiredCaps: false,
+        caps: action.caps,
+      };
 
-        // Transform the current caps array to an object
-        let {caps:capsArray} = state;
-        let caps = {};
-        for (let {type, name, value} of capsArray) {
-          caps[name] = {type, value};
-        }
-
-        // Translate the caps JSON to array format
-        let newCapsArray = toPairs(newCaps).map(([name, value]) => ({
-          type: (caps[name] && caps[name].type === 'file' && typeof(value) === 'string') ? 'file' : getCapType(value),  // If we already have that cap and it's file type, keep the type the same
-          name,
-          value,
-        }));
-
-        return {
-          ...state,
-          isEditingDesiredCaps: false,
-          caps: newCapsArray,
-        };
-      } catch (e) {
-        return {
-          ...state,
-          isValidCapsJson: false,
-          invalidCapsJsonReason: e.message,
-          isValidatingCapsJson: true,
-        };
-      }
+    case SHOW_DESIRED_CAPS_JSON_ERROR:
+      return {
+        ...state,
+        invalidCapsJsonReason: action.message,
+        isValidCapsJson: false,
+        isValidatingCapsJson: true,
+      };
 
     case SET_RAW_DESIRED_CAPS:
-      let isValidCapsJson = true;
-      let invalidCapsJsonReason;
-      if (state.isValidatingCapsJson) {
-        try {
-          JSON.parse(action.rawDesiredCaps);
-        } catch (e) {
-          isValidCapsJson = false;
-          invalidCapsJsonReason = e.message;
-        }
-      }
       return {
         ...state,
         rawDesiredCaps: action.rawDesiredCaps,
-        isValidCapsJson,
-        invalidCapsJsonReason,
+        isValidCapsJson: action.isValidCapsJson,
+        invalidCapsJsonReason: action.invalidCapsJsonReason,
       };
 
     default:
