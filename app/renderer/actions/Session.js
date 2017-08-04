@@ -40,6 +40,12 @@ export const SET_ATTACH_SESS_ID = 'SET_ATTACH_SESS_ID';
 export const GET_SESSIONS_REQUESTED = 'GET_SESSIONS_REQUESTED';
 export const GET_SESSIONS_DONE = 'GET_SESSIONS_DONE';
 
+
+export const ENABLE_DESIRED_CAPS_EDITOR = 'ENABLE_DESIRED_CAPS_EDITOR';
+export const ABORT_DESIRED_CAPS_EDITOR = 'ABORT_DESIRED_CAPS_EDITOR';
+export const SAVE_RAW_DESIRED_CAPS = 'SAVE_RAW_DESIRED_CAPS';
+export const SET_RAW_DESIRED_CAPS = 'SET_RAW_DESIRED_CAPS';
+
 export const ServerTypes = {
   local: 'local',
   remote: 'remote',
@@ -417,5 +423,29 @@ export function getRunningSessions () {
     } else {
       dispatch({type: GET_SESSIONS_DONE});
     }
+  };
+}
+
+export function startDesiredCapsEditor () {
+  return (dispatch) => {
+    dispatch({type: ENABLE_DESIRED_CAPS_EDITOR});
+  };
+}
+
+export function abortDesiredCapsEditor () {
+  return (dispatch) => {
+    dispatch({type: ABORT_DESIRED_CAPS_EDITOR});
+  };
+}
+
+export function saveRawDesiredCaps () {
+  return (dispatch) => {
+    dispatch({type: SAVE_RAW_DESIRED_CAPS});
+  };
+}
+
+export function setRawDesiredCaps (rawDesiredCaps) {
+  return (dispatch) => {
+    dispatch({type: SET_RAW_DESIRED_CAPS, rawDesiredCaps});
   };
 }

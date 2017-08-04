@@ -8,6 +8,7 @@ import { NEW_SESSION_REQUESTED, NEW_SESSION_BEGAN, NEW_SESSION_DONE,
         DELETE_SAVED_SESSION_REQUESTED, DELETE_SAVED_SESSION_DONE,
         CHANGE_SERVER_TYPE, SET_SERVER_PARAM, SET_SERVER, SET_ATTACH_SESS_ID,
         GET_SESSIONS_REQUESTED, GET_SESSIONS_DONE,
+        ENABLE_DESIRED_CAPS_EDITOR, ABORT_DESIRED_CAPS_EDITOR, SAVE_RAW_DESIRED_CAPS, SET_RAW_DESIRED_CAPS,
         ServerTypes } from '../actions/Session';
 
 // Make sure there's always at least one cap
@@ -33,6 +34,9 @@ const INITIAL_STATE = {
   isCapsDirty: true,
   gettingSessions: false,
   runningAppiumSessions: [],
+  isEditingDesiredCaps: false,
+  isValidCapsJson: true,
+  isValidatingCapsJson: false,
 };
 
 let nextState;
@@ -204,6 +208,56 @@ export default function session (state = INITIAL_STATE, action) {
         gettingSessions: false,
         attachSessId: (action.sessions && action.sessions.length > 0 && !state.attachSessId) ? action.sessions[0].id : state.attachSessId,
         runningAppiumSessions: action.sessions || [],
+      };
+
+    case ENABLE_DESIRED_CAPS_EDITOR: 
+      return {
+        ...state,
+        isEditingDesiredCaps: true,
+        isValidCapsJson: true,
+        isValidatingCapsJson: false, // Don't start validating JSON until the user has attempted to save the JSON
+      };
+
+    case ABORT_DESIRED_CAPS_EDITOR:
+      return {
+        ...state,
+        isEditingDesiredCaps: false,
+        rawDesiredCaps: undefined,
+      };
+
+    case SAVE_RAW_DESIRED_CAPS:
+      const {rawDesiredCaps} = state;
+      try {
+        const dcaps = JSON.parse(rawDesiredCaps);
+        return {
+          ...state,
+          isEditingDesiredCaps: false,
+        };
+      } catch (e) {
+        return {
+          ...state,
+          isValidCapsJson: false,
+          invalidCapsJsonReason: e.message,
+          isValidatingCapsJson: true,
+        };
+      }
+
+    case SET_RAW_DESIRED_CAPS:
+      let isValidCapsJson = true;
+      let invalidCapsJsonReason;
+      if (state.isValidatingCapsJson) {
+        try {
+          JSON.parse(action.rawDesiredCaps);
+        } catch (e) {
+          isValidCapsJson = false;
+          invalidCapsJsonReason = e.message;
+        }
+      }
+      return {
+        ...state,
+        rawDesiredCaps: action.rawDesiredCaps,
+        isValidCapsJson,
+        invalidCapsJsonReason,
       };
 
     default:
