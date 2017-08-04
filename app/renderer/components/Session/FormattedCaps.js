@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import formatJSON from 'format-json';
 import SessionCSS from './Session.css';
-import { Card, Button, Alert } from 'antd';
+import { Card, Button, Alert, Tooltip } from 'antd';
 import { getCapsObject } from '../../actions/Session.js';
 
 export default class NewSessionForm extends Component {
@@ -16,9 +16,15 @@ export default class NewSessionForm extends Component {
     return caps && <Card title={title || "JSON Representation"}
       className={SessionCSS['formatted-caps']}>
       <div className={SessionCSS.capsEditorControls}>
-        {isEditingDesiredCaps && <Button onClick={abortDesiredCapsEditor} icon='close' className={SessionCSS.capsEditorButton} /> }
-        {isEditingDesiredCaps && <Button onClick={saveRawDesiredCaps} icon='save'  className={SessionCSS.capsEditorButton} /> }
-        {!isEditingDesiredCaps && <Button onClick={startDesiredCapsEditor} icon='edit' /> }
+        {isEditingDesiredCaps && <Tooltip title='Cancel'>
+          <Button onClick={abortDesiredCapsEditor} icon='close' className={SessionCSS.capsEditorButton} />
+        </Tooltip> }
+        {isEditingDesiredCaps && <Tooltip title='Save'>
+          <Button onClick={saveRawDesiredCaps} icon='save'  className={SessionCSS.capsEditorButton} />
+        </Tooltip>}
+        {!isEditingDesiredCaps && <Tooltip title='Edit Raw JSON' placement="topRight" >
+          <Button onClick={startDesiredCapsEditor} icon='edit' />
+        </Tooltip> }
       </div>
       {isEditingDesiredCaps && <div>
         <textarea rows='9' onChange={(e) => setRawDesiredCaps(e.target.value)} value={rawDesiredCaps} className={SessionCSS.capsEditor} />
