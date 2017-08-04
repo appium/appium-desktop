@@ -1,4 +1,5 @@
 import {omit} from 'lodash';
+import formatJSON from 'format-json';
 
 import { NEW_SESSION_REQUESTED, NEW_SESSION_BEGAN, NEW_SESSION_DONE,
         SAVE_SESSION_REQUESTED, SAVE_SESSION_DONE, GET_SAVED_SESSIONS_REQUESTED,
@@ -8,6 +9,7 @@ import { NEW_SESSION_REQUESTED, NEW_SESSION_BEGAN, NEW_SESSION_DONE,
         DELETE_SAVED_SESSION_REQUESTED, DELETE_SAVED_SESSION_DONE,
         CHANGE_SERVER_TYPE, SET_SERVER_PARAM, SET_SERVER, SET_ATTACH_SESS_ID,
         GET_SESSIONS_REQUESTED, GET_SESSIONS_DONE,
+        ENABLE_DESIRED_CAPS_EDITOR, ABORT_DESIRED_CAPS_EDITOR, SAVE_RAW_DESIRED_CAPS, SET_RAW_DESIRED_CAPS, SHOW_DESIRED_CAPS_JSON_ERROR,
         ServerTypes } from '../actions/Session';
 
 // Make sure there's always at least one cap
@@ -33,6 +35,9 @@ const INITIAL_STATE = {
   isCapsDirty: true,
   gettingSessions: false,
   runningAppiumSessions: [],
+  isEditingDesiredCaps: false,
+  isValidCapsJson: true,
+  isValidatingCapsJson: false,
 };
 
 let nextState;
@@ -204,6 +209,51 @@ export default function session (state = INITIAL_STATE, action) {
         gettingSessions: false,
         attachSessId: (action.sessions && action.sessions.length > 0 && !state.attachSessId) ? action.sessions[0].id : state.attachSessId,
         runningAppiumSessions: action.sessions || [],
+      };
+
+    case ENABLE_DESIRED_CAPS_EDITOR:
+      const {caps} = state;
+      let rawCaps = {};
+      for (let {name, value} of caps) {
+        rawCaps[name] = value;
+      }
+
+      return {
+        ...state,
+        isEditingDesiredCaps: true,
+        rawDesiredCaps: formatJSON.plain(rawCaps),
+        isValidCapsJson: true,
+        isValidatingCapsJson: false, // Don't start validating JSON until the user has attempted to save the JSON
+      };
+
+    case ABORT_DESIRED_CAPS_EDITOR:
+      return {
+        ...state,
+        isEditingDesiredCaps: false,
+        rawDesiredCaps: null,
+      };
+
+    case SAVE_RAW_DESIRED_CAPS:
+      return {
+        ...state,
+        isEditingDesiredCaps: false,
+        caps: action.caps,
+      };
+
+    case SHOW_DESIRED_CAPS_JSON_ERROR:
+      return {
+        ...state,
+        invalidCapsJsonReason: action.message,
+        isValidCapsJson: false,
+        isValidatingCapsJson: true,
+      };
+
+    case SET_RAW_DESIRED_CAPS:
+      return {
+        ...state,
+        rawDesiredCaps: action.rawDesiredCaps,
+        isValidCapsJson: action.isValidCapsJson,
+        invalidCapsJsonReason: action.invalidCapsJsonReason,
       };
 
     default:
