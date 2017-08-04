@@ -5,6 +5,7 @@ import { main as appiumServer } from 'appium';
 import { getDefaultArgs, getParser } from 'appium/build/lib/parser';
 import path from 'path';
 import wd from 'wd';
+import { fs, tempDir } from 'appium-support';
 import settings from '../settings';
 import autoUpdaterController from './auto-updater';
 import AppiumMethodHandler from './appium-method-handler';
@@ -20,9 +21,18 @@ var batchedLogs = [];
 let sessionDrivers = {};
 
 let appiumHandlers = {};
+let logFile;
 
 // Delete saved server args, don't start until a server has been started
 settings.deleteSync('SERVER_ARGS');
+
+async function deleteLogfile () {
+  if (logFile) {
+    try {
+      await fs.rimraf(logFile);
+    } catch (ign) { }
+  }
+}
 
 /**
  * Kill session associated with session browser window
@@ -46,6 +56,14 @@ async function killSession (sessionWinID) {
 
 function connectStartServer (win) {
   ipcMain.on('start-server', async (event, args) => {
+    // log the server logs to a file
+    try {
+      const dir = await tempDir.openDir();
+      logFile = path.resolve(dir, 'appium-server-logs.txt');
+      win.webContents.send('path-to-logs', logFile);
+      win.on('close', deleteLogfile);
+    } catch (ign) { }
+
     // clean up args object for appium log purposes (so it doesn't show in
     // non-default args list
     if (args.defaultCapabilities &&
@@ -60,9 +78,16 @@ function connectStartServer (win) {
     args.throwInsteadOfExit = true;
 
     // set up our log watcher
-    logWatcher = setInterval(() => {
+    logWatcher = setInterval(async () => {
       if (batchedLogs.length) {
-        win.webContents.send('appium-log-line', batchedLogs);
+        try {
+          await fs.writeFile(
+            logFile, 
+            batchedLogs.map((log) => `[${log.level}] ${log.msg}`).join('\n'), 
+            {flag: 'a'}
+          );
+          win.webContents.send('appium-log-line', batchedLogs); 
+        } catch (ign) { }
         batchedLogs = [];
       }
     }, LOG_SEND_INTERVAL_MS);
@@ -90,6 +115,7 @@ function connectStopServer (win) {
     } catch (e) {
       win.webContents.send('appium-stop-error', e.message);
     }
+
     clearInterval(logWatcher);
     await settings.delete('SERVER_ARGS');
   });

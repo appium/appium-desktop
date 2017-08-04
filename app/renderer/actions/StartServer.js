@@ -14,6 +14,7 @@ export const PRESET_SAVE_OK = 'PRESET_SAVE_OK';
 export const GET_PRESETS = 'GET_PRESETS';
 export const PRESET_DELETE_REQ = 'PRESET_DELETE_REQ';
 export const PRESET_DELETE_OK = 'PRESET_DELETE_OK';
+export const SET_LOGFILE_PATH = 'SET_LOGFILE_PATH';
 
 export const PRESETS = 'presets';
 
@@ -47,6 +48,7 @@ export function startServer (evt) {
     });
 
     dispatch(clearLogs());
+    ipcRenderer.once('path-to-logs', (event, logfilePath) => dispatch({type: SET_LOGFILE_PATH, logfilePath}));
     ipcRenderer.send('start-server', serverArgs);
   };
 }
