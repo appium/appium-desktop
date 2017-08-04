@@ -1,3 +1,8 @@
+## [1.2.0-beta.2](https://github.com/appium/appium-desktop/compare/v1.2.0-beta.1...v1.2.0-beta.2) (2017-08-18)
+
+### Changes
+* Feature: Can edit raw desired capabilities JSON string (#267)
+
 ## [1.2.0-beta.1](https://github.com/appium/appium-desktop/compare/v1.1.1...v1.2.0-beta.1) (2017-08-04)
 
 ### Changes
