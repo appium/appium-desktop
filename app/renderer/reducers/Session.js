@@ -1,4 +1,5 @@
-import {omit} from 'lodash';
+import {omit, toPairs} from 'lodash';
+import formatJSON from 'format-json';
 
 import { NEW_SESSION_REQUESTED, NEW_SESSION_BEGAN, NEW_SESSION_DONE,
         SAVE_SESSION_REQUESTED, SAVE_SESSION_DONE, GET_SAVED_SESSIONS_REQUESTED,
@@ -40,6 +41,14 @@ const INITIAL_STATE = {
 };
 
 let nextState;
+
+function getCapType (value) {
+  let type = typeof(value);
+  if (type === 'string') {
+    type = 'text';
+  }
+  return type;
+}
 
 export default function session (state = INITIAL_STATE, action) {
   switch (action.type) {
@@ -210,10 +219,17 @@ export default function session (state = INITIAL_STATE, action) {
         runningAppiumSessions: action.sessions || [],
       };
 
-    case ENABLE_DESIRED_CAPS_EDITOR: 
+    case ENABLE_DESIRED_CAPS_EDITOR:
+      const {caps} = state;
+      let rawCaps = {};
+      for (let {name, value} of caps) {
+        rawCaps[name] = value;
+      }
+
       return {
         ...state,
         isEditingDesiredCaps: true,
+        rawDesiredCaps: formatJSON.plain(rawCaps),
         isValidCapsJson: true,
         isValidatingCapsJson: false, // Don't start validating JSON until the user has attempted to save the JSON
       };
@@ -228,10 +244,26 @@ export default function session (state = INITIAL_STATE, action) {
     case SAVE_RAW_DESIRED_CAPS:
       const {rawDesiredCaps} = state;
       try {
-        const dcaps = JSON.parse(rawDesiredCaps);
+        const newCaps = JSON.parse(rawDesiredCaps);
+
+        // Transform the current caps array to an object
+        let {caps:capsArray} = state;
+        let caps = {};
+        for (let {type, name, value} of capsArray) {
+          caps[name] = {type, value};
+        }
+
+        // Translate the caps JSON to array format
+        let newCapsArray = toPairs(newCaps).map(([name, value]) => ({
+          type: (caps[name] && caps[name].type === 'file' && typeof(value) === 'string') ? 'file' : getCapType(value),  // If we already have that cap and it's file type, keep the type the same
+          name,
+          value,
+        }));
+
         return {
           ...state,
           isEditingDesiredCaps: false,
+          caps: newCapsArray,
         };
       } catch (e) {
         return {
