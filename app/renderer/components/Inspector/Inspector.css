@@ -269,7 +269,7 @@
 }
 
  .innerScreenshotContainer {
-    display: flex; 
+    display: flex;
     flex-direction: column;
     height: 100%;
  }
@@ -277,4 +277,8 @@
  .innerScreenshotContainer .screenshotActionsPanel {
     margin-bottom: 2px;
     margin: 0 auto 2px auto;
+ }
+
+ .action-controls {
+    margin-right: 20px;
  }

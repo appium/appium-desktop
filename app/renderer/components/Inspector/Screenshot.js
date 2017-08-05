@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { debounce } from 'lodash';
 import HighlighterRects from './HighlighterRects';
-import Actions from './Actions';
-import { Spin } from 'antd';
+import { Spin, Tooltip } from 'antd';
 import B from 'bluebird';
 import styles from './Inspector.css';
 import { parseCoordinates } from './shared';
@@ -37,7 +36,7 @@ export default class Screenshot extends Component {
   }
 
   async handleScreenshotClick () {
-    const {screenshotInteractionMode, applyClientMethod, 
+    const {screenshotInteractionMode, applyClientMethod,
       swipeStart, swipeEnd, setSwipeStart, setSwipeEnd} = this.props;
     const {x, y} = this.state;
 
@@ -102,7 +101,7 @@ export default class Screenshot extends Component {
   }
 
   render () {
-    const {screenshot, methodCallInProgress, screenshotInteractionMode, 
+    const {screenshot, methodCallInProgress, screenshotInteractionMode,
       swipeStart, swipeEnd} = this.props;
     const {scaleRatio, x, y} = this.state;
 
@@ -112,14 +111,22 @@ export default class Screenshot extends Component {
       screenshotStyle.cursor = 'crosshair';
     }
 
+    let swipeInstructions = null;
+    if (screenshotInteractionMode === 'swipe' && (!swipeStart || !swipeEnd)) {
+      if (!swipeStart) {
+        swipeInstructions = "Click swipe start point";
+      } else if (!swipeEnd) {
+        swipeInstructions = "Click swipe end point";
+      }
+    }
+
+    const screenImg = <img src={`data:image/gif;base64,${screenshot}`} id="screenshot" />;
+
     // Show the screenshot and highlighter rects. Show loading indicator if a method call is in progress.
     return <Spin size='large' spinning={!!methodCallInProgress}>
       <div className={styles.innerScreenshotContainer}>
-        <div className={styles.screenshotActionsPanel}>
-          <Actions {...this.props} />
-        </div>
         <div ref={(containerEl) => { this.containerEl = containerEl; }}
-          style={screenshotStyle} 
+          style={screenshotStyle}
           onClick={this.handleScreenshotClick.bind(this)}
           onMouseMove={this.handleMouseMove.bind(this)}
           onMouseOut={this.handleMouseOut.bind(this)}
@@ -128,17 +135,14 @@ export default class Screenshot extends Component {
             <p>X: {x}</p>
             <p>Y: {y}</p>
           </div>}
-          <img src={`data:image/gif;base64,${screenshot}`} id="screenshot" />
+          {swipeInstructions && <Tooltip visible={true} placement="top" title={swipeInstructions}>{screenImg}</Tooltip>}
+          {!swipeInstructions && screenImg}
           {screenshotInteractionMode === 'select' && this.containerEl && <HighlighterRects {...this.props} containerEl={this.containerEl} />}
-          {screenshotInteractionMode === 'swipe' && <div>
-            {(!swipeStart || !swipeEnd) && <div className={styles.swipeInstructions}>
-              {!swipeStart && <p>Click swipe start</p>}
-              {swipeStart && !swipeEnd && <p>Click swipe end</p>}
-            </div>}
+          {screenshotInteractionMode === 'swipe' &&  
             <svg className={styles.swipeSvg}>
-              {swipeStart && !swipeEnd && <circle 
-                cx={swipeStart.x / scaleRatio} 
-                cy={swipeStart.y / scaleRatio} 
+              {swipeStart && !swipeEnd && <circle
+                cx={swipeStart.x / scaleRatio}
+                cy={swipeStart.y / scaleRatio}
               />}
               {swipeStart && swipeEnd && <line
                 x1={swipeStart.x / scaleRatio}
@@ -147,7 +151,7 @@ export default class Screenshot extends Component {
                 y2={swipeEnd.y / scaleRatio}
               />}
             </svg>
-          </div>}
+          }
         </div>
       </div>
     </Spin>;
