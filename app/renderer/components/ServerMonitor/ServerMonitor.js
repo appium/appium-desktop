@@ -71,9 +71,23 @@ class GetRawLogsButton extends Component {
   }
 }
 
+class DeleteButton extends Component {
+  static propTypes = {
+    serverStatus: PropTypes.string.isRequired,
+  }
+
+  render () {
+    const {serverStatus, clearLogs} = this.props;
+    return serverStatus === STATUS_STOPPED ? null : <Button className={styles.serverButton}
+                                                      icon="pause-circle-o" 
+                                                      onClick={clearLogs}>Delete</Button>;
+  }
+}
+
 export default class ServerMonitor extends Component {
 
   static propTypes = {
+    clearLogs: PropTypes.func.isRequired,
     stopServer: PropTypes.func.isRequired,
     closeMonitor: PropTypes.func.isRequired,
     serverStatus: PropTypes.string.isRequired,
@@ -154,6 +168,7 @@ export default class ServerMonitor extends Component {
           <div className={`${styles['button-container']}`}>
             <StartSessionButton {...this.props} />
             <StopButton {...this.props} />
+            <DeleteButton {...this.props} />
           </div>
         </div>
         <div className={termClass} ref={(c) => this._term = c}>
