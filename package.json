@@ -1,6 +1,6 @@
 {
   "name": "appium-desktop",
-  "version": "1.2.0-beta.2",
+  "version": "1.2.0-beta.3",
   "description": "Graphical interface for the Appium server, and an app inspector",
   "repository": {
     "type": "git",

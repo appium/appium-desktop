@@ -1,3 +1,8 @@
+## [1.2.0-beta.3](https://github.com/appium/appium-desktop/compare/v1.2.0-beta.2...v1.2.0-beta.3) (2017-08-25)
+
+### Changes
+* Feature: Can run SauceConnect from user interface (#280)
+
 ## [1.2.0-beta.2](https://github.com/appium/appium-desktop/compare/v1.2.0-beta.1...v1.2.0-beta.2) (2017-08-18)
 
 ### Changes
