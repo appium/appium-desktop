@@ -176,6 +176,10 @@ export function newSession (caps, attachSessId = null) {
       case ServerTypes.sauce:
         host = 'ondemand.saucelabs.com';
         port = 80;
+        if (session.server.sauce.useSCProxy) {
+          host = session.server.sauce.scHost || "localhost";
+          port = parseInt(session.server.sauce.scPort, 10) || 4445;
+        }
         username = session.server.sauce.username || process.env.SAUCE_USERNAME;
         accessKey = session.server.sauce.accessKey || process.env.SAUCE_ACCESS_KEY;
         if (!username || !accessKey) {
