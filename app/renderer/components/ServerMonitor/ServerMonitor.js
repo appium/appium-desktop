@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { Button } from 'antd';
+import { Button, Tooltip } from 'antd';
 import { STATUS_RUNNING, STATUS_STOPPING,
          STATUS_STOPPED } from '../../reducers/ServerMonitor';
 import styles from './ServerMonitor.css';
@@ -31,15 +31,23 @@ class StopButton extends Component {
 
   render () {
     const {serverStatus, stopServer, closeMonitor} = this.props;
-    let btn = <Button icon="pause-circle-o" className={styles.serverButton}
-               onClick={stopServer}>Stop Server</Button>;
+    let btn = <Tooltip title="Stop Server"
+               placement="bottomLeft">
+      <Button icon="pause" className={styles.serverButton}
+       onClick={stopServer} />
+    </Tooltip>;
     if (serverStatus === STATUS_STOPPED) {
-      btn = <Button className={styles.serverButton}
-             icon="close-circle-o"
-             onClick={closeMonitor}>Close Logs</Button>;
+      btn = <Tooltip title="Close Logs" placement="bottomLeft">
+        <Button className={styles.serverButton}
+         icon="close"
+         onClick={closeMonitor} />
+      </Tooltip>;
     } else if (serverStatus === STATUS_STOPPING) {
-      btn = <Button icon="pause-circle-o"
-             className={styles.serverButton} type="disabled">Stopping...</Button>;
+      btn = <Tooltip title="Stopping..." visible={true}
+             placement="bottomLeft">
+        <Button icon="pause"
+         className={styles.serverButton} type="disabled" />
+      </Tooltip>;
     }
     return btn;
   }
@@ -54,9 +62,11 @@ class StartSessionButton extends Component {
   render () {
     const {serverStatus, startSession} = this.props;
     if (serverStatus !== STATUS_STOPPED && serverStatus !== STATUS_STOPPING) {
-      return <Button className={styles.serverButton} id='startNewSessionBtn'
-              icon="play-circle-o"
-             onClick={startSession}>Start New Session</Button>;
+      return <Tooltip title="Start Inspector Session">
+        <Button className={styles.serverButton} id='startNewSessionBtn'
+          icon="search"
+          onClick={startSession} />
+      </Tooltip>;
     } else {
       return null;
     }
@@ -65,9 +75,11 @@ class StartSessionButton extends Component {
 
 class GetRawLogsButton extends Component {
   render () {
-    return <Button className={`${styles.getRawLogsButton} ${styles.serverButton}`}
-             icon="file-text"
-             onClick={() => this.props.getRawLogs()}>Get raw logs</Button>;
+    return <Tooltip title="Get Raw Logs">
+      <Button className={styles.serverButton}
+       icon="download"
+       onClick={() => this.props.getRawLogs()} />
+    </Tooltip>;
   }
 }
 
@@ -153,11 +165,11 @@ export default class ServerMonitor extends Component {
           </div>
           <div className={`${styles['button-container']}`}>
             <StartSessionButton {...this.props} />
+            <GetRawLogsButton {...this.props} />
             <StopButton {...this.props} />
           </div>
         </div>
         <div className={termClass} ref={(c) => this._term = c}>
-          <GetRawLogsButton {...this.props} />
           {logLineSection}
           {lastSection}
         </div>
