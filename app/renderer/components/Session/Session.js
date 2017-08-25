@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import NewSessionForm from './NewSessionForm';
 import SavedSessions from './SavedSessions';
 import AttachToSession from './AttachToSession';
-import { Tabs, Form, Input, Button, Spin, Card, Icon, Col, Checkbox, Select } from 'antd';
+import { Tabs, Form, Input, Button, Spin, Card, Icon, Col, Checkbox, Select, Row } from 'antd';
 import { ServerTypes } from '../../actions/Session';
 import SessionStyles from './Session.css';
 
@@ -52,14 +52,14 @@ export default class Session extends Component {
               <Form>
                 <Col span={24}>
                   <FormItem>
-                    <Input id='customServerHost' placeholder='127.0.0.1' addonBefore="Remote Host" value={server.remote.hostname} onChange={(e) => setServerParam('hostname', e.target.value)} size="large" />                   
+                    <Input id='customServerHost' placeholder='127.0.0.1' addonBefore="Remote Host" value={server.remote.hostname} onChange={(e) => setServerParam('hostname', e.target.value)} size="large" />
                   </FormItem>
                 </Col>
                 <Col span={12}>
                   <FormItem>
                     <Input className={SessionStyles.customServerPort} id='customServerPort' placeholder='4723' addonBefore="Remote Port" value={server.remote.port} onChange={(e) => setServerParam('port', e.target.value)} size="large" />
                   </FormItem>
-                </Col>  
+                </Col>
                 <Col span={12}>
                   <FormItem>
                     <Checkbox id='customServerSSL' value={server.remote.ssl} onChange={(e) => setServerParam('ssl', e.target.checked)}>SSL</Checkbox>
@@ -69,12 +69,33 @@ export default class Session extends Component {
             </TabPane>
             <TabPane tab={sauceTabHead} key={ServerTypes.sauce}>
               <Form>
-                <FormItem>
-                  <Input id='sauceUsername' placeholder={process.env.SAUCE_USERNAME ? 'Using data found in $SAUCE_USERNAME' : 'your-username'} addonBefore="Sauce Username" value={server.sauce.username} onChange={(e) => setServerParam('username', e.target.value)} />
-                </FormItem>
-                <FormItem>
-                  <Input id='saucePassword' type='password' placeholder={process.env.SAUCE_ACCESS_KEY ? 'Using data found in $SAUCE_ACCESS_KEY' : 'your-access-key'} addonBefore="Sauce Access Key" value={server.sauce.accessKey} onChange={(e) => setServerParam('accessKey', e.target.value)} />
-                </FormItem>
+                <Row type="flex" justify="space-between" align="top">
+                  <Col span={13}>
+                    <FormItem>
+                      <Input id='sauceUsername' placeholder={process.env.SAUCE_USERNAME ? 'Using data found in $SAUCE_USERNAME' : 'your-username'} addonBefore="Sauce Username" value={server.sauce.username} onChange={(e) => setServerParam('username', e.target.value)} />
+                    </FormItem>
+                    <FormItem>
+                      <Input id='saucePassword' type='password' placeholder={process.env.SAUCE_ACCESS_KEY ? 'Using data found in $SAUCE_ACCESS_KEY' : 'your-access-key'} addonBefore="Sauce Access Key" value={server.sauce.accessKey} onChange={(e) => setServerParam('accessKey', e.target.value)} />
+                    </FormItem>
+                  </Col>
+                  <Col span={10}>
+                    <FormItem>
+                      <Checkbox checked={!!server.sauce.useSCProxy} onChange={(e) => setServerParam('useSCProxy', e.target.checked)}> Proxy through Sauce Connect's Selenium Relay</Checkbox>
+                    </FormItem>
+                    <Row type="flex" justify="space-between" align="top">
+                      <Col span={11}>
+                        <FormItem>
+                          <Input addonBefore="Host" placeholder="localhost" disabled={!server.sauce.useSCProxy} value={server.sauce.scHost} onChange={(e) => setServerParam('scHost', e.target.value)}/>
+                        </FormItem>
+                      </Col>
+                      <Col span={11}>
+                        <FormItem>
+                          <Input addonBefore="Port" placeholder="4445" disabled={!server.sauce.useSCProxy} value={server.sauce.scPort} onChange={(e) => setServerParam('scPort', e.target.value)} />
+                        </FormItem>
+                      </Col>
+                    </Row>
+                  </Col>
+                </Row>
               </Form>
             </TabPane>
             <TabPane tab={testObjectTabHead} key={ServerTypes.testobject}>
@@ -123,7 +144,7 @@ export default class Session extends Component {
           </div>
           { (!isAttaching && capsUUID) && <Button onClick={() => saveSession(caps, {uuid: capsUUID})} disabled={!isCapsDirty}>Save</Button> }
           {!isAttaching && <Button onClick={requestSaveAsModal}>Save As...</Button>}
-          {!isAttaching && <Button type="primary" id='btnStartSession' 
+          {!isAttaching && <Button type="primary" id='btnStartSession'
             onClick={() => newSession(caps)} className={SessionStyles['start-session-button']}>Start Session</Button>
           }
           {isAttaching &&
