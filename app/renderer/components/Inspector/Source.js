@@ -80,7 +80,7 @@ export default class Source extends Component {
         <i>Gathering initial app source...</i>
       }
       {
-        sourceError && `Could not obtain source: ${sourceError}`
+        sourceError && `Could not obtain source: ${JSON.stringify(sourceError)}`
       }
       <LocatorTestModal {...this.props} />
     </div>;
