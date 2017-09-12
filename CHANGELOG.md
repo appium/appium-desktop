@@ -1,16 +1,8 @@
-## [1.2.0-beta.3](https://github.com/appium/appium-desktop/compare/v1.2.0-beta.2...v1.2.0-beta.3) (2017-08-25)
+## [1.2.0-beta.3](https://github.com/appium/appium-desktop/compare/v1.1.1...v1.2.0) (2017-09-12)
 
 ### Changes
 * Feature: Can run SauceConnect from user interface (#280)
-
-## [1.2.0-beta.2](https://github.com/appium/appium-desktop/compare/v1.2.0-beta.1...v1.2.0-beta.2) (2017-08-18)
-
-### Changes
 * Feature: Can edit raw desired capabilities JSON string (#267)
-
-## [1.2.0-beta.1](https://github.com/appium/appium-desktop/compare/v1.1.1...v1.2.0-beta.1) (2017-08-04)
-
-### Changes
 * Feature: Add locator modal to search for elements and perform basic interactions on them (#244)
 * Feature: Add interactive swipe and tap (#260)
 * Feature: Add HTTPS option, and TO data center options (#262)
