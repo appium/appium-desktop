@@ -8,10 +8,14 @@ class JavaFramework extends Framework {
 
   wrapWithBoilerplate (code) {
     let [pkg, cls] = (() => {
-      switch (this.caps.platformName.toLowerCase()) {
-        case "ios": return ["ios", "IOSDriver"];
-        case "android": return ["android", "AndroidDriver"];
-        default: throw new Error(`Appium Desktop java code generation doesn't understand platformName '${this.caps.platformName}'`);
+      if (this.caps.platformName) {
+        switch (this.caps.platformName.toLowerCase()) {
+          case "ios": return ["ios", "IOSDriver"];
+          case "android": return ["android", "AndroidDriver"];
+          default: return ["unknownPlatform", "UnknownDriver"];
+        } 
+      } else {
+        return ["unknownPlatform", "UnknownDriver"];
       }
     })();
     let capStr = this.indent(Object.keys(this.caps).map((k) => {
