@@ -1,3 +1,8 @@
+## [1.2.3](https://github.com/appium/appium-desktop/compare/v1.2.2...v1.2.3) (2017-09-26)
+
+### Changes
+* Feature: Upgrade to Appium version 1.7.1
+
 ## [1.2.2](https://github.com/appium/appium-desktop/compare/v1.2.1...v1.2.2) (2017-09-18)
 
 ### Changes
@@ -7,8 +12,6 @@
 
 ### Changes
 * Fix: Show unknown platform if no platform found (#295)
-
-## [1.2.0](https://github.com/appium/appium-desktop/compare/v1.1.1...v1.2.0) (2017-09-12)
 
 ### Changes
 * Feature: Can run SauceConnect from user interface (#280)
