@@ -106,14 +106,36 @@ export function bindAppium () {
 }
 
 
+// A debounced function that calls findElement and gets info about the element
+const findElement = _.debounce(async function (strategy, selector, dispatch, getState, path) {
+  // Get the information about the element
+  let {elementId, variableName, variableType} = await callClientMethod({
+    strategy,
+    selector,
+  });
+
+    // If the element is stale, unselect and reload the source
+  if (!elementId) {
+    dispatch({type: UNSELECT_ELEMENT});
+    return await applyClientMethod({methodName: 'source'})(dispatch);
+  } 
+
+  // Set the elementId, variableName and variableType for the selected element 
+  // (check first that the selectedElementPath didn't change, to avoid race conditions)
+  if (getState().inspector.selectedElementPath === path) {
+    dispatch({type: SET_SELECTED_ELEMENT_ID, elementId, variableName, variableType});
+  }
+}, 1000);
+
 export function selectElement (path) {
-  return async (dispatch, getState) => {
+  return (dispatch, getState) => {
+    // Set the selected element in the source tree
     dispatch({type: SELECT_ELEMENT, path});
     const state = getState().inspector;
     const {attributes: selectedElementAttributes, xpath: selectedElementXPath} = state.selectedElement;
     const {sourceXML} = state;
 
-    // Expand all of this element's ancestors so that it's visible in the tree
+    // Expand all of this element's ancestors so that it's visible in the source tree
     let {expandedPaths} = getState().inspector;
     let pathArr = path.split('.').slice(0, path.length - 1);
     while (pathArr.length > 1) {
@@ -125,27 +147,13 @@ export function selectElement (path) {
     }
     dispatch({type: SET_EXPANDED_PATHS, paths: expandedPaths});
 
+
     // Find the optimal selection strategy. If none found, fall back to XPath.
     const strategyMap = _.toPairs(getLocators(selectedElementAttributes, sourceXML));
     const [optimalStrategy, optimalSelector] = strategyMap.length > 0 ? strategyMap[strategyMap.length - 1] : ['xpath', selectedElementXPath];
 
-    // Get the information about the element
-    let {elementId, variableName, variableType} = await callClientMethod({
-      strategy: optimalStrategy,
-      selector: optimalSelector,
-    });
-
-    if (!elementId) {
-      // If the element is stale, unselect and reload the source
-      dispatch({type: UNSELECT_ELEMENT});
-      return await applyClientMethod({methodName: 'source'})(dispatch);
-    } 
-
-    // Set the elementId, variableName and variableType for the selected element 
-    // (check first that the selectedElementPath didn't change, to avoid race conditions)
-    if (getState().inspector.selectedElementPath === path) {
-      dispatch({type: SET_SELECTED_ELEMENT_ID, elementId, variableName, variableType});
-    }
+    // Debounce find element so that if another element is selected shortly after, cancel the previous search
+    findElement(optimalStrategy, optimalSelector, dispatch, getState, path);
   };
 }
 
