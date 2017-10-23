@@ -114,7 +114,7 @@ const findElement = _.debounce(async function (strategy, selector, dispatch, get
     selector,
   });
 
-    // If the element is stale, unselect and reload the source
+  // If the element is stale, unselect and reload the source
   if (!elementId) {
     dispatch({type: UNSELECT_ELEMENT});
     return await applyClientMethod({methodName: 'source'})(dispatch);
@@ -128,7 +128,7 @@ const findElement = _.debounce(async function (strategy, selector, dispatch, get
 }, 1000);
 
 export function selectElement (path) {
-  return (dispatch, getState) => {
+  return async (dispatch, getState) => {
     // Set the selected element in the source tree
     dispatch({type: SELECT_ELEMENT, path});
     const state = getState().inspector;
@@ -153,7 +153,7 @@ export function selectElement (path) {
     const [optimalStrategy, optimalSelector] = strategyMap.length > 0 ? strategyMap[strategyMap.length - 1] : ['xpath', selectedElementXPath];
 
     // Debounce find element so that if another element is selected shortly after, cancel the previous search
-    findElement(optimalStrategy, optimalSelector, dispatch, getState, path);
+    await findElement(optimalStrategy, optimalSelector, dispatch, getState, path);
   };
 }
 
