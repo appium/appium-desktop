@@ -138,14 +138,14 @@ export function selectElement (path) {
     if (!elementId) {
       // If the element is stale, unselect and reload the source
       dispatch({type: UNSELECT_ELEMENT});
-      await applyClientMethod({methodName: 'source'})(dispatch);
-    } else {
-      // Set the elementId, variableName and variableType for the selected element 
-      // (check first that the selectedElementPath didn't change, to avoid race conditions)
-      if (getState().inspector.selectedElementPath === path) {
-        dispatch({type: SET_SELECTED_ELEMENT_ID, elementId, variableName, variableType});
-      }
-    }    
+      return await applyClientMethod({methodName: 'source'})(dispatch);
+    } 
+
+    // Set the elementId, variableName and variableType for the selected element 
+    // (check first that the selectedElementPath didn't change, to avoid race conditions)
+    if (getState().inspector.selectedElementPath === path) {
+      dispatch({type: SET_SELECTED_ELEMENT_ID, elementId, variableName, variableType});
+    }
   };
 }
 
