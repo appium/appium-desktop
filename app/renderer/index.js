@@ -4,6 +4,7 @@ import { Provider } from 'react-redux';
 import { Router, hashHistory } from 'react-router';
 import { syncHistoryWithStore } from 'react-router-redux';
 import electron from 'electron';
+import WrongFolder from './components/WrongFolder/WrongFolder';
 import routes from './routes';
 import configureStore from './store/configureStore';
 import './styles/app.global.css';
@@ -16,9 +17,9 @@ const history = syncHistoryWithStore(hashHistory, store);
 
 render(
   <Provider store={store}>
-    {(app.isInApplicationsFolder() || (isDev && !process.env.WRONG_FOLDER)) ?
+    {(app.isInApplicationsFolder() || (isDev && !process.env.WRONG_FOLDER) || process.env.FORCE_NO_WRONG_FOLDER) ?
       <Router history={history} routes={routes} /> :
-      <div>Not in applications folder</div>
+      <WrongFolder />
     }
   </Provider>,
   document.getElementById('root')

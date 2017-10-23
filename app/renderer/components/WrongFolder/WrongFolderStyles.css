@@ -1,0 +1,20 @@
+.wrong-folder  {
+  display: flex;
+  flex-direction: column;
+  padding: 1em;
+  justify-content: center;
+  height: 100%;
+}
+
+.wrong-folder div {
+  flex-grow: 1;
+  text-align: center;
+  margin-bottom: 1em;
+  font-size: 16px;
+  color: red;
+}
+
+.wrong-folder div button {
+  width: 75%;
+  margin-bottom: 1em;
+}
