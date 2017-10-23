@@ -1,4 +1,11 @@
-## [1.2.4](https://github.com/appium/appium-desktop/compare/v1.2.2...v1.2.3) (2017-10-14)
+## [1.2.5](https://github.com/appium/appium-desktop/compare/v1.2.4...v1.2.5) (2017-10-23)
+
+### Changes
+* Fix: Resolve python recorder errors (#323)
+* Fix: Reload source when selected element is stale (#324)
+* Fix: Debounce calls to selectElement (#325)
+
+## [1.2.4](https://github.com/appium/appium-desktop/compare/v1.2.3...v1.2.4) (2017-10-14)
 
 ### Changes
 * Fix: Change Appium version from 1.7.0 to 1.7.1
