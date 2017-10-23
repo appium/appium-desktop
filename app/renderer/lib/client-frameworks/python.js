@@ -26,7 +26,7 @@ from appium import webdriver
 caps = {}
 ${capStr}
 
-driver = webdriver.remote("http://${this.host}:${this.port}/wd/hub", caps)
+driver = webdriver.Remote("http://${this.host}:${this.port}/wd/hub", caps)
 
 ${code}
 driver.quit()`;
@@ -70,7 +70,7 @@ driver.quit()`;
   }
 
   codeFor_tap (varNameIgnore, varIndexIgnore, x, y) {
-    return `TouchAction(driver).tap([(${x}, ${y})])`;
+    return `TouchAction(driver).tap([(${x}, ${y})]).perform()`;
   }
 
   codeFor_swipe (varNameIgnore, varIndexIgnore, x1, y1, x2, y2) {
@@ -78,6 +78,7 @@ driver.quit()`;
   .press(x=${x1}, y=${y1})
   .move_to(x=${x2}, y=${y2})
   .release()
+  .perform()
     `;
   }
 }
