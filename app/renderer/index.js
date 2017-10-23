@@ -15,11 +15,24 @@ const isDev = process.env.NODE_ENV === 'development';
 const store = configureStore();
 const history = syncHistoryWithStore(hashHistory, store);
 
+function shouldShowWrongFolderComponent () {
+  // If we set an ENV to require it to NOT be shown don't show it
+  if (process.env.FORCE_NO_WRONG_FOLDER) {
+    return false;
+  }
+
+  if (app.isInApplicationsFolder && !app.isInApplicationsFolder() && !isDev) {
+    return true;
+  } else if (isDev && process.env.WRONG_FOLDER) {
+    return true;
+  }
+}
+
 render(
   <Provider store={store}>
-    {(app.isInApplicationsFolder() || (isDev && !process.env.WRONG_FOLDER) || process.env.FORCE_NO_WRONG_FOLDER) ?
-      <Router history={history} routes={routes} /> :
-      <WrongFolder />
+    {shouldShowWrongFolderComponent() ?
+      <WrongFolder /> :
+      <Router history={history} routes={routes} />
     }
   </Provider>,
   document.getElementById('root')
