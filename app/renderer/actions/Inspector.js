@@ -125,7 +125,7 @@ const findElement = _.debounce(async function (strategyMap, dispatch, getState, 
   // If we couldn't find the element, show a notification
   notification.error({
     message: 'Error',
-    description: 'Could not find element. Try refreshing page',
+    description: 'Could not find the element. Try refreshing.',
     duration: 0,
   });
 }, 1000);
