@@ -107,24 +107,27 @@ export function bindAppium () {
 
 
 // A debounced function that calls findElement and gets info about the element
-const findElement = _.debounce(async function (strategy, selector, dispatch, getState, path) {
-  // Get the information about the element
-  let {elementId, variableName, variableType} = await callClientMethod({
-    strategy,
-    selector,
-  });
+const findElement = _.debounce(async function (strategyMap, dispatch, getState, path) {
+  for (let [strategy, selector] of strategyMap) {
+    // Get the information about the element
+    let {elementId, variableName, variableType} = await callClientMethod({
+      strategy,
+      selector,
+    });
 
-  // If the element is stale, unselect and reload the source
-  if (!elementId) {
-    dispatch({type: UNSELECT_ELEMENT});
-    return await applyClientMethod({methodName: 'source'})(dispatch);
-  } 
-
-  // Set the elementId, variableName and variableType for the selected element 
-  // (check first that the selectedElementPath didn't change, to avoid race conditions)
-  if (getState().inspector.selectedElementPath === path) {
-    dispatch({type: SET_SELECTED_ELEMENT_ID, elementId, variableName, variableType});
+    // Set the elementId, variableName and variableType for the selected element 
+    // (check first that the selectedElementPath didn't change, to avoid race conditions)
+    if (elementId && getState().inspector.selectedElementPath === path) {
+      return dispatch({type: SET_SELECTED_ELEMENT_ID, elementId, variableName, variableType});
+    }
   }
+
+  // If we couldn't find the element, show a notification
+  notification.error({
+    message: 'Error',
+    description: 'Could not find element. Try refreshing page',
+    duration: 0,
+  });
 }, 1000);
 
 export function selectElement (path) {
@@ -150,10 +153,10 @@ export function selectElement (path) {
 
     // Find the optimal selection strategy. If none found, fall back to XPath.
     const strategyMap = _.toPairs(getLocators(selectedElementAttributes, sourceXML));
-    const [optimalStrategy, optimalSelector] = strategyMap.length > 0 ? strategyMap[strategyMap.length - 1] : ['xpath', selectedElementXPath];
+    strategyMap.push(['xpath', selectedElementXPath]);
 
     // Debounce find element so that if another element is selected shortly after, cancel the previous search
-    await findElement(optimalStrategy, optimalSelector, dispatch, getState, path);
+    await findElement(strategyMap, dispatch, getState, path);
   };
 }
 
