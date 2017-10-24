@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 
-import { ipcMain, BrowserWindow, Menu } from 'electron';
+import { ipcMain, BrowserWindow, Menu, app } from 'electron';
 import { main as appiumServer } from 'appium';
 import { getDefaultArgs, getParser } from 'appium/build/lib/parser';
 import path from 'path';
@@ -367,6 +367,13 @@ function connectGetSessionsListener () {
   });
 }
 
+function connectMoveToApplicationsFolder () {
+  ipcMain.on('appium-move-to-applications-folder', (evt) => {
+    app.moveToApplicationsFolder();
+    evt.sender.send('appium-done-moving-to-applications-folder');
+  });
+}
+
 function initializeIpc (win) {
   // listen for 'start-server' from the renderer
   connectStartServer(win);
@@ -379,6 +386,7 @@ function initializeIpc (win) {
   connectClientMethodListener(win);
   connectGetSessionsListener();
   connectRestartRecorder();
+  connectMoveToApplicationsFolder();
 
   autoUpdaterController.setMainWindow(win);
   autoUpdaterController.checkForUpdates();
