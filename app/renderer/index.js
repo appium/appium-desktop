@@ -21,6 +21,7 @@ function shouldShowWrongFolderComponent () {
     return false;
   }
 
+  // Note: app.isInApplicationsFolder is undefined if it's not a Mac
   if (app.isInApplicationsFolder && !app.isInApplicationsFolder() && !isDev) {
     return true;
   } else if (isDev && process.env.WRONG_FOLDER) {
