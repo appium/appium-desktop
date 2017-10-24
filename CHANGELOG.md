@@ -1,3 +1,9 @@
+## [1.2.6](https://github.com/appium/appium-desktop/compare/v1.2.5...v1.2.6) (2017-10-24)
+
+### Changes
+* Fix: Use multiple selector strategies if first one doesn't work (#330)
+* Fix: Don't refresh page when element not found, send notification instead
+
 ## [1.2.5](https://github.com/appium/appium-desktop/compare/v1.2.4...v1.2.5) (2017-10-23)
 
 ### Changes
