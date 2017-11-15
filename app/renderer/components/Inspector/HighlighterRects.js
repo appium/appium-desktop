@@ -98,7 +98,7 @@ export default class HighlighterRects extends Component {
   }
 
   render () {
-    const {source, screenshotInteractionMode, containerEl} = this.props;
+    const {source, screenshotInteractionMode, containerEl, searchedForElementBounds} = this.props;
     const {scaleRatio} = this.state;
 
     // Recurse through the 'source' JSON and render a highlighter rect for each element
@@ -111,7 +111,6 @@ export default class HighlighterRects extends Component {
                            containerEl.getBoundingClientRect().left;
     }
 
-    // TODO: Refactor this into a separate component
     let recursive = (element, zIndex = 0) => {
       if (!element) {
         return;
@@ -128,6 +127,12 @@ export default class HighlighterRects extends Component {
         recursive(childEl, zIndex + 1);
       }
     };
+
+    // If the use selected an element that they searched for, highlight that element
+    if (searchedForElementBounds) {
+      const {location:elLocation, size} = searchedForElementBounds;
+      highlighterRects.push(<HighlighterRect elSize={size} elLocation={elLocation} scaleRatio={scaleRatio} xOffset={highlighterXOffset} />);
+    }
 
     // If we're tapping or swiping, show the 'crosshair' cursor style
     const screenshotStyle = {};
