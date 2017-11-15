@@ -98,7 +98,7 @@ export default class HighlighterRects extends Component {
   }
 
   render () {
-    const {source, screenshotInteractionMode, containerEl, searchedForElementBounds} = this.props;
+    const {source, screenshotInteractionMode, containerEl, searchedForElementBounds, isLocatorTestModalVisible} = this.props;
     const {scaleRatio} = this.state;
 
     // Recurse through the 'source' JSON and render a highlighter rect for each element
@@ -129,7 +129,7 @@ export default class HighlighterRects extends Component {
     };
 
     // If the use selected an element that they searched for, highlight that element
-    if (searchedForElementBounds) {
+    if (searchedForElementBounds && isLocatorTestModalVisible) {
       const {location:elLocation, size} = searchedForElementBounds;
       highlighterRects.push(<HighlighterRect elSize={size} elLocation={elLocation} scaleRatio={scaleRatio} xOffset={highlighterXOffset} />);
     }
@@ -140,7 +140,10 @@ export default class HighlighterRects extends Component {
       screenshotStyle.cursor = 'crosshair';
     }
 
-    recursive(source);
+    // Don't show highlighter rects when Search Elements modal is open
+    if (!isLocatorTestModalVisible) {
+      recursive(source);
+    }
 
     return <div>{ highlighterRects }</div>;
   }

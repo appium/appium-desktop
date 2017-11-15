@@ -382,11 +382,10 @@ export function findAndAssign (strategy, selector, variableName, isArray) {
   };
 }
 
-
-// TODO: Is this obsolete? I don't think we use this.
 export function setLocatorTestElement (elementId) {
   return async (dispatch) => {
     dispatch({type: SET_LOCATOR_TEST_ELEMENT, elementId});
+    dispatch({type: CLEAR_SEARCHED_FOR_ELEMENT_BOUNDS});
     if (elementId) {
       try {
         const [location, size] = await(B.all([
