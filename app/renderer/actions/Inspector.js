@@ -2,6 +2,7 @@ import { ipcRenderer } from 'electron';
 import { notification } from 'antd';
 import { push } from 'react-router-redux';
 import _ from 'lodash';
+import B from 'bluebird';
 import { getLocators } from '../components/Inspector/shared';
 import { showError } from './Session';
 import { callClientMethod } from './shared';
@@ -46,10 +47,13 @@ export const CLEAR_SEARCH_RESULTS = 'CLEAR_SEARCH_RESULTS';
 export const ADD_ASSIGNED_VAR_CACHE = 'ADD_ASSIGNED_VAR_CACHE';
 export const CLEAR_ASSIGNED_VAR_CACHE = 'CLEAR_ASSIGNED_VAR_CACHE';
 export const SET_SCREENSHOT_INTERACTION_MODE = 'SET_SCREENSHOT_INTERACTION_MODE';
+export const SET_SEARCHED_FOR_ELEMENT_BOUNDS = 'SET_SEARCHED_FOR_ELEMENT_BOUNDS';
+export const CLEAR_SEARCHED_FOR_ELEMENT_BOUNDS = 'CLEAR_SEARCHED_FOR_ELEMENT_BOUNDS';
 
 export const SET_SWIPE_START = 'SET_SWIPE_START';
 export const SET_SWIPE_END = 'SET_SWIPE_END';
 export const CLEAR_SWIPE_ACTION = 'CLEAR_SWIPE_ACTION';
+
 
 // Attributes on nodes that we know are unique to the node
 const uniqueAttributes = [
@@ -335,6 +339,7 @@ export function showLocatorTestModal () {
 export function hideLocatorTestModal () {
   return (dispatch) => {
     dispatch({type: HIDE_LOCATOR_TEST_MODAL});
+    dispatch({type: CLEAR_SEARCHED_FOR_ELEMENT_BOUNDS});
   };
 }
 
@@ -380,8 +385,19 @@ export function findAndAssign (strategy, selector, variableName, isArray) {
 
 // TODO: Is this obsolete? I don't think we use this.
 export function setLocatorTestElement (elementId) {
-  return (dispatch) => {
+  return async (dispatch) => {
     dispatch({type: SET_LOCATOR_TEST_ELEMENT, elementId});
+    if (elementId) {
+      try {
+        const [location, size] = await(B.all([
+          callClientMethod({methodName: 'getLocation', args: [elementId], skipScreenshot: true}),
+          callClientMethod({methodName: 'getSize', args: [elementId], skipScreenshot: true}),
+        ]));
+        dispatch({type: SET_SEARCHED_FOR_ELEMENT_BOUNDS, location: location.res, size: size.res});
+      } catch (ign) { }
+    } else {
+      dispatch({type: CLEAR_SEARCHED_FOR_ELEMENT_BOUNDS});
+    }
   };
 }
 

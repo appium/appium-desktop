@@ -58,7 +58,7 @@ export default class AppiumMethodHandler {
     return {variableName, variableType, strategy, selector, elements};
   }
 
-  async executeElementCommand (elementId, methodName, args = []) {
+  async executeElementCommand (elementId, methodName, args = [], skipScreenshot = false) {
     const cachedEl = this.elementCache[elementId];
 
     // Give the cached element a variable name (el1, el2, el3,...) the first time it's used
@@ -70,7 +70,10 @@ export default class AppiumMethodHandler {
     // Give the source/screenshot time to change before taking the screenshot
     await Bluebird.delay(500);
 
-    let sourceAndScreenshot = await this._getSourceAndScreenshot();
+    let sourceAndScreenshot;
+    if (!skipScreenshot) {
+      sourceAndScreenshot = await this._getSourceAndScreenshot();
+    }
 
     return {
       ...sourceAndScreenshot,
@@ -79,7 +82,7 @@ export default class AppiumMethodHandler {
     };
   }
 
-  async executeMethod (methodName, args = []) {
+  async executeMethod (methodName, args = [], skipScreenshot = false) {
     let res = {};
 
     // Specially handle the tap and swipe method
@@ -101,7 +104,11 @@ export default class AppiumMethodHandler {
     // Give the source/screenshot time to change before taking the screenshot
     await Bluebird.delay(500);
 
-    let sourceAndScreenshot = await this._getSourceAndScreenshot();
+    let sourceAndScreenshot;
+    
+    if (!skipScreenshot) {
+      sourceAndScreenshot = await this._getSourceAndScreenshot();
+    }
 
     return {
       ...sourceAndScreenshot,

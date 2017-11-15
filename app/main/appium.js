@@ -301,6 +301,7 @@ function connectClientMethodListener () {
       fetchArray = false, // Optional. Are we fetching an array of elements or just one?
       elementId, // Optional. Element being operated on 
       args = [], // Optional. Arguments passed to method
+      skipScreenshot = false, // Optional. Do we want not want the updated source and screenshot?
     } = data;
     
     let renderer = evt.sender;
@@ -322,15 +323,15 @@ function connectClientMethodListener () {
         if (methodName) {
           if (elementId) {
             console.log(`Handling client method request with method '${methodName}', args ${JSON.stringify(args)} and elementId ${elementId}`);
-            res = await methodHandler.executeElementCommand(elementId, methodName, args);
+            res = await methodHandler.executeElementCommand(elementId, methodName, args, skipScreenshot);
           } else {
             console.log(`Handling client method request with method '${methodName}' and args ${JSON.stringify(args)}`);
-            res = await methodHandler.executeMethod(methodName, args);
+            res = await methodHandler.executeMethod(methodName, args, skipScreenshot);
           }
         } else  if (strategy && selector) {
           if (fetchArray) {
             console.log(`Fetching elements with selector '${selector}' and strategy ${strategy}`);
-            res = await methodHandler.fetchElements(strategy, selector);
+            res = await methodHandler.fetchElements(strategy, selector, skipScreenshot);
           } else {
             console.log(`Fetching an element with selector '${selector}' and strategy ${strategy}`);
             res = await methodHandler.fetchElement(strategy, selector);
@@ -374,6 +375,15 @@ function connectMoveToApplicationsFolder () {
   });
 }
 
+function connectGetRect () {
+  ipcMain.on('appium-get-rect', async (evt, data) => {
+    const {elementId} = data;
+    let methodHandler = appiumHandlers[evt.sender.id];
+    const res = await methodHandler.executeElementCommand(elementId, 'getRect');
+    evt.sender.send('appium-get-rect', {res, elementId});
+  });
+}
+
 function initializeIpc (win) {
   // listen for 'start-server' from the renderer
   connectStartServer(win);
@@ -387,6 +397,7 @@ function initializeIpc (win) {
   connectGetSessionsListener();
   connectRestartRecorder();
   connectMoveToApplicationsFolder();
+  connectGetRect();
 
   autoUpdaterController.setMainWindow(win);
   autoUpdaterController.checkForUpdates();
