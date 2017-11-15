@@ -17,6 +17,8 @@ export default class Screenshot extends Component {
     this.containerEl = null;
     this.state = {
       scaleRatio: 1,
+      x: null,
+      y: null,
     };
     this.updateScaleRatio = debounce(this.updateScaleRatio.bind(this), 1000);
   }

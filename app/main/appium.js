@@ -301,7 +301,7 @@ function connectClientMethodListener () {
       fetchArray = false, // Optional. Are we fetching an array of elements or just one?
       elementId, // Optional. Element being operated on 
       args = [], // Optional. Arguments passed to method
-      skipScreenshot = false, // Optional. Do we want not want the updated source and screenshot?
+      skipScreenshot = false, // Optional. Do we the updated source and screenshot?
     } = data;
     
     let renderer = evt.sender;
@@ -375,15 +375,6 @@ function connectMoveToApplicationsFolder () {
   });
 }
 
-function connectGetRect () {
-  ipcMain.on('appium-get-rect', async (evt, data) => {
-    const {elementId} = data;
-    let methodHandler = appiumHandlers[evt.sender.id];
-    const res = await methodHandler.executeElementCommand(elementId, 'getRect');
-    evt.sender.send('appium-get-rect', {res, elementId});
-  });
-}
-
 function initializeIpc (win) {
   // listen for 'start-server' from the renderer
   connectStartServer(win);
@@ -397,7 +388,6 @@ function initializeIpc (win) {
   connectGetSessionsListener();
   connectRestartRecorder();
   connectMoveToApplicationsFolder();
-  connectGetRect();
 
   autoUpdaterController.setMainWindow(win);
   autoUpdaterController.checkForUpdates();
