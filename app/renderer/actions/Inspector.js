@@ -394,8 +394,6 @@ export function setLocatorTestElement (elementId) {
         ]));
         dispatch({type: SET_SEARCHED_FOR_ELEMENT_BOUNDS, location: location.res, size: size.res});
       } catch (ign) { }
-    } else {
-      dispatch({type: CLEAR_SEARCHED_FOR_ELEMENT_BOUNDS});
     }
   };
 }

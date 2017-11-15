@@ -301,7 +301,7 @@ function connectClientMethodListener () {
       fetchArray = false, // Optional. Are we fetching an array of elements or just one?
       elementId, // Optional. Element being operated on 
       args = [], // Optional. Arguments passed to method
-      skipScreenshot = false, // Optional. Do we the updated source and screenshot?
+      skipScreenshot = false, // Optional. Do we want the updated source and screenshot?
     } = data;
     
     let renderer = evt.sender;
