@@ -1,7 +1,7 @@
 import { omit } from 'lodash';
 
 import { SET_SOURCE_AND_SCREENSHOT, QUIT_SESSION_REQUESTED, QUIT_SESSION_DONE,
-  SESSION_DONE, SELECT_ELEMENT, UNSELECT_ELEMENT, SELECT_HOVERED_ELEMENT, SET_SELECTED_ELEMENT_ID,
+  SESSION_DONE, SELECT_ELEMENT, UNSELECT_ELEMENT, SELECT_HOVERED_ELEMENT, SET_SELECTED_ELEMENT_ID, SET_INTERACTIONS_NOT_AVAILABLE,
   UNSELECT_HOVERED_ELEMENT, METHOD_CALL_REQUESTED, METHOD_CALL_DONE,
   SET_FIELD_VALUE, SET_EXPANDED_PATHS, SHOW_SEND_KEYS_MODAL,
   HIDE_SEND_KEYS_MODAL, START_RECORDING, PAUSE_RECORDING, CLEAR_RECORDING,
@@ -81,6 +81,7 @@ export default function inspector (state=INITIAL_STATE, action) {
         selectedElementId: null,
         selectedElementVariableName: null,
         selectedElementVariableType: null,
+        elementInteractionsNotAvailable: false,
       };
 
     case UNSELECT_ELEMENT:
@@ -99,6 +100,12 @@ export default function inspector (state=INITIAL_STATE, action) {
         selectedElementId: action.elementId,
         selectedElementVariableName: action.variableName,
         selectedElementVariableType: action.variableType,
+      };
+
+    case SET_INTERACTIONS_NOT_AVAILABLE:
+      return {
+        ...state,
+        elementInteractionsNotAvailable: true,
       };
 
     case SELECT_HOVERED_ELEMENT:

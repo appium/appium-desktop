@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import _ from 'lodash';
 import { getLocators } from './shared';
 import styles from './Inspector.css';
-import { Button, Row, Col, Input, Modal, Table, Alert } from 'antd';
+import { Button, Row, Col, Input, Modal, Table, Alert, Spin } from 'antd';
 
 const ButtonGroup = Button.Group;
 
@@ -26,7 +26,7 @@ export default class SelectedElement extends Component {
 
   render () {
     const {applyClientMethod, setFieldValue, sendKeys, selectedElement, sendKeysModalVisible, showSendKeysModal, 
-      hideSendKeysModal, selectedElementId:elementId, sourceXML} = this.props;
+      hideSendKeysModal, selectedElementId:elementId, sourceXML, elementInteractionsNotAvailable} = this.props;
     const {attributes, xpath} = selectedElement;
 
     // Get the columns for the attributes table
@@ -83,11 +83,18 @@ export default class SelectedElement extends Component {
       });
     }
 
+    const showInteractionsLoadingIndicators = !elementInteractionsNotAvailable && !elementId;
+
     return <div>
+      {elementInteractionsNotAvailable && <Row type="flex" gutter={10}> 
+        <Col>
+          <Alert type="info" message="Interactions not available for this element" showIcon />
+        </Col>
+      </Row>}
       <Row justify="center" type="flex" align="middle" gutter={10} className={styles.elementActions}>
         <Col>
           <ButtonGroup size="small">
-            <Button disabled={!elementId} id='btnTapElement' onClick={() => applyClientMethod({methodName: 'click', elementId})}>Tap</Button>
+            <Button disabled={!elementId} icon={showInteractionsLoadingIndicators && 'loading'} id='btnTapElement' onClick={() => applyClientMethod({methodName: 'click', elementId})}>Tap</Button>
             <Button disabled={!elementId} id='btnSendKeysToElement' onClick={() => showSendKeysModal()}>Send Keys</Button>
             <Button disabled={!elementId} id='btnClearElement' onClick={() => applyClientMethod({methodName: 'clear', elementId})}>Clear</Button>
           </ButtonGroup>
