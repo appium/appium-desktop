@@ -83,18 +83,16 @@ export default class SelectedElement extends Component {
       });
     }
 
-    const showInteractionsLoadingIndicators = !elementInteractionsNotAvailable && !elementId;
-
     return <div>
       {elementInteractionsNotAvailable && <Row type="flex" gutter={10}> 
         <Col>
-          <Alert type="info" message="Interactions not available for this element" showIcon />
+          <Alert type="info" message="Interactions are not available for this element" showIcon />
         </Col>
       </Row>}
       <Row justify="center" type="flex" align="middle" gutter={10} className={styles.elementActions}>
         <Col>
           <ButtonGroup size="small">
-            <Button disabled={!elementId} icon={showInteractionsLoadingIndicators && 'loading'} id='btnTapElement' onClick={() => applyClientMethod({methodName: 'click', elementId})}>Tap</Button>
+            <Button disabled={!elementId} icon={!elementInteractionsNotAvailable && !elementId && 'loading'} id='btnTapElement' onClick={() => applyClientMethod({methodName: 'click', elementId})}>Tap</Button>
             <Button disabled={!elementId} id='btnSendKeysToElement' onClick={() => showSendKeysModal()}>Send Keys</Button>
             <Button disabled={!elementId} id='btnClearElement' onClick={() => applyClientMethod({methodName: 'clear', elementId})}>Clear</Button>
           </ButtonGroup>
