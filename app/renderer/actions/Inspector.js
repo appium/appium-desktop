@@ -16,6 +16,7 @@ export const SESSION_DONE = 'SESSION_DONE';
 export const SELECT_ELEMENT = 'SELECT_ELEMENT';
 export const UNSELECT_ELEMENT = 'UNSELECT_ELEMENT';
 export const SET_SELECTED_ELEMENT_ID = 'SET_SELECTED_ELEMENT_ID';
+export const SET_INTERACTIONS_NOT_AVAILABLE = 'SET_INTERACTIONS_NOT_AVAILABLE';
 export const METHOD_CALL_REQUESTED = 'METHOD_CALL_REQUESTED';
 export const METHOD_CALL_DONE = 'METHOD_CALL_DONE';
 export const SET_FIELD_VALUE = 'SET_FIELD_VALUE';
@@ -124,14 +125,9 @@ const findElement = _.debounce(async function (strategyMap, dispatch, getState, 
     if (elementId && getState().inspector.selectedElementPath === path) {
       return dispatch({type: SET_SELECTED_ELEMENT_ID, elementId, variableName, variableType});
     }
-  }
 
-  // If we couldn't find the element, show a notification
-  notification.error({
-    message: 'Error',
-    description: 'Could not find element. Try refreshing page',
-    duration: 0,
-  });
+    return dispatch({type: SET_INTERACTIONS_NOT_AVAILABLE});
+  }
 }, 1000);
 
 export function selectElement (path) {
