@@ -9,7 +9,7 @@ import { SET_SOURCE_AND_SCREENSHOT, QUIT_SESSION_REQUESTED, QUIT_SESSION_DONE,
   SHOW_LOCATOR_TEST_MODAL, HIDE_LOCATOR_TEST_MODAL, SET_LOCATOR_TEST_STRATEGY, SET_LOCATOR_TEST_VALUE,
   SEARCHING_FOR_ELEMENTS, SEARCHING_FOR_ELEMENTS_COMPLETED, SET_LOCATOR_TEST_ELEMENT, CLEAR_SEARCH_RESULTS, 
   ADD_ASSIGNED_VAR_CACHE, CLEAR_ASSIGNED_VAR_CACHE, SET_SCREENSHOT_INTERACTION_MODE,
-  SET_SWIPE_START, SET_SWIPE_END, CLEAR_SWIPE_ACTION
+  SET_SWIPE_START, SET_SWIPE_END, CLEAR_SWIPE_ACTION, SET_SEARCHED_FOR_ELEMENT_BOUNDS, CLEAR_SEARCHED_FOR_ELEMENT_BOUNDS,
 } from '../actions/Inspector';
 
 const DEFAULT_FRAMEWORK = 'java';
@@ -28,6 +28,7 @@ const INITIAL_STATE = {
   isSearchingForElements: false,
   assignedVarCache: {},
   screenshotInteractionMode: 'select',
+  searchedForElementBounds: null,
 };
 
 /**
@@ -285,6 +286,21 @@ export default function inspector (state=INITIAL_STATE, action) {
         ...state,
         swipeStart: null,
         swipeEnd: null,
+      };
+
+    case SET_SEARCHED_FOR_ELEMENT_BOUNDS:
+      return {
+        ...state,
+        searchedForElementBounds: {
+          location: action.location,
+          size: action.size,
+        }
+      };
+    
+    case CLEAR_SEARCHED_FOR_ELEMENT_BOUNDS:
+      return {
+        ...state,
+        searchedForElementBounds: null,
       };
 
     default:
