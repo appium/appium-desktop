@@ -1,3 +1,9 @@
+## [1.2.7](https://github.com/appium/appium-desktop/compare/v1.2.6...v1.2.7) (2017-11-21)
+
+### Changes
+* Feature: Highlight elements that user searched for (#344)
+* Fix: Remove element not found notification (#350)
+
 ## [1.2.6](https://github.com/appium/appium-desktop/compare/v1.2.5...v1.2.6) (2017-10-24)
 
 ### Changes
