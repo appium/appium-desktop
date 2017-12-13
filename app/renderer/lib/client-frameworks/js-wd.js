@@ -65,16 +65,16 @@ main().catch(console.log);
   }
 
   codeFor_tap (varNameIgnore, varIndexIgnore, x, y) {
-    return `await (new TouchAction(driver))
+    return `await (new wd.TouchAction(driver))
   .tap({x: ${x}, y: ${y}})
   .perform()
     `;
   }
 
   codeFor_swipe (varNameIgnore, varIndexIgnore, x1, y1, x2, y2) {
-    return `await (new TouchAction(driver))
+    return `await (new wd.TouchAction(driver))
   .press({x: ${x1}, y: ${y1}})
-  .moveTo({x: ${x2}: y: ${y2}})
+  .moveTo({x: ${x2}, y: ${y2}})
   .release()
   .perform()
     `;
