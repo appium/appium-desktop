@@ -99,7 +99,7 @@
   "dependencies": {
     "ansi-to-html": "0.5",
     "antd": "2.10.1",
-    "appium": "1.7.1",
+    "appium": "1.7.2",
     "appium-support": "^2.8.2",
     "babel-core": "^6.26.0",
     "bluebird": "3.x",
