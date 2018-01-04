@@ -1,6 +1,6 @@
 {
   "name": "appium-desktop",
-  "version": "1.2.7",
+  "version": "1.2.8",
   "description": "Graphical interface for the Appium server, and an app inspector",
   "repository": {
     "type": "git",
@@ -99,7 +99,7 @@
   "dependencies": {
     "ansi-to-html": "0.5",
     "antd": "2.10.1",
-    "appium": "1.7.1",
+    "appium": "1.7.2",
     "appium-support": "^2.8.2",
     "babel-core": "^6.26.0",
     "bluebird": "3.x",
@@ -132,7 +132,7 @@
     "xpath": "0.0.24"
   },
   "devDependencies": {
-    "appium-fake-driver": "^0.1.11",
+    "appium-fake-driver": "^0.3.0",
     "asar": "0.x",
     "asyncbox": "^2.3.1",
     "babel-core": "6.x",
