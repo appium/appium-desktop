@@ -107,7 +107,7 @@
     "electron-debug": "1.x",
     "electron-log": "^1.3.0",
     "electron-settings": "2.x",
-    "electron-updater": "^2.17.4",
+    "electron-updater": "^2.18.2",
     "fix-path": "^2.1.0",
     "font-awesome": "4.x",
     "format-json": "1.x",
