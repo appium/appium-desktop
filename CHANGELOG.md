@@ -1,3 +1,10 @@
+## [1.2.8](https://github.com/appium/appium-desktop/compare/v1.2.7...v1.2.8) (2017-01-03)
+
+### Changes
+* Feature: Update Appium to 1.7.2
+* Fix: Add linux category (#364)
+* Fix: 'wd' recording code errors (#363)
+
 ## [1.2.7](https://github.com/appium/appium-desktop/compare/v1.2.6...v1.2.7) (2017-11-21)
 
 ### Changes
