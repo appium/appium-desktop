@@ -1,4 +1,4 @@
-## [1.2.8](https://github.com/appium/appium-desktop/compare/v1.2.7...v1.2.8) (2017-01-03)
+## [1.3.0](https://github.com/appium/appium-desktop/compare/v1.2.7...v1.3.0) (2017-01-10)
 
 ### Changes
 * Feature: Update Appium to 1.7.2
