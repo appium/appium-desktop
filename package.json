@@ -158,7 +158,7 @@
     "del": "2.x",
     "devtron": "1.x",
     "electron": "1.8.1",
-    "electron-builder": "^19.53.4",
+    "electron-builder": "14.x",
     "electron-devtools-installer": "^2.2.3",
     "eslint": "3.x",
     "eslint-config-appium": "1.x",
