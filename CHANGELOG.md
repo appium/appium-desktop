@@ -1,3 +1,8 @@
+## [1.3.1](https://github.com/appium/appium-desktop/compare/v1.3.0...v1.3.1) (2017-01-11)
+
+### Changes
+* Fix: Build error for 1.3.0 made XCUITestDriver unusable
+
 ## [1.3.0](https://github.com/appium/appium-desktop/compare/v1.2.7...v1.3.0) (2017-01-10)
 
 ### Changes
