@@ -157,7 +157,7 @@
     "css-loader": "^0.28.8",
     "del": "2.x",
     "devtron": "1.x",
-    "electron": "1.8.1",
+    "electron": "1.7.11",
     "electron-builder": "^19.53.4",
     "electron-devtools-installer": "^2.2.3",
     "eslint": "3.x",
