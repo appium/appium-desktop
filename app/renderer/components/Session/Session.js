@@ -3,12 +3,15 @@ import React, { Component } from 'react';
 import NewSessionForm from './NewSessionForm';
 import SavedSessions from './SavedSessions';
 import AttachToSession from './AttachToSession';
-import { Tabs, Form, Input, Button, Spin, Card, Icon, Col, Checkbox, Select, Row } from 'antd';
+import ServerTabAutomatic from './ServerTabAutomatic';
+import ServerTabSauce from './ServerTabSauce';
+import ServerTabCustom from './ServerTabCustom';
+import ServerTabTestobject from './ServerTabTestobject';
+import { Tabs, Button, Spin, Icon } from 'antd';
 import { ServerTypes } from '../../actions/Session';
 import SessionStyles from './Session.css';
 
 const {TabPane} = Tabs;
-const FormItem = Form.Item;
 
 export default class Session extends Component {
 
@@ -24,7 +27,7 @@ export default class Session extends Component {
 
   render () {
     const {newSessionBegan, savedSessions, tabKey, switchTabs,
-      changeServerType, serverType, setServerParam, server,
+      changeServerType, serverType, server,
       requestSaveAsModal, newSession, caps, capsUUID, saveSession, isCapsDirty,
       sessionLoading, attachSessId} = this.props;
 
@@ -32,94 +35,23 @@ export default class Session extends Component {
 
     const sauceTabHead = <span className={SessionStyles.tabText}><img src="images/sauce_logo.svg" /></span>;
     const testObjectTabHead = <span className={SessionStyles.tabText}><img src="images/testobject_logo.svg" /></span>;
+    const headspinTabHead = <span className={SessionStyles.tabText}><img src="images/headspin_logo.svg" /></span>;
 
     return <Spin spinning={!!sessionLoading}>
       <div className={SessionStyles['session-container']}>
         <div id='serverTypeTabs'>
           <Tabs activeKey={serverType} onChange={changeServerType} className={SessionStyles.serverTabs}>
             <TabPane disabled={!server.local.port} tab='Automatic Server' key={ServerTypes.local}>
-              <Form>
-                <FormItem>
-                  <Card>
-                    {server.local.port && <p className={SessionStyles.localDesc}>Will use currently-running Appium Desktop server at
-                      <b> http://{server.local.hostname === "0.0.0.0" ? "localhost" : server.local.hostname}:{server.local.port}</b>
-                    </p>}
-                  </Card>
-                </FormItem>
-              </Form>
+              <ServerTabAutomatic {...this.props} />
             </TabPane>
             <TabPane tab='Custom Server' key={ServerTypes.remote}>
-              <Form>
-                <Col span={12}>
-                  <FormItem>
-                    <Input className={SessionStyles.customServerInputLeft} id='customServerHost' placeholder='127.0.0.1' addonBefore="Remote Host" value={server.remote.hostname} onChange={(e) => setServerParam('hostname', e.target.value)} size="large" />
-                  </FormItem>
-                </Col>
-                <Col span={12}>
-                  <FormItem>
-                    <Input id='customServerPort' placeholder='4723' addonBefore="Remote Port" value={server.remote.port} onChange={(e) => setServerParam('port', e.target.value)} size="large" />
-                  </FormItem>
-                </Col>
-                <Col span={12}>
-                  <FormItem>
-                    <Input className={SessionStyles.customServerInputLeft} id='customServerPath' placeholder='/wd/hub' addonBefore="Remote Path" value={server.remote.path} onChange={(e) => setServerParam('path', e.target.value)} size="large" />
-                  </FormItem>
-                </Col>
-                <Col span={12}>
-                  <FormItem>
-                    <Checkbox id='customServerSSL' checked={!!server.remote.ssl} value={server.remote.ssl} onChange={(e) => setServerParam('ssl', e.target.checked)}>SSL</Checkbox>
-                  </FormItem>
-                </Col>
-              </Form>
+              <ServerTabCustom {...this.props} />
             </TabPane>
             <TabPane tab={sauceTabHead} key={ServerTypes.sauce}>
-              <Form>
-                <Row type="flex" justify="space-between" align="top">
-                  <Col span={13}>
-                    <FormItem>
-                      <Input id='sauceUsername' placeholder={process.env.SAUCE_USERNAME ? 'Using data found in $SAUCE_USERNAME' : 'your-username'} addonBefore="Sauce Username" value={server.sauce.username} onChange={(e) => setServerParam('username', e.target.value)} />
-                    </FormItem>
-                    <FormItem>
-                      <Input id='saucePassword' type='password' placeholder={process.env.SAUCE_ACCESS_KEY ? 'Using data found in $SAUCE_ACCESS_KEY' : 'your-access-key'} addonBefore="Sauce Access Key" value={server.sauce.accessKey} onChange={(e) => setServerParam('accessKey', e.target.value)} />
-                    </FormItem>
-                  </Col>
-                  <Col span={10}>
-                    <FormItem>
-                      <Checkbox checked={!!server.sauce.useSCProxy} onChange={(e) => setServerParam('useSCProxy', e.target.checked)}> Proxy through Sauce Connect's Selenium Relay</Checkbox>
-                    </FormItem>
-                    <Row type="flex" justify="space-between" align="top">
-                      <Col span={11}>
-                        <FormItem>
-                          <Input addonBefore="Host" placeholder="localhost" disabled={!server.sauce.useSCProxy} value={server.sauce.scHost} onChange={(e) => setServerParam('scHost', e.target.value)}/>
-                        </FormItem>
-                      </Col>
-                      <Col span={11}>
-                        <FormItem>
-                          <Input addonBefore="Port" placeholder="4445" disabled={!server.sauce.useSCProxy} value={server.sauce.scPort} onChange={(e) => setServerParam('scPort', e.target.value)} />
-                        </FormItem>
-                      </Col>
-                    </Row>
-                  </Col>
-                </Row>
-              </Form>
+              <ServerTabSauce {...this.props} />
             </TabPane>
             <TabPane tab={testObjectTabHead} key={ServerTypes.testobject}>
-              <Form>
-                <FormItem>
-                  <Input id='testObjectPassword' type='password' placeholder={process.env.TESTOBJECT_API_KEY ? 'Using data found in $TESTOBJECT_API_KEY' : 'testobject-api-key'} addonBefore="TestObject API Key" value={server.testobject.apiKey} onChange={(e) => setServerParam('apiKey', e.target.value)} />
-                </FormItem>
-                <FormItem>
-                  <div className="ant-input-wrapper ant-input-group">
-                    <div className="ant-input-group-addon">TestObject Data Center</div>
-                    <div className="select-container">
-                      <Select defaultValue='us1' id='testObjectDataCenter' addonBefore='TestObject Data Center' value={server.testobject.dataCenter} onChange={(value) => setServerParam('dataCenter', value)}>
-                        <Select.Option value='us1'>US</Select.Option>
-                        <Select.Option value='eu1'>EU</Select.Option>
-                      </Select>
-                    </div>
-                  </div>
-                </FormItem>
-              </Form>
+              <ServerTabTestobject {...this.props} />
             </TabPane>
           </Tabs>
         </div>
