@@ -1,4 +1,4 @@
-import {omit} from 'lodash';
+import { omit } from 'lodash';
 import formatJSON from 'format-json';
 
 import { NEW_SESSION_REQUESTED, NEW_SESSION_BEGAN, NEW_SESSION_DONE,
@@ -140,7 +140,7 @@ export default function session (state = INITIAL_STATE, action) {
     case SAVE_AS_MODAL_REQUESTED:
       return {
         ...state,
-        'showSaveAsModal': true,
+        showSaveAsModal: true,
       };
 
     case HIDE_SAVE_AS_MODAL_REQUESTED:
