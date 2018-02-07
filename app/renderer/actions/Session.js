@@ -381,24 +381,34 @@ export function setServerParam (name, value) {
   };
 }
 
+export async function setLocalServerParamsOnly (dispatch) {
+  let serverArgs = await settings.get(SERVER_ARGS);
+  // Get saved server args from settings and set local server settings to it. If there are no saved args, set local
+  // host and port to undefined
+  if (serverArgs) {
+    dispatch({type: SET_SERVER_PARAM, serverType: ServerTypes.local, name: 'port', value: serverArgs.port});
+    dispatch({type: SET_SERVER_PARAM, serverType: ServerTypes.local, name: 'hostname', value: 'localhost'});
+
+    // return true to say that we have a local server
+    return true;
+  }
+
+  dispatch({type: SET_SERVER_PARAM, serverType: ServerTypes.local, name: 'port', value: undefined});
+  dispatch({type: SET_SERVER_PARAM, serverType: ServerTypes.local, name: 'hostname', value: undefined});
+
+  // return false to say we don't have a local server
+  return false;
+}
+
 /**
  * Set the local server hostname and port to whatever was saved in 'actions/StartServer.js' so that it
  * defaults to what the currently running appium server is
  */
 export function setLocalServerParams () {
   return async (dispatch, getState) => {
-    let serverArgs = await settings.get(SERVER_ARGS);
-    // Get saved server args from settings and set local server settings to it. If there are no saved args, set local
-    // host and port to undefined
-    if (serverArgs) {
-      dispatch({type: SET_SERVER_PARAM, serverType: ServerTypes.local, name: 'port', value: serverArgs.port});
-      dispatch({type: SET_SERVER_PARAM, serverType: ServerTypes.local, name: 'hostname', value: 'localhost'});
-    } else {
-      dispatch({type: SET_SERVER_PARAM, serverType: ServerTypes.local, name: 'port', value: undefined});
-      dispatch({type: SET_SERVER_PARAM, serverType: ServerTypes.local, name: 'hostname', value: undefined});
-      if (getState().session.serverType === 'local') {
-        changeServerType('remote')(dispatch);
-      }
+    if (!await setLocalServerParamsOnly(dispatch) &&
+        getState().session.serverType === 'local') {
+      changeServerType('remote')(dispatch);
     }
   };
 }

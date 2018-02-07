@@ -1,4 +1,4 @@
-import { ServerTypes } from '../actions/Session';
+import { ServerTypes, CHANGE_SERVER_TYPE } from '../actions/Session';
 import { NEW_PLAYBACK_SESSION_REQUESTED, NEW_PLAYBACK_SESSION_BEGAN,
   NEW_PLAYBACK_SESSION_DONE, CHANGE_TEST, GET_SAVED_TESTS_REQUESTED,
   GET_SAVED_TESTS_DONE, DELETE_SAVED_TEST_REQUESTED, DELETE_SAVED_TEST_DONE,
@@ -7,21 +7,17 @@ import { NEW_PLAYBACK_SESSION_REQUESTED, NEW_PLAYBACK_SESSION_BEGAN,
 
 const INITIAL_STATE = {
   savedTests: [],
+  testRunHistory: [],
   tabKey: 'new',
   serverType: ServerTypes.local,
-  server: {
-    local: {},
-    remote: {},
-    sauce: {},
-    testobject: {
-      dataCenter: 'US',
-    },
-    headspin: {},
-  },
+  playbackLoading: false,
 };
 
 export default function playbackLibrary (state = INITIAL_STATE, action) {
   switch (action.type) {
+    case CHANGE_SERVER_TYPE:
+      return {...state, serverType: action.serverType};
+
     case NEW_PLAYBACK_SESSION_REQUESTED:
       break;
     case NEW_PLAYBACK_SESSION_BEGAN:
@@ -39,9 +35,11 @@ export default function playbackLibrary (state = INITIAL_STATE, action) {
     case DELETE_SAVED_TEST_DONE:
       break;
     case PLAYBACK_LOADING:
-      break;
+      return {...state, playbackLoading: true};
+
     case PLAYBACK_LOADING_DONE:
-      break;
+      return {...state, playbackLoading: false};
+
     default:
       break;
   }

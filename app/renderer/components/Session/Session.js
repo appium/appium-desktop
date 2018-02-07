@@ -3,13 +3,8 @@ import React, { Component } from 'react';
 import NewSessionForm from './NewSessionForm';
 import SavedSessions from './SavedSessions';
 import AttachToSession from './AttachToSession';
-import ServerTabAutomatic from './ServerTabAutomatic';
-import ServerTabSauce from './ServerTabSauce';
-import ServerTabCustom from './ServerTabCustom';
-import ServerTabTestobject from './ServerTabTestobject';
-import ServerTabHeadspin from './ServerTabHeadspin';
+import ServerTypeTabs from './ServerTypeTabs';
 import { Tabs, Button, Spin, Icon } from 'antd';
-import { ServerTypes } from '../../actions/Session';
 import SessionStyles from './Session.css';
 
 const {TabPane} = Tabs;
@@ -28,37 +23,14 @@ export default class Session extends Component {
 
   render () {
     const {newSessionBegan, savedSessions, tabKey, switchTabs,
-      changeServerType, serverType, server,
       requestSaveAsModal, newSession, caps, capsUUID, saveSession, isCapsDirty,
       sessionLoading, attachSessId} = this.props;
 
     const isAttaching = tabKey === 'attach';
 
-    const sauceTabHead = <span className={SessionStyles.tabText}><img src="images/sauce_logo.svg" /></span>;
-    const testObjectTabHead = <span className={SessionStyles.tabText}><img src="images/testobject_logo.svg" /></span>;
-    const headspinTabHead = <span className={SessionStyles.tabText}><img src="images/headspin_logo.svg" /></span>;
-
     return <Spin spinning={!!sessionLoading}>
       <div className={SessionStyles['session-container']}>
-        <div id='serverTypeTabs'>
-          <Tabs activeKey={serverType} onChange={changeServerType} className={SessionStyles.serverTabs}>
-            <TabPane disabled={!server.local.port} tab='Automatic Server' key={ServerTypes.local}>
-              <ServerTabAutomatic {...this.props} />
-            </TabPane>
-            <TabPane tab='Custom Server' key={ServerTypes.remote}>
-              <ServerTabCustom {...this.props} />
-            </TabPane>
-            <TabPane tab={sauceTabHead} key={ServerTypes.sauce}>
-              <ServerTabSauce {...this.props} />
-            </TabPane>
-            <TabPane tab={testObjectTabHead} key={ServerTypes.testobject}>
-              <ServerTabTestobject {...this.props} />
-            </TabPane>
-            <TabPane tab={headspinTabHead} key={ServerTypes.headspin}>
-              <ServerTabHeadspin {...this.props} />
-            </TabPane>
-          </Tabs>
-        </div>
+        <ServerTypeTabs {...this.props} />
 
 
         {newSessionBegan && <div key={2}>
