@@ -156,7 +156,7 @@ export function newSession (caps, attachSessId = null) {
     let desiredCapabilities = caps ? getCapsObject(caps) : null;
     let session = getState().session;
 
-    let host, port, username, accessKey, https;
+    let host, port, username, accessKey, https, path;
     switch (session.serverType) {
       case ServerTypes.local:
         host = session.server.local.hostname;
@@ -171,6 +171,7 @@ export function newSession (caps, attachSessId = null) {
       case ServerTypes.remote:
         host = session.server.remote.hostname;
         port = session.server.remote.port;
+        path = session.server.remote.path;
         https = session.server.remote.ssl;
         break;
       case ServerTypes.sauce:
@@ -210,6 +211,7 @@ export function newSession (caps, attachSessId = null) {
       attachSessId,
       host,
       port,
+      path,
       username,
       accessKey,
       https
@@ -231,6 +233,7 @@ export function newSession (caps, attachSessId = null) {
         desiredCapabilities,
         host,
         port,
+        path,
         username,
         accessKey,
         https,

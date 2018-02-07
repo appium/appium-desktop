@@ -21,7 +21,7 @@ caps = {}
 ${capStr}
 opts = {
     sauce_username: nil,
-    server_url: "http://${this.host}:${this.port}/wd/hub"
+    server_url: "${this.serverUrl}"
 }
 driver = Appium::Driver.new({caps: caps, appium_lib: opts}).start_driver
 

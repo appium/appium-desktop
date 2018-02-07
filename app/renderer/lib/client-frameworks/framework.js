@@ -1,13 +1,20 @@
 export default class Framework {
 
-  constructor (host = "localhost", port = 4723, caps = {}) {
-    this.host = host;
-    this.port = port;
-    this.caps = caps;
+  constructor (host, port, path, https, caps) {
+    this.host = host || "localhost";
+    this.port = port || 4723;
+    this.path = path || "/wd/hub";
+    this.caps = caps || {};
+    this.https = !!https;
+    this.scheme = https ? 'https' : 'http';
     this.actions = [];
     this.localVarCount = 0;
     this.localVarCache = {};
     this.lastAssignedVar = null;
+  }
+
+  get serverUrl () {
+    return `${this.scheme}://${this.host}:${this.port}${this.path}`;
   }
 
   get name () {

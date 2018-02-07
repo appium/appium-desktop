@@ -14,7 +14,7 @@ class JsWdFramework extends Framework {
 // Then paste this into a .js file and run with Node 7.6+
 
 const wd = require('wd');
-const driver = wd.promiseChainRemote(${host}, ${this.port});
+const driver = wd.promiseChainRemote("${this.serverUrl}");
 const caps = ${caps};
 
 async function main () {

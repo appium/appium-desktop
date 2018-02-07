@@ -82,11 +82,11 @@ function connectStartServer (win) {
       if (batchedLogs.length) {
         try {
           await fs.writeFile(
-            logFile, 
-            batchedLogs.map((log) => `[${log.level}] ${log.msg}`).join('\n'), 
+            logFile,
+            batchedLogs.map((log) => `[${log.level}] ${log.msg}`).join('\n'),
             {flag: 'a'}
           );
-          win.webContents.send('appium-log-line', batchedLogs); 
+          win.webContents.send('appium-log-line', batchedLogs);
         } catch (ign) { }
         batchedLogs = [];
       }
@@ -214,7 +214,7 @@ export function createNewSessionWindow (win) {
 
 function connectCreateNewSession () {
   ipcMain.on('appium-create-new-session', async (event, args) => {
-    const {desiredCapabilities, host, port, username, accessKey, https,
+    const {desiredCapabilities, host, port, path, username, accessKey, https,
       attachSessId} = args;
 
     // If there is an already active session, kill it. Limit one session per window.
@@ -226,6 +226,7 @@ function connectCreateNewSession () {
     let driver = sessionDrivers[event.sender.id] = wd.promiseChainRemote({
       hostname: host,
       port,
+      path,
       username,
       accessKey,
       https,
@@ -299,11 +300,11 @@ function connectClientMethodListener () {
       strategy, // Optional. Element locator strategy
       selector, // Optional. Element fetch selector
       fetchArray = false, // Optional. Are we fetching an array of elements or just one?
-      elementId, // Optional. Element being operated on 
+      elementId, // Optional. Element being operated on
       args = [], // Optional. Arguments passed to method
       skipScreenshotAndSource = false, // Optional. Do we want the updated source and screenshot?
     } = data;
-    
+
     let renderer = evt.sender;
     let methodHandler = appiumHandlers[renderer.id];
 

@@ -15,9 +15,10 @@ export default class RecordedActions extends Component {
   code (raw = true) {
     let {showBoilerplate, sessionDetails, recordedActions, actionFramework
     } = this.props;
+    let {host, port, path, https, desiredCapabilities} = sessionDetails;
 
-    let framework = new frameworks[actionFramework](sessionDetails.host,
-      sessionDetails.port, sessionDetails.desiredCapabilities);
+    let framework = new frameworks[actionFramework](host, port, path,
+      https, desiredCapabilities);
     framework.actions = recordedActions;
     let rawCode = framework.getCodeString(showBoilerplate);
     if (raw) {

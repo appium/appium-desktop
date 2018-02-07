@@ -26,7 +26,7 @@ from appium import webdriver
 caps = {}
 ${capStr}
 
-driver = webdriver.Remote("http://${this.host}:${this.port}/wd/hub", caps)
+driver = webdriver.Remote("${this.serverUrl}", caps)
 
 ${code}
 driver.quit()`;

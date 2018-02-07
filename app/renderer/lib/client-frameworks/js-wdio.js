@@ -16,6 +16,8 @@ class JsWdIoFramework extends Framework {
   wrapWithBoilerplate (code) {
     let host = JSON.stringify(this.host);
     let caps = JSON.stringify(this.caps);
+    let proto = JSON.stringify(this.scheme);
+    let path = JSON.stringify(this.path);
     return `// Requires the webdriverio client library
 // (npm install webdriverio)
 // Then paste this into a .js file and run with Node:
@@ -24,8 +26,10 @@ class JsWdIoFramework extends Framework {
 const wdio = require('webdriverio');
 const caps = ${caps};
 const driver = wdio.remote({
+  protocol: ${proto},
   host: ${host},
   port: ${this.port},
+  path: ${path},
   desiredCapabilities: caps
 });
 

@@ -13,7 +13,7 @@ class JavaFramework extends Framework {
           case "ios": return ["ios", "IOSDriver"];
           case "android": return ["android", "AndroidDriver"];
           default: return ["unknownPlatform", "UnknownDriver"];
-        } 
+        }
       } else {
         return ["unknownPlatform", "UnknownDriver"];
       }
@@ -40,7 +40,7 @@ public class SampleTest {
     DesiredCapabilities desiredCapabilities = new DesiredCapabilities();
 ${capStr}
 
-    URL remoteUrl = new URL("http://${this.host}:${this.port}/wd/hub");
+    URL remoteUrl = new URL("${this.serverUrl}");
 
     driver = new ${cls}(remoteUrl, desiredCapabilities);
   }
@@ -82,7 +82,7 @@ ${this.indent(code, 4)}
   getVarName (varName, varIndex) {
     if (varIndex || varIndex === 0) {
       return `${varName}.get(${varIndex})`;
-    } 
+    }
     return varName;
   }
 
