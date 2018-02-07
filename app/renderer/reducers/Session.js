@@ -24,6 +24,7 @@ const INITIAL_STATE = {
     testobject: {
       dataCenter: 'US',
     },
+    headspin: {},
   },
   attachSessId: null,
 
@@ -172,12 +173,14 @@ export default function session (state = INITIAL_STATE, action) {
     case SET_SERVER:
       return {
         ...state,
-        // Only set remote, sauce, and testobject; 'local' comes from electron-settings
+        // Only set remote, sauce, headspin, and testobject;
+        // 'local' comes from electron-settings
         server: {
           ...state.server,
           remote: action.server.remote || {},
           sauce: action.server.sauce || {},
           testobject: action.server.testobject || {},
+          headspin: action.server.headspin || {},
         },
         serverType: action.serverType || ServerTypes.local,
       };

@@ -7,6 +7,7 @@ import ServerTabAutomatic from './ServerTabAutomatic';
 import ServerTabSauce from './ServerTabSauce';
 import ServerTabCustom from './ServerTabCustom';
 import ServerTabTestobject from './ServerTabTestobject';
+import ServerTabHeadspin from './ServerTabHeadspin';
 import { Tabs, Button, Spin, Icon } from 'antd';
 import { ServerTypes } from '../../actions/Session';
 import SessionStyles from './Session.css';
@@ -52,6 +53,9 @@ export default class Session extends Component {
             </TabPane>
             <TabPane tab={testObjectTabHead} key={ServerTypes.testobject}>
               <ServerTabTestobject {...this.props} />
+            </TabPane>
+            <TabPane tab={headspinTabHead} key={ServerTypes.headspin}>
+              <ServerTabHeadspin {...this.props} />
             </TabPane>
           </Tabs>
         </div>
