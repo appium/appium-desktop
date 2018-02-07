@@ -54,6 +54,47 @@ async function killSession (sessionWinID) {
   }
 }
 
+function getBaseHTMLPath () {
+  // note that __dirname changes based on whether we're in dev or prod;
+  // in dev it's the actual dirname of the file, in prod it's the root
+  // of the project (where main.js is built), so switch accordingly
+  let htmlPath = path.resolve(__dirname,  isDev ? '..' : 'app', 'renderer', 'index.html');
+  // on Windows we'll get backslashes, but we don't want these for a browser URL, so replace
+  return htmlPath.replace("\\", "/");
+}
+
+function bindDevTools (win) {
+  // If it's dev, go ahead and open up the dev tools automatically
+  if (isDev) {
+    win.openDevTools();
+  }
+  win.webContents.on('context-menu', (e, props) => {
+    const {x, y} = props;
+
+    Menu.buildFromTemplate([{
+      label: 'Inspect element',
+      click () {
+        win.inspectElement(x, y);
+      }
+    }]).popup(win);
+  });
+}
+
+function bindSessionKillOnClose (win) {
+  // When you close the session window, kill its associated Appium session (if there is one)
+  let sessionID = win.webContents.id;
+  win.on('closed', async () => {
+    const driver = sessionDrivers[sessionID];
+    if (driver) {
+      if (!driver._isAttachedSession) {
+        await driver.quit();
+      }
+      delete sessionDrivers[sessionID];
+    }
+    win = null;
+  });
+}
+
 function connectStartServer (win) {
   ipcMain.on('start-server', async (event, args) => {
     // log the server logs to a file
@@ -145,7 +186,7 @@ function connectGetDefaultArgs () {
 }
 
 /**
- * Opens a new window for creating new sessions
+ * Opens a new window for creating new inspector sessions
  */
 function connectCreateNewSessionWindow (win) {
   ipcMain.on('create-new-session-window', () => {
@@ -153,7 +194,7 @@ function connectCreateNewSessionWindow (win) {
   });
 }
 
-export function createNewSessionWindow (win) {
+export function createNewSessionWindow (mainWin) {
   // Create and open the Browser Window
   let sessionWin = new BrowserWindow({
     width: 920,
@@ -168,48 +209,17 @@ export function createNewSessionWindow (win) {
       devTools: true
     }
   });
-  // note that __dirname changes based on whether we're in dev or prod;
-  // in dev it's the actual dirname of the file, in prod it's the root
-  // of the project (where main.js is built), so switch accordingly
-  let sessionHTMLPath = path.resolve(__dirname,  isDev ? '..' : 'app', 'renderer', 'index.html');
-  // on Windows we'll get backslashes, but we don't want these for a browser URL, so replace
-  sessionHTMLPath = sessionHTMLPath.replace("\\", "/");
-  sessionHTMLPath += '#/session';
+  let sessionHTMLPath = `${getBaseHTMLPath()}#/session`;
   sessionWin.loadURL(`file://${sessionHTMLPath}`);
   sessionWin.show();
 
-  // When you close the session window, kill its associated Appium session (if there is one)
-  let sessionID = sessionWin.webContents.id;
-  sessionWin.on('closed', async () => {
-    const driver = sessionDrivers[sessionID];
-    if (driver) {
-      if (!driver._isAttachedSession) {
-        await driver.quit();
-      }
-      delete sessionDrivers[sessionID];
-    }
-    sessionWin = null;
-  });
-
+  bindSessionKillOnClose(sessionWin);
+  bindDevTools(sessionWin);
   // When the main window is closed, close the session window too
-  win.once('closed', () => {
+  mainWin.once('closed', () => {
     sessionWin = null;
   });
 
-  // If it's dev, go ahead and open up the dev tools automatically
-  if (isDev) {
-    sessionWin.openDevTools();
-  }
-  sessionWin.webContents.on('context-menu', (e, props) => {
-    const {x, y} = props;
-
-    Menu.buildFromTemplate([{
-      label: 'Inspect element',
-      click () {
-        sessionWin.inspectElement(x, y);
-      }
-    }]).popup(sessionWin);
-  });
 }
 
 function connectCreateNewSession () {
@@ -279,6 +289,42 @@ function connectCreateNewSession () {
       await killSession(event.sender);
       event.sender.send('appium-new-session-failed', e);
     }
+  });
+}
+
+/**
+ * Opens a new window for creating new playback sessions
+ */
+function connectCreatePlaybackWindow (win) {
+  ipcMain.on('create-playback-window', () => {
+    createPlaybackWindow(win);
+  });
+}
+
+export function createPlaybackWindow (mainWin) {
+  // Create and open the Browser Window
+  let playbackWin = new BrowserWindow({
+    width: 920,
+    minWidth: 920,
+    height: 570,
+    minHeight: 570,
+    title: "Start Playback Session",
+    backgroundColor: "#f2f2f2",
+    frame: "customButtonsOnHover",
+    titleBarStyle: 'hidden',
+    webPreferences: {
+      devTools: true
+    }
+  });
+  const playbackHTMLPath = `${getBaseHTMLPath()}#/playback`;
+  playbackWin.loadURL(`file://${playbackHTMLPath}`);
+  playbackWin.show();
+
+  bindSessionKillOnClose(playbackWin);
+  bindDevTools(playbackWin);
+  // When the main window is closed, close the playback window too
+  mainWin.once('closed', () => {
+    playbackWin = null;
   });
 }
 
@@ -383,6 +429,7 @@ function initializeIpc (win) {
   connectStopServer(win);
   // listen for 'create-new-session-window' from the renderer
   connectCreateNewSessionWindow(win);
+  connectCreatePlaybackWindow(win);
   connectGetDefaultArgs();
   connectCreateNewSession(win);
   connectClientMethodListener(win);

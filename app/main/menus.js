@@ -1,5 +1,5 @@
 import { app, shell } from 'electron';
-import { createNewSessionWindow } from './appium';
+import { createNewSessionWindow, createPlaybackWindow } from './appium';
 import autoUpdater from './auto-updater';
 
 let menuTemplates = {mac: {}, other: {}};
@@ -19,10 +19,16 @@ function macMenuAppium (mainWindow) {
     }, {
       type: 'separator'
     }, {
-      label: 'New Session Window...',
+      label: 'New Inspector Session...',
       accelerator: 'Command+N',
       click () {
         createNewSessionWindow(mainWindow);
+      }
+    }, {
+      label: 'New Playback Session...',
+      accelerator: 'Command+P',
+      click () {
+        createPlaybackWindow(mainWindow);
       }
     }, {
       type: 'separator'
@@ -170,10 +176,16 @@ function otherMenuFile (mainWindow) {
   }, {
     type: 'separator'
   }, {
-    label: '&New Session Window...',
+    label: '&New Inspector Session...',
     accelerator: 'Ctrl+N',
     click () {
       createNewSessionWindow(mainWindow);
+    }
+  }, {
+    label: 'New &Playback Session...',
+    accelerator: 'Ctrl+P',
+    click () {
+      createPlaybackWindow(mainWindow);
     }
   }, {
     label: '&Close',
