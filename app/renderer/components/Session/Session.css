@@ -135,16 +135,16 @@
   background-color: #d6e8ff;
 }
 
- .customServerPort {
-    width: 98% !important;
- }
+.customServerInputLeft {
+  width: 98% !important;
+}
 
 .capsEditorControls {
   position: absolute;
   right: 0;
   margin: 4px 24px;
 }
- 
+
 .capsEditorButton {
   margin: 0 4px 0 0;
 }
