@@ -233,6 +233,7 @@ export function newSession (caps, attachSessId = null) {
         desiredCapabilities,
         host,
         port,
+        path,
         username,
         accessKey,
         https,

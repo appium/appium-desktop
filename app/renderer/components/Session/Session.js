@@ -67,7 +67,7 @@ export default class Session extends Component {
                 </Col>
                 <Col span={12}>
                   <FormItem>
-                    <Checkbox id='customServerSSL' value={server.remote.ssl} onChange={(e) => setServerParam('ssl', e.target.checked)}>SSL</Checkbox>
+                    <Checkbox id='customServerSSL' checked={!!server.remote.ssl} value={server.remote.ssl} onChange={(e) => setServerParam('ssl', e.target.checked)}>SSL</Checkbox>
                   </FormItem>
                 </Col>
               </Form>
