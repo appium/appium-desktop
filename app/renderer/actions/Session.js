@@ -52,6 +52,7 @@ export const ServerTypes = {
   remote: 'remote',
   sauce: 'sauce',
   testobject: 'testobject',
+  headspin: 'headspin',
 };
 
 const JSON_TYPES = ['json_object', 'number', 'boolean'];
@@ -200,6 +201,12 @@ export function newSession (caps, attachSessId = null) {
         if (caps) {
           desiredCapabilities.testobject_api_key = session.server.testobject.apiKey || process.env.TESTOBJECT_API_KEY;
         }
+        break;
+      case ServerTypes.headspin:
+        host = session.server.headspin.hostname;
+        port = session.server.headspin.port;
+        path = `/v0/${session.server.headspin.apiKey}/wd/hub`;
+        https = true;
         break;
       default:
         break;
