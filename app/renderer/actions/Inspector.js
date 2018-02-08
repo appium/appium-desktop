@@ -10,6 +10,8 @@ import { getOptimalXPath } from '../util';
 import frameworks from '../lib/client-frameworks';
 import settings from '../../settings';
 
+import { SAVED_TESTS } from './PlaybackLibrary';
+
 export const SET_SESSION_DETAILS = 'SET_SESSION_DETAILS';
 export const SET_SOURCE_AND_SCREENSHOT = 'SET_SOURCE_AND_SCREENSHOT';
 export const SESSION_DONE = 'SESSION_DONE';
@@ -54,6 +56,10 @@ export const CLEAR_SEARCHED_FOR_ELEMENT_BOUNDS = 'CLEAR_SEARCHED_FOR_ELEMENT_BOU
 export const SET_SWIPE_START = 'SET_SWIPE_START';
 export const SET_SWIPE_END = 'SET_SWIPE_END';
 export const CLEAR_SWIPE_ACTION = 'CLEAR_SWIPE_ACTION';
+
+export const SET_SAVED_TESTS = 'SET_SAVED_TESTS';
+export const SHOW_SAVE_TEST_MODAL = 'SHOW_SAVE_TEST_MODAL';
+export const HIDE_SAVE_TEST_MODAL = 'HIDE_SAVE_TEST_MODAL';
 
 
 // Attributes on nodes that we know are unique to the node
@@ -120,7 +126,7 @@ const findElement = _.debounce(async function (strategyMap, dispatch, getState, 
       selector,
     });
 
-    // Set the elementId, variableName and variableType for the selected element 
+    // Set the elementId, variableName and variableType for the selected element
     // (check first that the selectedElementPath didn't change, to avoid race conditions)
     if (elementId && getState().inspector.selectedElementPath === path) {
       return dispatch({type: SET_SELECTED_ELEMENT_ID, elementId, variableName, variableType});
@@ -188,7 +194,7 @@ export function applyClientMethod (params) {
                       getState().inspector.isRecording;
     try {
       dispatch({type: METHOD_CALL_REQUESTED});
-      let {source, screenshot, result, sourceError, screenshotError, 
+      let {source, screenshot, result, sourceError, screenshotError,
         variableName, variableIndex, strategy, selector} = await callClientMethod(params);
       if (isRecording) {
         // Add 'findAndAssign' line of code. Don't do it for arrays though. Arrays already have 'find' expression
@@ -203,11 +209,11 @@ export function applyClientMethod (params) {
       }
       dispatch({type: METHOD_CALL_DONE});
       dispatch({
-        type: SET_SOURCE_AND_SCREENSHOT, 
-        source: source && xmlToJSON(source), 
+        type: SET_SOURCE_AND_SCREENSHOT,
+        source: source && xmlToJSON(source),
         sourceXML: source,
-        screenshot, 
-        sourceError, 
+        screenshot,
+        sourceError,
         screenshotError,
       });
       return result;
@@ -279,7 +285,7 @@ export function pauseRecording () {
 export function clearRecording () {
   return (dispatch) => {
     dispatch({type: CLEAR_RECORDING});
-    ipcRenderer.send('appium-restart-recorder'); // Tell the main thread to start the variable count from 1 
+    ipcRenderer.send('appium-restart-recorder'); // Tell the main thread to start the variable count from 1
     dispatch({type: CLEAR_ASSIGNED_VAR_CACHE}); // Get rid of the variable cache
   };
 }
@@ -298,6 +304,13 @@ export function setActionFramework (framework) {
     }
     await settings.set(SAVED_FRAMEWORK, framework);
     dispatch({type: SET_ACTION_FRAMEWORK, framework});
+  };
+}
+
+export function getSavedTests () {
+  return async (dispatch) => {
+    let tests = (await settings.get(SAVED_TESTS)) || [];
+    dispatch({type: SET_SAVED_TESTS, tests});
   };
 }
 
@@ -421,5 +434,27 @@ export function setSwipeEnd (swipeEndX, swipeEndY) {
 export function clearSwipeAction () {
   return (dispatch) => {
     dispatch({type: CLEAR_SWIPE_ACTION});
+  };
+}
+
+export function showSaveTestModal () {
+  return (dispatch) => {
+    dispatch({type: SHOW_SAVE_TEST_MODAL});
+  };
+}
+
+export function hideSaveTestModal () {
+  return (dispatch) => {
+    dispatch({type: HIDE_SAVE_TEST_MODAL});
+  };
+}
+
+export function saveTest (testName, recordedActions) {
+  return async (dispatch) => {
+    const tests = await settings.get(SAVED_TESTS);
+    let otherTests = tests.filter((t) => t.name !== testName);
+    otherTests.push({name: testName, actions: recordedActions});
+    await settings.set(SAVED_TESTS, otherTests);
+    dispatch({type: SET_SAVED_TESTS, tests});
   };
 }

@@ -11,6 +11,8 @@ export const DELETE_SAVED_TEST_DONE = 'DELETE_SAVED_TEST_DONE';
 export const PLAYBACK_LOADING = 'PLAYBACK_LOADING';
 export const PLAYBACK_LOADING_DONE = 'PLAYBACK_LOADING_DONE';
 
+export const SAVED_TESTS = 'SAVED_TESTS';
+
 export function changeServerType (serverType) {
   return (dispatch) => {
     dispatch({type: CHANGE_SERVER_TYPE, serverType});

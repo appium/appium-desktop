@@ -3,6 +3,7 @@ import { PRESETS } from './renderer/actions/StartServer';
 import { SAVED_SESSIONS, SERVER_ARGS, SESSION_SERVER_PARAMS,
          SESSION_SERVER_TYPE } from './renderer/actions/Session';
 import { SAVED_FRAMEWORK } from './renderer/actions/Inspector';
+import { SAVED_TESTS } from './renderer/actions/PlaybackLibrary';
 
 // set default persistent settings
 // do it here because settings are kind of like state!
@@ -13,6 +14,7 @@ settings.defaults({
   [SESSION_SERVER_PARAMS]: null,
   [SESSION_SERVER_TYPE]: null,
   [SAVED_FRAMEWORK]: 'java',
+  [SAVED_TESTS]: [],
 });
 
 export default settings;
