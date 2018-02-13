@@ -21,8 +21,7 @@ export default class PlaybackLibrary extends Component {
 
   render () {
     const {playbackLoading, sessionState, serverType, changeServerType,
-      playbackSessionBegan, tabKey, switchTabs, savedTests, testResults,
-      deleteSavedTest
+      playbackSessionBegan, tabKey, switchTabs, testResults, savedTests,
     } = this.props;
     const {server} = sessionState;
     const props = {server, serverType, changeServerType};
@@ -36,7 +35,7 @@ export default class PlaybackLibrary extends Component {
 
         {!playbackSessionBegan && <Tabs activeKey={tabKey} onChange={switchTabs} className={`${SessionStyles.scrollingTabCont} ${PlaybackStyles.scrollingTabCont}`}>
           <TabPane tab={`Test Library (${savedTests.length})`} key='tests' className={SessionStyles.scrollingTab}>
-            <SavedTests tests={savedTests} deleteSavedTest={deleteSavedTest} />
+            <SavedTests {...this.props} />
           </TabPane>
           <TabPane tab="Test Results" key='results' className={SessionStyles.scrollingTab}>
             <TestResults testResults={testResults} />

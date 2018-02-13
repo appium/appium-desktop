@@ -14,3 +14,7 @@
   border-bottom: none;
   margin-bottom: 0px;
 }
+
+.capsModalPre {
+  overflow: auto;
+}

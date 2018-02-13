@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
+import formatJSON from 'format-json';
 import PlaybackStyles from './PlaybackLibrary.css';
-import { Tooltip, Table, Button } from 'antd';
+import { Tooltip, Table, Button, Modal } from 'antd';
 import moment from 'moment';
 
 export default class SavedTests extends Component {
 
   render () {
-    const {tests, deleteSavedTest} = this.props;
+    const {savedTests, deleteSavedTest, capsModal, showCapsModal, hideCapsModal, getCapsObject} = this.props;
 
-    if (!tests.length) {
+    if (!savedTests.length) {
       return <div className={PlaybackStyles.noTests}>
         You don't have any tests that can be run. Launch an Inspector session and record a test first!
       </div>;
@@ -22,11 +23,11 @@ export default class SavedTests extends Component {
       title: 'Recorded On',
       dataIndex: 'recordedAt',
       key: 'recordedAt',
-      render: (ts) => moment(ts).format("MMM DD, YYYY")
+      render: (ts) => `Recorded ${moment(ts).format("MMM DD, YYYY")}`
     }, {
       title: 'Actions',
       key: 'action',
-      render: (test) => (
+      render: (text, test) => (
         <div>
           <Tooltip title="Run Test">
             <Button icon="caret-right" />
@@ -35,7 +36,10 @@ export default class SavedTests extends Component {
           &nbsp;
 
           <Tooltip title="Show Capabilities">
-            <Button icon="menu-unfold" />
+            <Button
+              icon="menu-unfold"
+              onClick={() => {showCapsModal(test.name);}}
+            />
           </Tooltip>
 
           &nbsp;
@@ -47,15 +51,28 @@ export default class SavedTests extends Component {
               }
             }} />
           </Tooltip>
+
+          <Modal visible={capsModal === test.name}
+            footer={
+              <Button onClick={hideCapsModal}>Done</Button>
+            }
+            closable={false}
+            title={<div><b>{test.name}</b> capabilities</div>}
+          >
+            <pre className={PlaybackStyles.capsModalPre}>
+              {formatJSON.plain(test.caps)}
+            </pre>
+          </Modal>
         </div>
       )
     }];
 
-    const data = tests.map((t) => ({name: t.name, key: t.name}));
+    const data = savedTests.map((t) => ({name: t.name, key: t.name, caps: t.caps}));
 
     return <Table
       className={PlaybackStyles.savedTestsTable}
       columns={columns}
+      showHeader={false}
       dataSource={data}
       pagination={false}
     />;

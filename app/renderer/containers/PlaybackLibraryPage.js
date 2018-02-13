@@ -1,11 +1,11 @@
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import * as actions from '../actions/PlaybackLibrary';
-import { setSavedServerParams, switchTabs } from '../actions/Session';
+import { setSavedServerParams, switchTabs, getCapsObject } from '../actions/Session';
 import { getSavedTests } from '../actions/Inspector';
 import PlaybackLibrary from '../components/Playback/PlaybackLibrary';
 
-const sessionActions = {setSavedServerParams, switchTabs};
+const sessionActions = {setSavedServerParams, switchTabs, getCapsObject};
 const inspectorActions = {getSavedTests};
 
 function mapStateToProps (state) {

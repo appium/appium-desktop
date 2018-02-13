@@ -309,7 +309,7 @@ export function setActionFramework (framework) {
 
 export function getSavedTests () {
   return async (dispatch) => {
-    let tests = await settings.get(SAVED_TESTS);
+    const tests = await settings.get(SAVED_TESTS);
     dispatch({type: SET_SAVED_TESTS, tests});
   };
 }

@@ -3,7 +3,8 @@ import { SET_SAVED_TESTS } from '../actions/Inspector';
 
 import { NEW_PLAYBACK_SESSION_REQUESTED, NEW_PLAYBACK_SESSION_BEGAN,
   NEW_PLAYBACK_SESSION_DONE, CHANGE_TEST, DELETE_SAVED_TEST_REQUESTED,
-  DELETE_SAVED_TEST_DONE, PLAYBACK_LOADING, PLAYBACK_LOADING_DONE
+  DELETE_SAVED_TEST_DONE, PLAYBACK_LOADING, PLAYBACK_LOADING_DONE,
+  SHOW_CAPS_MODAL, HIDE_CAPS_MODAL
 } from '../actions/PlaybackLibrary';
 
 const INITIAL_STATE = {
@@ -14,6 +15,7 @@ const INITIAL_STATE = {
   playbackLoading: false,
   playbackSessionBegan: false,
   deletingTest: null,
+  capsModal: null,
 };
 
 export default function playbackLibrary (state = INITIAL_STATE, action) {
@@ -48,6 +50,12 @@ export default function playbackLibrary (state = INITIAL_STATE, action) {
 
     case PLAYBACK_LOADING_DONE:
       return {...state, playbackLoading: false};
+
+    case SHOW_CAPS_MODAL:
+      return {...state, capsModal: action.name};
+
+    case HIDE_CAPS_MODAL:
+      return {...state, capsModal: null};
 
     default:
       break;
