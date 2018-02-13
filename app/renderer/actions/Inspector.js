@@ -309,7 +309,7 @@ export function setActionFramework (framework) {
 
 export function getSavedTests () {
   return async (dispatch) => {
-    let tests = (await settings.get(SAVED_TESTS)) || [];
+    let tests = await settings.get(SAVED_TESTS);
     dispatch({type: SET_SAVED_TESTS, tests});
   };
 }
@@ -449,12 +449,20 @@ export function hideSaveTestModal () {
   };
 }
 
-export function saveTest (testName, recordedActions) {
-  return async (dispatch) => {
+export function saveTest (testName) {
+  return async (dispatch, getState) => {
+    const caps = getState().inspector.sessionDetails.desiredCapabilities;
+    const actions = getState().inspector.recordedActions;
     const tests = await settings.get(SAVED_TESTS);
-    let otherTests = tests.filter((t) => t.name !== testName);
-    otherTests.push({name: testName, actions: recordedActions});
-    await settings.set(SAVED_TESTS, otherTests);
-    dispatch({type: SET_SAVED_TESTS, tests});
+    const otherTests = tests.filter((t) => t.name !== testName);
+    const recordedAt = Date.now();
+    const newTests = otherTests.concat([{
+      name: testName,
+      actions,
+      caps,
+      recordedAt,
+    }]);
+    await settings.set(SAVED_TESTS, newTests);
+    dispatch({type: SET_SAVED_TESTS, tests: newTests});
   };
 }

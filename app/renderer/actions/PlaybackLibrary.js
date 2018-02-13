@@ -1,4 +1,6 @@
+import settings from '../../settings';
 import { CHANGE_SERVER_TYPE, setLocalServerParamsOnly } from './Session';
+import { SET_SAVED_TESTS } from './Inspector';
 
 export const NEW_PLAYBACK_SESSION_REQUESTED = 'NEW_PLAYBACK_REQUESTED';
 export const NEW_PLAYBACK_SESSION_BEGAN = 'NEW_PLAYBACK_BEGAN';
@@ -25,5 +27,16 @@ export function setLocalServerParams () {
         getState().playbackLibrary.serverType === 'local') {
       changeServerType('remote')(dispatch);
     }
+  };
+}
+
+export function deleteSavedTest (name) {
+  return async (dispatch) => {
+    dispatch({type: DELETE_SAVED_TEST_REQUESTED, name});
+    const tests = await settings.get(SAVED_TESTS);
+    const newTests = tests.filter((t) => t.name !== name);
+    await settings.set(SAVED_TESTS, newTests);
+    dispatch({type: SET_SAVED_TESTS, tests: newTests});
+    dispatch({type: DELETE_SAVED_TEST_DONE});
   };
 }

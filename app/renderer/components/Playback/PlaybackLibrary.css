@@ -5,3 +5,12 @@
   font-style: italic;
   color: #999;
 }
+
+.savedTestsTable {
+  height: 100%;
+}
+
+.scrollingTabCont {
+  border-bottom: none;
+  margin-bottom: 0px;
+}

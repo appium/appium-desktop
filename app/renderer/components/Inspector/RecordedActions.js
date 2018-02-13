@@ -62,7 +62,7 @@ export default class RecordedActions extends Component {
             />
           </Tooltip>
         }
-        {!!recordedActions.length && !isRecording &&
+        {!!recordedActions.length &&
           <Tooltip title="Save to test library...">
             <Button icon="save"
              onClick={showSaveTestModal}

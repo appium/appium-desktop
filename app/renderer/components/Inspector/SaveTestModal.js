@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { Modal, AutoComplete } from 'antd';
+import InspectorStyles from './Inspector.css';
 
 export default class SaveTestModal extends Component {
 
@@ -18,15 +19,17 @@ export default class SaveTestModal extends Component {
   render () {
     const {saveTestModalVisible, savedTests} = this.props;
     const testNames = savedTests.map((t) => t.name);
+    const okText = savedTests.filter((t) => t.name === this.state.testName).length > 0 ? 'Save Existing' : 'Save New';
 
     return <Modal visible={saveTestModalVisible}
-      okText='Save'
+      okText={okText}
       cancelText='Cancel'
       title='Save recorded actions as a test'
       onOk={this.onSubmit.bind(this)}
       onCancel={this.onCancel.bind(this)}>
 
       <AutoComplete
+        className={InspectorStyles.saveTestName}
         onChange={(value) => this.setState({testName: value})}
         dataSource={testNames}
         placeholder="Test name"

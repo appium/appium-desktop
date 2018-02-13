@@ -328,7 +328,7 @@ export default function inspector (state=INITIAL_STATE, action) {
     case HIDE_SAVE_TEST_MODAL:
       return {
         ...state,
-        saveTestModalVisible: true,
+        saveTestModalVisible: false,
       };
 
     default:

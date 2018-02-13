@@ -7,7 +7,7 @@ import { SAVED_TESTS } from './renderer/actions/PlaybackLibrary';
 
 // set default persistent settings
 // do it here because settings are kind of like state!
-settings.defaults({
+const defaults = {
   [PRESETS]: {},
   [SAVED_SESSIONS]: [],
   [SERVER_ARGS]: null,
@@ -15,6 +15,16 @@ settings.defaults({
   [SESSION_SERVER_TYPE]: null,
   [SAVED_FRAMEWORK]: 'java',
   [SAVED_TESTS]: [],
-});
+};
+
+settings.defaults(defaults);
+settings._defaultGet = settings.get;
+
+// override the
+async function get (key) {
+  return (await settings._defaultGet(key)) || defaults[key];
+}
+
+settings.get = get;
 
 export default settings;
