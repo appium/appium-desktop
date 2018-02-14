@@ -4,7 +4,8 @@ import { SET_SAVED_TESTS } from '../actions/Inspector';
 import { NEW_PLAYBACK_SESSION_REQUESTED, NEW_PLAYBACK_SESSION_BEGAN,
   NEW_PLAYBACK_SESSION_DONE, CHANGE_TEST, DELETE_SAVED_TEST_REQUESTED,
   DELETE_SAVED_TEST_DONE, PLAYBACK_LOADING, PLAYBACK_LOADING_DONE,
-  SHOW_CAPS_MODAL, HIDE_CAPS_MODAL
+  SHOW_CAPS_MODAL, HIDE_CAPS_MODAL, TEST_RUNNING, HIDE_TESTRUN_MODAL, TEST_COMPLETE,
+  TEST_ACTION_UPDATED, SHOW_TESTRUN_MODAL, TEST_RUN_REQUESTED
 } from '../actions/PlaybackLibrary';
 
 const INITIAL_STATE = {
@@ -12,10 +13,12 @@ const INITIAL_STATE = {
   testResults: [],
   tabKey: 'tests',
   serverType: ServerTypes.local,
-  playbackLoading: false,
-  playbackSessionBegan: false,
   deletingTest: null,
   capsModal: null,
+  testToRun: null,
+  testResultToShow: null,
+  isTestRunning: false,
+  actionsStatus: [],
 };
 
 export default function playbackLibrary (state = INITIAL_STATE, action) {
@@ -25,14 +28,6 @@ export default function playbackLibrary (state = INITIAL_STATE, action) {
 
     case SWITCHED_TABS:
       return {...state, tabKey: action.key};
-
-    case NEW_PLAYBACK_SESSION_REQUESTED:
-      break;
-    case NEW_PLAYBACK_SESSION_BEGAN:
-      return {...state, playbackSessionBegan: true};
-
-    case NEW_PLAYBACK_SESSION_DONE:
-      return {...state, playbackSessionBegan: false};
 
     case SET_SAVED_TESTS:
       return {...state, savedTests: action.tests};
@@ -45,17 +40,26 @@ export default function playbackLibrary (state = INITIAL_STATE, action) {
     case DELETE_SAVED_TEST_DONE:
       return {...state, deletingTest: null};
 
-    case PLAYBACK_LOADING:
-      return {...state, playbackLoading: true};
-
-    case PLAYBACK_LOADING_DONE:
-      return {...state, playbackLoading: false};
-
     case SHOW_CAPS_MODAL:
       return {...state, capsModal: action.name};
 
     case HIDE_CAPS_MODAL:
       return {...state, capsModal: null};
+
+    case TEST_ACTION_UPDATED:
+      return {...state, actionsStatus: action.actions};
+
+    case TEST_RUN_REQUESTED:
+      return {...state, testToRun: action.name};
+
+    case TEST_RUNNING:
+      return {...state, isTestRunning: true};
+
+    case TEST_COMPLETE:
+      return {...state, isTestRunning: false};
+
+    case HIDE_TESTRUN_MODAL:
+      return {...state, testToRun: null, testResultToShow: null};
 
     default:
       break;

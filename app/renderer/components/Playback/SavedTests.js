@@ -7,7 +7,8 @@ import moment from 'moment';
 export default class SavedTests extends Component {
 
   render () {
-    const {savedTests, deleteSavedTest, capsModal, showCapsModal, hideCapsModal, getCapsObject} = this.props;
+    const {savedTests, deleteSavedTest, capsModal, showCapsModal, hideCapsModal,
+      getCapsObject, requestTestRun} = this.props;
 
     if (!savedTests.length) {
       return <div className={PlaybackStyles.noTests}>
@@ -30,7 +31,9 @@ export default class SavedTests extends Component {
       render: (text, test) => (
         <div>
           <Tooltip title="Run Test">
-            <Button icon="caret-right" />
+            <Button icon="caret-right"
+              onClick={() => {requestTestRun(test.name);}}
+            />
           </Tooltip>
 
           &nbsp;

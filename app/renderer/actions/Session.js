@@ -3,7 +3,7 @@ import settings from '../../settings';
 import { v4 as UUID } from 'uuid';
 import { push } from 'react-router-redux';
 import { notification } from 'antd';
-import { debounce, toPairs } from 'lodash';
+import { isPlainObject, debounce, toPairs } from 'lodash';
 import { setSessionDetails } from './Inspector';
 
 export const NEW_SESSION_REQUESTED = 'NEW_SESSION_REQUESTED';
@@ -58,6 +58,13 @@ export const ServerTypes = {
 const JSON_TYPES = ['json_object', 'number', 'boolean'];
 
 export function getCapsObject (caps) {
+
+  // if we already have a plain object, assume it's caps
+  if (isPlainObject(caps)) {
+    return caps;
+  }
+
+  // otherwise it's our array of caps
   return Object.assign({}, ...(caps.map((cap) => {
     if (JSON_TYPES.indexOf(cap.type) !== -1) {
       try {
@@ -146,6 +153,79 @@ export function removeCapability (index) {
   };
 }
 
+export function startSession (caps, serverType, serverParams, attachSessId = null) {
+  let desiredCapabilities = caps ? getCapsObject(caps) : null;
+
+  let host, port, username, accessKey, https, path;
+  switch (serverType) {
+    case ServerTypes.local:
+      host = serverParams.local.hostname;
+      if (host === "0.0.0.0") {
+        // if we're on windows, we won't be able to connect directly to '0.0.0.0'
+        // so just connect to localhost; if we're listening on all interfaces,
+        // that will of course include 127.0.0.1 on all platforms
+        host = "localhost";
+      }
+      port = serverParams.local.port;
+      break;
+    case ServerTypes.remote:
+      host = serverParams.remote.hostname;
+      port = serverParams.remote.port;
+      path = serverParams.remote.path;
+      https = serverParams.remote.ssl;
+      break;
+    case ServerTypes.sauce:
+      host = 'ondemand.saucelabs.com';
+      port = 80;
+      if (serverParams.sauce.useSCProxy) {
+        host = serverParams.sauce.scHost || "localhost";
+        port = parseInt(serverParams.sauce.scPort, 10) || 4445;
+      }
+      username = serverParams.sauce.username || process.env.SAUCE_USERNAME;
+      accessKey = serverParams.sauce.accessKey || process.env.SAUCE_ACCESS_KEY;
+      if (!username || !accessKey) {
+        notification.error({
+          message: "Error",
+          description: "Sauce username and access key are required!",
+          duration: 4
+        });
+        return;
+      }
+      https = false;
+      break;
+    case ServerTypes.testobject:
+      host = process.env.TESTOBJECT_HOST || `${serverParams.testobject.dataCenter || 'us1'}.appium.testobject.com`;
+      port = 443;
+      https = true;
+      if (caps) {
+        desiredCapabilities.testobject_api_key = serverParams.testobject.apiKey || process.env.TESTOBJECT_API_KEY;
+      }
+      break;
+    case ServerTypes.headspin:
+      host = serverParams.headspin.hostname;
+      port = serverParams.headspin.port;
+      path = `/v0/${serverParams.headspin.apiKey}/wd/hub`;
+      https = true;
+      break;
+    default:
+      break;
+  }
+
+  // Start the session
+  ipcRenderer.send('appium-create-new-session', {
+    desiredCapabilities,
+    attachSessId,
+    host,
+    port,
+    path,
+    username,
+    accessKey,
+    https
+  });
+
+  return {desiredCapabilities, host, port, username, accessKey, https, path};
+}
+
 /**
  * Start a new appium session with the given caps
  */
@@ -154,75 +234,10 @@ export function newSession (caps, attachSessId = null) {
 
     dispatch({type: NEW_SESSION_REQUESTED, caps});
 
-    let desiredCapabilities = caps ? getCapsObject(caps) : null;
-    let session = getState().session;
+    const session = getState().session;
 
-    let host, port, username, accessKey, https, path;
-    switch (session.serverType) {
-      case ServerTypes.local:
-        host = session.server.local.hostname;
-        if (host === "0.0.0.0") {
-          // if we're on windows, we won't be able to connect directly to '0.0.0.0'
-          // so just connect to localhost; if we're listening on all interfaces,
-          // that will of course include 127.0.0.1 on all platforms
-          host = "localhost";
-        }
-        port = session.server.local.port;
-        break;
-      case ServerTypes.remote:
-        host = session.server.remote.hostname;
-        port = session.server.remote.port;
-        path = session.server.remote.path;
-        https = session.server.remote.ssl;
-        break;
-      case ServerTypes.sauce:
-        host = 'ondemand.saucelabs.com';
-        port = 80;
-        if (session.server.sauce.useSCProxy) {
-          host = session.server.sauce.scHost || "localhost";
-          port = parseInt(session.server.sauce.scPort, 10) || 4445;
-        }
-        username = session.server.sauce.username || process.env.SAUCE_USERNAME;
-        accessKey = session.server.sauce.accessKey || process.env.SAUCE_ACCESS_KEY;
-        if (!username || !accessKey) {
-          notification.error({
-            message: "Error",
-            description: "Sauce username and access key are required!",
-            duration: 4
-          });
-          return;
-        }
-        https = false;
-        break;
-      case ServerTypes.testobject:
-        host = process.env.TESTOBJECT_HOST || `${session.server.testobject.dataCenter || 'us1'}.appium.testobject.com`;
-        port = 443;
-        https = true;
-        if (caps) {
-          desiredCapabilities.testobject_api_key = session.server.testobject.apiKey || process.env.TESTOBJECT_API_KEY;
-        }
-        break;
-      case ServerTypes.headspin:
-        host = session.server.headspin.hostname;
-        port = session.server.headspin.port;
-        path = `/v0/${session.server.headspin.apiKey}/wd/hub`;
-        https = true;
-        break;
-      default:
-        break;
-    }
-
-    // Start the session
-    ipcRenderer.send('appium-create-new-session', {
-      desiredCapabilities,
-      attachSessId,
-      host,
-      port,
-      path,
-      username,
-      accessKey,
-      https
-    });
+    const {desiredCapabilities, host, port, username, accessKey, https,
+      path} = startSession(caps, session.serverType, session.server, attachSessId);
 
     dispatch({type: SESSION_LOADING});
 
