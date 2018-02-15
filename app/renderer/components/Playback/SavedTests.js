@@ -71,7 +71,7 @@ export default class SavedTests extends Component {
       )
     }];
 
-    const data = savedTests.reverse().map((t) => ({name: t.name, key: t.name, caps: t.caps}));
+    const data = savedTests.map((t) => ({name: t.name, key: t.name, caps: t.caps}));
 
     return <Table
       className={PlaybackStyles.savedTestsTable}

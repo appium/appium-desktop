@@ -111,8 +111,9 @@ export default class TestRun extends Component {
       dataIndex: 'action',
       key: 'action',
       render: (text, record) => {
+        let actionStep = <pre>{text}</pre>;
         if (record.action.indexOf('findElement') === 0) {
-          return <div>
+          actionStep = <div>
             <div><pre>{record.action}</pre></div>
             <div className={PlaybackStyles.findElInfo}>
               <div>Strategy: <code>{record.params[0]}</code></div>
@@ -121,12 +122,23 @@ export default class TestRun extends Component {
           </div>;
         }
 
-        return <pre>{text}</pre>;
+        if (!record.err) {
+          return actionStep;
+        }
+
+        let errText = record.err.message;
+
+        return <div>
+          {actionStep}
+          <div className={PlaybackStyles.actionErr}>{errText}</div>
+        </div>;
       }
+
     }, {
       title: 'Time',
       dataIndex: 'elapsedMs',
       key: 'elapsedMs',
+      width: 60,
       render: (text, record) => {
         let timeText = "";
         if (record.elapsedMs) {
@@ -160,7 +172,7 @@ export default class TestRun extends Component {
       title={testName}
     >
       <div className={`${PlaybackStyles.testStatus} ${PlaybackStyles[testStatus.className]}`}>
-        <span style={{color: testStatus.color}}><Icon type={testStatus.icon} /> Status: <b>{testStatus.text}</b> {testTime}</span>
+        <span style={{color: testStatus.color}}><Icon type={testStatus.icon} />&nbsp;<b>{testStatus.text}</b> {testTime}</span>
       </div>
       <Table
         columns={columns}

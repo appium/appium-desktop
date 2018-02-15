@@ -126,8 +126,6 @@ function updateActionStatus (actionIndex, state, {err = null, elapsedMs = null})
     let actions = getState().playbackLibrary.actionsStatus;
     const action = actions[actionIndex];
     const newAction = {...action, state, err, elapsedMs};
-    console.log(`splicing into index ${actionIndex}`);
-    console.log(newAction);
     actions.splice(actionIndex, 1, newAction);
     dispatch({type: TEST_ACTION_UPDATED, actions});
   };
@@ -136,6 +134,32 @@ function updateActionStatus (actionIndex, state, {err = null, elapsedMs = null})
 export function runTest (serverType, caps, actions) {
   return (dispatch, getState) => {
     const updateState = (index, state, err = null, startTime = null) => {
+      // unwrap error
+      if (err) {
+        let message = null;
+        if (err.code) {
+          message = err.code;
+          if (err.code === "ECONNREFUSED") {
+            message = "Could not connect to the server; are you sure it's running?";
+          }
+        } else if (err.data) {
+          message = err.data;
+          try {
+            message = JSON.parse(err.data).value.message;
+          } catch (ign) {}
+        } else if (err.message) {
+          message = err.message;
+        } else if (typeof err === "string") {
+          message = err;
+        }
+
+        if (!message) {
+          message = "An unknown error occurred";
+        }
+
+        err = new Error(message);
+      }
+
       let elapsedMs = null;
       if (startTime) {
         elapsedMs = Date.now() - startTime;
@@ -157,7 +181,7 @@ export function runTest (serverType, caps, actions) {
     // If it failed, show an alert saying it failed
     ipcRenderer.once('appium-new-session-failed', (evt, e) => {
       updateState(0, ACTION_STATE_ERRORED, e, startTime);
-      dispatch({type: TEST_COMPLETE});
+      completeTest()(dispatch, getState);
     });
 
     ipcRenderer.once('appium-new-session-ready', async () => {
@@ -194,17 +218,29 @@ export function runTest (serverType, caps, actions) {
           break;
         }
       }
-      startTime = updateState(actionIndex, ACTION_STATE_IN_PROGRESS);
+      const lastActionIndex = actions.length + 1;
+      startTime = updateState(lastActionIndex, ACTION_STATE_IN_PROGRESS);
       try {
         await callClientMethod({
           methodName: 'quit'
         });
-        updateState(actionIndex, ACTION_STATE_COMPLETE, null, startTime);
+        updateState(lastActionIndex, ACTION_STATE_COMPLETE, null, startTime);
       } catch (e) {
-        updateState(actionIndex, ACTION_STATE_ERRORED, e, startTime);
+        updateState(lastActionIndex, ACTION_STATE_ERRORED, e, startTime);
       }
 
-      dispatch({type: TEST_COMPLETE});
+      completeTest()(dispatch, getState);
     });
+  };
+}
+
+function completeTest () {
+  return (dispatch, getState) => {
+    const serverType = getState().playbackLibrary.serverType;
+    const actions = getState().playbackLibrary.actionsStatus;
+    const date = new Date();
+    const name = getState().playbackLibrary.testToRun;
+    const result = {name, date, actions, serverType};
+    dispatch({type: TEST_COMPLETE, result});
   };
 }

@@ -87,3 +87,8 @@
 .elapsedTime {
   color: #ccc;
 }
+
+.actionErr {
+  margin: 5px 0px;
+  color: #ca6666;
+}
