@@ -25,11 +25,13 @@
     "e2e": "cross-env FORCE_NO_WRONG_FOLDER=true mocha --timeout 600000 --compilers js:babel-core/register --require ./node_modules/babel-polyfill/dist/polyfill.min.js ./test/e2e",
     "integration": "mocha --timeout 600000 --compilers js:babel-core/register --require ./node_modules/babel-polyfill/dist/polyfill.min.js ./test/integration",
     "unit-test": "mocha --compilers js:babel-core/register ./test/unit",
+    "test-all": "npm run unit-test && npm run integration && npm run e2e",
     "lint": "eslint app test *.js",
     "hot-server": "node -r ./node_modules/babel-register server.js --color",
     "build-main": "cross-env NODE_ENV=production node -r ./node_modules/babel-register ./node_modules/webpack/bin/webpack --config webpack.config.electron.js --progress --profile --colors --color",
     "build-renderer": "cross-env NODE_ENV=production node -r ./node_modules/babel-register ./node_modules/webpack/bin/webpack --config webpack.config.production.js --progress --profile --colors --color",
     "build": "npm run build-main && npm run build-renderer",
+    "clean": "rimraf node_modules && npm install",
     "start": "cross-env NODE_ENV=production electron ./",
     "start-hot": "cross-env HOT=1 NODE_ENV=development electron -r ./node_modules/babel-register -r ./node_modules/babel-polyfill ./app/main/main.development --color",
     "postinstall": "node node_modules/fbjs-scripts/node/check-dev-engines.js package.json",
@@ -41,8 +43,7 @@
     "package-win": "npm run build && build --win --x64",
     "package-linux": "npm run build && build --linux",
     "package-all": "npm run build && build -mwl",
-    "package-e2e-test": "npm run build && build --dir",
-    "package-ci": "npm run integration && npm run build && npm run package-e2e-test && npm run e2e && build --publish onTagOrDraft",
+    "package-ci": "npm run clean && npm run build && build --dir && npm run test-all && build --publish onTagOrDraft",
     "postversion": "git pull --tags && git push && git push --tags"
   },
   "build": {

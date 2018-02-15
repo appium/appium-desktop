@@ -1,4 +1,5 @@
 import { Application } from  'spectron';
+import { fs } from 'appium-support';
 import os from 'os';
 import path from 'path';
 import chai from 'chai';
@@ -59,5 +60,14 @@ describe('application launch', function () {
     await main.startNewSession();
     await client.pause(500);
     await client.getWindowCount().should.eventually.equal(initialWindowCount + 1);
+  });
+
+  it('check that WebDriverAgent private headers folder (regression test for https://github.com/appium/appium-desktop/issues/417)', async function () {
+    // NOTE: This isn't really an "e2e" test, but the test has to be written here because the /release 
+    // folder needs to be built in order to run the test
+    if (platform === 'darwin') {
+      const resourcesPath = path.join(__dirname, '..', '..', 'release', 'mac', 'Appium.app', 'Contents', 'Resources');
+      await fs.exists(path.resolve(resourcesPath, 'app', 'node_modules', 'appium-xcuitest-driver', 'WebDriverAgent', 'PrivateHeaders')).should.eventually.be.true;
+    }
   });
 });
