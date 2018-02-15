@@ -236,11 +236,13 @@ export function runTest (serverType, caps, actions) {
 
 function completeTest () {
   return (dispatch, getState) => {
-    const serverType = getState().playbackLibrary.serverType;
-    const actions = getState().playbackLibrary.actionsStatus;
+    const state = getState().playbackLibrary;
+    const serverType = state.serverType;
+    const actions = state.actionsStatus;
     const date = new Date();
-    const name = getState().playbackLibrary.testToRun;
-    const result = {name, date, actions, serverType};
+    const name = state.testToRun;
+    const caps = state.savedTests.filter((t) => t.name === name)[0].caps;
+    const result = {name, date, actions, serverType, caps};
     dispatch({type: TEST_COMPLETE, result});
   };
 }

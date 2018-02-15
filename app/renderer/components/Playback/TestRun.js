@@ -73,16 +73,17 @@ export default class TestRun extends Component {
 
   render () {
     const {actionsStatus, isTestRunning, hideTestRunModal, testToRun,
-      testResultToShow, savedTests
+      testResultToShow, savedTests, testResults, serverType
     } = this.props;
 
     let testName = null;
-    const visible = !!(testToRun || testResultToShow);
+    const testToMatch = testToRun || testResultToShow;
+    const visible = !!(testToMatch);
+    const test = (testToRun ? savedTests : testResults)
+      .filter((t) => t.name === testToMatch)[0];
 
     if (visible) {
-      testName = savedTests
-        .filter((t) => (t.name === testToRun || t.name === testResultToShow))[0]
-        .name;
+      testName = test.name;
     }
 
     const columns = [{
@@ -171,9 +172,19 @@ export default class TestRun extends Component {
       }
       title={testName}
     >
+
       <div className={`${PlaybackStyles.testStatus} ${PlaybackStyles[testStatus.className]}`}>
         <span style={{color: testStatus.color}}><Icon type={testStatus.icon} />&nbsp;<b>{testStatus.text}</b> {testTime}</span>
       </div>
+
+      {test &&
+        <div className={PlaybackStyles.testMetadata}>
+          <div><b>App:</b> <code>{test.caps.app || test.caps.browserName}</code></div>
+          <div><b>Platform:</b> <code>{test.caps.platformName}</code></div>
+          <div><b>Server:</b> <code>{test.serverType || serverType}</code></div>
+        </div>
+      }
+
       <Table
         columns={columns}
         showHeader={false}

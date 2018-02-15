@@ -92,3 +92,11 @@
   margin: 5px 0px;
   color: #ca6666;
 }
+
+.testMetadata {
+  margin-top: 5px;
+  background-color: #eee;
+  padding: 5px;
+  font-size: 0.9em;
+  color: #666;
+}
