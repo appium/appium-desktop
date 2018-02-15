@@ -71,20 +71,8 @@ export default class TestRun extends Component {
     return sum(this.props.actionsStatus.map((action) => action.elapsedMs || 0));
   }
 
-  render () {
-    const {actionsStatus, isTestRunning, hideTestRunModal, testToRun,
-      testResultToShow, savedTests, testResults, serverType
-    } = this.props;
-
-    let testName = null;
-    const testToMatch = testToRun || testResultToShow;
-    const visible = !!(testToMatch);
-    const test = (testToRun ? savedTests : testResults)
-      .filter((t) => t.name === testToMatch)[0];
-
-    if (visible) {
-      testName = test.name;
-    }
+  getTableData () {
+    const {actionsStatus} = this.props;
 
     const columns = [{
       title: 'Status',
@@ -159,20 +147,33 @@ export default class TestRun extends Component {
       });
     }
 
-    const testStatus = this.getTestStatus();
+    return {data, columns};
+  }
+
+  getTestNameToShow () {
+    const {testToRun, testResultToShow} = this.props;
+    return testToRun || testResultToShow;
+  }
+
+  isModalVisible () {
+    return !!(this.getTestNameToShow());
+  }
+
+  getTestToShow () {
+    const {testToRun, savedTests, testResults} = this.props;
+    return (testToRun ? savedTests : testResults)
+      .filter((t) => t.name === this.getTestNameToShow())[0];
+  }
+
+  getTestHeader () {
+    const {serverType} = this.props;
+    const test = this.getTestToShow();
     let testTime = this.getTestTime();
     testTime = testTime ? `(${testTime / 1000}s)` : '';
 
-    return <Modal
-      className={PlaybackStyles.testRunModal}
-      visible={visible}
-      closable={false}
-      footer={
-        <Button onClick={hideTestRunModal} disabled={isTestRunning}>Done</Button>
-      }
-      title={testName}
-    >
+    const testStatus = this.getTestStatus();
 
+    return <div>
       <div className={`${PlaybackStyles.testStatus} ${PlaybackStyles[testStatus.className]}`}>
         <span style={{color: testStatus.color}}><Icon type={testStatus.icon} />&nbsp;<b>{testStatus.text}</b> {testTime}</span>
       </div>
@@ -184,6 +185,31 @@ export default class TestRun extends Component {
           <div><b>Server:</b> <code>{test.serverType || serverType}</code></div>
         </div>
       }
+    </div>;
+  }
+
+  render () {
+    const {isTestRunning, hideTestRunModal} = this.props;
+
+    let testName = null;
+    const visible = this.isModalVisible();
+    const test = this.getTestToShow();
+
+    if (visible) {
+      testName = test.name;
+    }
+
+    const {columns, data} = this.getTableData();
+
+    return <Modal
+      className={PlaybackStyles.testRunModal}
+      visible={visible}
+      closable={false}
+      footer={
+        <Button onClick={hideTestRunModal} disabled={isTestRunning}>Done</Button>
+      }
+      title={testName}
+    >
 
       <Table
         columns={columns}
