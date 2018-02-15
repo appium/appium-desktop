@@ -121,11 +121,11 @@ function initActionsStatus (testActions) {
   };
 }
 
-function updateActionStatus (actionIndex, state, err = null) {
+function updateActionStatus (actionIndex, state, {err = null, elapsedMs = null}) {
   return (dispatch, getState) => {
     let actions = getState().playbackLibrary.actionsStatus;
     const action = actions[actionIndex];
-    const newAction = {...action, state, err};
+    const newAction = {...action, state, err, elapsedMs};
     console.log(`splicing into index ${actionIndex}`);
     console.log(newAction);
     actions.splice(actionIndex, 1, newAction);
@@ -135,8 +135,13 @@ function updateActionStatus (actionIndex, state, err = null) {
 
 export function runTest (serverType, caps, actions) {
   return (dispatch, getState) => {
-    const updateState = (index, state, err) => {
-      updateActionStatus(index, state, err)(dispatch, getState);
+    const updateState = (index, state, err = null, startTime = null) => {
+      let elapsedMs = null;
+      if (startTime) {
+        elapsedMs = Date.now() - startTime;
+      }
+      updateActionStatus(index, state, {err, elapsedMs})(dispatch, getState);
+      return Date.now();
     };
 
     // say that we're running a test
@@ -146,24 +151,24 @@ export function runTest (serverType, caps, actions) {
     initActionsStatus(actions)(dispatch);
 
     // new session requested
-    updateState(0, ACTION_STATE_IN_PROGRESS);
+    let startTime = updateState(0, ACTION_STATE_IN_PROGRESS);
     startSession(caps, serverType, getState().session.server);
 
     // If it failed, show an alert saying it failed
     ipcRenderer.once('appium-new-session-failed', (evt, e) => {
-      updateState(0, ACTION_STATE_ERRORED, e);
+      updateState(0, ACTION_STATE_ERRORED, e, startTime);
       dispatch({type: TEST_COMPLETE});
     });
 
     ipcRenderer.once('appium-new-session-ready', async () => {
-      updateState(0, ACTION_STATE_COMPLETE);
+      updateState(0, ACTION_STATE_COMPLETE, null, startTime);
 
       // now loop through all the actual test actions
       let actionIndex = 1; // start at 1 since the first action was new session
       let lastFoundElId = null;
       for (let action of actions) {
         try {
-          updateState(actionIndex, ACTION_STATE_IN_PROGRESS);
+          startTime = updateState(actionIndex, ACTION_STATE_IN_PROGRESS);
           // unwrap the 'action' format into what callClientMethod expects
           if (action.action.indexOf("findElement") === 0) {
             const [strategy, selector] = action.params;
@@ -182,21 +187,21 @@ export function runTest (serverType, caps, actions) {
             });
             lastFoundElId = null;
           }
-          updateState(actionIndex, ACTION_STATE_COMPLETE);
+          updateState(actionIndex, ACTION_STATE_COMPLETE, null, startTime);
           actionIndex++;
         } catch (e) {
-          updateState(actionIndex, ACTION_STATE_ERRORED, e);
+          updateState(actionIndex, ACTION_STATE_ERRORED, e, startTime);
           break;
         }
       }
-      updateState(actionIndex, ACTION_STATE_IN_PROGRESS);
+      startTime = updateState(actionIndex, ACTION_STATE_IN_PROGRESS);
       try {
         await callClientMethod({
           methodName: 'quit'
         });
-        updateState(actionIndex, ACTION_STATE_COMPLETE);
+        updateState(actionIndex, ACTION_STATE_COMPLETE, null, startTime);
       } catch (e) {
-        updateState(actionIndex, ACTION_STATE_ERRORED, e);
+        updateState(actionIndex, ACTION_STATE_ERRORED, e, startTime);
       }
 
       dispatch({type: TEST_COMPLETE});

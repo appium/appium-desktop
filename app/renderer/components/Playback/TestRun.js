@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Icon, Modal, Table, Button } from 'antd';
-import { toPairs } from 'lodash';
+import { toPairs, sum } from 'lodash';
 import PlaybackStyles from './PlaybackLibrary.css';
 
 import { ACTION_STATE_PENDING, ACTION_STATE_IN_PROGRESS, ACTION_STATE_COMPLETE,
@@ -67,6 +67,10 @@ export default class TestRun extends Component {
     };
   }
 
+  getTestTime () {
+    return sum(this.props.actionsStatus.map((action) => action.elapsedMs || 0));
+  }
+
   render () {
     const {actionsStatus, isTestRunning, hideTestRunModal, testToRun,
       testResultToShow, savedTests
@@ -119,19 +123,32 @@ export default class TestRun extends Component {
 
         return <pre>{text}</pre>;
       }
+    }, {
+      title: 'Time',
+      dataIndex: 'elapsedMs',
+      key: 'elapsedMs',
+      render: (text, record) => {
+        let timeText = "";
+        if (record.elapsedMs) {
+          timeText = `${record.elapsedMs / 1000}s`;
+        }
+        return <div className={PlaybackStyles.elapsedTime}>
+          {timeText}
+        </div>;
+      }
     }];
 
     let data = [];
     for (let [index, action] of toPairs(actionsStatus)) {
       data.push({
-        action: action.action,
-        state: action.state,
-        params: action.params,
+        ...action,
         key: index
       });
     }
 
     const testStatus = this.getTestStatus();
+    let testTime = this.getTestTime();
+    testTime = testTime ? `(${testTime / 1000}s)` : '';
 
     return <Modal
       className={PlaybackStyles.testRunModal}
@@ -143,7 +160,7 @@ export default class TestRun extends Component {
       title={testName}
     >
       <div className={`${PlaybackStyles.testStatus} ${PlaybackStyles[testStatus.className]}`}>
-        <span style={{color: testStatus.color}}><Icon type={testStatus.icon} /> Status: <b>{testStatus.text}</b></span>
+        <span style={{color: testStatus.color}}><Icon type={testStatus.icon} /> Status: <b>{testStatus.text}</b> {testTime}</span>
       </div>
       <Table
         columns={columns}

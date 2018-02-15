@@ -83,3 +83,7 @@
 
 .testStatus.canceled {
 }
+
+.elapsedTime {
+  color: #ccc;
+}
