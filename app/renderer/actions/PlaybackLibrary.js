@@ -102,6 +102,20 @@ function initActionsStatus (testActions) {
     for (let a of actions) {
       a.state = ACTION_STATE_PENDING;
       a.err = null;
+
+      // if we have a findAndAssign, rewrite to something we understand
+      if (a.action === "findAndAssign") {
+        if (a.params[3]) {
+          a.action = "findElements";
+        } else {
+          a.action = "findElement";
+        }
+      } else if (a.action === "click" || a.action === "sendKeys") {
+        // when click and sendKeys come in via actions, they have two
+        // extraneous params at the front, the element id and `null`. these
+        // will confuse the callClientMethod procedure, so remove them
+        a.params = a.params.slice(2);
+      }
     }
     dispatch({type: TEST_ACTION_UPDATED, actions});
   };
@@ -121,12 +135,8 @@ function updateActionStatus (actionIndex, state, err = null) {
 
 export function runTest (serverType, caps, actions) {
   return (dispatch, getState) => {
-    console.log('running a test');
-    console.log(serverType);
-    console.log(caps);
-    console.log(actions);
-    const updateState = (index, state) => {
-      updateActionStatus(index, state)(dispatch, getState);
+    const updateState = (index, state, err) => {
+      updateActionStatus(index, state, err)(dispatch, getState);
     };
 
     // say that we're running a test
@@ -142,6 +152,7 @@ export function runTest (serverType, caps, actions) {
     // If it failed, show an alert saying it failed
     ipcRenderer.once('appium-new-session-failed', (evt, e) => {
       updateState(0, ACTION_STATE_ERRORED, e);
+      dispatch({type: TEST_COMPLETE});
     });
 
     ipcRenderer.once('appium-new-session-ready', async () => {
@@ -149,25 +160,45 @@ export function runTest (serverType, caps, actions) {
 
       // now loop through all the actual test actions
       let actionIndex = 1; // start at 1 since the first action was new session
+      let lastFoundElId = null;
       for (let action of actions) {
-        console.log("About to execute action");
-        console.log(action);
         try {
           updateState(actionIndex, ACTION_STATE_IN_PROGRESS);
           // unwrap the 'action' format into what callClientMethod expects
-          await callClientMethod({
-            methodName: action.action,
-            args: action.params,
-            skipScreenshotAndSource: true,
-          });
+          if (action.action.indexOf("findElement") === 0) {
+            const [strategy, selector] = action.params;
+            const el = await callClientMethod({
+              strategy,
+              selector,
+              skipScreenshotAndSource: true
+            });
+            lastFoundElId = el.id;
+          } else {
+            await callClientMethod({
+              methodName: action.action,
+              args: action.params,
+              skipScreenshotAndSource: true,
+              elementId: lastFoundElId,
+            });
+            lastFoundElId = null;
+          }
           updateState(actionIndex, ACTION_STATE_COMPLETE);
           actionIndex++;
         } catch (e) {
-          console.log(e);
           updateState(actionIndex, ACTION_STATE_ERRORED, e);
           break;
         }
       }
+      updateState(actionIndex, ACTION_STATE_IN_PROGRESS);
+      try {
+        await callClientMethod({
+          methodName: 'quit'
+        });
+        updateState(actionIndex, ACTION_STATE_COMPLETE);
+      } catch (e) {
+        updateState(actionIndex, ACTION_STATE_ERRORED, e);
+      }
+
       dispatch({type: TEST_COMPLETE});
     });
   };

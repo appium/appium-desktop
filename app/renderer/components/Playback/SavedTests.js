@@ -61,6 +61,7 @@ export default class SavedTests extends Component {
             }
             closable={false}
             title={<div><b>{test.name}</b> capabilities</div>}
+            wrapClassName={PlaybackStyles.verticalCenterModal}
           >
             <pre className={PlaybackStyles.capsModalPre}>
               {formatJSON.plain(test.caps)}
@@ -70,7 +71,7 @@ export default class SavedTests extends Component {
       )
     }];
 
-    const data = savedTests.map((t) => ({name: t.name, key: t.name, caps: t.caps}));
+    const data = savedTests.reverse().map((t) => ({name: t.name, key: t.name, caps: t.caps}));
 
     return <Table
       className={PlaybackStyles.savedTestsTable}

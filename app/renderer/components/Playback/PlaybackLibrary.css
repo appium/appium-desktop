@@ -18,3 +18,68 @@
 .capsModalPre {
   overflow: auto;
 }
+
+.testRunModal {
+  width: 60% !important;
+  height: 80%;
+  top: 10%;
+}
+
+:global(.ant-modal-wrap) {
+  width: 100%;
+  height: 100%;
+}
+
+.testRunModal :global(.ant-modal-content) {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.testRunModal :global(.ant-modal-body) {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.verticalCenterModal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.findElInfo {
+  color: #ccc;
+}
+
+.stepNum {
+  font-size: 2em;
+  color: #ccc;
+}
+
+.statusIcon {
+  font-size: 20px;
+}
+
+.testRunModal td {
+  border: none !important;
+}
+
+.testStatus {
+  padding: 10px;
+  font-size: 1.2em;
+  background-color: #eee;
+}
+
+.testStatus.passed {
+  background-color: #e8fff1;
+}
+
+.testStatus.failed {
+  background-color: #6d5e65;
+}
+
+.testStatus.inProgress {
+}
+
+.testStatus.canceled {
+}
