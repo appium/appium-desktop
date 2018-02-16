@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { ipcRenderer } from 'electron';
 import ReactDOM from 'react-dom';
 import { Card, Icon, Button, Spin, Tooltip } from 'antd';
 import Screenshot from './Screenshot';
@@ -37,6 +38,12 @@ export default class Inspector extends Component {
     this.props.applyClientMethod({methodName: 'source'});
     this.props.getSavedActionFramework();
     this.props.getSavedTests();
+
+    // we might update the saved tests in another window, so listen for that
+    // here and refresh if necessary
+    ipcRenderer.on('appium-saved-tests-updated', async () => {
+      await this.props.getSavedTests();
+    });
   }
 
   screenshotInteractionChange (mode) {

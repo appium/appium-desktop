@@ -1,5 +1,7 @@
 import { ipcRenderer } from 'electron';
+import { cloneDeep } from 'lodash';
 import settings from '../../settings';
+import uuid from 'uuid';
 import { callClientMethod } from './shared';
 import { CHANGE_SERVER_TYPE, SET_SERVER_PARAM, setLocalServerParamsOnly,
   startSession, showError } from './Session';
@@ -32,6 +34,9 @@ export const ACTION_STATE_ERRORED = 'errored';
 export const ACTION_STATE_CANCELED = 'canceled';
 
 export const SAVED_TESTS = 'SAVED_TESTS';
+export const TEST_RESULTS = 'TEST_RESULTS';
+export const SET_TEST_RESULTS = 'SET_TEST_RESULTS';
+export const SHOW_RESULT = 'SHOW_RESULT';
 
 export function changeServerType (serverType) {
   return (dispatch) => {
@@ -54,20 +59,20 @@ export function setServerParam (name, value) {
   };
 }
 
-export function deleteSavedTest (name) {
+export function deleteSavedTest (id) {
   return async (dispatch) => {
-    dispatch({type: DELETE_SAVED_TEST_REQUESTED, name});
+    dispatch({type: DELETE_SAVED_TEST_REQUESTED, id});
     const tests = await settings.get(SAVED_TESTS);
-    const newTests = tests.filter((t) => t.name !== name);
+    const newTests = tests.filter((t) => t.testId !== id);
     await settings.set(SAVED_TESTS, newTests);
     dispatch({type: SET_SAVED_TESTS, tests: newTests});
     dispatch({type: DELETE_SAVED_TEST_DONE});
   };
 }
 
-export function showCapsModal (name) {
+export function showCapsModal (id) {
   return (dispatch) => {
-    dispatch({type: SHOW_CAPS_MODAL, name});
+    dispatch({type: SHOW_CAPS_MODAL, id});
   };
 }
 
@@ -83,11 +88,11 @@ export function hideTestRunModal () {
   };
 }
 
-export function requestTestRun (name) {
+export function requestTestRun (id) {
   return (dispatch, getState) => {
-    dispatch({type: TEST_RUN_REQUESTED, name});
+    dispatch({type: TEST_RUN_REQUESTED, id});
     const {savedTests, serverType} = getState().playbackLibrary;
-    const test = savedTests.filter((t) => t.name === name)[0];
+    const test = savedTests.filter((t) => t.testId === id)[0];
     runTest(serverType, test.caps, test.actions)(dispatch, getState);
   };
 }
@@ -96,12 +101,15 @@ function initActionsStatus (testActions) {
   return (dispatch) => {
     const newSessionAction = {action: "startSession", params: []};
     const quitSessionAction = {action: "quit", params: []};
-    let actions = [newSessionAction, ...testActions, quitSessionAction];
+    const clonedActions = testActions.map(cloneDeep);
+    let actions = [newSessionAction, ...clonedActions, quitSessionAction];
 
     // every action starts out pending
     for (let a of actions) {
       a.state = ACTION_STATE_PENDING;
       a.err = null;
+      a.isElCmd = false;
+      a.elListIndex = null;
 
       // if we have a findAndAssign, rewrite to something we understand
       if (a.action === "findAndAssign") {
@@ -110,25 +118,35 @@ function initActionsStatus (testActions) {
         } else {
           a.action = "findElement";
         }
-      } else if (a.action === "click" || a.action === "sendKeys") {
-        // when click and sendKeys come in via actions, they have two
-        // extraneous params at the front, the element id and `null`. these
-        // will confuse the callClientMethod procedure, so remove them
+      } else if (a.action !== "startSession" && a.action !== "quit") {
+        // when other commands come in via actions, they have two params at the
+        // front. the first is the name of the variable they will be acting on,
+        // which we don't care about. the second is either null, or an integer
+        // denoting the index of the element from the last multiple-element
+        // find. this is relevant information, but we don't want it on the
+        // params list because it won't be included in the actual arguments
+        // send to the wd command. so strip it out and do something else with
+        // it.
+        if (a.params[0] !== null) {
+          a.isElCmd = true;
+        }
+        if (a.params[1] !== null) {
+          a.elListIndex = a.params[1];
+        }
         a.params = a.params.slice(2);
       }
     }
     dispatch({type: TEST_ACTION_UPDATED, actions});
+    return actions;
   };
 }
 
-function updateActionStatus (actionIndex, state, {err = null, elapsedMs = null}) {
-  return (dispatch, getState) => {
-    let actions = getState().playbackLibrary.actionsStatus;
-    const action = actions[actionIndex];
-    const newAction = {...action, state, err, elapsedMs};
-    actions.splice(actionIndex, 1, newAction);
-    dispatch({type: TEST_ACTION_UPDATED, actions});
-  };
+function updateActionStatus (dispatch, getState, actionIndex, state, {err = null, elapsedMs = null}) {
+  let actions = getState().playbackLibrary.actionsStatus;
+  const action = actions[actionIndex];
+  const newAction = {...action, state, err, elapsedMs};
+  actions.splice(actionIndex, 1, newAction);
+  dispatch({type: TEST_ACTION_UPDATED, actions});
 }
 
 export function runTest (serverType, caps, actions) {
@@ -164,7 +182,7 @@ export function runTest (serverType, caps, actions) {
       if (startTime) {
         elapsedMs = Date.now() - startTime;
       }
-      updateActionStatus(index, state, {err, elapsedMs})(dispatch, getState);
+      updateActionStatus(dispatch, getState, index, state, {err, elapsedMs});
       return Date.now();
     };
 
@@ -172,53 +190,67 @@ export function runTest (serverType, caps, actions) {
     dispatch({type: TEST_RUNNING});
 
     // set up initial action states
-    initActionsStatus(actions)(dispatch);
+    actions = initActionsStatus(actions)(dispatch);
 
     // new session requested
     let startTime = updateState(0, ACTION_STATE_IN_PROGRESS);
     startSession(caps, serverType, getState().session.server);
 
     // If it failed, show an alert saying it failed
-    ipcRenderer.once('appium-new-session-failed', (evt, e) => {
+    ipcRenderer.once('appium-new-session-failed', async (evt, e) => {
       updateState(0, ACTION_STATE_ERRORED, e, startTime);
-      completeTest()(dispatch, getState);
+      await completeTest(dispatch, getState);
     });
 
     ipcRenderer.once('appium-new-session-ready', async () => {
       updateState(0, ACTION_STATE_COMPLETE, null, startTime);
 
       // now loop through all the actual test actions
-      let actionIndex = 1; // start at 1 since the first action was new session
+      let actionIndex; // start at 1 since the first action was new session
       let lastFoundElId = null;
-      for (let action of actions) {
+      let lastFoundElIds = [];
+      const lastActionIndex = actions.length - 1;
+      for (actionIndex = 1; actionIndex < lastActionIndex; actionIndex++) {
+        const action = actions[actionIndex];
         try {
           startTime = updateState(actionIndex, ACTION_STATE_IN_PROGRESS);
           // unwrap the 'action' format into what callClientMethod expects
           if (action.action.indexOf("findElement") === 0) {
             const [strategy, selector] = action.params;
-            const el = await callClientMethod({
+            const fetchArray = action.action === "findElements";
+            const res = await callClientMethod({
               strategy,
               selector,
+              fetchArray,
               skipScreenshotAndSource: true
             });
-            lastFoundElId = el.id;
+            if (fetchArray) {
+              lastFoundElIds = res.elements.map((el) => el.id);
+            } else {
+              lastFoundElId = res.id;
+            }
           } else {
+            let elementId = null;
+            if (action.isElCmd) {
+              if (action.elListIndex !== null) {
+                elementId = lastFoundElIds[action.elListIndex];
+              } else {
+                elementId = lastFoundElId;
+              }
+            }
             await callClientMethod({
               methodName: action.action,
               args: action.params,
               skipScreenshotAndSource: true,
-              elementId: lastFoundElId,
+              elementId,
             });
-            lastFoundElId = null;
           }
           updateState(actionIndex, ACTION_STATE_COMPLETE, null, startTime);
-          actionIndex++;
         } catch (e) {
           updateState(actionIndex, ACTION_STATE_ERRORED, e, startTime);
           break;
         }
       }
-      const lastActionIndex = actions.length + 1;
       startTime = updateState(lastActionIndex, ACTION_STATE_IN_PROGRESS);
       try {
         await callClientMethod({
@@ -229,20 +261,56 @@ export function runTest (serverType, caps, actions) {
         updateState(lastActionIndex, ACTION_STATE_ERRORED, e, startTime);
       }
 
-      completeTest()(dispatch, getState);
+      await completeTest(dispatch, getState);
     });
   };
 }
 
-function completeTest () {
-  return (dispatch, getState) => {
-    const state = getState().playbackLibrary;
-    const serverType = state.serverType;
-    const actions = state.actionsStatus;
-    const date = new Date();
-    const name = state.testToRun;
-    const caps = state.savedTests.filter((t) => t.name === name)[0].caps;
-    const result = {name, date, actions, serverType, caps};
-    dispatch({type: TEST_COMPLETE, result});
+async function completeTest (dispatch, getState) {
+  const state = getState().playbackLibrary;
+  const serverType = state.serverType;
+  const actions = state.actionsStatus;
+  const date = new Date();
+  const testId = state.testToRun;
+  const test = getTest(testId, state.savedTests);
+  const {caps, name} = test;
+  const resultId = uuid.v4();
+  const result = {name, testId, date, actions, serverType, caps, resultId};
+
+  const results = await settings.get(TEST_RESULTS);
+  const newResults = [result, ...results];
+  await settings.set(TEST_RESULTS, newResults);
+  dispatch({type: TEST_COMPLETE});
+  dispatch({type: SET_TEST_RESULTS, results: newResults});
+}
+
+export function getTestResults () {
+  return async (dispatch) => {
+    const results = await settings.get(TEST_RESULTS);
+    dispatch({type: SET_TEST_RESULTS, results});
   };
+}
+
+export function deleteTestResult (id) {
+  return async (dispatch) => {
+    const results = await settings.get(TEST_RESULTS);
+    const newResults = results.filter((r) => r.resultId !== id);
+    await settings.set(TEST_RESULTS, newResults);
+    dispatch({type: SET_TEST_RESULTS, results: newResults});
+  };
+}
+
+export function showTestResult (id) {
+  return (dispatch) => {
+    dispatch({type: SHOW_RESULT, id});
+  };
+}
+
+
+export function getTestResult (id, testResults) {
+  return testResults.filter((r) => r.resultId === id)[0];
+}
+
+export function getTest (id, savedTests) {
+  return savedTests.filter((r) => r.testId === id)[0];
 }

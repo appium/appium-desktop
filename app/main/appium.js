@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 
-import { ipcMain, BrowserWindow, Menu, app } from 'electron';
+import { ipcMain, BrowserWindow, Menu, app, remote } from 'electron';
 import { main as appiumServer } from 'appium';
 import { getDefaultArgs, getParser } from 'appium/build/lib/parser';
 import path from 'path';
@@ -422,6 +422,14 @@ function connectMoveToApplicationsFolder () {
   });
 }
 
+function connectSetSavedTests () {
+  ipcMain.on('appium-saved-tests-updated', () => {
+    for (let win of remote.getAllWindows()) {
+      win.webContents.send('appium-saved-tests-updated');
+    }
+  });
+}
+
 function initializeIpc (win) {
   // listen for 'start-server' from the renderer
   connectStartServer(win);
@@ -436,6 +444,7 @@ function initializeIpc (win) {
   connectGetSessionsListener();
   connectRestartRecorder();
   connectMoveToApplicationsFolder();
+  connectSetSavedTests();
 
   autoUpdaterController.setMainWindow(win);
   autoUpdaterController.checkForUpdates();

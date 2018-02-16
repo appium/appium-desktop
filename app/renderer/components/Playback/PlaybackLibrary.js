@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { ipcRenderer } from 'electron';
 import { Tabs } from 'antd';
 import ServerTypeTabs from '../Session/ServerTypeTabs';
 import SavedTests from './SavedTests';
@@ -12,12 +13,21 @@ const {TabPane} = Tabs;
 export default class PlaybackLibrary extends Component {
 
   componentWillMount () {
-    const {getSavedTests, setLocalServerParams, setSavedServerParams} = this.props;
+    const {getSavedTests, setLocalServerParams, setSavedServerParams,
+      getTestResults
+    } = this.props;
     (async function () {
       await getSavedTests();
+      await getTestResults();
       await setSavedServerParams();
       await setLocalServerParams();
     })();
+
+    // listen to the main process in case the inspector window saves a new test
+    // while we have the playback window open
+    ipcRenderer.on('appium-saved-tests-updated', async () => {
+      await getSavedTests();
+    });
   }
 
   render () {
@@ -38,8 +48,8 @@ export default class PlaybackLibrary extends Component {
         <TabPane tab={`Test Library (${savedTests.length})`} key='tests' className={SessionStyles.scrollingTab}>
           <SavedTests {...this.props} />
         </TabPane>
-        <TabPane tab="Test Results" key='results' className={SessionStyles.scrollingTab}>
-          <TestResults testResults={testResults} />
+        <TabPane tab={`Test Results (${testResults.length})`} key='results' className={SessionStyles.scrollingTab}>
+          <TestResults {...this.props} />
         </TabPane>
       </Tabs>}
       <TestRun {...this.props} />

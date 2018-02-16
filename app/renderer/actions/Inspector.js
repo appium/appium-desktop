@@ -3,6 +3,7 @@ import { notification } from 'antd';
 import { push } from 'react-router-redux';
 import _ from 'lodash';
 import B from 'bluebird';
+import uuid from 'uuid';
 import { getLocators } from '../components/Inspector/shared';
 import { showError } from './Session';
 import { callClientMethod } from './shared';
@@ -454,15 +455,18 @@ export function saveTest (testName) {
     const caps = getState().inspector.sessionDetails.desiredCapabilities;
     const actions = getState().inspector.recordedActions;
     const tests = await settings.get(SAVED_TESTS);
+    const testId = uuid.v4();
     const otherTests = tests.filter((t) => t.name !== testName);
     const recordedAt = Date.now();
     const newTests = otherTests.concat([{
       name: testName,
+      testId,
       actions,
       caps,
       recordedAt,
     }]);
     await settings.set(SAVED_TESTS, newTests);
     dispatch({type: SET_SAVED_TESTS, tests: newTests});
+    ipcRenderer.send('appium-saved-tests-updated');
   };
 }

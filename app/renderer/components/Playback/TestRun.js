@@ -1,78 +1,77 @@
 import React, { Component } from 'react';
+import moment from 'moment';
 import { Icon, Modal, Table, Button } from 'antd';
 import { toPairs, sum } from 'lodash';
 import PlaybackStyles from './PlaybackLibrary.css';
-
-import { ACTION_STATE_PENDING, ACTION_STATE_IN_PROGRESS, ACTION_STATE_COMPLETE,
-  ACTION_STATE_ERRORED, ACTION_STATE_CANCELED } from '../../actions/PlaybackLibrary';
-
-function iconForState (state) {
-  const iconMap = {
-    [ACTION_STATE_PENDING]: 'ellipsis',
-    [ACTION_STATE_IN_PROGRESS]: 'loading',
-    [ACTION_STATE_COMPLETE]: 'check-circle-o',
-    [ACTION_STATE_ERRORED]: 'exclamation-circle-o',
-    [ACTION_STATE_CANCELED]: 'close',
-  };
-  const icon = iconMap[state];
-  const colorMap = {
-    [ACTION_STATE_PENDING]: '#ccc',
-    [ACTION_STATE_IN_PROGRESS]: '#666',
-    [ACTION_STATE_COMPLETE]: 'green',
-    [ACTION_STATE_ERRORED]: '#ca6666',
-    [ACTION_STATE_CANCELED]: '#888668',
-  };
-  const color = colorMap[state];
-  if (!icon) {
-    throw new Error(`No icon for state ${state}`);
-  }
-  return {icon, color};
-}
+import { iconForState, stateDataForTest, getTestResult, getTest } from './shared';
 
 export default class TestRun extends Component {
 
   getTestStatus () {
     const {actionsStatus} = this.props;
-    const allStates = actionsStatus.map((action) => action.state);
-
-    if (allStates.indexOf(ACTION_STATE_ERRORED) !== -1) {
-      return {
-        ...iconForState(ACTION_STATE_ERRORED),
-        text: 'Failed',
-        className: 'failed',
-      };
-    }
-
-    if (allStates.indexOf(ACTION_STATE_CANCELED) !== -1) {
-      return {
-        ...iconForState(ACTION_STATE_CANCELED),
-        text: 'Canceled',
-        className: 'canceled'
-      };
-    }
-
-    if (allStates.indexOf(ACTION_STATE_PENDING) !== -1 ||
-        allStates.indexOf(ACTION_STATE_IN_PROGRESS) !== -1) {
-      return {
-        ...iconForState(ACTION_STATE_IN_PROGRESS),
-        text: 'In Progress',
-        className: 'inProgress'
-      };
-    }
-
-    return {
-      ...iconForState(ACTION_STATE_COMPLETE),
-      text: 'Passed',
-      className: 'passed'
-    };
+    return stateDataForTest(actionsStatus);
   }
 
   getTestTime () {
     return sum(this.props.actionsStatus.map((action) => action.elapsedMs || 0));
   }
 
+  getTestNameToShow () {
+    const {testToRun, testResultToShow} = this.props;
+    return testToRun || testResultToShow;
+  }
+
+  isModalVisible () {
+    return !!(this.getTestNameToShow());
+  }
+
+  getTestToShow () {
+    const {testToRun, savedTests, testResults, testResultToShow} = this.props;
+
+    if (testToRun) {
+      return getTest(testToRun, savedTests);
+    }
+
+    return getTestResult(testResultToShow, testResults);
+  }
+
+  getActionsToShow () {
+    const {testToRun, testResultToShow, testResults, actionsStatus} = this.props;
+    if (testToRun) {
+      return actionsStatus;
+    }
+
+    if (testResultToShow) {
+      return getTestResult(testResultToShow, testResults).actions;
+    }
+
+    return [];
+  }
+
+  getTestHeader () {
+    const {serverType} = this.props;
+    const test = this.getTestToShow();
+    let testTime = this.getTestTime();
+    testTime = testTime ? `(${testTime / 1000}s)` : '';
+
+    const testStatus = this.getTestStatus();
+
+    return <div className={`${PlaybackStyles.testStatus} ${PlaybackStyles[testStatus.className]}`}>
+      <span style={{color: testStatus.color}}><Icon type={testStatus.icon} />&nbsp;<b>{testStatus.text}</b> {testTime}</span>
+      {test &&
+        <div className={PlaybackStyles.testMetadata}>
+          <div><b>App:</b> <code>{test.caps.app || test.caps.browserName}</code></div>
+          <div><b>Platform:</b> <code>{test.caps.platformName}</code></div>
+          <div><b>Server:</b> <code>{test.serverType || serverType}</code></div>
+          {test.date &&
+            <div><b>Run at:</b> <code>{moment(test.date).format("YYYY-MM-DD HH:SS")}</code></div>
+          }
+        </div>
+      }
+    </div>;
+  }
+
   getTableData () {
-    const {actionsStatus} = this.props;
 
     const columns = [{
       title: 'Status',
@@ -100,7 +99,11 @@ export default class TestRun extends Component {
       dataIndex: 'action',
       key: 'action',
       render: (text, record) => {
-        let actionStep = <pre>{text}</pre>;
+        let actionStep = <pre>
+          {record.isElCmd && <span>&nbsp;&nbsp;<Icon type="arrow-right" />&nbsp;</span>}
+          {text}
+        </pre>;
+
         if (record.action.indexOf('findElement') === 0) {
           actionStep = <div>
             <div><pre>{record.action}</pre></div>
@@ -140,7 +143,7 @@ export default class TestRun extends Component {
     }];
 
     let data = [];
-    for (let [index, action] of toPairs(actionsStatus)) {
+    for (let [index, action] of toPairs(this.getActionsToShow())) {
       data.push({
         ...action,
         key: index
@@ -148,44 +151,6 @@ export default class TestRun extends Component {
     }
 
     return {data, columns};
-  }
-
-  getTestNameToShow () {
-    const {testToRun, testResultToShow} = this.props;
-    return testToRun || testResultToShow;
-  }
-
-  isModalVisible () {
-    return !!(this.getTestNameToShow());
-  }
-
-  getTestToShow () {
-    const {testToRun, savedTests, testResults} = this.props;
-    return (testToRun ? savedTests : testResults)
-      .filter((t) => t.name === this.getTestNameToShow())[0];
-  }
-
-  getTestHeader () {
-    const {serverType} = this.props;
-    const test = this.getTestToShow();
-    let testTime = this.getTestTime();
-    testTime = testTime ? `(${testTime / 1000}s)` : '';
-
-    const testStatus = this.getTestStatus();
-
-    return <div>
-      <div className={`${PlaybackStyles.testStatus} ${PlaybackStyles[testStatus.className]}`}>
-        <span style={{color: testStatus.color}}><Icon type={testStatus.icon} />&nbsp;<b>{testStatus.text}</b> {testTime}</span>
-      </div>
-
-      {test &&
-        <div className={PlaybackStyles.testMetadata}>
-          <div><b>App:</b> <code>{test.caps.app || test.caps.browserName}</code></div>
-          <div><b>Platform:</b> <code>{test.caps.platformName}</code></div>
-          <div><b>Server:</b> <code>{test.serverType || serverType}</code></div>
-        </div>
-      }
-    </div>;
   }
 
   render () {
@@ -210,6 +175,8 @@ export default class TestRun extends Component {
       }
       title={testName}
     >
+
+      {this.getTestHeader()}
 
       <Table
         columns={columns}

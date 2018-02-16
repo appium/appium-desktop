@@ -95,8 +95,10 @@
 
 .testMetadata {
   margin-top: 5px;
-  background-color: #eee;
-  padding: 5px;
-  font-size: 0.9em;
+  font-size: 0.7em;
   color: #666;
+}
+
+.testStatus.failed .testMetadata {
+  color: #ccc;
 }
