@@ -63,7 +63,7 @@ export default class TestRun extends Component {
       <span style={{color: testStatus.color}}><Icon type={testStatus.icon} />&nbsp;&nbsp;<b>{testStatus.text}</b> {testTime}</span>
       {test &&
         <div className={PlaybackStyles.testMetadata}>
-          <div><b>App:</b> <code>{test.caps.app || test.caps.browserName}</code></div>
+          <div><b>App:</b> <code>{test.caps.app || test.caps.browserName || test.caps.appPackage || test.caps.bundleId}</code></div>
           <div><b>Platform:</b> <code>{test.caps.platformName}</code></div>
           <div><b>Server Type:</b> <code>{test.serverType || serverType}</code></div>
           {test.date &&
