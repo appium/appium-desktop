@@ -1,5 +1,6 @@
 import { ACTION_STATE_PENDING, ACTION_STATE_IN_PROGRESS, ACTION_STATE_COMPLETE,
   ACTION_STATE_ERRORED, ACTION_STATE_CANCELED, getTestResult, getTest } from '../../actions/PlaybackLibrary';
+import { ServerTypes } from '../../actions/Session';
 
 export function iconForState (state) {
   const iconMap = {
@@ -73,6 +74,23 @@ function sortedByDate (items, dateKey) {
     return b[dateKey] - a[dateKey];
   });
   return itemsCopy;
+}
+
+export function getSessionId (actions) {
+  if (actions && actions[0]) {
+    return actions[0].sessionId;
+  }
+}
+
+export function getTestUrl (serverType, sessionId) {
+  switch (serverType) {
+    case ServerTypes.sauce:
+      return `https://saucelabs.com/beta/tests/${sessionId}`;
+    case ServerTypes.headspin:
+      return `https://ui-dev.headspin.io/sessions/${sessionId}/waterfall`;
+    default:
+      throw new Error(`Did not know how to construct URL for server type ${serverType}`);
+  }
 }
 
 export { getTest, getTestResult};

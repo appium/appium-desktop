@@ -141,17 +141,21 @@ function initActionsStatus (testActions) {
   };
 }
 
-function updateActionStatus (dispatch, getState, actionIndex, state, {err = null, elapsedMs = null}) {
+function updateActionStatus (dispatch, getState, actionIndex, state, {err = null, elapsedMs = null, sessionId = null}) {
   let actions = getState().playbackLibrary.actionsStatus;
   const action = actions[actionIndex];
-  const newAction = {...action, state, err, elapsedMs};
+  let newAction = {...action, state, err, elapsedMs};
+  if (sessionId) {
+    newAction.sessionId = sessionId;
+  }
   actions.splice(actionIndex, 1, newAction);
   dispatch({type: TEST_ACTION_UPDATED, actions});
 }
 
 export function runTest (serverType, caps, actions) {
   return (dispatch, getState) => {
-    const updateState = (index, state, err = null, startTime = null) => {
+    const updateState = (index, state, err = null, startTime = null,
+        sessionId = null) => {
       // unwrap error
       if (err) {
         let message = null;
@@ -182,7 +186,7 @@ export function runTest (serverType, caps, actions) {
       if (startTime) {
         elapsedMs = Date.now() - startTime;
       }
-      updateActionStatus(dispatch, getState, index, state, {err, elapsedMs});
+      updateActionStatus(dispatch, getState, index, state, {err, elapsedMs, sessionId});
       return Date.now();
     };
 
@@ -202,8 +206,8 @@ export function runTest (serverType, caps, actions) {
       await completeTest(dispatch, getState);
     });
 
-    ipcRenderer.once('appium-new-session-ready', async () => {
-      updateState(0, ACTION_STATE_COMPLETE, null, startTime);
+    ipcRenderer.once('appium-new-session-ready', async (evt, sessionId) => {
+      updateState(0, ACTION_STATE_COMPLETE, null, startTime, sessionId);
 
       // now loop through all the actual test actions
       let actionIndex; // start at 1 since the first action was new session
@@ -270,7 +274,7 @@ async function completeTest (dispatch, getState) {
   const state = getState().playbackLibrary;
   const serverType = state.serverType;
   const actions = state.actionsStatus;
-  const date = new Date();
+  const date = Date.now();
   const testId = state.testToRun;
   const test = getTest(testId, state.savedTests);
   const {caps, name} = test;

@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
+import { shell } from 'electron';
 import moment from 'moment';
 import { Icon, Modal, Table, Button } from 'antd';
 import { toPairs, sum } from 'lodash';
 import PlaybackStyles from './PlaybackLibrary.css';
-import { iconForState, stateDataForTest, getTestResult, getTest } from './shared';
+import { iconForState, stateDataForTest, getTestResult, getTest,
+  getSessionId, getTestUrl
+} from './shared';
 
 export default class TestRun extends Component {
 
@@ -57,12 +60,12 @@ export default class TestRun extends Component {
     const testStatus = this.getTestStatus();
 
     return <div className={`${PlaybackStyles.testStatus} ${PlaybackStyles[testStatus.className]}`}>
-      <span style={{color: testStatus.color}}><Icon type={testStatus.icon} />&nbsp;<b>{testStatus.text}</b> {testTime}</span>
+      <span style={{color: testStatus.color}}><Icon type={testStatus.icon} />&nbsp;&nbsp;<b>{testStatus.text}</b> {testTime}</span>
       {test &&
         <div className={PlaybackStyles.testMetadata}>
           <div><b>App:</b> <code>{test.caps.app || test.caps.browserName}</code></div>
           <div><b>Platform:</b> <code>{test.caps.platformName}</code></div>
-          <div><b>Server:</b> <code>{test.serverType || serverType}</code></div>
+          <div><b>Server Type:</b> <code>{test.serverType || serverType}</code></div>
           {test.date &&
             <div><b>Run at:</b> <code>{moment(test.date).format("YYYY-MM-DD HH:SS")}</code></div>
           }
@@ -74,6 +77,14 @@ export default class TestRun extends Component {
   getTableData () {
 
     const columns = [{
+      title: 'Step',
+      dataIndex: 'key',
+      key: 'key',
+      width: 60,
+      render: (text) => <div className={PlaybackStyles.stepNum}>
+        {parseInt(text, 10) + 1}
+      </div>
+    }, {
       title: 'Status',
       dataIndex: 'state',
       key: 'state',
@@ -86,14 +97,6 @@ export default class TestRun extends Component {
           className={PlaybackStyles.statusIcon}
         />;
       }
-    }, {
-      title: 'Step',
-      dataIndex: 'key',
-      key: 'key',
-      width: 60,
-      render: (text) => <div className={PlaybackStyles.stepNum}>
-        {parseInt(text, 10) + 1}
-      </div>
     }, {
       title: 'Action',
       dataIndex: 'action',
@@ -154,7 +157,10 @@ export default class TestRun extends Component {
   }
 
   render () {
-    const {isTestRunning, hideTestRunModal} = this.props;
+    const {isTestRunning, hideTestRunModal, serverType} = this.props;
+    const sessionId = getSessionId(this.getActionsToShow());
+    const showBrowserLink = serverType !== "local" && serverType !== "remote";
+    const browserUrl = showBrowserLink ? getTestUrl(serverType, sessionId) : null;
 
     let testName = null;
     const visible = this.isModalVisible();
@@ -171,7 +177,12 @@ export default class TestRun extends Component {
       visible={visible}
       closable={false}
       footer={
-        <Button onClick={hideTestRunModal} disabled={isTestRunning}>Done</Button>
+        <div>
+          {(sessionId && showBrowserLink) &&
+            <Button onClick={(e) => e.preventDefault() || shell.openExternal(browserUrl)}><Icon type="link" /> Open in Browser</Button>
+          }
+          <Button onClick={hideTestRunModal} disabled={isTestRunning}>Done</Button>
+        </div>
       }
       title={testName}
     >
