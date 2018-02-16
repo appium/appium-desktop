@@ -23,6 +23,8 @@ let sessionDrivers = {};
 let appiumHandlers = {};
 let logFile;
 
+let savedTestWindows = [];
+
 // Delete saved server args, don't start until a server has been started
 settings.deleteSync('SERVER_ARGS');
 
@@ -215,6 +217,7 @@ export function createNewSessionWindow (mainWin) {
 
   bindSessionKillOnClose(sessionWin);
   bindDevTools(sessionWin);
+  savedTestWindows.push(sessionWin);
   // When the main window is closed, close the session window too
   mainWin.once('closed', () => {
     sessionWin = null;
@@ -322,6 +325,7 @@ export function createPlaybackWindow (mainWin) {
 
   bindSessionKillOnClose(playbackWin);
   bindDevTools(playbackWin);
+  savedTestWindows.push(playbackWin);
   // When the main window is closed, close the playback window too
   mainWin.once('closed', () => {
     playbackWin = null;
@@ -375,7 +379,7 @@ function connectClientMethodListener () {
             console.log(`Handling client method request with method '${methodName}' and args ${JSON.stringify(args)}`);
             res = await methodHandler.executeMethod(methodName, args, skipScreenshotAndSource);
           }
-        } else  if (strategy && selector) {
+        } else if (strategy && selector) {
           if (fetchArray) {
             console.log(`Fetching elements with selector '${selector}' and strategy ${strategy}`);
             res = await methodHandler.fetchElements(strategy, selector, skipScreenshotAndSource);
@@ -424,8 +428,10 @@ function connectMoveToApplicationsFolder () {
 
 function connectSetSavedTests () {
   ipcMain.on('appium-saved-tests-updated', () => {
-    for (let win of remote.getAllWindows()) {
-      win.webContents.send('appium-saved-tests-updated');
+    for (let win of savedTestWindows) {
+      if (win.webContents) {
+        win.webContents.send('appium-saved-tests-updated');
+      }
     }
   });
 }
