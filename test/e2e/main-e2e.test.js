@@ -4,6 +4,7 @@ import os from 'os';
 import path from 'path';
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
+import dirCompare from 'dir-compare';
 import MainPage from './pages/main-page-object';
 
 const platform = os.platform();
@@ -62,14 +63,19 @@ describe('application launch', function () {
     await client.getWindowCount().should.eventually.equal(initialWindowCount + 1);
   });
 
-  it('check that WebDriverAgent private headers folder (regression test for https://github.com/appium/appium-desktop/issues/417)', async function () {
+  it('check that WebDriverAgent folder is the same in /releases as it is in /node_modules (regression test for https://github.com/appium/appium-desktop/issues/417)', async function () {
     // NOTE: This isn't really an "e2e" test, but the test has to be written here because the /release 
     // folder needs to be built in order to run the test
-    if (platform === 'darwin') {
-      this.skip();
+    if (platform !== 'darwin') {
+      return this.skip();
     }
 
-    const resourcesPath = path.join(__dirname, '..', '..', 'release', 'mac', 'Appium.app', 'Contents', 'Resources');
-    await fs.exists(path.resolve(resourcesPath, 'app', 'node_modules', 'appium-xcuitest-driver', 'WebDriverAgent', 'PrivateHeaders')).should.eventually.be.true;
+    const resourcesWDAPath = path.join(__dirname, '..', '..', 'release', 'mac', 'Appium.app', 'Contents', 'Resources', 
+      'app', 'node_modules', 'appium-xcuitest-driver', 'WebDriverAgent');
+
+    const localWDAPath = path.join(__dirname, '..', '..', 'node_modules', 'appium-xcuitest-driver', 'WebDriverAgent');
+
+    const res = await dirCompare.compare(resourcesWDAPath, localWDAPath);
+    res.distinct.should.equal(0);
   });
 });
