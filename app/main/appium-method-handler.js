@@ -54,7 +54,7 @@ export default class AppiumMethodHandler {
       this.elementCache[el.value] = res;
       return res;
     });
-    
+
     return {variableName, variableType, strategy, selector, elements};
   }
 
@@ -87,11 +87,11 @@ export default class AppiumMethodHandler {
       }
     }
 
-    // Give the source/screenshot time to change before taking the screenshot
-    await Bluebird.delay(500);
 
     let sourceAndScreenshot;
     if (!skipScreenshotAndSource) {
+      // Give the source/screenshot time to change before taking the screenshot
+      await Bluebird.delay(500);
       sourceAndScreenshot = await this._getSourceAndScreenshot();
     }
 
@@ -109,7 +109,7 @@ export default class AppiumMethodHandler {
   async executeMethod (methodName, args = [], skipScreenshotAndSource = false) {
     return await this._execute({methodName, args, skipScreenshotAndSource});
   }
-  
+
   async _getSourceAndScreenshot () {
     let source, sourceError, screenshot, screenshotError;
     try {
@@ -141,7 +141,7 @@ export default class AppiumMethodHandler {
 
     // Restart the variable counter
     this.elVariableCounter = 1;
-    this.elArrayVariableCounter = 1;   
+    this.elArrayVariableCounter = 1;
   }
 
 }
