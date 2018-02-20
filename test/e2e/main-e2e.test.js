@@ -1,8 +1,10 @@
 import { Application } from  'spectron';
+import { fs } from 'appium-support';
 import os from 'os';
 import path from 'path';
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
+import dirCompare from 'dir-compare';
 import MainPage from './pages/main-page-object';
 
 const platform = os.platform();
@@ -59,5 +61,21 @@ describe('application launch', function () {
     await main.startNewSession();
     await client.pause(500);
     await client.getWindowCount().should.eventually.equal(initialWindowCount + 1);
+  });
+
+  it('check that WebDriverAgent folder is the same in /releases as it is in /node_modules (regression test for https://github.com/appium/appium-desktop/issues/417)', async function () {
+    // NOTE: This isn't really an "e2e" test, but the test has to be written here because the /release 
+    // folder needs to be built in order to run the test
+    if (platform !== 'darwin') {
+      return this.skip();
+    }
+
+    const resourcesWDAPath = path.join(__dirname, '..', '..', 'release', 'mac', 'Appium.app', 'Contents', 'Resources', 
+      'app', 'node_modules', 'appium-xcuitest-driver', 'WebDriverAgent');
+
+    const localWDAPath = path.join(__dirname, '..', '..', 'node_modules', 'appium-xcuitest-driver', 'WebDriverAgent');
+
+    const res = await dirCompare.compare(resourcesWDAPath, localWDAPath);
+    res.distinct.should.equal(0);
   });
 });
