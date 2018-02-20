@@ -70,7 +70,7 @@ driver.quit()`;
   }
 
   codeFor_tap (varNameIgnore, varIndexIgnore, x, y) {
-    return `TouchAction(driver).tap([(${x}, ${y})]).perform()`;
+    return `TouchAction(driver).tap(x=${x}, y=${y}).perform()`;
   }
 
   codeFor_swipe (varNameIgnore, varIndexIgnore, x1, y1, x2, y2) {
