@@ -94,6 +94,20 @@ export default class ServerMonitor extends Component {
     serverArgs: PropTypes.object.isRequired,
   }
 
+  keydownListener(e) {
+    if (e.key === 'k' && (e.metaKey || e.ctrlKey)) {
+      this.props.clearLogs();
+    }
+  }
+
+  componentDidMount() {
+    document.addEventListener('keydown', this.keydownListener.bind(this));
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('keydown', this.keydownListener.bind(this));
+  }
+
   componentWillUpdate () {
     this.shouldScroll = false;
     let n = this._term;
