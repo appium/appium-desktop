@@ -85,6 +85,11 @@ class GetRawLogsButton extends Component {
 
 export default class ServerMonitor extends Component {
 
+  constructor (props) {
+    super(props);
+    this.keydownListener = this.keydownListener.bind(this);
+  }
+
   static propTypes = {
     stopServer: PropTypes.func.isRequired,
     closeMonitor: PropTypes.func.isRequired,
@@ -94,18 +99,18 @@ export default class ServerMonitor extends Component {
     serverArgs: PropTypes.object.isRequired,
   }
 
-  keydownListener(e) {
+  keydownListener (e) {
     if (e.key === 'k' && (e.metaKey || e.ctrlKey)) {
       this.props.clearLogs();
     }
   }
 
-  componentDidMount() {
-    document.addEventListener('keydown', this.keydownListener.bind(this));
+  componentDidMount () {
+    document.addEventListener('keydown', this.keydownListener);
   }
 
-  componentWillUnmount() {
-    document.removeEventListener('keydown', this.keydownListener.bind(this));
+  componentWillUnmount () {
+    document.removeEventListener('keydown', this.keydownListener);
   }
 
   componentWillUpdate () {
