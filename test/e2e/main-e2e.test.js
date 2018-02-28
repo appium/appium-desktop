@@ -71,9 +71,9 @@ describe('application launch', function () {
     }
 
     const resourcesWDAPath = path.join(__dirname, '..', '..', 'release', 'mac', 'Appium.app', 'Contents', 'Resources', 
-      'app', 'node_modules', 'appium-xcuitest-driver', 'WebDriverAgent');
+      'app', 'node_modules', 'appium', 'node_modules', 'appium-xcuitest-driver', 'WebDriverAgent');
 
-    const localWDAPath = path.join(__dirname, '..', '..', 'node_modules', 'appium-xcuitest-driver', 'WebDriverAgent');
+    const localWDAPath = path.join(__dirname, '..', '..', 'node_modules', 'appium', 'node_modules', 'appium-xcuitest-driver', 'WebDriverAgent');
 
     const res = await dirCompare.compare(resourcesWDAPath, localWDAPath);
     res.distinct.should.equal(0);
