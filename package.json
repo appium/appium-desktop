@@ -43,7 +43,7 @@
     "package-win": "npm run build && build --win --x64",
     "package-linux": "npm run build && build --linux",
     "package-all": "npm run build && build -mwl",
-    "package-ci": "npm run clean && npm run build && build --dir && npm run test-all && build --publish onTagOrDraft",
+    "package-ci": "npm run build && build --dir && npm run test-all && build --publish onTagOrDraft",
     "postversion": "git pull --tags && git push && git push --tags"
   },
   "build": {
