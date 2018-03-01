@@ -1,25 +1,13 @@
 import { app } from 'electron';
 import { autoUpdater } from 'electron-updater';
+import { getUpdate } from './auto-updater/update-checker';
 import B from 'bluebird';
 
 let fail, update, updateDone = false;
 
 autoUpdater.checkForUpdates = async () => {
   if (update && !updateDone) {
-    await B.delay(Math.random() * 10000);
-    autoUpdater.emit('update-available', {
-      version: 'v0.0.0',
-      releaseDate: 'July 24th, 1985 asdfasdf asdfafds asdf  asdf  asfd asadfasd as dff',
-      releaseNotes: `
-          1. Feature 1
-          2. Feature 2
-          3. Feature 3
-          4. Feature 4
-          5. Feature 5
-          6. Feature 6
-          7. Feature 7
-      `,
-    });
+    autoUpdater.emit('update-available', await getUpdate('0.0.0'));
   } else {
     await B.delay(5000);
     autoUpdater.emit('update-not-available');

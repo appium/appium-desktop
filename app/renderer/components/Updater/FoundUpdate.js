@@ -6,7 +6,7 @@ import UpdaterStyles from './Updater.css';
 export default class FoundUpdate extends Component {
 
   render () {
-    const {hasUpdateAvailable, updateInfo, releaseNotes} = this.props;
+    const {hasUpdateAvailable, updateInfo} = this.props;
 
     if (!hasUpdateAvailable) {
       return null;
@@ -14,7 +14,7 @@ export default class FoundUpdate extends Component {
 
     const releasesURL = 'https://github.com/appium/appium-desktop/releases';
 
-    const {releaseDate, version} = updateInfo;
+    const {pub_date:releaseDate, name:version, notes:releaseNotes} = updateInfo;
 
     return <div className={UpdaterStyles['found-updates-container']}>
       <h3>A new version of Appium Desktop is available: <span className={UpdaterStyles['release-info']}><span>{version}</span> released <span>{releaseDate}</span></span></h3>

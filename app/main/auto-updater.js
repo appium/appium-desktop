@@ -1,18 +1,16 @@
-import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
-import { ipcMain, BrowserWindow, Menu } from 'electron';
+import { ipcMain, BrowserWindow, Menu, autoUpdater } from 'electron';
 import path from 'path';
 import _ from 'lodash';
-import request from 'request-promise';
 import { version } from '../../package.json';
-import settings from '../settings';
+import { getUpdate } from './auto-updater/update-checker';
 import B from 'bluebird';
 const isDev = process.env.NODE_ENV === 'development';
 
 // Logs data to 
 autoUpdater.logger = log;
 autoUpdater.logger.transports.file.level = 'info';
-autoUpdater.autoDownload = false;
+
 log.info('Auto updater starting');
 
 // Mock auto updater. Used to aid development because testing using actual releases is super tedious.
@@ -28,6 +26,10 @@ if (process.env.NODE_ENV === 'development') {
   if (process.env.MOCK_AUTO_UPDATER) {
     updateAvailable();
   }
+} else {
+  const checkVersion = process.env.FORCE_UPDATE ? 'v0.0.0' : version;
+  // TODO: Make this import config getFeedUrl
+  autoUpdater.setFeedURL(`https://hazel-server-cfuovrxdtd.now.sh/update/${process.platform}/${checkVersion}`);
 }
 
 class AutoUpdaterController {
@@ -36,8 +38,8 @@ class AutoUpdaterController {
     this.updaterWin = null;
     this.state = {};
 
-    autoUpdater.on('update-available', this.handleUpdateAvailable.bind(this));
     autoUpdater.on('update-not-available', this.handleUpdateNotAvailable.bind(this));
+    autoUpdater.on('update-available', this.handleUpdateAvailable.bind(this));
     autoUpdater.on('checking-for-update', this.handleCheckingForUpdate.bind(this));
     autoUpdater.on('download-progress', this.handleDownloadProgress.bind(this));
     autoUpdater.on('update-downloaded', this.handleUpdateDownloaded.bind(this));
@@ -56,28 +58,25 @@ class AutoUpdaterController {
   downloadUpdate () {
     this.updaterWin.setSize(500, 150);
     this.setState({
+      // TODO: Change from 'downloadProgress' to 'isDownloading'
       downloadProgress: {
         percent: 0,
       },
     });
-    autoUpdater.downloadUpdate && autoUpdater.downloadUpdate();
+
+    // .checkForUpdates automatically downloads the update
+    autoUpdater.checkForUpdates && autoUpdater.checkForUpdates();
   }
 
-  async handleUpdateAvailable (updateInfo) {
+  handleUpdateAvailable (updateInfo) {
     log.info('Found update', updateInfo);
-    let releaseNotes;
-    try {
-      let url = `https://api.github.com/repos/appium/appium-desktop/releases/tags/v${version}`;
-      let userAgent = 'appium-desktop';
-      releaseNotes = JSON.parse(await request({url, headers: {'User-Agent': userAgent}})).body;
-    } catch (ign) { }
+
     // If window not open, open it to notify user
     this.openUpdaterWindow(this.mainWindow);
     this.forceFocus();
     this.setState({
       hasUpdateAvailable: true,
       updateInfo,
-      releaseNotes,
     });
   }
 
@@ -95,6 +94,7 @@ class AutoUpdaterController {
     });
   }
 
+  // TODO: Get rid of this and replace with 'isDownloading'
   handleDownloadProgress (downloadProgress) {
     log.info('Downloading...', downloadProgress);
     this.setState({
@@ -127,25 +127,17 @@ class AutoUpdaterController {
   }
 
   async checkForUpdates () {
-    const isWin = process.platform === 'win32';
-    const isMac = process.platform === 'darwin';
-    const SQUIRREL_FIRST_RUN = 'SQUIRREL_FIRST_RUN';
-
-    // Only check for updates on Mac and Windows (auto update not supported in linux)
-    if (isMac || isWin) {
-      log.info('Checking for updates');
-
-      // squirrel.windows needs time to initialize the first time it's run (https://github.com/electron/electron/issues/4306)
-      // if it's a first run, give it a long time (20 seconds) to let squirrel.windows initialize before checking for updates
-      if (isWin && !await settings.get(SQUIRREL_FIRST_RUN)) {
-        await B.delay(20000);
-        await settings.set(SQUIRREL_FIRST_RUN, true);
-      }
+    try {
       this.setState({
         isCheckingForUpdates: true,
       });
-      autoUpdater.checkForUpdates();
-    } else {
+      const updateInfo = await getUpdate('0.0.0');
+      if (updateInfo) {
+        autoUpdater.emit('update-available', updateInfo);
+      } else {
+        autoUpdater.emit('update-not-available');
+      }
+    } catch (e) {
       this.setState({
         unsupported: true,
       });
