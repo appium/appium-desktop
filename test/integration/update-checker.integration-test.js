@@ -27,8 +27,5 @@ describe('appiumDriverExtender', function () {
       pub_date.should.be.a.string;
       url.should.be.a.string;
     });
-    it('should use package.json version by default should find update if match not found', async function () {
-      (!(await getUpdate())).should.equal(version === latestVersion);
-    });
   });
 });

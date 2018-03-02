@@ -1,5 +1,5 @@
 const config = {
-  baseFeedUrl: `https://hazel-server-cfuovrxdtd.now.sh`, // TODO: Change this to production
+  baseFeedUrl: `https://hazel-server-pxufsrwofl.now.sh`,
   getFeedUrl (version) {
     return `${config.baseFeedUrl}/update/${process.platform}/${version}`;
   }
