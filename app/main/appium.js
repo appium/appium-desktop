@@ -9,7 +9,7 @@ import { fs, tempDir } from 'appium-support';
 import settings from '../settings';
 import AppiumMethodHandler from './appium-method-handler';
 import request from 'request-promise';
-import { checkNewUpdates } from './auto-updater/auto-updater';
+import { checkNewUpdates } from './auto-updater';
 
 const LOG_SEND_INTERVAL_MS = 250;
 const isDev = process.env.NODE_ENV === 'development';

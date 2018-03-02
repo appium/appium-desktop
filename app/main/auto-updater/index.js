@@ -15,21 +15,21 @@ autoUpdater.setFeedURL(getFeedUrl(app.getVersion()));
 /** 
  * Check for new updates
  */
-export async function checkNewUpdates () {
+export async function checkNewUpdates (fromMenu) {
   // autoupdate.checkForUpdates always downloads updates immediately 
   // This method (getUpdate) let's us take a peek to see if there is an update 
   // available before calling .checkForUpdates
   const update = await getUpdate(app.getVersion());
   if (update) {
-    let {name, notes, pub_date} = update;
-    pub_date = moment(pub_date).format('MMM Do YYYY, h:mma');
+    let {name, notes, pubDate:pubDate} = update;
+    pubDate = moment(pubDate).format('MMM Do YYYY, h:mma');
 
     // Ask user if they wish to install now or later
     dialog.showMessageBox({
       type: 'info',
       buttons: ['Install Now', 'Install Later'],
       message: `Appium Desktop ${name} is available`,
-      detail: `Release Date: ${pub_date}\n\nRelease Notes: ${notes.replace("*", "\n*")}`,
+      detail: `Release Date: ${pubDate}\n\nRelease Notes: ${notes.replace("*", "\n*")}`,
     }, (response) => {
       if (response === 0) {
         // If they say yes, get the updates now
@@ -37,9 +37,13 @@ export async function checkNewUpdates () {
       }
     });
   } else {
-    // If no updates found check for updates every hour
-    await B.delay(60 * 1000);
-    checkNewUpdates();
+    if (fromMenu) {
+      autoUpdater.emit('update-not-available');
+    } else {
+      // If no updates found check for updates every hour
+      await B.delay(60 * 60 * 1000);
+      checkNewUpdates();
+    }
   }
 }
 
@@ -59,7 +63,8 @@ autoUpdater.on('update-not-available', () => {
   dialog.showMessageBox({
     type: 'info',
     buttons: ['Ok'],
-    detail: 'Appium Desktop is already up-to-date',
+    message: 'No update available',
+    detail: 'Appium Desktop is up-to-date',
   });
 });
 
@@ -69,7 +74,7 @@ autoUpdater.on('update-downloaded', (event, releaseNotes, releaseName) => {
     type: 'info',
     buttons: ['Restart Now', 'Later'],
     message: 'Update Downloaded',
-    detail: `New version of Appium Desktop ${releaseName} has been downloaded. ` +
+    detail: `Appium Desktop ${releaseName} has been downloaded. ` +
       `Must restart to apply the updates ` +
       `(note: it may take several minutes for Appium Desktop to install and restart)`,
   }, (response) => {

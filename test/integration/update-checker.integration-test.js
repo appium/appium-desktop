@@ -1,6 +1,6 @@
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import { version } from '../../package.json';
+import sinon from 'sinon';
 import request from 'request-promise';
 import { getUpdate } from '../../app/main/auto-updater/update-checker';
 
@@ -12,7 +12,7 @@ describe('appiumDriverExtender', function () {
 
   before(async function () {
     const latestReleaseUrl = `https://api.github.com/repos/appium/appium-desktop/releases/latest`;
-    const res = JSON.parse(await request.get(latestReleaseUrl, { headers: {'user-agent': 'node.js'} }));
+    const res = JSON.parse(await request.get(latestReleaseUrl, {headers: {'user-agent': 'node.js'}}));
     latestVersion = res.name;
   });
 
@@ -26,6 +26,11 @@ describe('appiumDriverExtender', function () {
       notes.should.be.a.string;
       pub_date.should.be.a.string;
       url.should.be.a.string;
+    });
+    it('should return false if request for update throws error', async function () {
+      let promiseStub = sinon.stub(request, 'get', () => { throw new Error(`Failed Request`); });
+      await getUpdate('v0.0.0').should.eventually.be.false;
+      promiseStub.restore();
     });
   });
 });
