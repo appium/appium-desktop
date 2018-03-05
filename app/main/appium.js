@@ -215,7 +215,7 @@ export function createNewSessionWindow (win) {
 function connectCreateNewSession () {
   ipcMain.on('appium-create-new-session', async (event, args) => {
     const {desiredCapabilities, host, port, path, username, accessKey, https,
-      attachSessId} = args;
+      attachSessId, rejectUnauthorized} = args;
 
     // If there is an already active session, kill it. Limit one session per window.
     if (sessionDrivers[event.sender.id]) {
@@ -223,6 +223,7 @@ function connectCreateNewSession () {
     }
 
     // Create the driver and cache it by the sender ID
+    wd.configureHttp({rejectUnauthorized});
     let driver = sessionDrivers[event.sender.id] = wd.promiseChainRemote({
       hostname: host,
       port,

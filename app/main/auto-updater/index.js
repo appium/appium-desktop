@@ -13,9 +13,10 @@ import _ from 'lodash';
 
 const isDev = process.env.NODE_ENV === 'development';
   
-let checkNewUpdates = _.noop;
 
-if (!isDev) {
+let checkNewUpdates;
+
+if (process.env.NODE_ENV !== 'development') {
 
   autoUpdater.setFeedURL(getFeedUrl(app.getVersion()));
 
@@ -26,9 +27,9 @@ if (!isDev) {
     // autoupdate.checkForUpdates always downloads updates immediately 
     // This method (getUpdate) let's us take a peek to see if there is an update 
     // available before calling .checkForUpdates
-    const update = await checkUpdate(app.getVersion());
+    const update = await getUpdate(app.getVersion());
     if (update) {
-      let {name, notes, pub_date:pubDate} = update;
+      let {name, notes, pubDate:pubDate} = update;
       pubDate = moment(pubDate).format('MMM Do YYYY, h:mma');
 
       // Ask user if they wish to install now or later
@@ -52,7 +53,7 @@ if (!isDev) {
         checkNewUpdates();
       }
     }
-  };
+  }
 
   // Inform user when the download is starting and that they'll be notified again when it is complete
   autoUpdater.on('update-available', () => {
@@ -85,7 +86,6 @@ if (!isDev) {
         `Must restart to apply the updates ` +
         `(note: it may take several minutes for Appium Desktop to install and restart)`,
     }, (response) => {
-      // If they say yes, restart now
       if (response === 0) {
         autoUpdater.quitAndInstall();
       }
@@ -100,7 +100,6 @@ if (!isDev) {
       detail: `Failed to download update. Reason: ${message}`,
     });
   });
-
 }
 
 export { checkNewUpdates };
