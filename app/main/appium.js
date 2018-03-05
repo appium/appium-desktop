@@ -7,9 +7,9 @@ import path from 'path';
 import wd from 'wd';
 import { fs, tempDir } from 'appium-support';
 import settings from '../settings';
-import autoUpdaterController from './auto-updater';
 import AppiumMethodHandler from './appium-method-handler';
 import request from 'request-promise';
+import { checkNewUpdates } from './auto-updater';
 
 const LOG_SEND_INTERVAL_MS = 250;
 const isDev = process.env.NODE_ENV === 'development';
@@ -390,8 +390,7 @@ function initializeIpc (win) {
   connectRestartRecorder();
   connectMoveToApplicationsFolder();
 
-  autoUpdaterController.setMainWindow(win);
-  autoUpdaterController.checkForUpdates();
+  setTimeout(checkNewUpdates, 10000);
 }
 
 export { initializeIpc };
