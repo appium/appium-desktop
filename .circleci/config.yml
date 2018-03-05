@@ -1,0 +1,18 @@
+version: 2
+
+os_version: &os_version
+  macos:
+    xcode: "9.1.0"
+
+jobs:
+  build:
+    macos:
+      xcode: "9.0"
+    steps:
+      - checkout
+      - run:
+          name: Install
+          command: npm install
+      - run:
+          name: Linting
+          command: npm run lint

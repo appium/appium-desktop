@@ -1,6 +1,6 @@
 {
   "name": "appium-desktop",
-  "version": "1.4.0",
+  "version": "1.4.3",
   "description": "Graphical interface for the Appium server, and an app inspector",
   "repository": {
     "type": "git",
@@ -182,6 +182,7 @@
     "minimist": "1.x",
     "mocha": "^3.5.3",
     "node-libs-browser": "^2.1.0",
+    "promisify": "0.0.3",
     "react-addons-test-utils": "^15.6.2",
     "redux-logger": "2.x",
     "request": "^2.83.0",
