@@ -1,3 +1,9 @@
+## [1.4.1](https://github.com/appium/appium-desktop/compare/v1.4.0...v1.4.1) (2018-03-06)
+
+### Changes
+* Fix: Replace electron-builder autoupdater with Zeit Hazel server plus native updater (#435)
+
+
 ## [1.4.0](https://github.com/appium/appium-desktop/compare/v1.3.2...v1.4.0) (2018-02-27)
 
 ### Changes
