@@ -1,4 +1,4 @@
-import { app, shell } from 'electron';
+import { app, shell, dialog } from 'electron';
 import { createNewSessionWindow } from './appium';
 import { checkNewUpdates } from './auto-updater';
 
@@ -163,7 +163,10 @@ function otherMenuFile (mainWindow) {
   }, {
     label: '&About Appium',
     click () {
-      checkNewUpdates(true);
+      dialog.showMessageBox({
+        title: 'Appium Desktop',
+        message: `Version ${app.getVersion()}`,
+      });
     }
   }, {
     type: 'separator'
