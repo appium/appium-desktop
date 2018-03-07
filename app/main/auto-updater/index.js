@@ -43,7 +43,7 @@ if (!isDev) {
       }, (response) => {
         if (response === 0) {
           // If they say yes, get the updates now
-          autoUpdater.checkForUpdates();
+          getUpdates();
         }
       });
     } else {
@@ -88,9 +88,9 @@ if (!isDev) {
         `Must restart to apply the updates ` +
         `(note: it may take several minutes for Appium Desktop to install and restart)`,
     }, (response) => {
-      // If they say yes, get the updates now
+      // If they say yes, restart now
       if (response === 0) {
-        getUpdates();
+        autoUpdater.quitAndInstall();
       }
     });
   });
