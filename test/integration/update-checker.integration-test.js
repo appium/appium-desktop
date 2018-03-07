@@ -2,7 +2,7 @@ import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import sinon from 'sinon';
 import request from 'request-promise';
-import { getUpdate } from '../../app/main/auto-updater/update-checker';
+import { checkUpdate } from '../../app/main/auto-updater/update-checker';
 
 chai.should();
 chai.use(chaiAsPromised);
@@ -18,10 +18,10 @@ describe('appiumDriverExtender', function () {
 
   describe('.fetchElement, .fetchElements', function () {
     it('not find anything if latest release is same as current release', async function () {
-      await getUpdate(latestVersion).should.eventually.equal(false);
+      await checkUpdate(latestVersion).should.eventually.equal(false);
     });
     it('should find something if latest release is different from current release', async function () {
-      const {name, notes, pub_date, url} = await getUpdate('v0.0.0');
+      const {name, notes, pub_date, url} = await checkUpdate('v0.0.0');
       name.should.be.a.string;
       notes.should.be.a.string;
       pub_date.should.be.a.string;
@@ -29,7 +29,7 @@ describe('appiumDriverExtender', function () {
     });
     it('should return false if request for update throws error', async function () {
       let promiseStub = sinon.stub(request, 'get', () => { throw new Error(`Failed Request`); });
-      await getUpdate('v0.0.0').should.eventually.be.false;
+      await checkUpdate('v0.0.0').should.eventually.be.false;
       promiseStub.restore();
     });
   });
