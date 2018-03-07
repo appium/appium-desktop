@@ -7,9 +7,12 @@
 import { app, autoUpdater, dialog } from 'electron';
 import moment from 'moment';
 import B from 'bluebird';
-import _ from 'lodash';
-import { getUpdate } from './update-checker';
+import { checkUpdate } from './update-checker';
 import { getFeedUrl } from './config';
+import _ from 'lodash';
+
+// Alias 'checkForUpdates' as 'getUpdates' to avoid confusion ('checkForUpdates' downloads updates automatically)
+const {checkForUpdates:getUpdates} = autoUpdater;
 
 const isDev = process.env.NODE_ENV === 'development';
   
@@ -26,9 +29,9 @@ if (!isDev) {
     // autoupdate.checkForUpdates always downloads updates immediately 
     // This method (getUpdate) let's us take a peek to see if there is an update 
     // available before calling .checkForUpdates
-    const update = await getUpdate(app.getVersion());
+    const update = await checkUpdate(app.getVersion());
     if (update) {
-      let {name, notes, pubDate:pubDate} = update;
+      let {name, notes, pub_date:pubDate} = update;
       pubDate = moment(pubDate).format('MMM Do YYYY, h:mma');
 
       // Ask user if they wish to install now or later
@@ -85,8 +88,9 @@ if (!isDev) {
         `Must restart to apply the updates ` +
         `(note: it may take several minutes for Appium Desktop to install and restart)`,
     }, (response) => {
+      // If they say yes, get the updates now
       if (response === 0) {
-        autoUpdater.quitAndInstall();
+        getUpdates();
       }
     });
   });
