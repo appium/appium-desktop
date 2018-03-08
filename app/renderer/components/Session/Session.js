@@ -7,6 +7,7 @@ import SessionModeTabs from './SessionModeTabs';
 import ServerTypeTabs from './ServerTypeTabs';
 import SavedTests from './SavedTests';
 import TestRun from './TestRun';
+import TestResults from './TestResults';
 import { Tabs, Button, Spin, Icon, Card } from 'antd';
 import SessionStyles from './Session.css';
 import { SessionModes } from '../../actions/Session';
@@ -47,6 +48,10 @@ export default class Session extends Component {
 
         {isPlayback && <Card className={`${SessionStyles.sessionCard} ${SessionStyles.sessionCardTests}`}>
           <SavedTests {...this.props} />
+        </Card>}
+
+        {isViewing && <Card className={`${SessionStyles.sessionCard} ${SessionStyles.sessionCardResults}`}>
+          <TestResults {...this.props} />
         </Card>}
 
         {showCapsTab && <Card className={SessionStyles.sessionCard}>

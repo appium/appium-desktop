@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import moment from 'moment';
 import { Table, Icon, Tooltip, Button } from 'antd';
-import PlaybackStyles from './PlaybackLibrary.css';
+import PlaybackStyles from './Playback.css';
 import { stateDataForTest, sortedResults } from './shared';
 
 export default class TestResults extends Component {

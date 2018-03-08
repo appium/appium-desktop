@@ -11,8 +11,7 @@ import { iconForState, stateDataForTest, getTestResult, getTest,
 export default class TestRun extends Component {
 
   getTestStatus () {
-    const {actionsStatus} = this.props;
-    return stateDataForTest(actionsStatus);
+    return stateDataForTest(this.getActionsToShow());
   }
 
   getTestTime () {

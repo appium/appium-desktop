@@ -37,6 +37,7 @@
   -webkit-app-region: drag;
   padding-top: 2em;
   margin-top: -1em;
+  margin-bottom: 10px;
 }
 
 .sessionCard {
@@ -59,7 +60,8 @@
   height: 160px;
 }
 
-.sessionCardTests > :global(.ant-card-body) {
+.sessionCardTests > :global(.ant-card-body),
+.sessionCardResults > :global(.ant-card-body) {
   padding: 0px;
 }
 
@@ -69,6 +71,18 @@
 
 .sessionCardTests :global(.ant-table-small .ant-table-body > table) {
   padding: 0px;
+}
+
+.sessionCardResults {
+  height: 100%;
+}
+
+.sessionCardResults > :global(.ant-card-body) {
+  overflow-y: auto;
+}
+
+.sessionCardResults > :global(.ant-card-body::-webkit-scrollbar) {
+  width: 0px;
 }
 
 .serverTabs {
