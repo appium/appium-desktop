@@ -47,6 +47,7 @@
 
 .sessionCard > :global(.ant-card-body) {
   padding: 0px 10px;
+  height: 100%; /* for scrollability of children */
 }
 
 .sessionCardCaps {
@@ -55,9 +56,6 @@
 }
 
 .sessionCardTests {
-  min-height: 124px;
-  max-height: 288px;
-  flex: 2;
 }
 
 .sessionCardTests > :global(.ant-card-body) {
@@ -80,23 +78,24 @@
   height: 100px;
 }
 
-.scrollingTabCont {
-  flex-grow: 1;
-  display: flex;
+.scrollingTabs {
+  display: flex; /* set to flex so the tab bar and tab content can get their own height basis for scrolling */
   flex-direction: column;
+  height: 100%;
 }
 
-.scrollingTabCont :global(.ant-tabs-bar) {
-  margin-bottom: 0px;
+.scrollingTabs > :global(.ant-tabs-content),
+.scrollingTabs > :global(.ant-tabs-content) > :global(.ant-tabs-tabpane),
+.savedSessionsRow {
+  height: 100%;
 }
 
-.scrollingTab {
-  overflow-y: scroll;
-  flex-grow: 1;
-  padding-top: 16px;
+.savedSessionsCol {
+  height: 100%;
+  overflow-y: auto;
 }
 
-.scrollingTab::-webkit-scrollbar {
+.savedSessionsCol::-webkit-scrollbar {
   width: 0px;
 }
 
@@ -120,15 +119,25 @@
 }
 
 .capsFormCol {
-    min-width: 476px;
+  min-width: 476px;
+  height: 100%;
+  overflow-y: scroll;
+  padding-bottom: 10px;
+}
+
+.capsFormCol::-webkit-scrollbar, .capsFormattedCol::-webkit-scrollbar {
+  width: 0px;
 }
 
 .capsFormRow {
-    flex-wrap: nowrap;
+  flex-wrap: nowrap;
+  height: 100%;
 }
 
 .capsFormattedCol {
-    flex-grow: 1;
+  flex-grow: 1;
+  height: 100%;
+  overflow-y: auto;
 }
 
 .capsFormLastRow {
