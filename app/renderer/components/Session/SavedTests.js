@@ -1,15 +1,42 @@
 import React, { Component } from 'react';
 import moment from 'moment';
 import formatJSON from 'format-json';
-import PlaybackStyles from './PlaybackLibrary.css';
+import PlaybackStyles from './Playback.css';
 import { Tooltip, Table, Button, Modal } from 'antd';
 import { sortedTests } from './shared';
 
 export default class SavedTests extends Component {
 
+  constructor () {
+    super();
+    this.state = {
+      selectedTests: [],
+    };
+    this.onRowCheckbox = this.onRowCheckbox.bind(this);
+    this.onRowClick = this.onRowClick.bind(this);
+  }
+
+  onRowClick ({key}) {
+    let selectedTests = [...this.state.selectedTests];
+    if (selectedTests.indexOf(key) >= 0) {
+      selectedTests = [];
+    } else {
+      selectedTests = [key];
+    }
+    this.setState({selectedTests});
+  }
+
+  onRowCheckbox (selectedTests) {
+    selectedTests = selectedTests.filter((t) => {
+      return this.state.selectedTests.indexOf(t) === -1;
+    });
+    this.setState({selectedTests});
+  }
+
   render () {
     const {savedTests, deleteSavedTest, capsModal, showCapsModal, hideCapsModal,
-      getCapsObject, requestTestRun} = this.props;
+      requestTestRun} = this.props;
+    const {selectedTests} = this.state;
 
     const tests = sortedTests(savedTests);
 
@@ -31,17 +58,10 @@ export default class SavedTests extends Component {
     }, {
       title: 'Actions',
       key: 'action',
+      width: 95,
       render: (text, test) => (
         <div>
-          <Tooltip title="Run Test">
-            <Button icon="caret-right"
-              onClick={() => {requestTestRun(test.testId);}}
-            />
-          </Tooltip>
-
-          &nbsp;
-
-          <Tooltip title="Show Capabilities">
+          <Tooltip title="Show Capabilities as Recorded">
             <Button
               icon="menu-unfold"
               onClick={() => {showCapsModal(test.testId);}}
@@ -75,13 +95,23 @@ export default class SavedTests extends Component {
     }];
 
     const data = tests.map((t) => ({...t, key: t.testId}));
+    const rowSelection = {
+      selectedRowKeys: selectedTests,
+      onChange: this.onRowCheckbox
+    };
 
     return <Table
+      rowSelection={rowSelection}
+      size="small"
       className={PlaybackStyles.savedTestsTable}
       columns={columns}
       showHeader={false}
       dataSource={data}
-      pagination={false}
+      pagination={{
+        size: "small",
+        pageSize: 4,
+      }}
+      onRowClick={this.onRowClick}
     />;
   }
 }

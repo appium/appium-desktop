@@ -38,12 +38,6 @@ export default class Inspector extends Component {
     this.props.applyClientMethod({methodName: 'source'});
     this.props.getSavedActionFramework();
     this.props.getSavedTests();
-
-    // we might update the saved tests in another window, so listen for that
-    // here and refresh if necessary
-    ipcRenderer.on('appium-saved-tests-updated', async () => {
-      await this.props.getSavedTests();
-    });
   }
 
   screenshotInteractionChange (mode) {

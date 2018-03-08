@@ -51,7 +51,25 @@
 
 .sessionCardCaps {
   margin-bottom: 15px;
-  flex: 1;
+  flex: 5;
+}
+
+.sessionCardTests {
+  min-height: 124px;
+  max-height: 288px;
+  flex: 2;
+}
+
+.sessionCardTests > :global(.ant-card-body) {
+  padding: 0px;
+}
+
+.sessionCardTests :global(.ant-table) {
+  border: 0px;
+}
+
+.sessionCardTests :global(.ant-table-small .ant-table-body > table) {
+  padding: 0px;
 }
 
 .serverTabs {

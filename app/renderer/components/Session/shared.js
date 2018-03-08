@@ -1,6 +1,8 @@
-import { ACTION_STATE_PENDING, ACTION_STATE_IN_PROGRESS, ACTION_STATE_COMPLETE,
-  ACTION_STATE_ERRORED, ACTION_STATE_CANCELED, getTestResult, getTest } from '../../actions/PlaybackLibrary';
-import { ServerTypes } from '../../actions/Session';
+import {
+  ACTION_STATE_PENDING, ACTION_STATE_IN_PROGRESS, ACTION_STATE_COMPLETE,
+  ACTION_STATE_ERRORED, ACTION_STATE_CANCELED, getTestResult, ServerTypes,
+  getTest
+} from '../../actions/Session';
 
 export function iconForState (state) {
   const iconMap = {

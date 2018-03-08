@@ -3,8 +3,9 @@ import settings from '../../settings';
 import { v4 as UUID } from 'uuid';
 import { push } from 'react-router-redux';
 import { notification } from 'antd';
-import { isPlainObject, debounce, toPairs } from 'lodash';
-import { setSessionDetails } from './Inspector';
+import { cloneDeep, isPlainObject, debounce, toPairs } from 'lodash';
+import { callClientMethod } from './shared';
+import { setSessionDetails, SAVED_TESTS, SET_SAVED_TESTS } from './Inspector';
 
 export const NEW_SESSION_REQUESTED = 'NEW_SESSION_REQUESTED';
 export const NEW_SESSION_BEGAN = 'NEW_SESSION_BEGAN';
@@ -40,12 +41,35 @@ export const SET_ATTACH_SESS_ID = 'SET_ATTACH_SESS_ID';
 export const GET_SESSIONS_REQUESTED = 'GET_SESSIONS_REQUESTED';
 export const GET_SESSIONS_DONE = 'GET_SESSIONS_DONE';
 
-
 export const ENABLE_DESIRED_CAPS_EDITOR = 'ENABLE_DESIRED_CAPS_EDITOR';
 export const ABORT_DESIRED_CAPS_EDITOR = 'ABORT_DESIRED_CAPS_EDITOR';
 export const SAVE_RAW_DESIRED_CAPS = 'SAVE_RAW_DESIRED_CAPS';
 export const SET_RAW_DESIRED_CAPS = 'SET_RAW_DESIRED_CAPS';
 export const SHOW_DESIRED_CAPS_JSON_ERROR = 'SHOW_DESIRED_CAPS_JSON_ERROR';
+
+export const CHANGE_SESSION_MODE = 'CHANGE_SESSION_MODE';
+
+export const CHANGE_TEST = 'CHANGE_TEST';
+export const DELETE_SAVED_TEST_REQUESTED = 'DELETE_SAVED_TEST_REQUESTED';
+export const DELETE_SAVED_TEST_DONE = 'DELETE_SAVED_TEST_DONE';
+export const SHOW_CAPS_MODAL = 'SHOW_CAPS_MODAL';
+export const HIDE_CAPS_MODAL = 'HIDE_CAPS_MODAL';
+
+export const TEST_RUN_REQUESTED = 'TEST_RUN_REQUESTED';
+export const TEST_RUNNING = 'TEST_RUNNING';
+export const HIDE_TESTRUN_MODAL = 'HIDE_TESTRUN_MODAL';
+export const TEST_ACTION_UPDATED = 'TEST_ACTION_UPDATED';
+export const TEST_COMPLETE = 'TEST_COMPLETE';
+
+export const ACTION_STATE_PENDING = 'pending';
+export const ACTION_STATE_IN_PROGRESS = 'running';
+export const ACTION_STATE_COMPLETE = 'complete';
+export const ACTION_STATE_ERRORED = 'errored';
+export const ACTION_STATE_CANCELED = 'canceled';
+
+export const TEST_RESULTS = 'TEST_RESULTS';
+export const SET_TEST_RESULTS = 'SET_TEST_RESULTS';
+export const SHOW_RESULT = 'SHOW_RESULT';
 
 export const ServerTypes = {
   local: 'local',
@@ -53,6 +77,12 @@ export const ServerTypes = {
   sauce: 'sauce',
   testobject: 'testobject',
   headspin: 'headspin',
+};
+
+export const SessionModes = {
+  inspect: 'inspect',
+  playback: 'playback',
+  view: 'view',
 };
 
 const JSON_TYPES = ['json_object', 'number', 'boolean'];
@@ -530,4 +560,287 @@ export function setRawDesiredCaps (rawDesiredCaps) {
     }
     dispatch({type: SET_RAW_DESIRED_CAPS, rawDesiredCaps, isValidCapsJson, invalidCapsJsonReason});
   };
+}
+
+export function changeSessionMode (mode) {
+  return (dispatch) => {
+    dispatch({type: CHANGE_SESSION_MODE, mode});
+  };
+}
+
+export function deleteSavedTest (id) {
+  return async (dispatch) => {
+    dispatch({type: DELETE_SAVED_TEST_REQUESTED, id});
+    const tests = await settings.get(SAVED_TESTS);
+    const newTests = tests.filter((t) => t.testId !== id);
+    await settings.set(SAVED_TESTS, newTests);
+    dispatch({type: SET_SAVED_TESTS, tests: newTests});
+    dispatch({type: DELETE_SAVED_TEST_DONE});
+  };
+}
+
+export function showCapsModal (id) {
+  return (dispatch) => {
+    dispatch({type: SHOW_CAPS_MODAL, id});
+  };
+}
+
+export function hideCapsModal () {
+  return (dispatch) => {
+    dispatch({type: HIDE_CAPS_MODAL});
+  };
+}
+
+export function hideTestRunModal () {
+  return (dispatch) => {
+    dispatch({type: HIDE_TESTRUN_MODAL});
+  };
+}
+
+export function requestTestRun (id) {
+  return (dispatch, getState) => {
+    dispatch({type: TEST_RUN_REQUESTED, id});
+    const {savedTests, serverType} = getState().playbackLibrary;
+    const test = savedTests.filter((t) => t.testId === id)[0];
+    runTest(serverType, test.caps, test.actions)(dispatch, getState);
+  };
+}
+
+function initActionsStatus (dispatch, testActions) {
+  const newSessionAction = {action: "startSession", params: []};
+  const quitSessionAction = {action: "quit", params: []};
+  const clonedActions = testActions.map(cloneDeep);
+  let actions = [newSessionAction, ...clonedActions, quitSessionAction];
+
+  // every action starts out pending
+  for (let a of actions) {
+    a.state = ACTION_STATE_PENDING;
+    a.err = null;
+    a.isElCmd = false;
+    a.elListIndex = null;
+
+    // if we have a findAndAssign, rewrite to something we understand
+    if (a.action === "findAndAssign") {
+      if (a.params[3]) {
+        // if the 4th index contains a truthy value, that means we are
+        // finding multiple elements
+        a.action = "findElements";
+      } else {
+        a.action = "findElement";
+      }
+    } else if (a.action !== "startSession" && a.action !== "quit") {
+      // when other commands come in via actions, they have two params at the
+      // front. the first is the name of the variable they will be acting on,
+      // which we don't care about. the second is either null, or an integer
+      // denoting the index of the element from the last multiple-element
+      // find. this is relevant information, but we don't want it on the
+      // params list because it won't be included in the actual arguments
+      // sent to the wd command. so strip it out after saving the relevant
+      // info as separate action fields outside the params.
+      if (a.params[0] !== null) {
+        a.isElCmd = true;
+      }
+      if (a.params[1] !== null) {
+        a.elListIndex = a.params[1];
+      }
+      a.params = a.params.slice(2);
+    }
+  }
+  dispatch({type: TEST_ACTION_UPDATED, actions});
+  return actions;
+}
+
+function updateActionStatus (dispatch, getState, actionIndex, state,
+    {err = null, elapsedMs = null, sessionId = null}) {
+  let actions = getState().playbackLibrary.actionsStatus;
+  const action = actions[actionIndex];
+  let newAction = {...action, state, err, elapsedMs};
+  if (sessionId) {
+    newAction.sessionId = sessionId;
+  }
+  actions.splice(actionIndex, 1, newAction);
+  dispatch({type: TEST_ACTION_UPDATED, actions});
+}
+
+// convert an error encountered during test playback into a known quantity
+function convertError (err) {
+  let message = null;
+  if (err.code) {
+    message = err.code;
+    if (err.code === "ECONNREFUSED") {
+      message = "Could not connect to the server; are you sure it's running?";
+    }
+  } else if (err.data) {
+    message = err.data;
+    try {
+      message = JSON.parse(err.data).value.message;
+    } catch (ign) {}
+  } else if (err.message) {
+    message = err.message;
+  } else if (typeof err === "string") {
+    message = err;
+  }
+
+  if (!message) {
+    message = "An unknown error occurred";
+  }
+
+  return new Error(message);
+}
+
+export function runTest (serverType, caps, actions) {
+  return (dispatch, getState) => {
+
+    // create a little convenience method for updating the action status
+    const updateState = (index, state, err = null, startTime = null, sessionId = null) => {
+      if (err) {
+        err = convertError(err);
+      }
+
+      let elapsedMs = null;
+      if (startTime) {
+        elapsedMs = Date.now() - startTime;
+      }
+      updateActionStatus(dispatch, getState, index, state, {err, elapsedMs, sessionId});
+      return Date.now();
+    };
+
+    // right at the outset, say that we're running a test
+    dispatch({type: TEST_RUNNING});
+
+    // set up initial action states
+    actions = initActionsStatus(dispatch, actions);
+
+    // new session requested, update the first action in the list (0-index)
+    let startTime = updateState(0, ACTION_STATE_IN_PROGRESS);
+    startSession(caps, serverType, getState().session.server);
+
+    // If it failed, show an alert saying it failed, and update state
+    ipcRenderer.once('appium-new-session-failed', async (evt, e) => {
+      updateState(0, ACTION_STATE_ERRORED, e, startTime);
+      await completeTest(dispatch, getState);
+    });
+
+    // otherwise, if it's ready, update the new session action state and go on
+    ipcRenderer.once('appium-new-session-ready', async (evt, sessionId) => {
+      updateState(0, ACTION_STATE_COMPLETE, null, startTime, sessionId);
+
+      // now loop through all the actual test actions
+      let actionIndex; // we will start at 1 since the first action was new session
+      let lastFoundElId = null;
+      let lastFoundElIds = [];
+      const lastActionIndex = actions.length - 1;
+      for (actionIndex = 1; actionIndex < lastActionIndex; actionIndex++) {
+        const action = actions[actionIndex];
+        try {
+          startTime = updateState(actionIndex, ACTION_STATE_IN_PROGRESS);
+
+          if (action.action.indexOf("findElement") === 0) {
+            // if we're finding an element or elements, unwrap the 'action'
+            // format into what callClientMethod expects
+            const [strategy, selector] = action.params;
+            const fetchArray = action.action === "findElements";
+            const res = await callClientMethod({
+              strategy,
+              selector,
+              fetchArray,
+              skipScreenshotAndSource: true // during playback we don't waste time with these
+            });
+            if (fetchArray) {
+              lastFoundElIds = res.elements.map((el) => el.id);
+            } else {
+              lastFoundElId = res.id;
+            }
+          } else {
+            // otherwise, we're performing an action, so perform the action
+            // either on the last found element or the index of the list of
+            // last found elements (depending on whether the last find was
+            // a single or multiple find)
+            let elementId = null;
+            if (action.isElCmd) {
+              if (action.elListIndex !== null) {
+                elementId = lastFoundElIds[action.elListIndex];
+              } else {
+                elementId = lastFoundElId;
+              }
+            }
+            await callClientMethod({
+              methodName: action.action,
+              args: action.params,
+              skipScreenshotAndSource: true,
+              elementId,
+            });
+          }
+          updateState(actionIndex, ACTION_STATE_COMPLETE, null, startTime);
+        } catch (e) {
+          updateState(actionIndex, ACTION_STATE_ERRORED, e, startTime);
+          break;
+        }
+      }
+
+      // now that we're done with all the actual recorded commands, we have one
+      // more command to run, namely the quit session. so handle that along
+      // with updating its state along the way
+      startTime = updateState(lastActionIndex, ACTION_STATE_IN_PROGRESS);
+      try {
+        await callClientMethod({
+          methodName: 'quit'
+        });
+        updateState(lastActionIndex, ACTION_STATE_COMPLETE, null, startTime);
+      } catch (e) {
+        updateState(lastActionIndex, ACTION_STATE_ERRORED, e, startTime);
+      }
+
+      // finally, gather the result to save and dispatch the completed actions
+      await completeTest(dispatch, getState);
+    });
+  };
+}
+
+async function completeTest (dispatch, getState) {
+  const state = getState().playbackLibrary;
+  const serverType = state.serverType;
+  const actions = state.actionsStatus;
+  const date = Date.now();
+  const testId = state.testToRun;
+  const test = getTest(testId, state.savedTests);
+  const {caps, name} = test;
+  const resultId = UUID();
+  const result = {name, testId, date, actions, serverType, caps, resultId};
+
+  const results = await settings.get(TEST_RESULTS);
+  const newResults = [result, ...results];
+  await settings.set(TEST_RESULTS, newResults);
+  dispatch({type: TEST_COMPLETE});
+  dispatch({type: SET_TEST_RESULTS, results: newResults});
+}
+
+export function getTestResults () {
+  return async (dispatch) => {
+    const results = await settings.get(TEST_RESULTS);
+    dispatch({type: SET_TEST_RESULTS, results});
+  };
+}
+
+export function deleteTestResult (id) {
+  return async (dispatch) => {
+    const results = await settings.get(TEST_RESULTS);
+    const newResults = results.filter((r) => r.resultId !== id);
+    await settings.set(TEST_RESULTS, newResults);
+    dispatch({type: SET_TEST_RESULTS, results: newResults});
+  };
+}
+
+export function showTestResult (id) {
+  return (dispatch) => {
+    dispatch({type: SHOW_RESULT, id});
+  };
+}
+
+export function getTestResult (id, testResults) {
+  return testResults.filter((r) => r.resultId === id)[0];
+}
+
+export function getTest (id, savedTests) {
+  return savedTests.filter((r) => r.testId === id)[0];
 }

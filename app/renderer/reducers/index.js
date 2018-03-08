@@ -4,7 +4,6 @@ import startServer from './StartServer';
 import serverMonitor from './ServerMonitor';
 import session from './Session';
 import inspector from './Inspector';
-import playbackLibrary from './PlaybackLibrary';
 import updater from './Updater';
 
 // create our root reducer
@@ -14,7 +13,6 @@ const rootReducer = combineReducers({
   serverMonitor,
   session,
   inspector,
-  playbackLibrary,
   updater,
 });
 

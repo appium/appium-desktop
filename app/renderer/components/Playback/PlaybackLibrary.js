@@ -22,12 +22,6 @@ export default class PlaybackLibrary extends Component {
       await setSavedServerParams();
       await setLocalServerParams();
     })();
-
-    // listen to the main process in case the inspector window saves a new test
-    // while we have the playback window open
-    ipcRenderer.on('appium-saved-tests-updated', async () => {
-      await getSavedTests();
-    });
   }
 
   render () {

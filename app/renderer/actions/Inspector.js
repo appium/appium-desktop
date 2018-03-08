@@ -11,8 +11,6 @@ import { getOptimalXPath } from '../util';
 import frameworks from '../lib/client-frameworks';
 import settings from '../../settings';
 
-import { SAVED_TESTS } from './PlaybackLibrary';
-
 export const SET_SESSION_DETAILS = 'SET_SESSION_DETAILS';
 export const SET_SOURCE_AND_SCREENSHOT = 'SET_SOURCE_AND_SCREENSHOT';
 export const SESSION_DONE = 'SESSION_DONE';
@@ -58,6 +56,7 @@ export const SET_SWIPE_START = 'SET_SWIPE_START';
 export const SET_SWIPE_END = 'SET_SWIPE_END';
 export const CLEAR_SWIPE_ACTION = 'CLEAR_SWIPE_ACTION';
 
+export const SAVED_TESTS = 'SAVED_TESTS';
 export const SET_SAVED_TESTS = 'SET_SAVED_TESTS';
 export const SHOW_SAVE_TEST_MODAL = 'SHOW_SAVE_TEST_MODAL';
 export const HIDE_SAVE_TEST_MODAL = 'HIDE_SAVE_TEST_MODAL';
@@ -467,6 +466,5 @@ export function saveTest (testName) {
     }]);
     await settings.set(SAVED_TESTS, newTests);
     dispatch({type: SET_SAVED_TESTS, tests: newTests});
-    ipcRenderer.send('appium-saved-tests-updated');
   };
 }

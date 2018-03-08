@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 
-import { ipcMain, BrowserWindow, Menu, app, remote } from 'electron';
+import { ipcMain, BrowserWindow, Menu, app } from 'electron';
 import { main as appiumServer } from 'appium';
 import { getDefaultArgs, getParser } from 'appium/build/lib/parser';
 import path from 'path';
@@ -201,8 +201,8 @@ export function createNewSessionWindow (mainWin) {
   let sessionWin = new BrowserWindow({
     width: 920,
     minWidth: 920,
-    height: 570,
-    minHeight: 570,
+    height: 800,
+    minHeight: 800,
     title: "Start Session",
     backgroundColor: "#f2f2f2",
     frame: "customButtonsOnHover",
@@ -292,43 +292,6 @@ function connectCreateNewSession () {
       await killSession(event.sender);
       event.sender.send('appium-new-session-failed', e);
     }
-  });
-}
-
-/**
- * Opens a new window for creating new playback sessions
- */
-function connectCreatePlaybackWindow (win) {
-  ipcMain.on('create-playback-window', () => {
-    createPlaybackWindow(win);
-  });
-}
-
-export function createPlaybackWindow (mainWin) {
-  // Create and open the Browser Window
-  let playbackWin = new BrowserWindow({
-    width: 920,
-    minWidth: 920,
-    height: 570,
-    minHeight: 570,
-    title: "Start Playback Session",
-    backgroundColor: "#f2f2f2",
-    frame: "customButtonsOnHover",
-    titleBarStyle: 'hidden',
-    webPreferences: {
-      devTools: true
-    }
-  });
-  const playbackHTMLPath = `${getBaseHTMLPath()}#/playback`;
-  playbackWin.loadURL(`file://${playbackHTMLPath}`);
-  playbackWin.show();
-
-  bindSessionKillOnClose(playbackWin);
-  bindDevTools(playbackWin);
-  savedTestWindows.push(playbackWin);
-  // When the main window is closed, close the playback window too
-  mainWin.once('closed', () => {
-    playbackWin = null;
   });
 }
 
@@ -426,16 +389,6 @@ function connectMoveToApplicationsFolder () {
   });
 }
 
-function connectSetSavedTests () {
-  ipcMain.on('appium-saved-tests-updated', () => {
-    for (let win of savedTestWindows) {
-      if (win.webContents) {
-        win.webContents.send('appium-saved-tests-updated');
-      }
-    }
-  });
-}
-
 function initializeIpc (win) {
   // listen for 'start-server' from the renderer
   connectStartServer(win);
@@ -443,14 +396,12 @@ function initializeIpc (win) {
   connectStopServer(win);
   // listen for 'create-new-session-window' from the renderer
   connectCreateNewSessionWindow(win);
-  connectCreatePlaybackWindow(win);
   connectGetDefaultArgs();
   connectCreateNewSession(win);
   connectClientMethodListener(win);
   connectGetSessionsListener();
   connectRestartRecorder();
   connectMoveToApplicationsFolder();
-  connectSetSavedTests();
 
   autoUpdaterController.setMainWindow(win);
   autoUpdaterController.checkForUpdates();

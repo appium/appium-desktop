@@ -1,9 +1,8 @@
 import settings from 'electron-settings';
 import { PRESETS } from './renderer/actions/StartServer';
 import { SAVED_SESSIONS, SERVER_ARGS, SESSION_SERVER_PARAMS,
-         SESSION_SERVER_TYPE } from './renderer/actions/Session';
-import { SAVED_FRAMEWORK } from './renderer/actions/Inspector';
-import { SAVED_TESTS, TEST_RESULTS } from './renderer/actions/PlaybackLibrary';
+         SESSION_SERVER_TYPE, TEST_RESULTS } from './renderer/actions/Session';
+import { SAVED_FRAMEWORK, SAVED_TESTS } from './renderer/actions/Inspector';
 
 // set default persistent settings
 // do it here because settings are kind of like state!
