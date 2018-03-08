@@ -11,9 +11,6 @@ import { checkUpdate } from './update-checker';
 import { getFeedUrl } from './config';
 import _ from 'lodash';
 
-// Alias 'checkForUpdates' as 'getUpdates' to avoid confusion ('checkForUpdates' downloads updates automatically)
-const {checkForUpdates:getUpdates} = autoUpdater;
-
 const isDev = process.env.NODE_ENV === 'development';
   
 let checkNewUpdates = _.noop;
@@ -43,7 +40,7 @@ if (!isDev) {
       }, (response) => {
         if (response === 0) {
           // If they say yes, get the updates now
-          getUpdates();
+          autoUpdater.checkForUpdates();
         }
       });
     } else {
