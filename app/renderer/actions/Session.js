@@ -665,7 +665,7 @@ function initActionsStatus (dispatch, testActions) {
 
 function updateActionStatus (dispatch, getState, actionIndex, state,
     {err = null, elapsedMs = null, sessionId = null}) {
-  let actions = getState().session.actionsStatus;
+  let actions = cloneDeep(getState().session.actionsStatus);
   const action = actions[actionIndex];
   let newAction = {...action, state, err, elapsedMs};
   if (sessionId) {

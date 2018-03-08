@@ -105,7 +105,9 @@ function macMenuView (mainWindow) {
       label: 'Toggle Developer Tools',
       accelerator: 'Alt+Command+I',
       click () {
-        mainWindow.toggleDevTools();
+        try {
+          mainWindow.toggleDevTools();
+        } catch (ign) {}
       }
     }] : [{
       label: 'Toggle Full Screen',
@@ -231,7 +233,9 @@ function otherMenuView (mainWindow) {
       label: 'Toggle &Developer Tools',
       accelerator: 'Alt+Ctrl+I',
       click () {
-        mainWindow.toggleDevTools();
+        try {
+          mainWindow.toggleDevTools();
+        } catch (ign) {}
       }
     }] : [{
       label: 'Toggle &Full Screen',
