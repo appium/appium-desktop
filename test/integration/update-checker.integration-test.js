@@ -7,7 +7,7 @@ import { checkUpdate } from '../../app/main/auto-updater/update-checker';
 chai.should();
 chai.use(chaiAsPromised);
 
-describe('appiumDriverExtender', function () {
+describe('updateChecker', function () {
   let latestVersion;
 
   before(async function () {
@@ -16,7 +16,7 @@ describe('appiumDriverExtender', function () {
     latestVersion = res.name;
   });
 
-  describe('.fetchElement, .fetchElements', function () {
+  describe('.checkUpdate', function () {
     it('not find anything if latest release is same as current release', async function () {
       await checkUpdate(latestVersion).should.eventually.equal(false);
     });
