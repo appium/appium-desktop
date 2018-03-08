@@ -6,6 +6,7 @@ import AttachToSession from './AttachToSession';
 import SessionModeTabs from './SessionModeTabs';
 import ServerTypeTabs from './ServerTypeTabs';
 import SavedTests from './SavedTests';
+import TestRun from './TestRun';
 import { Tabs, Button, Spin, Icon, Card } from 'antd';
 import SessionStyles from './Session.css';
 import { SessionModes } from '../../actions/Session';
@@ -32,17 +33,19 @@ export default class Session extends Component {
   render () {
     const {newSessionBegan, savedSessions, tabKey, switchTabs,
       requestSaveAsModal, newSession, caps, capsUUID, saveSession, isCapsDirty,
-      sessionLoading, attachSessId, mode} = this.props;
+      sessionLoading, attachSessId, mode, requestTestRun, testToRun} = this.props;
 
     const isAttaching = tabKey === 'attach';
-    const showCapsTab = !newSessionBegan && mode !== SessionModes.view;
-    const showSavedTests = mode === SessionModes.playback;
+    const isInspecting = mode === SessionModes.inspect;
+    const isPlayback = mode === SessionModes.playback;
+    const isViewing = mode === SessionModes.view;
+    const showCapsTab = !newSessionBegan && !isViewing;
 
     return <Spin spinning={!!sessionLoading}>
       <div className={SessionStyles['session-container']}>
         <SessionModeTabs {...this.props} />
 
-        {showSavedTests && <Card className={`${SessionStyles.sessionCard} ${SessionStyles.sessionCardTests}`}>
+        {isPlayback && <Card className={`${SessionStyles.sessionCard} ${SessionStyles.sessionCardTests}`}>
           <SavedTests {...this.props} />
         </Card>}
 
@@ -77,17 +80,27 @@ export default class Session extends Component {
               Desired Capabilities Documentation
             </a>
           </div>
-          { (!isAttaching && capsUUID) && <Button onClick={() => saveSession(caps, {uuid: capsUUID})} disabled={!isCapsDirty}>Save</Button> }
-          {!isAttaching && <Button onClick={requestSaveAsModal}>Save As...</Button>}
-          {!isAttaching && <Button type="primary" id='btnStartSession'
+          { (!isAttaching && capsUUID) && <Button onClick={() => saveSession(caps, {uuid: capsUUID})} disabled={!isCapsDirty}>Save Capabilities</Button> }
+          {!isAttaching && <Button onClick={requestSaveAsModal}>Save Capabilities As...</Button>}
+          {isInspecting && !isAttaching && <Button type="primary" id='btnStartSession'
             onClick={() => newSession(caps)} className={SessionStyles['start-session-button']}>Start Session</Button>
           }
-          {isAttaching &&
+          {isInspecting && isAttaching &&
             <Button type="primary" disabled={!attachSessId} onClick={() => newSession(null, attachSessId)}>
               Attach to Session
             </Button>
           }
+          {isPlayback &&
+            <Button type="primary" disabled={!testToRun} onClick={requestTestRun}
+              className={SessionStyles['start-session-button']}
+            >
+                Run Test
+            </Button>
+          }
         </div>}
+
+        <TestRun {...this.props} />
+
       </div>
     </Spin>;
   }

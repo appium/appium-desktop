@@ -16,26 +16,42 @@ export default class SavedTests extends Component {
     this.onRowClick = this.onRowClick.bind(this);
   }
 
+  componentWillMount () {
+    const {testToRun} = this.props;
+    if (testToRun) {
+      this.setState({selectedTests: [testToRun]});
+    }
+  }
+
+  selectTest (testId) {
+    const {selectTestToRun} = this.props;
+    const selectedTests = testId ? [testId] : [];
+    this.setState({selectedTests});
+    selectTestToRun(testId || null);
+  }
+
   onRowClick ({key}) {
     let selectedTests = [...this.state.selectedTests];
     if (selectedTests.indexOf(key) >= 0) {
-      selectedTests = [];
+      // if the key is already in our list, we need to deselect it
+      this.selectTest(null);
     } else {
-      selectedTests = [key];
+      this.selectTest(key);
     }
-    this.setState({selectedTests});
   }
 
   onRowCheckbox (selectedTests) {
-    selectedTests = selectedTests.filter((t) => {
+    const selectedTest = selectedTests.filter((t) => {
       return this.state.selectedTests.indexOf(t) === -1;
-    });
-    this.setState({selectedTests});
+    })[0];
+    this.selectTest(selectedTest);
   }
 
   render () {
-    const {savedTests, deleteSavedTest, capsModal, showCapsModal, hideCapsModal,
-      requestTestRun} = this.props;
+    const {
+      savedTests, deleteSavedTest, capsModal, showCapsModal, hideCapsModal,
+      setCapsFromTest,
+    } = this.props;
     const {selectedTests} = this.state;
 
     const tests = sortedTests(savedTests);
@@ -58,20 +74,36 @@ export default class SavedTests extends Component {
     }, {
       title: 'Actions',
       key: 'action',
-      width: 95,
+      width: 120,
       render: (text, test) => (
         <div>
+          <Tooltip title="Send Capabilities">
+            <Button
+              icon="download"
+              onClick={(e) => {
+                e.stopPropagation();
+                setCapsFromTest(test.testId);
+              }}
+            />
+          </Tooltip>
+
+          &nbsp;
+
           <Tooltip title="Show Capabilities as Recorded">
             <Button
               icon="menu-unfold"
-              onClick={() => {showCapsModal(test.testId);}}
+              onClick={(e) => {
+                e.stopPropagation();
+                showCapsModal(test.testId);
+              }}
             />
           </Tooltip>
 
           &nbsp;
 
           <Tooltip title="Delete Test">
-            <Button icon="delete" onClick={() => {
+            <Button icon="delete" onClick={(e) => {
+              e.stopPropagation();
               if (confirm(`Delete test '${test.name}'?`)) {
                 deleteSavedTest(test.testId);
               }
@@ -84,7 +116,6 @@ export default class SavedTests extends Component {
             }
             closable={false}
             title={<div><b>{test.name}</b> capabilities</div>}
-            wrapClassName={PlaybackStyles.verticalCenterModal}
           >
             <pre className={PlaybackStyles.capsModalPre}>
               {formatJSON.plain(test.caps)}
@@ -109,7 +140,7 @@ export default class SavedTests extends Component {
       dataSource={data}
       pagination={{
         size: "small",
-        pageSize: 4,
+        pageSize: 3,
       }}
       onRowClick={this.onRowClick}
     />;

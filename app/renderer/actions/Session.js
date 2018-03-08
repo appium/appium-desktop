@@ -55,6 +55,7 @@ export const DELETE_SAVED_TEST_DONE = 'DELETE_SAVED_TEST_DONE';
 export const SHOW_CAPS_MODAL = 'SHOW_CAPS_MODAL';
 export const HIDE_CAPS_MODAL = 'HIDE_CAPS_MODAL';
 
+export const TEST_SELECTED = 'TEST_SELECTED';
 export const TEST_RUN_REQUESTED = 'TEST_RUN_REQUESTED';
 export const TEST_RUNNING = 'TEST_RUNNING';
 export const HIDE_TESTRUN_MODAL = 'HIDE_TESTRUN_MODAL';
@@ -508,36 +509,42 @@ export function abortDesiredCapsEditor () {
   };
 }
 
+function getCapsArrayFromRaw (rawDesiredCaps, capsArray) {
+  const newCaps = JSON.parse(rawDesiredCaps);
+
+  // Transform the current caps array to an object
+  let caps = {};
+  for (let {type, name, value} of capsArray) {
+    caps[name] = {type, value};
+  }
+
+  // Translate the caps JSON to array format
+  let newCapsArray = toPairs(newCaps).map(([name, value]) => ({
+    type: (() => {
+      let type = typeof value;
+
+      // If we already have this cap and it's file type, keep the type the same
+      if (caps[name] && caps[name].type === 'file' && type === 'string') {
+        return 'file';
+      } else if (type === 'string') {
+        return 'text';
+      } else {
+        return type;
+      }
+    })(),
+    name,
+    value,
+  }));
+
+  return newCapsArray;
+}
+
 export function saveRawDesiredCaps () {
   return (dispatch, getState) => {
     const state = getState().session;
     const {rawDesiredCaps, caps: capsArray} = state;
     try {
-      const newCaps = JSON.parse(rawDesiredCaps);
-
-      // Transform the current caps array to an object
-      let caps = {};
-      for (let {type, name, value} of capsArray) {
-        caps[name] = {type, value};
-      }
-
-      // Translate the caps JSON to array format
-      let newCapsArray = toPairs(newCaps).map(([name, value]) => ({
-        type: (() => {
-          let type = typeof value;
-
-          // If we already have this cap and it's file type, keep the type the same
-          if (caps[name] && caps[name].type === 'file' && type === 'string') {
-            return 'file';
-          } else if (type === 'string') {
-            return 'text';
-          } else {
-            return type;
-          }
-        })(),
-        name,
-        value,
-      }));
+      const newCapsArray = getCapsArrayFromRaw(rawDesiredCaps, capsArray);
       dispatch({type: SAVE_RAW_DESIRED_CAPS, caps: newCapsArray});
     } catch (e) {
       dispatch({type: SHOW_DESIRED_CAPS_JSON_ERROR, message: e.message});
@@ -597,12 +604,18 @@ export function hideTestRunModal () {
   };
 }
 
-export function requestTestRun (id) {
+export function selectTestToRun (id) {
+  return (dispatch) => {
+    dispatch({type: TEST_SELECTED, id});
+  };
+}
+
+export function requestTestRun () {
   return (dispatch, getState) => {
-    dispatch({type: TEST_RUN_REQUESTED, id});
-    const {savedTests, serverType} = getState().playbackLibrary;
-    const test = savedTests.filter((t) => t.testId === id)[0];
-    runTest(serverType, test.caps, test.actions)(dispatch, getState);
+    const {testToRun, savedTests, serverType, caps} = getState().session;
+    dispatch({type: TEST_RUN_REQUESTED});
+    const test = getTest(testToRun, savedTests);
+    runTest(serverType, caps, test.actions)(dispatch, getState);
   };
 }
 
@@ -652,7 +665,7 @@ function initActionsStatus (dispatch, testActions) {
 
 function updateActionStatus (dispatch, getState, actionIndex, state,
     {err = null, elapsedMs = null, sessionId = null}) {
-  let actions = getState().playbackLibrary.actionsStatus;
+  let actions = getState().session.actionsStatus;
   const action = actions[actionIndex];
   let newAction = {...action, state, err, elapsedMs};
   if (sessionId) {
@@ -798,7 +811,7 @@ export function runTest (serverType, caps, actions) {
 }
 
 async function completeTest (dispatch, getState) {
-  const state = getState().playbackLibrary;
+  const state = getState().session;
   const serverType = state.serverType;
   const actions = state.actionsStatus;
   const date = Date.now();
@@ -843,4 +856,16 @@ export function getTestResult (id, testResults) {
 
 export function getTest (id, savedTests) {
   return savedTests.filter((r) => r.testId === id)[0];
+}
+
+export function setCapsFromTest (id) {
+  return (dispatch, getState) => {
+    const savedTests = getState().session.savedTests;
+    const test = getTest(id, savedTests);
+    const caps = getCapsArrayFromRaw(JSON.stringify(test.caps), []);
+    dispatch({
+      type: SAVE_RAW_DESIRED_CAPS,
+      caps
+    });
+  };
 }

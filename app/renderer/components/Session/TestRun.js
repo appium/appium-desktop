@@ -3,7 +3,7 @@ import { shell } from 'electron';
 import moment from 'moment';
 import { Icon, Modal, Table, Button } from 'antd';
 import { toPairs, sum } from 'lodash';
-import PlaybackStyles from './PlaybackLibrary.css';
+import PlaybackStyles from './Playback.css';
 import { iconForState, stateDataForTest, getTestResult, getTest,
   getSessionId, getTestUrl
 } from './shared';
@@ -20,8 +20,8 @@ export default class TestRun extends Component {
   }
 
   getTestNameToShow () {
-    const {testToRun, testResultToShow} = this.props;
-    return testToRun || testResultToShow;
+    const {testInProgress, testResultToShow} = this.props;
+    return testInProgress || testResultToShow;
   }
 
   isModalVisible () {
@@ -29,18 +29,18 @@ export default class TestRun extends Component {
   }
 
   getTestToShow () {
-    const {testToRun, savedTests, testResults, testResultToShow} = this.props;
+    const {testInProgress, savedTests, testResults, testResultToShow} = this.props;
 
-    if (testToRun) {
-      return getTest(testToRun, savedTests);
+    if (testInProgress) {
+      return getTest(testInProgress, savedTests);
     }
 
     return getTestResult(testResultToShow, testResults);
   }
 
   getActionsToShow () {
-    const {testToRun, testResultToShow, testResults, actionsStatus} = this.props;
-    if (testToRun) {
+    const {testInProgress, testResultToShow, testResults, actionsStatus} = this.props;
+    if (testInProgress) {
       return actionsStatus;
     }
 

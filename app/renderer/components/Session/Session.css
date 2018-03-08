@@ -56,6 +56,7 @@
 }
 
 .sessionCardTests {
+  height: 160px;
 }
 
 .sessionCardTests > :global(.ant-card-body) {

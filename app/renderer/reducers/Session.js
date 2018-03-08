@@ -15,7 +15,7 @@ import {
   DELETE_SAVED_TEST_REQUESTED, DELETE_SAVED_TEST_DONE, SHOW_CAPS_MODAL,
   HIDE_CAPS_MODAL, TEST_RUNNING, HIDE_TESTRUN_MODAL, TEST_COMPLETE,
   TEST_ACTION_UPDATED, TEST_RUN_REQUESTED, SET_TEST_RESULTS, SHOW_RESULT,
-  ServerTypes, SessionModes
+  TEST_SELECTED, ServerTypes, SessionModes
 } from '../actions/Session';
 
 import { SET_SAVED_TESTS } from '../actions/Inspector';
@@ -55,6 +55,7 @@ const INITIAL_STATE = {
   deletingTest: null,
   capsModal: null,
   testToRun: null,
+  testInProgress: null,
   testResultToShow: null,
   isTestRunning: false,
   actionsStatus: [],
@@ -304,8 +305,11 @@ export default function session (state = INITIAL_STATE, action) {
     case TEST_ACTION_UPDATED:
       return {...state, actionsStatus: action.actions};
 
+    case TEST_SELECTED:
+      return {...state, testToRun: action.id};
+
     case TEST_RUN_REQUESTED:
-      return {...state, testToRun: action.id, actionsStatus: []};
+      return {...state, testInProgress: state.testToRun, actionsStatus: []};
 
     case TEST_RUNNING:
       return {...state, isTestRunning: true};
@@ -314,7 +318,7 @@ export default function session (state = INITIAL_STATE, action) {
       return {...state, isTestRunning: false};
 
     case HIDE_TESTRUN_MODAL:
-      return {...state, testToRun: null, testResultToShow: null, actionsStatus: []};
+      return {...state, testResultToShow: null, testInProgress: null, actionsStatus: []};
 
     case SET_TEST_RESULTS:
       return {...state, testResults: action.results};
