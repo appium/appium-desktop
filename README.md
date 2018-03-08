@@ -16,7 +16,7 @@ You can always pick up the latest release at our
 GitHub.
 
 If you're on Windows or macOS, Appium Desktop will automatically provide you
-with updated versions of the app when they are released. If you encounter
+with updated versions of the app when they are released. If you encounter[
 a problem updating, simply delete or uninstall the app and re-download the
 latest from the link above.
 
@@ -33,7 +33,7 @@ from the downloaded DMG file to your own file system (the best place is the
 not supported, and will not work.
 
 ## Known Issues
-* Auto updater is not working (https://github.com/appium/appium-desktop/issues/74)
+* Auto updater is [not working](https://github.com/appium/appium-desktop/issues/74) for versions < 1.4.1
 
 ## Usage Instructions
 
