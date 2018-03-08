@@ -33,14 +33,29 @@
   filter: none;
 }
 
-.serverTabs {
-  min-height: 160px;
-}
-
-.serverTabs :global(.ant-tabs-bar) {
+.topmostTabs :global(.ant-tabs-bar) {
   -webkit-app-region: drag;
   padding-top: 2em;
   margin-top: -1em;
+}
+
+.sessionCard {
+  margin: 5px 0px;
+  background: #fbfbfb;
+  border: 1px solid #d0d0d0;
+}
+
+.sessionCard > :global(.ant-card-body) {
+  padding: 0px 10px;
+}
+
+.sessionCardCaps {
+  margin-bottom: 15px;
+  flex: 1;
+}
+
+.serverTabs {
+  min-height: 160px;
 }
 
 .serverTabs :global(.ant-tabs-content) {
@@ -48,8 +63,6 @@
 }
 
 .scrollingTabCont {
-  border-bottom: 1px solid #d9d9d9;
-  margin-bottom: 15px;
   flex-grow: 1;
   display: flex;
   flex-direction: column;
