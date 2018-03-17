@@ -32,6 +32,7 @@ const INITIAL_STATE = {
   screenshotInteractionMode: 'select',
   searchedForElementBounds: null,
   savedTests: [],
+  screenshot: null,
 };
 
 /**
