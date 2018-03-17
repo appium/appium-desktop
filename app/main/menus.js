@@ -1,6 +1,6 @@
-import { app, shell } from 'electron';
+import { app, shell, dialog } from 'electron';
 import { createNewSessionWindow, createPlaybackWindow } from './appium';
-import autoUpdater from './auto-updater';
+import { checkNewUpdates } from './auto-updater';
 
 let menuTemplates = {mac: {}, other: {}};
 
@@ -13,8 +13,7 @@ function macMenuAppium (mainWindow) {
     }, {
       label: 'Check for updates',
       click () {
-        autoUpdater.openUpdaterWindow(mainWindow);
-        autoUpdater.checkForUpdates();
+        checkNewUpdates(true);
       }
     }, {
       type: 'separator'
@@ -172,8 +171,10 @@ function otherMenuFile (mainWindow) {
   }, {
     label: '&About Appium',
     click () {
-      autoUpdater.openUpdaterWindow(mainWindow);
-      autoUpdater.checkForUpdates();
+      dialog.showMessageBox({
+        title: 'Appium Desktop',
+        message: `Version ${app.getVersion()}`,
+      });
     }
   }, {
     type: 'separator'
@@ -202,8 +203,7 @@ function otherMenuFile (mainWindow) {
     fileSubmenu.splice(1, 0, {
       label: '&Check for updates',
       click () {
-        autoUpdater.openUpdaterWindow(mainWindow);
-        autoUpdater.checkForUpdates();
+        checkNewUpdates(true);
       }
     });
   }
