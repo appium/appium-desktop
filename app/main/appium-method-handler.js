@@ -102,12 +102,12 @@ export default class AppiumMethodHandler {
     };
   }
 
-  async executeElementCommand (elementId, methodName, args = [], skipScreenshotAndSource = false) {
-    return await this._execute({elementId, methodName, args, skipScreenshotAndSource});
+  executeElementCommand (elementId, methodName, args = [], skipScreenshotAndSource = false) {
+    return this._execute({elementId, methodName, args, skipScreenshotAndSource});
   }
 
-  async executeMethod (methodName, args = [], skipScreenshotAndSource = false) {
-    return await this._execute({methodName, args, skipScreenshotAndSource});
+  executeMethod (methodName, args = [], skipScreenshotAndSource = false) {
+    return this._execute({methodName, args, skipScreenshotAndSource});
   }
   
   async _getSourceAndScreenshot () {
