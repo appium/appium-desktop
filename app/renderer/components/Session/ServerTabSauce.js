@@ -10,19 +10,14 @@ export default class ServerTabSauce extends Component {
 
     return <Form>
       <Row gutter={8}>
-        <Col span={10}>
+        <Col span={12}>
           <FormItem>
             <Input id='sauceUsername' placeholder={process.env.SAUCE_USERNAME ? 'Using data found in $SAUCE_USERNAME' : 'your-username'} addonBefore="Sauce Username" value={server.sauce.username} onChange={(e) => setServerParam('username', e.target.value)} />
           </FormItem>
         </Col>
-        <Col span={7}>
+        <Col span={12}>
           <FormItem>
             <Input id='saucePassword' type='password' placeholder={process.env.SAUCE_ACCESS_KEY ? 'Using data found in $SAUCE_ACCESS_KEY' : 'your-access-key'} addonBefore="Sauce Access Key" value={server.sauce.accessKey} onChange={(e) => setServerParam('accessKey', e.target.value)} />
-          </FormItem>
-        </Col>
-        <Col span={7}>
-          <FormItem>
-            <Checkbox checked={!!server.sauce.allowUnauthorized} onChange={(e) => setServerParam('allowUnauthorized', e.target.checked)}>Allow Unauthorized Certificates</Checkbox>
           </FormItem>
         </Col>
       </Row>
@@ -42,7 +37,7 @@ export default class ServerTabSauce extends Component {
             <Input addonBefore="Port" placeholder="4445" disabled={!server.sauce.useSCProxy} value={server.sauce.scPort} onChange={(e) => setServerParam('scPort', e.target.value)} />
           </FormItem>
         </Col>
-        </Row>
+      </Row>
     </Form>;
   }
 }

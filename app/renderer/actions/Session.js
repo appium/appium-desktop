@@ -157,7 +157,7 @@ export function newSession (caps, attachSessId = null) {
     let desiredCapabilities = caps ? getCapsObject(caps) : null;
     let session = getState().session;
 
-    let host, port, username, accessKey, https, path, rejectUnauthorized;
+    let host, port, username, accessKey, https, path;
     switch (session.serverType) {
       case ServerTypes.local:
         host = session.server.local.hostname;
@@ -174,7 +174,6 @@ export function newSession (caps, attachSessId = null) {
         port = session.server.remote.port;
         path = session.server.remote.path;
         https = session.server.remote.ssl;
-        rejectUnauthorized = !session.server.remote.allowUnauthorized;
         break;
       case ServerTypes.sauce:
         host = 'ondemand.saucelabs.com';
@@ -194,7 +193,6 @@ export function newSession (caps, attachSessId = null) {
           return;
         }
         https = false;
-        rejectUnauthorized = false;
         break;
       case ServerTypes.testobject:
         host = process.env.TESTOBJECT_HOST || `${session.server.testobject.dataCenter || 'us1'}.appium.testobject.com`;
@@ -203,17 +201,21 @@ export function newSession (caps, attachSessId = null) {
         if (caps) {
           desiredCapabilities.testobject_api_key = session.server.testobject.apiKey || process.env.TESTOBJECT_API_KEY;
         }
-        rejectUnauthorized = false;
         break;
       case ServerTypes.headspin:
         host = session.server.headspin.hostname;
         port = session.server.headspin.port;
         path = `/v0/${session.server.headspin.apiKey}/wd/hub`;
         https = true;
-        rejectUnauthorized = false;
         break;
       default:
         break;
+    }
+
+    let rejectUnauthorized = !session.server.advanced.allowUnauthorized;
+    let proxy;
+    if (session.server.advanced.useProxy && session.server.advanced.proxy) {
+      proxy = session.server.advanced.proxy;
     }
 
     // Start the session
@@ -227,6 +229,7 @@ export function newSession (caps, attachSessId = null) {
       accessKey,
       https,
       rejectUnauthorized,
+      proxy,
     });
 
     dispatch({type: SESSION_LOADING});
@@ -378,10 +381,11 @@ export function changeServerType (serverType) {
 /**
  * Set a server parameter (host, port, etc...)
  */
-export function setServerParam (name, value) {
-  const debounceGetRunningSessions = debounce(getRunningSessions(), 500);
+export function setServerParam (name, value, serverType) {
+  const debounceGetRunningSessions = debounce(getRunningSessions(), 5000);
   return (dispatch, getState) => {
-    dispatch({type: SET_SERVER_PARAM, serverType: getState().session.serverType, name, value});
+    serverType = serverType || getState().session.serverType;
+    dispatch({type: SET_SERVER_PARAM, serverType, name, value});
     debounceGetRunningSessions(dispatch, getState);
   };
 }

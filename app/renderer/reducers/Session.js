@@ -25,6 +25,7 @@ const INITIAL_STATE = {
       dataCenter: 'US',
     },
     headspin: {},
+    advanced: {},
   },
   attachSessId: null,
 
