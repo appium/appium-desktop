@@ -111,7 +111,7 @@ export default class TestRun extends Component {
             <div><pre>{record.action}</pre></div>
             <div className={PlaybackStyles.findElInfo}>
               <div>Strategy: <code>{record.params[0]}</code></div>
-              <div>Selector: <code>"{record.params[1]}"</code></div>
+              <div>Selector: <code>{JSON.stringify(record.params[1])}</code></div>
             </div>
           </div>;
         } else if (record.action === 'sendKeys') {
