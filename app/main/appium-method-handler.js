@@ -1,5 +1,4 @@
 import Bluebird from 'bluebird';
-import _ from 'lodash';
 import wd from 'wd';
 
 export default class AppiumMethodHandler {
@@ -135,7 +134,7 @@ export default class AppiumMethodHandler {
 
   restart () {
     // Clear the variable names and start over (el1, el2, els1, els2, etc...)
-    for (let elCache of _.toPairs(this.elementCache)) {
+    for (const elCache of Object.values(this.elementCache)) {
       delete elCache.variableName;
     }
 
