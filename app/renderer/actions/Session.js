@@ -3,7 +3,7 @@ import settings from '../../settings';
 import { v4 as UUID } from 'uuid';
 import { push } from 'react-router-redux';
 import { notification } from 'antd';
-import { cloneDeep, isPlainObject, debounce, toPairs } from 'lodash';
+import { isNil, cloneDeep, isPlainObject, debounce, toPairs } from 'lodash';
 import { callClientMethod } from './shared';
 import { setSessionDetails, SAVED_TESTS, SET_SAVED_TESTS } from './Inspector';
 
@@ -650,10 +650,10 @@ function initActionsStatus (dispatch, testActions) {
       // params list because it won't be included in the actual arguments
       // sent to the wd command. so strip it out after saving the relevant
       // info as separate action fields outside the params.
-      if (a.params[0] !== null) {
+      if (!isNil(a.params[0])) {
         a.isElCmd = true;
       }
-      if (a.params[1] !== null) {
+      if (!isNil(a.params[1])) {
         a.elListIndex = a.params[1];
       }
       a.params = a.params.slice(2);
