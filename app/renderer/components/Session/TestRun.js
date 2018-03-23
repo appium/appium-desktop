@@ -114,6 +114,13 @@ export default class TestRun extends Component {
               <div>Selector: <code>"{record.params[1]}"</code></div>
             </div>
           </div>;
+        } else if (record.action.indexOf('tap') === 0) {
+          actionStep = <div>
+            <div><pre>{record.action}</pre></div>
+            <div className={PlaybackStyles.findElInfo}>
+              <div><code>[{record.params[0]}, {record.params[1]}]</code></div>
+            </div>
+          </div>;
         }
 
         if (!record.err) {
