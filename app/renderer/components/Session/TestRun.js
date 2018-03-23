@@ -114,7 +114,14 @@ export default class TestRun extends Component {
               <div>Selector: <code>"{record.params[1]}"</code></div>
             </div>
           </div>;
-        } else if (record.action.indexOf('tap') === 0) {
+        } else if (record.action === 'sendKeys') {
+          actionStep = <div>
+            <div><pre><span>&nbsp;&nbsp;<Icon type="arrow-right" />&nbsp;</span>{record.action}</pre></div>
+            <div className={PlaybackStyles.findElInfo}>
+              <div><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"{record.params[0]}"</code></div>
+            </div>
+          </div>;
+        } else if (record.action === 'tap') {
           actionStep = <div>
             <div><pre>{record.action}</pre></div>
             <div className={PlaybackStyles.findElInfo}>
