@@ -212,6 +212,12 @@ export function newSession (caps, attachSessId = null) {
         break;
     }
 
+    let rejectUnauthorized = !session.server.advanced.allowUnauthorized;
+    let proxy;
+    if (session.server.advanced.useProxy && session.server.advanced.proxy) {
+      proxy = session.server.advanced.proxy;
+    }
+
     // Start the session
     ipcRenderer.send('appium-create-new-session', {
       desiredCapabilities,
@@ -221,7 +227,9 @@ export function newSession (caps, attachSessId = null) {
       path,
       username,
       accessKey,
-      https
+      https,
+      rejectUnauthorized,
+      proxy,
     });
 
     dispatch({type: SESSION_LOADING});
@@ -373,10 +381,11 @@ export function changeServerType (serverType) {
 /**
  * Set a server parameter (host, port, etc...)
  */
-export function setServerParam (name, value) {
-  const debounceGetRunningSessions = debounce(getRunningSessions(), 500);
+export function setServerParam (name, value, serverType) {
+  const debounceGetRunningSessions = debounce(getRunningSessions(), 5000);
   return (dispatch, getState) => {
-    dispatch({type: SET_SERVER_PARAM, serverType: getState().session.serverType, name, value});
+    serverType = serverType || getState().session.serverType;
+    dispatch({type: SET_SERVER_PARAM, serverType, name, value});
     debounceGetRunningSessions(dispatch, getState);
   };
 }

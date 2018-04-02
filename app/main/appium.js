@@ -215,54 +215,49 @@ export function createNewSessionWindow (win) {
 function connectCreateNewSession () {
   ipcMain.on('appium-create-new-session', async (event, args) => {
     const {desiredCapabilities, host, port, path, username, accessKey, https,
-      attachSessId} = args;
+      attachSessId, rejectUnauthorized, proxy} = args;
 
-    // If there is an already active session, kill it. Limit one session per window.
-    if (sessionDrivers[event.sender.id]) {
-      await killSession(event.sender);
-    }
+    try {
+      // If there is an already active session, kill it. Limit one session per window.
+      if (sessionDrivers[event.sender.id]) {
+        await killSession(event.sender);
+      }
 
-    // Create the driver and cache it by the sender ID
-    let driver = sessionDrivers[event.sender.id] = wd.promiseChainRemote({
-      hostname: host,
-      port,
-      path,
-      username,
-      accessKey,
-      https,
-    });
-    appiumHandlers[event.sender.id] = new AppiumMethodHandler(driver);
+      // Create the driver and cache it by the sender ID
+      let driver = sessionDrivers[event.sender.id] = wd.promiseChainRemote({
+        hostname: host,
+        port,
+        path,
+        username,
+        accessKey,
+        https,
+      });
+      driver.configureHttp({rejectUnauthorized, proxy});
+      appiumHandlers[event.sender.id] = new AppiumMethodHandler(driver);
 
-    // If we're just attaching to an existing session, do that and
-    // short-circuit the rest of the logic
-    if (attachSessId) {
-      driver._isAttachedSession = true;
-      try {
+      // If we're just attaching to an existing session, do that and
+      // short-circuit the rest of the logic
+      if (attachSessId) {
+        driver._isAttachedSession = true;
         await driver.attach(attachSessId);
         // get the session capabilities to prove things are working
         await driver.sessionCapabilities();
         event.sender.send('appium-new-session-ready');
-      } catch (e) {
-        // If the session failed to attach, delete it from the cache
-        await killSession(event.sender);
-        event.sender.send('appium-new-session-failed', e);
+        return;
       }
-      return;
-    }
 
-    // If a newCommandTimeout wasn't provided, set it to 0 so that sessions don't close on users
-    if (!desiredCapabilities.newCommandTimeout) {
-      desiredCapabilities.newCommandTimeout = 0;
-    }
+      // If a newCommandTimeout wasn't provided, set it to 0 so that sessions don't close on users
+      if (!desiredCapabilities.newCommandTimeout) {
+        desiredCapabilities.newCommandTimeout = 0;
+      }
 
-    // If someone didn't specify connectHardwareKeyboard, set it to true by
-    // default
-    if (typeof desiredCapabilities.connectHardwareKeyboard === "undefined") {
-      desiredCapabilities.connectHardwareKeyboard = true;
-    }
+      // If someone didn't specify connectHardwareKeyboard, set it to true by
+      // default
+      if (typeof desiredCapabilities.connectHardwareKeyboard === "undefined") {
+        desiredCapabilities.connectHardwareKeyboard = true;
+      }
 
-    // Try initializing it. If it fails, kill it and send error message to sender
-    try {
+      // Try initializing it. If it fails, kill it and send error message to sender
       let p = driver.init(desiredCapabilities);
       event.sender.send('appium-new-session-successful');
       await p;
