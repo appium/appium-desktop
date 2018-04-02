@@ -1,3 +1,8 @@
+## [1.5.0](https://github.com/appium/appium-desktop/compare/v1.4.1...v1.5.0) (2018-04-02)
+
+### Changes
+* Feature: Allow unauthorized SSL and set custom proxy (#469)
+
 ## [1.4.1](https://github.com/appium/appium-desktop/compare/v1.4.0...v1.4.1) (2018-03-06)
 
 ### Changes
