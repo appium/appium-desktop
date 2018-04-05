@@ -11,19 +11,14 @@ export default class ServerTabTestobject extends Component {
 
     return <Form>
       <Row gutter={8}>
-        <Col span={12}>
+        <Col span={24}>
           <FormItem>
             <Input id='testObjectPassword' type='password' placeholder={process.env.TESTOBJECT_API_KEY ? 'Using data found in $TESTOBJECT_API_KEY' : 'testobject-api-key'} addonBefore="TestObject API Key" value={server.testobject.apiKey} onChange={(e) => setServerParam('apiKey', e.target.value)} />
           </FormItem>
         </Col>
-        <Col span={12}>
-          <FormItem>
-            <Checkbox checked={!!server.testobject.allowUnauthorized} onChange={(e) => setServerParam('allowUnauthorized', e.target.checked)}>Allow Unauthorized Certificates</Checkbox>
-          </FormItem>
-        </Col>
       </Row>
       <Row>
-        <Col span={12}>
+        <Col span={24}>
           <FormItem>
             <div className="ant-input-wrapper ant-input-group">
               <div className="ant-input-group-addon">TestObject Data Center</div>
