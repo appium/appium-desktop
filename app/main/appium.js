@@ -311,6 +311,7 @@ function connectClientMethodListener () {
         renderer.send('appium-client-command-response', {
           source: null,
           screenshot: null,
+          windowSize: null,
           uuid,
           result: null
         });

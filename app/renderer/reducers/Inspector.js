@@ -52,6 +52,8 @@ export default function inspector (state=INITIAL_STATE, action) {
         sourceError: action.sourceError,
         screenshot: action.screenshot,
         screenshotError: action.screenshotError,
+        windowSize: action.windowSize,
+        windowSizeError: action.windowSizeError,
       };
 
     case QUIT_SESSION_REQUESTED:

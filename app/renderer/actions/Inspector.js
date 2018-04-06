@@ -110,7 +110,6 @@ export function bindAppium () {
   };
 }
 
-
 // A debounced function that calls findElement and gets info about the element
 const findElement = _.debounce(async function (strategyMap, dispatch, getState, path) {
   for (let [strategy, selector] of strategyMap) {
@@ -188,7 +187,7 @@ export function applyClientMethod (params) {
                       getState().inspector.isRecording;
     try {
       dispatch({type: METHOD_CALL_REQUESTED});
-      let {source, screenshot, result, sourceError, screenshotError, 
+      let {source, screenshot, windowSize, result, sourceError, screenshotError, windowSizeError,
         variableName, variableIndex, strategy, selector} = await callClientMethod(params);
       if (isRecording) {
         // Add 'findAndAssign' line of code. Don't do it for arrays though. Arrays already have 'find' expression
@@ -206,9 +205,11 @@ export function applyClientMethod (params) {
         type: SET_SOURCE_AND_SCREENSHOT, 
         source: source && xmlToJSON(source), 
         sourceXML: source,
-        screenshot, 
+        screenshot,
+        windowSize,
         sourceError, 
         screenshotError,
+        windowSizeError,
       });
       return result;
     } catch (error) {
