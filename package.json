@@ -39,7 +39,7 @@
     "package": "npm run build && build --publish never",
     "package-mac": "npm run build && node_modules/electron-builder-13/out/cli/build-cli.js --publish never",
     "package-ci": "check-engines && npm run test && npm run build && build --dir && npm run test-e2e && build --publish onTagOrDraft",
-    "package-ci-mac": "check-engines && npm run test && npm run build && node_modules/electron-builder-13/out/cli/build-cli.js --dir && npm run test-e2e && node_modules/electron-builder-13/out/cli/build-cli.js --publish onTagOrDraft",
+    "package-ci-mac": "check-engines && npm run test && npm run build && node_modules/electron-builder-13/out/cli/build-cli.js --dir && npm run test-e2e && build --publish onTagOrDraft",
     "postversion": "git pull --tags && git push && git push --tags"
   },
   "build": {
@@ -109,7 +109,6 @@
     "font-awesome": "4.x",
     "format-json": "1.x",
     "highlight.js": "9.x",
-    "jsftp": "^2.1.3",
     "lodash": "4.x",
     "moment": "^2.20.1",
     "postcss": "^6.0.0",
@@ -157,7 +156,7 @@
     "devtron": "1.x",
     "dir-compare": "^1.4.0",
     "electron": "1.7.11",
-    "electron-builder": "20",
+    "electron-builder": "19",
     "electron-builder-squirrel-windows": "^20.4.0",
     "electron-devtools-installer": "^2.2.3",
     "eslint": "3.x",

@@ -15,7 +15,6 @@ addons:
 before_script:
 - node --version
 - yarn
-#- npm install -g electron
 - node --version
 - yarn --version
 - travis_wait 30 yarn run package-ci # This command takes a long time, so increased the time limit to 30 minutes (default is 10 minutes)
