@@ -110,7 +110,7 @@ export default class AppiumMethodHandler {
   }
   
   async _getSourceAndScreenshot () {
-    let source, sourceError, screenshot, screenshotError;
+    let source, sourceError, screenshot, screenshotError, windowSize, windowSizeError;
     try {
       source = await this.driver.source();
     } catch (e) {
@@ -128,8 +128,18 @@ export default class AppiumMethodHandler {
       }
       screenshotError = e;
     }
+    
+    try {
+      windowSize = await this.driver.getWindowSize();
+      
+    } catch (e) {
+      if (e.status === 6) {
+        throw e;
+      }
+      windowSizeError = e;
+    }
 
-    return {source, sourceError, screenshot, screenshotError};
+    return {source, sourceError, screenshot, screenshotError, windowSize, windowSizeError};
   }
 
   restart () {
