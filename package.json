@@ -33,14 +33,13 @@
     "clean": "rimraf node_modules && npm install",
     "start": "cross-env NODE_ENV=production electron ./",
     "start-hot": "cross-env HOT=1 NODE_ENV=development electron -r ./node_modules/babel-register -r ./node_modules/babel-polyfill ./app/main/main.development --color",
-    "postinstall": "node ./install-electron-builder.js && node node_modules/fbjs-scripts/node/check-dev-engines.js package.json",
+    "postinstall": "node node_modules/fbjs-scripts/node/check-dev-engines.js package.json",
     "dev": "concurrently --kill-others \"npm run hot-server\" \"npm run start-hot\" --color",
     "dev-wrong-folder": "cross-env WRONG_FOLDER=true npm run dev",
     "package": "npm run build && build --publish never",
-    "package-win": "npm run build && build --win --x64",
-    "package-linux": "npm run build && build --linux",
-    "package-all": "npm run build && build -mwl",
+    "package-mac": "npm run build && node_modules/electron-builder-13/out/cli/build-cli.js --publish never",
     "package-ci": "check-engines && npm run test && npm run build && build --dir && npm run test-e2e && build --publish onTagOrDraft",
+    "package-ci-mac": "check-engines && npm run test && npm run build && node_modules/electron-builder-13/out/cli/build-cli.js --dir && npm run test-e2e && build --publish onTagOrDraft",
     "postversion": "git pull --tags && git push && git push --tags"
   },
   "build": {
@@ -96,11 +95,12 @@
   "dependencies": {
     "ansi-to-html": "0.5",
     "antd": "2.10.1",
-    "appium": "1.7.2",
+    "appium": "^1.7.2",
     "appium-support": "^2.12.0",
     "babel-core": "^6.26.0",
     "bluebird": "^3.5.1",
     "css-modules-require-hook": "^4.2.3",
+    "electron-builder-13": "npm:electron-builder@13",
     "electron-debug": "^1.5.0",
     "electron-log": "^1.3.0",
     "electron-settings": "2.x",
@@ -132,7 +132,6 @@
     "appium-fake-driver": "^0.3.0",
     "asar": "^0.14.0",
     "asyncbox": "^2.3.2",
-    "babel-core": "6.x",
     "babel-eslint": "7.x",
     "babel-loader": "6.x",
     "babel-plugin-add-module-exports": "0.x",
@@ -157,7 +156,7 @@
     "devtron": "1.x",
     "dir-compare": "^1.4.0",
     "electron": "1.7.11",
-    "electron-builder": "^20.4.0",
+    "electron-builder": "19",
     "electron-builder-squirrel-windows": "^20.4.0",
     "electron-devtools-installer": "^2.2.3",
     "eslint": "3.x",
@@ -193,11 +192,9 @@
     "xmldom": "^0.1.27"
   },
   "devEngines": {
-    "node": ">=6.x",
-    "npm": ">=3.x"
+    "node": ">=6.x"
   },
   "engines": {
-    "node": ">=6.x <=7.x",
-    "npm": ">=3.x <=4.x"
+    "node": "=9.x"
   }
 }
