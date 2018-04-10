@@ -53,6 +53,7 @@ export const ServerTypes = {
   sauce: 'sauce',
   testobject: 'testobject',
   headspin: 'headspin',
+  browserstack: 'browserstack',
 };
 
 const JSON_TYPES = ['json_object', 'number', 'boolean'];
@@ -206,6 +207,23 @@ export function newSession (caps, attachSessId = null) {
         host = session.server.headspin.hostname;
         port = session.server.headspin.port;
         path = `/v0/${session.server.headspin.apiKey}/wd/hub`;
+        https = true;
+        break;
+      case ServerTypes.browserstack:
+        host = process.env.BROWSERSTACK_HOST || "hub-cloud.browserstack.com";
+        port = 443;
+        path = "/wd/hub";
+        username = session.server.browserstack.username || process.env.BROWSERSTACK_USERNAME;
+        desiredCapabilities["browserstack.source"] = "appiumdesktop";
+        accessKey = session.server.browserstack.accessKey || process.env.BROWSERSTACK_ACCESS_KEY;
+        if (!username || !accessKey) {
+          notification.error({
+            message: "Error",
+            description: "Browserstack username and access key are required!",
+            duration: 4
+          });
+          return;
+        }
         https = true;
         break;
       default:

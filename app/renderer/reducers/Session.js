@@ -25,6 +25,7 @@ const INITIAL_STATE = {
       dataCenter: 'US',
     },
     headspin: {},
+    browserstack: {},
     advanced: {},
   },
   attachSessId: null,
@@ -182,6 +183,7 @@ export default function session (state = INITIAL_STATE, action) {
           sauce: action.server.sauce || {},
           testobject: action.server.testobject || {},
           headspin: action.server.headspin || {},
+          browserstack: action.server.browserstack || {},
         },
         serverType: action.serverType || ServerTypes.local,
       };
