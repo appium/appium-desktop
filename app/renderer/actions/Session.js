@@ -762,6 +762,11 @@ export function runTest (serverType, caps, actions) {
             if (fetchArray) {
               lastFoundElIds = res.elements.map((el) => el.id);
             } else {
+              // here we were looking for a single element. it could be we
+              // didn't find any. if we didn't, that's an error!
+              if (!res.id) {
+                throw new Error("Could not find requested element");
+              }
               lastFoundElId = res.id;
             }
           } else {
