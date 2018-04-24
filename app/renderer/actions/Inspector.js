@@ -54,6 +54,8 @@ export const CLEAR_SEARCHED_FOR_ELEMENT_BOUNDS = 'CLEAR_SEARCHED_FOR_ELEMENT_BOU
 export const SET_SWIPE_START = 'SET_SWIPE_START';
 export const SET_SWIPE_END = 'SET_SWIPE_END';
 export const CLEAR_SWIPE_ACTION = 'CLEAR_SWIPE_ACTION';
+export const PROMPT_KEEP_ALIVE = 'PROMPT_KEEP_ALIVE';
+export const HIDE_PROMPT_KEEP_ALIVE = 'HIDE_PROMPT_KEEP_ALIVE';
 
 
 // Attributes on nodes that we know are unique to the node
@@ -97,6 +99,11 @@ function xmlToJSON (source) {
 
 export function bindAppium () {
   return (dispatch) => {
+    // If user is inactive ask if they wish to keep session alive
+    ipcRenderer.on('appium-prompt-keep-alive', () => {
+      promptKeepAlive()(dispatch);
+    });
+
     ipcRenderer.on('appium-session-done', (evt, reason) => {
       notification.error({
         message: "Error",
@@ -105,6 +112,8 @@ export function bindAppium () {
       });
       ipcRenderer.removeAllListeners('appium-client-command-response');
       ipcRenderer.removeAllListeners('appium-client-command-response-error');
+      ipcRenderer.removeAllListeners('appium-session-done');
+      ipcRenderer.removeAllListeners('appium-prompt-keep-alive');
       dispatch({type: SESSION_DONE});
       dispatch(push('/session'));
     });
@@ -259,10 +268,9 @@ export function setExpandedPaths (paths) {
  */
 export function quitSession () {
   return async (dispatch) => {
-    dispatch({type: QUIT_SESSION_REQUESTED});
-    await applyClientMethod({methodName: 'quit'})(dispatch);
     dispatch({type: QUIT_SESSION_DONE});
-    dispatch(push('/session'));
+    dispatch({type: HIDE_PROMPT_KEEP_ALIVE});
+    await applyClientMethod({methodName: 'quit'})(dispatch);
   };
 }
 
@@ -423,5 +431,18 @@ export function setSwipeEnd (swipeEndX, swipeEndY) {
 export function clearSwipeAction () {
   return (dispatch) => {
     dispatch({type: CLEAR_SWIPE_ACTION});
+  };
+}
+
+export function promptKeepAlive () {
+  return (dispatch) => {
+    dispatch({type: PROMPT_KEEP_ALIVE});
+  };
+}
+
+export function keepSessionAlive () {
+  return (dispatch) => {
+    dispatch({type: HIDE_PROMPT_KEEP_ALIVE});
+    //ipcRenderer.send('appium-keep-session-alive'); // TODO: Make the main renderer keep it alive
   };
 }

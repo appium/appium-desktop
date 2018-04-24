@@ -10,6 +10,7 @@ import { SET_SOURCE_AND_SCREENSHOT, QUIT_SESSION_REQUESTED, QUIT_SESSION_DONE,
   SEARCHING_FOR_ELEMENTS, SEARCHING_FOR_ELEMENTS_COMPLETED, SET_LOCATOR_TEST_ELEMENT, CLEAR_SEARCH_RESULTS, 
   ADD_ASSIGNED_VAR_CACHE, CLEAR_ASSIGNED_VAR_CACHE, SET_SCREENSHOT_INTERACTION_MODE,
   SET_SWIPE_START, SET_SWIPE_END, CLEAR_SWIPE_ACTION, SET_SEARCHED_FOR_ELEMENT_BOUNDS, CLEAR_SEARCHED_FOR_ELEMENT_BOUNDS,
+  PROMPT_KEEP_ALIVE, HIDE_PROMPT_KEEP_ALIVE
 } from '../actions/Inspector';
 
 const DEFAULT_FRAMEWORK = 'java';
@@ -29,6 +30,7 @@ const INITIAL_STATE = {
   assignedVarCache: {},
   screenshotInteractionMode: 'select',
   searchedForElementBounds: null,
+  showKeepAlivePrompt: false,
 };
 
 /**
@@ -310,6 +312,18 @@ export default function inspector (state=INITIAL_STATE, action) {
       return {
         ...state,
         searchedForElementBounds: null,
+      };
+
+    case PROMPT_KEEP_ALIVE:
+      return {
+        ...state,
+        showKeepAlivePrompt: true,
+      };
+
+    case HIDE_PROMPT_KEEP_ALIVE:
+      return {
+        ...state,
+        showKeepAlivePrompt: false,
       };
 
     default:

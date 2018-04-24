@@ -190,8 +190,7 @@ export default class AppiumMethodHandler {
   }
 
   async close (reason) {
-    clearInterval(this.keepAlive);
-
+    this.killKeepAliveLoop();
     this.sender.send('appium-session-done', reason);
     if (!this.driver._isAttachedSession) {
       try {
