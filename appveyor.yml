@@ -1,15 +1,15 @@
 environment:
-  nodejs_version: "9"
+  nodejs_version: "7"
   GH_TOKEN:
     secure: fyB6CRcrHbroxaBvzN6aPHUEhHGc3ljbbTPtEqruaDVe/iO8/dZn4LOVNS/fAlSX
 install:
   - ps: Install-Product node $env:nodejs_version
-  - yarn
+  - npm install
 
 test_script:
   - node --version
-  - yarn --version
-  - yarn run package-ci
+  - npm --version
+  - npm run package-ci
 
 build: off
 
