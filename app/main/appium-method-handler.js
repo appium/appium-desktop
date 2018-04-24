@@ -1,12 +1,47 @@
 import Bluebird from 'bluebird';
 import wd from 'wd';
 
+const KEEP_ALIVE_PING_INTERVAL = 30 * 1000;
+//const NO_NEW_COMMAND_LIMIT = 10 * 60 * 1000;
+const NO_NEW_COMMAND_LIMIT = 10 * 1000;
+//const WAIT_FOR_USER_KEEP_ALIVE = 60 * 1000;
+const WAIT_FOR_USER_KEEP_ALIVE = 2 * 1000;
+
 export default class AppiumMethodHandler {
-  constructor (driver) {
+  constructor (driver, sender) {
     this.driver = driver;
+    this.sender = sender;
     this.elementCache = {};
     this.elVariableCounter = 1;
     this.elArrayVariableCounter = 1;
+    this._lastActiveMoment = +(new Date());
+    this.runKeepAliveLoop();
+  }
+
+  /**
+   * Ping server every 30 seconds to prevent `newCommandTimeout` from killing session
+   */
+  runKeepAliveLoop () {
+    // Every 30 seconds ping the server to keep session alive
+    this.keepAlive = setInterval(() => {
+      this.driver.sessionCapabilities(); // Ping the Appium server to keep it alive
+      /*const now = +(new Date());
+      if (now - this._lastActiveMoment > NO_NEW_COMMAND_LIMIT) {
+        this.waitForUserDelay = setTimeout(async () => {
+          this.close();
+        }, WAIT_FOR_USER_KEEP_ALIVE);
+      }*/
+    }, KEEP_ALIVE_PING_INTERVAL);
+  }
+
+  /**
+   * Get rid of the intervals to keep the session alive
+   */
+  killKeepAliveLoop () {
+    clearInterval(this.keepAlive);
+    /*if (this.waitForUserDelay) {
+      clearTimeout(this.waitForUserDelay);
+    }*/
   }
 
   async fetchElement (strategy, selector) {
@@ -58,6 +93,7 @@ export default class AppiumMethodHandler {
   }
 
   async _execute ({elementId, methodName, args, skipScreenshotAndSource}) {
+    this._lastActiveMoment = +(new Date());
     let cachedEl;
     let res = {};
 
@@ -151,6 +187,16 @@ export default class AppiumMethodHandler {
     // Restart the variable counter
     this.elVariableCounter = 1;
     this.elArrayVariableCounter = 1;   
+  }
+
+  async close (/*reason*/) {
+    clearInterval(this.keepAlive);
+
+    if (!this.driver._isAttachedSession) {
+      try {
+        await this.driver.quit();
+      } catch (ign) { }
+    }
   }
 
 }

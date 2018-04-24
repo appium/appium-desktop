@@ -103,4 +103,7 @@ describe('appiumDriverExtender', function () {
 
     });
   });
+  describe('', function () {
+    
+  });
 });

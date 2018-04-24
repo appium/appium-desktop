@@ -18,8 +18,6 @@ var server = null;
 var logWatcher = null;
 var batchedLogs = [];
 
-let sessionDrivers = {};
-
 let appiumHandlers = {};
 let logFile;
 
@@ -38,20 +36,12 @@ async function deleteLogfile () {
  * Kill session associated with session browser window
  */
 async function killSession (sessionWinID) {
-  let driver = sessionDrivers[sessionWinID];
-  if (driver) {
-    let sessionID;
-    try {
-      await driver.getSessionId();
-      if (!driver._isAttachedSession) {
-        await driver.quit();
-      }
-    } catch (e) {
-      console.log(`Couldn't close session: ${sessionID || 'unknown session ID'}`);
-    }
-    delete sessionDrivers[sessionWinID];
-    delete appiumHandlers[sessionWinID];
+  let handler = appiumHandlers[sessionWinID];
+  if (handler) {
+    await handler.close();  
   }
+  
+  delete appiumHandlers[sessionWinID];
 }
 
 function connectStartServer (win) {
@@ -181,13 +171,7 @@ export function createNewSessionWindow (win) {
   // When you close the session window, kill its associated Appium session (if there is one)
   let sessionID = sessionWin.webContents.id;
   sessionWin.on('closed', async () => {
-    const driver = sessionDrivers[sessionID];
-    if (driver) {
-      if (!driver._isAttachedSession) {
-        await driver.quit();
-      }
-      delete sessionDrivers[sessionID];
-    }
+    await killSession(sessionID);
     sessionWin = null;
   });
 
@@ -219,12 +203,12 @@ function connectCreateNewSession () {
 
     try {
       // If there is an already active session, kill it. Limit one session per window.
-      if (sessionDrivers[event.sender.id]) {
+      if (appiumHandlers[event.sender.id]) {
         await killSession(event.sender);
       }
 
       // Create the driver and cache it by the sender ID
-      let driver = sessionDrivers[event.sender.id] = wd.promiseChainRemote({
+      let driver = wd.promiseChainRemote({
         hostname: host,
         port,
         path,
@@ -233,7 +217,7 @@ function connectCreateNewSession () {
         https,
       });
       driver.configureHttp({rejectUnauthorized, proxy});
-      appiumHandlers[event.sender.id] = new AppiumMethodHandler(driver);
+      appiumHandlers[event.sender.id] = new AppiumMethodHandler(driver/*, event.sender*/);
 
       // If we're just attaching to an existing session, do that and
       // short-circuit the rest of the logic
@@ -261,6 +245,8 @@ function connectCreateNewSession () {
       let p = driver.init(desiredCapabilities);
       event.sender.send('appium-new-session-successful');
       await p;
+
+
       // we don't really support the web portion of apps for a number of
       // reasons, so pre-emptively ensure we're in native mode before doing the
       // rest of the inspector startup. Since some platforms might not implement
