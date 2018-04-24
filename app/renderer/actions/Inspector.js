@@ -5,7 +5,7 @@ import _ from 'lodash';
 import B from 'bluebird';
 import { getLocators } from '../components/Inspector/shared';
 import { showError } from './Session';
-import { callClientMethod } from './shared';
+import { bindClient, unbindClient, callClientMethod } from './shared';
 import { getOptimalXPath } from '../util';
 import frameworks from '../lib/client-frameworks';
 import settings from '../../settings';
@@ -99,23 +99,25 @@ function xmlToJSON (source) {
 
 export function bindAppium () {
   return (dispatch) => {
+
+    bindClient();
+
     // If user is inactive ask if they wish to keep session alive
     ipcRenderer.on('appium-prompt-keep-alive', () => {
       promptKeepAlive()(dispatch);
     });
 
     ipcRenderer.on('appium-session-done', (evt, reason) => {
+      ipcRenderer.removeAllListeners('appium-session-done');
+      ipcRenderer.removeAllListeners('appium-prompt-keep-alive');
+      unbindClient();
+      dispatch({type: QUIT_SESSION_DONE});
+      dispatch(push('/session'));
       notification.error({
         message: "Error",
         description: reason || "Session has been terminated",
         duration: 0
       });
-      ipcRenderer.removeAllListeners('appium-client-command-response');
-      ipcRenderer.removeAllListeners('appium-client-command-response-error');
-      ipcRenderer.removeAllListeners('appium-session-done');
-      ipcRenderer.removeAllListeners('appium-prompt-keep-alive');
-      dispatch({type: SESSION_DONE});
-      dispatch(push('/session'));
     });
   };
 }
@@ -268,8 +270,6 @@ export function setExpandedPaths (paths) {
  */
 export function quitSession () {
   return async (dispatch) => {
-    dispatch({type: QUIT_SESSION_DONE});
-    dispatch({type: HIDE_PROMPT_KEEP_ALIVE});
     await applyClientMethod({methodName: 'quit'})(dispatch);
   };
 }
