@@ -4,8 +4,8 @@ import wd from 'wd';
 const KEEP_ALIVE_PING_INTERVAL = 30 * 1000;
 //const NO_NEW_COMMAND_LIMIT = 10 * 60 * 1000;
 const NO_NEW_COMMAND_LIMIT = 10 * 1000;
-//const WAIT_FOR_USER_KEEP_ALIVE = 60 * 1000;
-const WAIT_FOR_USER_KEEP_ALIVE = 2 * 1000;
+const WAIT_FOR_USER_KEEP_ALIVE = 60 * 1000;
+//const WAIT_FOR_USER_KEEP_ALIVE = 2 * 1000;
 
 export default class AppiumMethodHandler {
   constructor (driver, sender) {
@@ -15,7 +15,6 @@ export default class AppiumMethodHandler {
     this.elVariableCounter = 1;
     this.elArrayVariableCounter = 1;
     this._lastActiveMoment = +(new Date());
-    this.runKeepAliveLoop();
   }
 
   /**
@@ -25,12 +24,13 @@ export default class AppiumMethodHandler {
     // Every 30 seconds ping the server to keep session alive
     this.keepAlive = setInterval(() => {
       this.driver.sessionCapabilities(); // Ping the Appium server to keep it alive
-      /*const now = +(new Date());
+      const now = +(new Date());
       if (now - this._lastActiveMoment > NO_NEW_COMMAND_LIMIT) {
-        this.waitForUserDelay = setTimeout(async () => {
+        this.sender.send('appium-prompt-keep-alive');
+        /*this.waitForUserDelay = setTimeout(async () => {
           this.close();
-        }, WAIT_FOR_USER_KEEP_ALIVE);
-      }*/
+        }, WAIT_FOR_USER_KEEP_ALIVE);*/
+      }
     }, KEEP_ALIVE_PING_INTERVAL);
   }
 

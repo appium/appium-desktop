@@ -217,7 +217,7 @@ function connectCreateNewSession () {
         https,
       });
       driver.configureHttp({rejectUnauthorized, proxy});
-      appiumHandlers[event.sender.id] = new AppiumMethodHandler(driver/*, event.sender*/);
+      const handler = appiumHandlers[event.sender.id] = new AppiumMethodHandler(driver, event.sender);
 
       // If we're just attaching to an existing session, do that and
       // short-circuit the rest of the logic
@@ -245,6 +245,9 @@ function connectCreateNewSession () {
       let p = driver.init(desiredCapabilities);
       event.sender.send('appium-new-session-successful');
       await p;
+
+      // Now that the session is running
+      handler.runKeepAliveLoop();
 
 
       // we don't really support the web portion of apps for a number of

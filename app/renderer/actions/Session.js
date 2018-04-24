@@ -256,6 +256,11 @@ export function newSession (caps, attachSessId = null) {
       dispatch(push('/inspector'));
     });
 
+    ipcRenderer.on('appium-prompt-keep-alive', () => {
+      // TODO: Change this to a confirmation dialog
+      alert('KEEP ALIVE!');
+    });
+
     // Save the current server settings
     await settings.set(SESSION_SERVER_PARAMS, session.server);
     await settings.set(SESSION_SERVER_TYPE, session.serverType);
