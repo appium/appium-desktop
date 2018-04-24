@@ -4,7 +4,7 @@ import wd from 'wd';
 const KEEP_ALIVE_PING_INTERVAL = 30 * 1000;
 //const NO_NEW_COMMAND_LIMIT = 10 * 60 * 1000;
 const NO_NEW_COMMAND_LIMIT = 10 * 1000;
-const WAIT_FOR_USER_KEEP_ALIVE = 60 * 1000;
+const WAIT_FOR_USER_KEEP_ALIVE = 20 * 1000;
 //const WAIT_FOR_USER_KEEP_ALIVE = 2 * 1000;
 
 export default class AppiumMethodHandler {
@@ -27,9 +27,9 @@ export default class AppiumMethodHandler {
       const now = +(new Date());
       if (now - this._lastActiveMoment > NO_NEW_COMMAND_LIMIT) {
         this.sender.send('appium-prompt-keep-alive');
-        /*this.waitForUserDelay = setTimeout(async () => {
-          this.close();
-        }, WAIT_FOR_USER_KEEP_ALIVE);*/
+        this.waitForUserDelay = setTimeout(() => {
+          this.close('Session closed due to inactivity');
+        }, WAIT_FOR_USER_KEEP_ALIVE);
       }
     }, KEEP_ALIVE_PING_INTERVAL);
   }
@@ -39,9 +39,9 @@ export default class AppiumMethodHandler {
    */
   killKeepAliveLoop () {
     clearInterval(this.keepAlive);
-    /*if (this.waitForUserDelay) {
+    if (this.waitForUserDelay) {
       clearTimeout(this.waitForUserDelay);
-    }*/
+    }
   }
 
   async fetchElement (strategy, selector) {
@@ -189,9 +189,10 @@ export default class AppiumMethodHandler {
     this.elArrayVariableCounter = 1;   
   }
 
-  async close (/*reason*/) {
+  async close (reason) {
     clearInterval(this.keepAlive);
 
+    this.sender.send('appium-session-done', reason);
     if (!this.driver._isAttachedSession) {
       try {
         await this.driver.quit();

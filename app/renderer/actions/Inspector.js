@@ -97,15 +97,16 @@ function xmlToJSON (source) {
 
 export function bindAppium () {
   return (dispatch) => {
-    ipcRenderer.on('appium-session-done', () => {
+    ipcRenderer.on('appium-session-done', (evt, reason) => {
       notification.error({
         message: "Error",
-        description: "Session has been terminated",
+        description: reason || "Session has been terminated",
         duration: 0
       });
       ipcRenderer.removeAllListeners('appium-client-command-response');
       ipcRenderer.removeAllListeners('appium-client-command-response-error');
       dispatch({type: SESSION_DONE});
+      dispatch(push('/session'));
     });
   };
 }
