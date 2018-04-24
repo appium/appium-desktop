@@ -44,6 +44,13 @@ export default class AppiumMethodHandler {
     }
   }
 
+  keepSessionAlive () {
+    this._lastActiveMoment = +(new Date());
+    if (this.waitForUserDelay) {
+      clearTimeout(this.waitForUserDelay);
+    }
+  }
+
   async fetchElement (strategy, selector) {
     let element = await this.driver.elementOrNull(strategy, selector);
     if (element === null) {

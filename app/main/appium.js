@@ -272,6 +272,12 @@ function connectRestartRecorder () {
   });
 }
 
+function connectKeepAlive () {
+  ipcMain.on('appium-keep-session-alive', (evt) => {
+    appiumHandlers[evt.sender.id].keepSessionAlive();
+  });
+}
+
 /**
  * When a Session Window makes method request, find it's corresponding driver, execute requested method
  * and send back the result
@@ -374,6 +380,7 @@ function initializeIpc (win) {
   connectGetSessionsListener();
   connectRestartRecorder();
   connectMoveToApplicationsFolder();
+  connectKeepAlive();
 
   setTimeout(checkNewUpdates, 10000);
 }

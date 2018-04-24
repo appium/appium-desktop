@@ -443,6 +443,6 @@ export function promptKeepAlive () {
 export function keepSessionAlive () {
   return (dispatch) => {
     dispatch({type: HIDE_PROMPT_KEEP_ALIVE});
-    //ipcRenderer.send('appium-keep-session-alive'); // TODO: Make the main renderer keep it alive
+    ipcRenderer.send('appium-keep-session-alive');
   };
 }
