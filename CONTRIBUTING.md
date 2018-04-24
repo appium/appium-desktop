@@ -36,9 +36,7 @@ use in an unmodified fashion. Many thanks to that project!
 ### Setting up
 
 0. Clone the repo
-0. Install dependencies (`yarn`) 
-  * `yarn` is recommended over `npm install` because it [deterministically](https://yarnpkg.com/blog/2017/05/31/determinism/) installs dependencies
-    and it installs quicker
+0. Install dependencies (`npm install`)
 
 ### Doing Development
 
