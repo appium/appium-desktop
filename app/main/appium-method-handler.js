@@ -3,8 +3,8 @@ import wd from 'wd';
 
 const isProduction = process.env.NODE_ENV === 'production';
 
-const KEEP_ALIVE_PING_INTERVAL = isProduction ?   30 * 1000     : 5 * 1000;
-const NO_NEW_COMMAND_LIMIT = isProduction ?       5 * 60 * 1000 : 10 * 1000;
+const KEEP_ALIVE_PING_INTERVAL = isProduction ?   30 * 1000     : 15 * 1000;
+const NO_NEW_COMMAND_LIMIT = isProduction ?       5 * 60 * 1000 : 30 * 1000;
 const WAIT_FOR_USER_KEEP_ALIVE = isProduction ?   60 * 1000     : 30 * 1000;
 
 export default class AppiumMethodHandler {
@@ -107,7 +107,7 @@ export default class AppiumMethodHandler {
   }
 
   async _execute ({elementId, methodName, args, skipScreenshotAndSource}) {
-    this.keepSessionAlive();
+    this._lastActiveMoment = +(new Date());
     let cachedEl;
     let res = {};
 
