@@ -99,7 +99,7 @@ function xmlToJSON (source) {
 
 export function bindAppium () {
   return (dispatch) => {
-
+    // Listen for session response messages from 'main'
     bindClient();
 
     // If user is inactive ask if they wish to keep session alive
@@ -107,6 +107,7 @@ export function bindAppium () {
       promptKeepAlive()(dispatch);
     });
 
+    // When session is done, unbind them all
     ipcRenderer.on('appium-session-done', (evt, reason) => {
       ipcRenderer.removeAllListeners('appium-session-done');
       ipcRenderer.removeAllListeners('appium-prompt-keep-alive');

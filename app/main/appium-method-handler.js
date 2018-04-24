@@ -1,11 +1,11 @@
 import Bluebird from 'bluebird';
 import wd from 'wd';
 
-const KEEP_ALIVE_PING_INTERVAL = 30 * 1000;
-//const NO_NEW_COMMAND_LIMIT = 10 * 60 * 1000;
-const NO_NEW_COMMAND_LIMIT = 10 * 1000;
-const WAIT_FOR_USER_KEEP_ALIVE = 20 * 1000;
-//const WAIT_FOR_USER_KEEP_ALIVE = 2 * 1000;
+const isProduction = process.env.NODE_ENV === 'production';
+
+const KEEP_ALIVE_PING_INTERVAL = isProduction ?   30 * 1000     : 5 * 1000;
+const NO_NEW_COMMAND_LIMIT = isProduction ?       5 * 60 * 1000 : 10 * 1000;
+const WAIT_FOR_USER_KEEP_ALIVE = isProduction ?   60 * 1000     : 30 * 1000;
 
 export default class AppiumMethodHandler {
   constructor (driver, sender) {
@@ -23,11 +23,15 @@ export default class AppiumMethodHandler {
   runKeepAliveLoop () {
     // Every 30 seconds ping the server to keep session alive
     this.keepAlive = setInterval(() => {
-      this.driver.sessionCapabilities(); // Ping the Appium server to keep it alive
+      this.driver.sessionCapabilities(); // Pings the Appium server to keep it alive
       const now = +(new Date());
+
+      // If the new command limit has been surpassed, prompt user if they want to keep session going
       if (now - this._lastActiveMoment > NO_NEW_COMMAND_LIMIT) {
         this.sender.send('appium-prompt-keep-alive');
-        this.waitForUserDelay = setTimeout(() => {
+
+        // After the time limit kill the session (this timeout will be killed if they keep it alive)
+        this.waitForUserTimeout = setTimeout(() => {
           this.close('Session closed due to inactivity');
         }, WAIT_FOR_USER_KEEP_ALIVE);
       }
@@ -39,15 +43,18 @@ export default class AppiumMethodHandler {
    */
   killKeepAliveLoop () {
     clearInterval(this.keepAlive);
-    if (this.waitForUserDelay) {
-      clearTimeout(this.waitForUserDelay);
+    if (this.waitForUserTimeout) {
+      clearTimeout(this.waitForUserTimeout);
     }
   }
 
+  /**
+   * Reset the new command clock and kill the wait for user timeout
+   */
   keepSessionAlive () {
     this._lastActiveMoment = +(new Date());
-    if (this.waitForUserDelay) {
-      clearTimeout(this.waitForUserDelay);
+    if (this.waitForUserTimeout) {
+      clearTimeout(this.waitForUserTimeout);
     }
   }
 
@@ -100,7 +107,7 @@ export default class AppiumMethodHandler {
   }
 
   async _execute ({elementId, methodName, args, skipScreenshotAndSource}) {
-    this._lastActiveMoment = +(new Date());
+    this.keepSessionAlive();
     let cachedEl;
     let res = {};
 
