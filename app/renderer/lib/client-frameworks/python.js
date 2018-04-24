@@ -74,10 +74,10 @@ driver.quit()`;
   }
 
   codeFor_swipe (varNameIgnore, varIndexIgnore, x1, y1, x2, y2) {
-    return `TouchAction(driver)
-  .press(x=${x1}, y=${y1})
-  .move_to(x=${x2}, y=${y2})
-  .release()
+    return `TouchAction(driver) \
+  .press(x=${x1}, y=${y1}) \
+  .move_to(x=${x2}, y=${y2}) \
+  .release() \
   .perform()
     `;
   }
