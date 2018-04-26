@@ -55,7 +55,7 @@ export const ServerTypes = {
   headspin: 'headspin',
 };
 
-const JSON_TYPES = ['json_object', 'number', 'boolean'];
+const JSON_TYPES = ['object', 'number', 'boolean'];
 
 export function getCapsObject (caps) {
   return Object.assign({}, ...(caps.map((cap) => {
