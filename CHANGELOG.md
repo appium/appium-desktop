@@ -1,6 +1,7 @@
 ## [1.5.0](https://github.com/appium/appium-desktop/compare/v1.6.0...v1.5.1) (2018-04-26)
 
 ### Changes
+* Feature: Upgrade bundled Appium version to 1.8.0
 * Feature: Add BrowserStack as server (#510)
 * Feature: Add internal session keep-alive (#509)
 * Fix: Upgrade electron 1.7.11 ~> 1.7.13 (#511)
