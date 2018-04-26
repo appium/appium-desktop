@@ -1,3 +1,16 @@
+## [1.5.0](https://github.com/appium/appium-desktop/compare/v1.6.0...v1.5.1) (2018-04-26)
+
+### Changes
+* Feature: Add BrowserStack as server (#510)
+* Feature: Add internal session keep-alive (#509)
+* Fix: Upgrade electron 1.7.11 ~> 1.7.13 (#511)
+* Fix: Various code generation fixes (#505)
+* Fix: Remove unneeded form fields from server forms (#487)
+* Fix: Get screenshot Screen Size using WindowSize rather than coordinates of root element
+* Fix: Rename capType from json_object to object prevent exception (#513)
+
+
+
 ## [1.5.0](https://github.com/appium/appium-desktop/compare/v1.4.1...v1.5.0) (2018-04-02)
 
 ### Changes
