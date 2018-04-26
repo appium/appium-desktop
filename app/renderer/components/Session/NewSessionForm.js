@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Switch, Input, Modal, Form, Icon, Row, Col, Select } from 'antd';
+import { Button, Switch, Input, Modal, Form, Icon, Row, Col, Select, notification } from 'antd';
 import { remote } from 'electron';
 import FormattedCaps from './FormattedCaps';
 import SessionStyles from './Session.css';
@@ -31,11 +31,12 @@ export default class NewSessionForm extends Component {
         placeholder='Value' checked={cap.value} onChange={(value) => setCapabilityParam(index, 'value', value)} />;
       case 'number': return <Input disabled={isEditingDesiredCaps} id={`desiredCapabilityValue_${index}`} placeholder='Value' value={cap.value}
         onChange={(e) => !isNaN(parseInt(e.target.value, 10)) ? setCapabilityParam(index, 'value', parseInt(e.target.value, 10)) : setCapabilityParam(index, 'value', undefined)} size="large"/>;
-      case 'json_object': return <Input disabled={isEditingDesiredCaps} id={`desiredCapabilityValue_${index}`} type='textarea' rows={4} placeholder='Value' value={cap.value}
+      case 'object': return <Input disabled={isEditingDesiredCaps} id={`desiredCapabilityValue_${index}`} type='textarea' rows={4} placeholder='Value' value={cap.value}
         onChange={(e) => setCapabilityParam(index, 'value', e.target.value)} size="large"/>;
       case 'file': return <div className={SessionStyles.fileControlWrapper}>
         <Input disabled={isEditingDesiredCaps} id={`desiredCapabilityValue_${index}`} placeholder='Value' value={cap.value} addonAfter={buttonAfter} size="large"/>
       </div>;
+
       default:
         throw `Invalid cap type: ${cap.type}`;
     }
@@ -66,7 +67,7 @@ export default class NewSessionForm extends Component {
       case 'number':
         translatedValue = parseInt(translatedValue, 10) || 0;
         break;
-      case 'json_object':
+      case 'object':
         translatedValue = translatedValue + '';
         break;
       case 'file':
@@ -95,7 +96,7 @@ export default class NewSessionForm extends Component {
                   <Option value='text'>text</Option>
                   <Option value='boolean'>boolean</Option>
                   <Option value='number'>number</Option>
-                  <Option value='json_object'>JSON object</Option>
+                  <Option value='object'>JSON object</Option>
                   <Option value='file'>filepath</Option>
                 </Select>
               </FormItem>
