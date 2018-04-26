@@ -8,6 +8,7 @@ import ServerTabSauce from './ServerTabSauce';
 import ServerTabCustom from './ServerTabCustom';
 import ServerTabTestobject from './ServerTabTestobject';
 import ServerTabHeadspin from './ServerTabHeadspin';
+import ServerTabBrowserstack from './ServerTabBrowserstack';
 import { Tabs, Button, Spin, Icon } from 'antd';
 import { ServerTypes } from '../../actions/Session';
 import AdvancedServerParams from './AdvancedServerParams';
@@ -38,7 +39,8 @@ export default class Session extends Component {
     const sauceTabHead = <span className={SessionStyles.tabText}><img src="images/sauce_logo.svg" /></span>;
     const testObjectTabHead = <span className={SessionStyles.tabText}><img src="images/testobject_logo.svg" /></span>;
     const headspinTabHead = <span className={SessionStyles.tabText}><img src="images/headspin_logo.svg" /></span>;
-
+    const browserstackTabHead = <span className={SessionStyles.tabText}><img src="images/browserstack_logo.svg" /></span>;
+    
     return <Spin spinning={!!sessionLoading}>
       <div className={SessionStyles['session-container']}>
         <div id='serverTypeTabs'>
@@ -57,6 +59,9 @@ export default class Session extends Component {
             </TabPane>
             <TabPane tab={headspinTabHead} key={ServerTypes.headspin}>
               <ServerTabHeadspin {...this.props} />
+            </TabPane>
+            <TabPane tab={browserstackTabHead} key={ServerTypes.browserstack}>
+              <ServerTabBrowserstack {...this.props} />
             </TabPane>
           </Tabs>
           <AdvancedServerParams {...this.props} />

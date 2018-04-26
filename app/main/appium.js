@@ -146,8 +146,8 @@ function connectCreateNewSessionWindow (win) {
 export function createNewSessionWindow (win) {
   // Create and open the Browser Window
   let sessionWin = new BrowserWindow({
-    width: 920,
-    minWidth: 920,
+    width: 1080,
+    minWidth: 1080,
     height: 570,
     minHeight: 570,
     title: "Start Session",
