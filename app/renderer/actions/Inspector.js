@@ -6,7 +6,7 @@ import B from 'bluebird';
 import uuid from 'uuid';
 import { getLocators } from '../components/Inspector/shared';
 import { showError } from './Session';
-import { callClientMethod } from './shared';
+import { bindClient, unbindClient, callClientMethod } from './shared';
 import { getOptimalXPath } from '../util';
 import frameworks from '../lib/client-frameworks';
 import settings from '../../settings';
@@ -55,6 +55,8 @@ export const CLEAR_SEARCHED_FOR_ELEMENT_BOUNDS = 'CLEAR_SEARCHED_FOR_ELEMENT_BOU
 export const SET_SWIPE_START = 'SET_SWIPE_START';
 export const SET_SWIPE_END = 'SET_SWIPE_END';
 export const CLEAR_SWIPE_ACTION = 'CLEAR_SWIPE_ACTION';
+export const PROMPT_KEEP_ALIVE = 'PROMPT_KEEP_ALIVE';
+export const HIDE_PROMPT_KEEP_ALIVE = 'HIDE_PROMPT_KEEP_ALIVE';
 
 export const SAVED_TESTS = 'SAVED_TESTS';
 export const SET_SAVED_TESTS = 'SET_SAVED_TESTS';
@@ -103,19 +105,29 @@ function xmlToJSON (source) {
 
 export function bindAppium () {
   return (dispatch) => {
-    ipcRenderer.on('appium-session-done', () => {
+    // Listen for session response messages from 'main'
+    bindClient();
+
+    // If user is inactive ask if they wish to keep session alive
+    ipcRenderer.on('appium-prompt-keep-alive', () => {
+      promptKeepAlive()(dispatch);
+    });
+
+    // When session is done, unbind them all
+    ipcRenderer.on('appium-session-done', (evt, reason) => {
+      ipcRenderer.removeAllListeners('appium-session-done');
+      ipcRenderer.removeAllListeners('appium-prompt-keep-alive');
+      unbindClient();
+      dispatch({type: QUIT_SESSION_DONE});
+      dispatch(push('/session'));
       notification.error({
         message: "Error",
-        description: "Session has been terminated",
+        description: reason || "Session has been terminated",
         duration: 0
       });
-      ipcRenderer.removeAllListeners('appium-client-command-response');
-      ipcRenderer.removeAllListeners('appium-client-command-response-error');
-      dispatch({type: SESSION_DONE});
     });
   };
 }
-
 
 // A debounced function that calls findElement and gets info about the element
 const findElement = _.debounce(async function (strategyMap, dispatch, getState, path) {
@@ -194,7 +206,7 @@ export function applyClientMethod (params) {
                       getState().inspector.isRecording;
     try {
       dispatch({type: METHOD_CALL_REQUESTED});
-      let {source, screenshot, result, sourceError, screenshotError,
+      let {source, screenshot, windowSize, result, sourceError, screenshotError, windowSizeError,
         variableName, variableIndex, strategy, selector} = await callClientMethod(params);
       if (isRecording) {
         // Add 'findAndAssign' line of code. Don't do it for arrays though. Arrays already have 'find' expression
@@ -213,8 +225,10 @@ export function applyClientMethod (params) {
         source: source && xmlToJSON(source),
         sourceXML: source,
         screenshot,
+        windowSize,
         sourceError,
         screenshotError,
+        windowSizeError,
       });
       return result;
     } catch (error) {
@@ -263,10 +277,7 @@ export function setExpandedPaths (paths) {
  */
 export function quitSession () {
   return async (dispatch) => {
-    dispatch({type: QUIT_SESSION_REQUESTED});
     await applyClientMethod({methodName: 'quit'})(dispatch);
-    dispatch({type: QUIT_SESSION_DONE});
-    dispatch(push('/session'));
   };
 }
 
@@ -466,5 +477,18 @@ export function saveTest (testName) {
     }]);
     await settings.set(SAVED_TESTS, newTests);
     dispatch({type: SET_SAVED_TESTS, tests: newTests});
+  };
+}
+
+export function promptKeepAlive () {
+  return (dispatch) => {
+    dispatch({type: PROMPT_KEEP_ALIVE});
+  };
+}
+
+export function keepSessionAlive () {
+  return (dispatch) => {
+    dispatch({type: HIDE_PROMPT_KEEP_ALIVE});
+    ipcRenderer.send('appium-keep-session-alive');
   };
 }

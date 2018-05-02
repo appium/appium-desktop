@@ -3,8 +3,8 @@ import React, { Component } from 'react';
 import NewSessionForm from './NewSessionForm';
 import SavedSessions from './SavedSessions';
 import AttachToSession from './AttachToSession';
-import SessionModeTabs from './SessionModeTabs';
 import ServerTypeTabs from './ServerTypeTabs';
+import SessionModeTabs from './SessionModeTabs';
 import SavedTests from './SavedTests';
 import TestRun from './TestRun';
 import TestResults from './TestResults';
@@ -57,7 +57,6 @@ export default class Session extends Component {
         {showCapsTab && <Card className={SessionStyles.sessionCard}>
           <ServerTypeTabs {...this.props} />
         </Card>}
-
 
         {newSessionBegan && <div key={2}>
           <p>Session In Progress</p>

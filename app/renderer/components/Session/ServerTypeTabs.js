@@ -5,6 +5,7 @@ import ServerTabCustom from './ServerTabCustom';
 import ServerTabTestobject from './ServerTabTestobject';
 import ServerTabHeadspin from './ServerTabHeadspin';
 import SessionStyles from './Session.css';
+import AdvancedServerParams from './AdvancedServerParams';
 import { ServerTypes } from '../../actions/Session';
 import { Tabs } from 'antd';
 
@@ -18,6 +19,7 @@ export default class ServerTypeTabs extends Component {
     const sauceTabHead = <span className={SessionStyles.tabText}><img src="images/sauce_logo.svg" /></span>;
     const testObjectTabHead = <span className={SessionStyles.tabText}><img src="images/testobject_logo.svg" /></span>;
     const headspinTabHead = <span className={SessionStyles.tabText}><img src="images/headspin_logo.svg" /></span>;
+    const browserstackTabHead = <span className={SessionStyles.tabText}><img src="images/browserstack_logo.svg" /></span>;
 
     return <div id='serverTypeTabs'>
       <Tabs activeKey={serverType} onChange={changeServerType} className={SessionStyles.serverTabs}>
@@ -36,7 +38,11 @@ export default class ServerTypeTabs extends Component {
         <TabPane tab={headspinTabHead} key={ServerTypes.headspin}>
           <ServerTabHeadspin {...this.props} />
         </TabPane>
+        <TabPane tab={browserstackTabHead} key={ServerTypes.browserstack}>
+          <ServerTabBrowserstack {...this.props} />
+        </TabPane>
       </Tabs>
+      <AdvancedServerParams {...this.props} />
     </div>;
   }
 }

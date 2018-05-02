@@ -18,8 +18,6 @@ var server = null;
 var logWatcher = null;
 var batchedLogs = [];
 
-let sessionDrivers = {};
-
 let appiumHandlers = {};
 let logFile;
 
@@ -40,20 +38,12 @@ async function deleteLogfile () {
  * Kill session associated with session browser window
  */
 async function killSession (sessionWinID) {
-  let driver = sessionDrivers[sessionWinID];
-  if (driver) {
-    let sessionID;
-    try {
-      await driver.getSessionId();
-      if (!driver._isAttachedSession) {
-        await driver.quit();
-      }
-    } catch (e) {
-      console.log(`Couldn't close session: ${sessionID || 'unknown session ID'}`);
-    }
-    delete sessionDrivers[sessionWinID];
-    delete appiumHandlers[sessionWinID];
+  let handler = appiumHandlers[sessionWinID];
+  if (handler) {
+    await handler.close();
   }
+
+  delete appiumHandlers[sessionWinID];
 }
 
 function getBaseHTMLPath () {
@@ -86,13 +76,7 @@ function bindSessionKillOnClose (win) {
   // When you close the session window, kill its associated Appium session (if there is one)
   let sessionID = win.webContents.id;
   win.on('closed', async () => {
-    const driver = sessionDrivers[sessionID];
-    if (driver) {
-      if (!driver._isAttachedSession) {
-        await driver.quit();
-      }
-      delete sessionDrivers[sessionID];
-    }
+    await killSession(sessionId);
     win = null;
   });
 }
@@ -199,8 +183,8 @@ function connectCreateNewSessionWindow (win) {
 export function createNewSessionWindow (mainWin) {
   // Create and open the Browser Window
   let sessionWin = new BrowserWindow({
-    width: 920,
-    minWidth: 920,
+    width: 1080,
+    minWidth: 1080,
     height: 800,
     minHeight: 800,
     title: "Start Session",
@@ -218,6 +202,7 @@ export function createNewSessionWindow (mainWin) {
   bindSessionKillOnClose(sessionWin);
   bindDevTools(sessionWin);
   savedTestWindows.push(sessionWin);
+
   // When the main window is closed, close the session window too
   mainWin.once('closed', () => {
     sessionWin = null;
@@ -228,57 +213,56 @@ export function createNewSessionWindow (mainWin) {
 function connectCreateNewSession () {
   ipcMain.on('appium-create-new-session', async (event, args) => {
     const {desiredCapabilities, host, port, path, username, accessKey, https,
-      attachSessId} = args;
+      attachSessId, rejectUnauthorized, proxy} = args;
 
-    // If there is an already active session, kill it. Limit one session per window.
-    if (sessionDrivers[event.sender.id]) {
-      await killSession(event.sender);
-    }
+    try {
+      // If there is an already active session, kill it. Limit one session per window.
+      if (appiumHandlers[event.sender.id]) {
+        await killSession(event.sender);
+      }
 
-    // Create the driver and cache it by the sender ID
-    let driver = sessionDrivers[event.sender.id] = wd.promiseChainRemote({
-      hostname: host,
-      port,
-      path,
-      username,
-      accessKey,
-      https,
-    });
-    appiumHandlers[event.sender.id] = new AppiumMethodHandler(driver);
+      // Create the driver and cache it by the sender ID
+      let driver = wd.promiseChainRemote({
+        hostname: host,
+        port,
+        path,
+        username,
+        accessKey,
+        https,
+      });
+      driver.configureHttp({rejectUnauthorized, proxy});
+      const handler = appiumHandlers[event.sender.id] = new AppiumMethodHandler(driver, event.sender);
 
-    // If we're just attaching to an existing session, do that and
-    // short-circuit the rest of the logic
-    if (attachSessId) {
-      driver._isAttachedSession = true;
-      try {
+      // If we're just attaching to an existing session, do that and
+      // short-circuit the rest of the logic
+      if (attachSessId) {
+        driver._isAttachedSession = true;
         await driver.attach(attachSessId);
         // get the session capabilities to prove things are working
         await driver.sessionCapabilities();
         event.sender.send('appium-new-session-ready');
-      } catch (e) {
-        // If the session failed to attach, delete it from the cache
-        await killSession(event.sender);
-        event.sender.send('appium-new-session-failed', e);
+        return;
       }
-      return;
-    }
 
-    // If a newCommandTimeout wasn't provided, set it to 0 so that sessions don't close on users
-    if (!desiredCapabilities.newCommandTimeout) {
-      desiredCapabilities.newCommandTimeout = 0;
-    }
+      // If a newCommandTimeout wasn't provided, set it to 0 so that sessions don't close on users
+      if (!desiredCapabilities.newCommandTimeout) {
+        desiredCapabilities.newCommandTimeout = 0;
+      }
 
-    // If someone didn't specify connectHardwareKeyboard, set it to true by
-    // default
-    if (typeof desiredCapabilities.connectHardwareKeyboard === "undefined") {
-      desiredCapabilities.connectHardwareKeyboard = true;
-    }
+      // If someone didn't specify connectHardwareKeyboard, set it to true by
+      // default
+      if (typeof desiredCapabilities.connectHardwareKeyboard === "undefined") {
+        desiredCapabilities.connectHardwareKeyboard = true;
+      }
 
-    // Try initializing it. If it fails, kill it and send error message to sender
-    try {
+      // Try initializing it. If it fails, kill it and send error message to sender
       let p = driver.init(desiredCapabilities);
       event.sender.send('appium-new-session-successful');
       let [sessionId] = await p;
+
+      // Now that the session is running
+      handler.runKeepAliveLoop();
+
       // we don't really support the web portion of apps for a number of
       // reasons, so pre-emptively ensure we're in native mode before doing the
       // rest of the inspector startup. Since some platforms might not implement
@@ -298,6 +282,12 @@ function connectCreateNewSession () {
 function connectRestartRecorder () {
   ipcMain.on('appium-restart-recorder', (evt) => {
     appiumHandlers[evt.sender.id].restart();
+  });
+}
+
+function connectKeepAlive () {
+  ipcMain.on('appium-keep-session-alive', (evt) => {
+    appiumHandlers[evt.sender.id].keepSessionAlive();
   });
 }
 
@@ -329,6 +319,7 @@ function connectClientMethodListener () {
         renderer.send('appium-client-command-response', {
           source: null,
           screenshot: null,
+          windowSize: null,
           uuid,
           result: null
         });
@@ -402,6 +393,7 @@ function initializeIpc (win) {
   connectGetSessionsListener();
   connectRestartRecorder();
   connectMoveToApplicationsFolder();
+  connectKeepAlive();
 
   setTimeout(checkNewUpdates, 10000);
 }

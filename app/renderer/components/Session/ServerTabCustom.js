@@ -26,7 +26,7 @@ export default class ServerTabCustom extends Component {
           <Input className={SessionStyles.customServerInputLeft} id='customServerPath' placeholder='/wd/hub' addonBefore="Remote Path" value={server.remote.path} onChange={(e) => setServerParam('path', e.target.value)} size="large" />
         </FormItem>
       </Col>
-      <Col span={12}>
+      <Col span={3}>
         <FormItem>
           <Checkbox id='customServerSSL' checked={!!server.remote.ssl} value={server.remote.ssl} onChange={(e) => setServerParam('ssl', e.target.checked)}>SSL</Checkbox>
         </FormItem>

@@ -44,12 +44,12 @@ ${this.indent(this.chainifyCode(code), 2)}
     switch (strategy) {
       case "xpath": break; // xpath does not need to be updated
       case "accessibility id": locator = `~${locator}`; break;
-      case "id": locator = `#{locator}`; break;
-      case "name": locator = `name={locator}`; break;
-      case "class name": locator = `#{locator}`; break;
-      case "-android uiautomator": locator = `android={locator}`; break;
-      case "-ios predicate string": locator = `ios={locator}`; break;
-      case "-ios class chain": locator = `ios={locator}`; break; // TODO: Handle IOS class chain properly. Not all libs support it. Or take it out
+      case "id": locator = `${locator}`; break;
+      case "name": locator = `name=${locator}`; break;
+      case "class name": locator = `${locator}`; break;
+      case "-android uiautomator": locator = `android=${locator}`; break;
+      case "-ios predicate string": locator = `ios=${locator}`; break;
+      case "-ios class chain": locator = `ios=${locator}`; break; // TODO: Handle IOS class chain properly. Not all libs support it. Or take it out
       default: throw new Error(`Can't handle strategy ${strategy}`);
     }
     if (isArray) {

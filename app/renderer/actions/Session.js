@@ -78,6 +78,7 @@ export const ServerTypes = {
   sauce: 'sauce',
   testobject: 'testobject',
   headspin: 'headspin',
+  browserstack: 'browserstack',
 };
 
 export const SessionModes = {
@@ -86,7 +87,7 @@ export const SessionModes = {
   view: 'view',
 };
 
-const JSON_TYPES = ['json_object', 'number', 'boolean'];
+const JSON_TYPES = ['object', 'number', 'boolean'];
 
 export function getCapsObject (caps) {
 
@@ -238,8 +239,31 @@ export function startSession (caps, serverType, serverParams, attachSessId = nul
       path = `/v0/${serverParams.headspin.apiKey}/wd/hub`;
       https = true;
       break;
+    case ServerTypes.browserstack:
+      host = process.env.BROWSERSTACK_HOST || "hub-cloud.browserstack.com";
+      port = 443;
+      path = "/wd/hub";
+      username = session.server.browserstack.username || process.env.BROWSERSTACK_USERNAME;
+      desiredCapabilities["browserstack.source"] = "appiumdesktop";
+      accessKey = session.server.browserstack.accessKey || process.env.BROWSERSTACK_ACCESS_KEY;
+      if (!username || !accessKey) {
+        notification.error({
+          message: "Error",
+          description: "Browserstack username and access key are required!",
+          duration: 4
+        });
+        return;
+      }
+      https = true;
+      break;
     default:
       break;
+  }
+
+  let rejectUnauthorized = !session.server.advanced.allowUnauthorized;
+  let proxy;
+  if (session.server.advanced.useProxy && session.server.advanced.proxy) {
+    proxy = session.server.advanced.proxy;
   }
 
   // Start the session
@@ -251,10 +275,13 @@ export function startSession (caps, serverType, serverParams, attachSessId = nul
     path,
     username,
     accessKey,
-    https
+    https,
+    rejectUnauthorized,
+    proxy,
   });
 
-  return {desiredCapabilities, host, port, username, accessKey, https, path};
+  return {desiredCapabilities, host, port, username, accessKey, https, path,
+    rejectUnauthorized, proxy};
 }
 
 /**
@@ -419,10 +446,11 @@ export function changeServerType (serverType) {
 /**
  * Set a server parameter (host, port, etc...)
  */
-export function setServerParam (name, value) {
-  const debounceGetRunningSessions = debounce(getRunningSessions(), 500);
+export function setServerParam (name, value, serverType) {
+  const debounceGetRunningSessions = debounce(getRunningSessions(), 5000);
   return (dispatch, getState) => {
-    dispatch({type: SET_SERVER_PARAM, serverType: getState().session.serverType, name, value});
+    serverType = serverType || getState().session.serverType;
+    dispatch({type: SET_SERVER_PARAM, serverType, name, value});
     debounceGetRunningSessions(dispatch, getState);
   };
 }

@@ -4,9 +4,7 @@ import Promise from 'bluebird';
 
 const clientMethodPromises = {};
 
-// Don't do anything if we're in 'main' context
-if (ipcRenderer) {
-
+export function bindClient () {
   /**
    * When we hear back from the main process, resolve the promise
    */
@@ -31,6 +29,11 @@ if (ipcRenderer) {
       delete clientMethodPromises[uuid];
     }
   });
+}
+
+export function unbindClient () {
+  ipcRenderer.removeAllListeners('appium-client-command-response');
+  ipcRenderer.removeAllListeners('appium-client-command-response-error');
 }
 
 export function callClientMethod (params) {

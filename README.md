@@ -33,7 +33,7 @@ from the downloaded DMG file to your own file system (the best place is the
 not supported, and will not work.
 
 ## Known Issues
-* Auto updater is [not working](https://github.com/appium/appium-desktop/issues/74) for versions < 1.4.1
+* Some Windows 10 Users experience a `PathTooLongException` when installing the EXE. The workaround for this is to update the setting on Windows to [enable long paths](https://superuser.com/questions/1119883/windows-10-enable-ntfs-long-paths-policy-option-missing)
 
 ## Usage Instructions
 
