@@ -4,7 +4,7 @@ import { v4 as UUID } from 'uuid';
 import { push } from 'react-router-redux';
 import { notification } from 'antd';
 import { isNil, cloneDeep, isPlainObject, debounce, toPairs } from 'lodash';
-import { callClientMethod } from './shared';
+import { callClientMethod, bindClient, unbindClient } from './shared';
 import { setSessionDetails, SAVED_TESTS, SET_SAVED_TESTS } from './Inspector';
 
 export const NEW_SESSION_REQUESTED = 'NEW_SESSION_REQUESTED';
@@ -766,6 +766,9 @@ export function runTest (serverType, caps, actions) {
     ipcRenderer.once('appium-new-session-ready', async (evt, sessionId) => {
       updateState(0, ACTION_STATE_COMPLETE, null, startTime, sessionId);
 
+      // first, bind the renderer to the client so we can receive commands
+      bindClient();
+
       // now loop through all the actual test actions
       let actionIndex; // we will start at 1 since the first action was new session
       let lastFoundElId = null;
@@ -836,6 +839,9 @@ export function runTest (serverType, caps, actions) {
       } catch (e) {
         updateState(lastActionIndex, ACTION_STATE_ERRORED, e, startTime);
       }
+
+      // unbind our client so we no longer listen for commands
+      unbindClient();
 
       // finally, gather the result to save and dispatch the completed actions
       await completeTest(dispatch, getState);
