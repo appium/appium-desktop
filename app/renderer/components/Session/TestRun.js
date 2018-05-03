@@ -172,7 +172,10 @@ export default class TestRun extends Component {
   render () {
     const {isTestRunning, hideTestRunModal, serverType} = this.props;
     const sessionId = getSessionId(this.getActionsToShow());
-    const showBrowserLink = serverType !== "local" && serverType !== "remote";
+    const showBrowserLink = serverType !== "local" &&
+      serverType !== "remote" &&
+      serverType !== "browserstack" &&
+      serverType !== "testobject";
     const browserUrl = showBrowserLink ? getTestUrl(serverType, sessionId) : null;
 
     let testName = null;

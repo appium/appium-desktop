@@ -3,6 +3,7 @@ import ServerTabAutomatic from './ServerTabAutomatic';
 import ServerTabSauce from './ServerTabSauce';
 import ServerTabCustom from './ServerTabCustom';
 import ServerTabTestobject from './ServerTabTestobject';
+import ServerTabBrowserstack from './ServerTabBrowserstack';
 import ServerTabHeadspin from './ServerTabHeadspin';
 import SessionStyles from './Session.css';
 import AdvancedServerParams from './AdvancedServerParams';
