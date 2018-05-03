@@ -24,10 +24,13 @@ export default class SavedTests extends Component {
   }
 
   selectTest (testId) {
-    const {selectTestToRun} = this.props;
+    const {selectTestToRun, setCapsFromTest} = this.props;
     const selectedTests = testId ? [testId] : [];
     this.setState({selectedTests});
     selectTestToRun(testId || null);
+    if (testId) {
+      setCapsFromTest(testId);
+    }
   }
 
   onRowClick ({key}) {
@@ -50,7 +53,6 @@ export default class SavedTests extends Component {
   render () {
     const {
       savedTests, deleteSavedTest, capsModal, showCapsModal, hideCapsModal,
-      setCapsFromTest,
     } = this.props;
     const {selectedTests} = this.state;
 
@@ -77,18 +79,6 @@ export default class SavedTests extends Component {
       width: 120,
       render: (text, test) => (
         <div>
-          <Tooltip title="Send Capabilities">
-            <Button
-              icon="download"
-              onClick={(e) => {
-                e.stopPropagation();
-                setCapsFromTest(test.testId);
-              }}
-            />
-          </Tooltip>
-
-          &nbsp;
-
           <Tooltip title="Show Capabilities as Recorded">
             <Button
               icon="menu-unfold"
