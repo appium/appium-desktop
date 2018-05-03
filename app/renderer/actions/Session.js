@@ -243,9 +243,9 @@ export function startSession (caps, serverType, serverParams, attachSessId = nul
       host = process.env.BROWSERSTACK_HOST || "hub-cloud.browserstack.com";
       port = 443;
       path = "/wd/hub";
-      username = session.server.browserstack.username || process.env.BROWSERSTACK_USERNAME;
+      username = serverParams.browserstack.username || process.env.BROWSERSTACK_USERNAME;
       desiredCapabilities["browserstack.source"] = "appiumdesktop";
-      accessKey = session.server.browserstack.accessKey || process.env.BROWSERSTACK_ACCESS_KEY;
+      accessKey = serverParams.browserstack.accessKey || process.env.BROWSERSTACK_ACCESS_KEY;
       if (!username || !accessKey) {
         notification.error({
           message: "Error",
@@ -260,10 +260,10 @@ export function startSession (caps, serverType, serverParams, attachSessId = nul
       break;
   }
 
-  let rejectUnauthorized = !session.server.advanced.allowUnauthorized;
+  let rejectUnauthorized = !serverParams.advanced.allowUnauthorized;
   let proxy;
-  if (session.server.advanced.useProxy && session.server.advanced.proxy) {
-    proxy = session.server.advanced.proxy;
+  if (serverParams.advanced.useProxy && serverParams.advanced.proxy) {
+    proxy = serverParams.advanced.proxy;
   }
 
   // Start the session
