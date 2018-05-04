@@ -25,17 +25,16 @@ export default class NewSessionForm extends Component {
       type="file"
       onClick={() => this.getLocalFilePath((filepath) => setCapabilityParam(index, 'value', filepath[0]))} />;
 
-    let objectRes = <Input disabled={isEditingDesiredCaps} id={`desiredCapabilityValue_${index}`} type='textarea' rows={4} placeholder='Value' value={cap.value}
-    onChange={(e) => setCapabilityParam(index, 'value', e.target.value)} size="large"/>;
-
     switch (cap.type) {
       case 'text': return <Input disabled={isEditingDesiredCaps} id={`desiredCapabilityValue_${index}`} placeholder='Value' value={cap.value} onChange={(e) => setCapabilityParam(index, 'value', e.target.value)} size="large"/>;
       case 'boolean': return <Switch disabled={isEditingDesiredCaps} id={`desiredCapabilityValue_${index}`} checkedChildren={'true'} unCheckedChildren={'false'}
         placeholder='Value' checked={cap.value} onChange={(value) => setCapabilityParam(index, 'value', value)} />;
       case 'number': return <Input disabled={isEditingDesiredCaps} id={`desiredCapabilityValue_${index}`} placeholder='Value' value={cap.value}
         onChange={(e) => !isNaN(parseInt(e.target.value, 10)) ? setCapabilityParam(index, 'value', parseInt(e.target.value, 10)) : setCapabilityParam(index, 'value', undefined)} size="large"/>;
-      case 'object': return objectRes;
-      case 'json_object': return objectRes;
+      case 'object':
+      case 'json_object':
+        return <Input disabled={isEditingDesiredCaps} id={`desiredCapabilityValue_${index}`} type='textarea' rows={4} placeholder='Value' value={cap.value}
+          onChange={(e) => setCapabilityParam(index, 'value', e.target.value)} size="large"/>;
       case 'file': return <div className={SessionStyles.fileControlWrapper}>
         <Input disabled={isEditingDesiredCaps} id={`desiredCapabilityValue_${index}`} placeholder='Value' value={cap.value} addonAfter={buttonAfter} size="large"/>
       </div>;
@@ -71,8 +70,6 @@ export default class NewSessionForm extends Component {
         translatedValue = parseInt(translatedValue, 10) || 0;
         break;
       case 'json_object':
-        translatedValue = translatedValue + '';
-        break;
       case 'object':
         translatedValue = translatedValue + '';
         break;
