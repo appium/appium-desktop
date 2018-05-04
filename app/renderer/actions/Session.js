@@ -643,7 +643,7 @@ export function requestTestRun () {
     const {testToRun, savedTests, serverType, caps} = getState().session;
     dispatch({type: TEST_RUN_REQUESTED});
     const test = getTest(testToRun, savedTests);
-    runTest(serverType, caps, test.actions)(dispatch, getState);
+    runTest(serverType, getCapsObject(caps), test.actions)(dispatch, getState);
   };
 }
 
@@ -759,7 +759,7 @@ export function runTest (serverType, caps, actions) {
     // If it failed, show an alert saying it failed, and update state
     ipcRenderer.once('appium-new-session-failed', async (evt, e) => {
       updateState(0, ACTION_STATE_ERRORED, e, startTime);
-      await completeTest(dispatch, getState);
+      await completeTest(caps, dispatch, getState);
     });
 
     // otherwise, if it's ready, update the new session action state and go on
@@ -844,19 +844,19 @@ export function runTest (serverType, caps, actions) {
       unbindClient();
 
       // finally, gather the result to save and dispatch the completed actions
-      await completeTest(dispatch, getState);
+      await completeTest(caps, dispatch, getState);
     });
   };
 }
 
-async function completeTest (dispatch, getState) {
+async function completeTest (caps, dispatch, getState) {
   const state = getState().session;
   const serverType = state.serverType;
   const actions = state.actionsStatus;
   const date = Date.now();
   const testId = state.testToRun;
   const test = getTest(testId, state.savedTests);
-  const {caps, name} = test;
+  const {name} = test;
   const resultId = UUID();
   const result = {name, testId, date, actions, serverType, caps, resultId};
 

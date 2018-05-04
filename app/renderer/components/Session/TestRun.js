@@ -7,6 +7,7 @@ import PlaybackStyles from './Playback.css';
 import { iconForState, stateDataForTest, getTestResult, getTest,
   getSessionId, getTestUrl
 } from './shared';
+import { getCapsObject } from '../../actions/Session';
 
 export default class TestRun extends Component {
 
@@ -51,10 +52,21 @@ export default class TestRun extends Component {
   }
 
   getTestHeader () {
-    const {serverType} = this.props;
+    const {serverType, testInProgress, caps} = this.props;
     const test = this.getTestToShow();
     let testTime = this.getTestTime();
     testTime = testTime ? `(${testTime / 1000}s)` : '';
+
+
+    let capsHolder = test;
+    if (testInProgress) {
+      capsHolder = {caps: getCapsObject(caps)};
+    }
+
+    let serverTypeHolder = test;
+    if (testInProgress) {
+      serverTypeHolder = {serverType};
+    }
 
     const testStatus = this.getTestStatus();
 
@@ -62,9 +74,9 @@ export default class TestRun extends Component {
       <span style={{color: testStatus.color}}><Icon type={testStatus.icon} />&nbsp;&nbsp;<b>{testStatus.text}</b> {testTime}</span>
       {test &&
         <div className={PlaybackStyles.testMetadata}>
-          <div><b>App:</b> <code>{test.caps.app || test.caps.browserName || test.caps.appPackage || test.caps.bundleId}</code></div>
-          <div><b>Platform:</b> <code>{test.caps.platformName}</code></div>
-          <div><b>Server Type:</b> <code>{test.serverType || serverType}</code></div>
+          <div><b>App:</b> <code>{capsHolder.caps.app || capsHolder.caps.browserName || capsHolder.caps.appPackage || capsHolder.caps.bundleId}</code></div>
+          <div><b>Platform:</b> <code>{capsHolder.caps.platformName}</code></div>
+          <div><b>Server Type:</b> <code>{serverTypeHolder.serverType}</code></div>
           {test.date &&
             <div><b>Run at:</b> <code>{moment(test.date).format("YYYY-MM-DD HH:SS")}</code></div>
           }
