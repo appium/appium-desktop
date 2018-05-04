@@ -4,7 +4,7 @@ node:
 os:
 - linux
 node_js:
-- '7'
+- '9'
 before_install:
 - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install --no-install-recommends
   -y icnsutils graphicsmagick xz-utils; fi
@@ -15,6 +15,7 @@ addons:
 before_script:
 - node --version
 - npm install
+- npm install -g npm@3
 - npm install -g electron
 - node --version
 - travis_wait 30 npm run package-ci # This command takes a long time, so increased the time limit to 30 minutes (default is 10 minutes)
