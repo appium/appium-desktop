@@ -203,9 +203,9 @@ export default class AppiumMethodHandler {
     this.elArrayVariableCounter = 1;   
   }
 
-  async close (reason) {
+  async close (reason, killedByUser=false) {
     this.killKeepAliveLoop();
-    this.sender.send('appium-session-done', reason);
+    this.sender.send('appium-session-done', {reason, killedByUser});
     if (!this.driver._isAttachedSession) {
       try {
         await this.driver.quit();
