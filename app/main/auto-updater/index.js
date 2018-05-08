@@ -10,6 +10,7 @@ import B from 'bluebird';
 import { checkUpdate } from './update-checker';
 import { getFeedUrl } from './config';
 import _ from 'lodash';
+import env from 'env';
 
 const isDev = process.env.NODE_ENV === 'development';
   
@@ -31,16 +32,24 @@ if (!isDev) {
       let {name, notes, pub_date:pubDate} = update;
       pubDate = moment(pubDate).format('MMM Do YYYY, h:mma');
 
+      let detail = `Release Date: ${pubDate}\n\nRelease Notes: ${notes.replace("*", "\n*")}`;
+      if (env.NO_AUTO_UPDATE) {
+        detail += `\n\nhttps://www.github.com/appium/appium-desktop/releases/latest`;
+      }
+
+
       // Ask user if they wish to install now or later
       dialog.showMessageBox({
         type: 'info',
-        buttons: ['Install Now', 'Install Later'],
+        buttons: env.NO_AUTO_UPDATE ? ['Ok'] : ['Install Now', 'Install Later'],
         message: `Appium Desktop ${name} is available`,
-        detail: `Release Date: ${pubDate}\n\nRelease Notes: ${notes.replace("*", "\n*")}`,
+        detail,
       }, (response) => {
         if (response === 0) {
           // If they say yes, get the updates now
-          autoUpdater.checkForUpdates();
+          if (!env.NO_AUTO_UPDATE) {
+            autoUpdater.checkForUpdates();
+          }
         }
       });
     } else {

@@ -1,5 +1,6 @@
 import webpack from 'webpack';
 import baseConfig from './webpack.config.base';
+import path from 'path';
 
 export default {
   ...baseConfig,
@@ -29,7 +30,10 @@ export default {
   },
 
   resolve: {
-    packageAlias: 'main'
+    packageAlias: 'main',
+    alias: {
+      env: path.resolve(__dirname, 'env', process.env.TARGET ? `.env-${process.env.TARGET}` : '.env'),
+    },
   },
 
   externals: [

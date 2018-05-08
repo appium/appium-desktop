@@ -41,6 +41,8 @@
     "package-linux": "npm run build && build --linux",
     "package-all": "npm run build && build -mwl",
     "package-ci": "check-engines && npm run test && npm run build && build --dir && npm run test-e2e && build --publish onTagOrDraft",
+    "package-nsis": "cross-env TARGET=nsis npm run build && build --win nsis --publish onTagOrDraft ",
+    "package-nsis-web": "cross-env TARGET=nsis npm run build && build --win nsis-web --publish onTagOrDraft ",
     "postversion": "git pull --tags && git push && git push --tags"
   },
   "build": {
@@ -77,6 +79,12 @@
     "win": {
       "target": "squirrel",
       "icon": "build/icon.ico"
+    },
+    "nsisWeb": {
+      "oneClick": false
+    },
+    "nsis": {
+      "oneClick": false
     },
     "linux": {
       "target": [
