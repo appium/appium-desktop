@@ -156,7 +156,7 @@
     "devtron": "1.x",
     "dir-compare": "^1.4.0",
     "electron": "2.0.0",
-    "electron-builder": "^20.0.0",
+    "electron-builder": "^20.13.2",
     "electron-builder-squirrel-windows": "^20.4.0",
     "electron-devtools-installer": "^2.2.3",
     "eslint": "3.x",
