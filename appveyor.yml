@@ -12,7 +12,6 @@ test_script:
   - npm --version
   - npm run package-ci
   - npm run package-nsis
-  - npm run package-nsis-web
 
 build: off
 
