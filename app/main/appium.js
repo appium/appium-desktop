@@ -246,8 +246,9 @@ function connectCreateNewSession () {
       event.sender.send('appium-new-session-successful');
       await p;
 
-      // Now that the session is running
-      handler.runKeepAliveLoop();
+      if (host !== '127.0.0.1' && host !== 'localhost') {
+        handler.runKeepAliveLoop();
+      }
 
 
       // we don't really support the web portion of apps for a number of
