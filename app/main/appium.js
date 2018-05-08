@@ -35,10 +35,10 @@ async function deleteLogfile () {
 /**
  * Kill session associated with session browser window
  */
-async function killSession (sessionWinID) {
+async function killSession (sessionWinID, killedByUser=false) {
   let handler = appiumHandlers[sessionWinID];
   if (handler) {
-    await handler.close();  
+    await handler.close('', killedByUser);  
   }
   
   delete appiumHandlers[sessionWinID];
@@ -300,7 +300,7 @@ function connectClientMethodListener () {
 
     try {
       if (methodName === 'quit') {
-        await killSession(renderer.id);
+        await killSession(renderer.id, true);
         // when we've quit the session, there's no source/screenshot to send
         // back
         renderer.send('appium-client-command-response', {

@@ -108,17 +108,19 @@ export function bindAppium () {
     });
 
     // When session is done, unbind them all
-    ipcRenderer.on('appium-session-done', (evt, reason) => {
+    ipcRenderer.on('appium-session-done', (evt, {reason, killedByUser}) => {
       ipcRenderer.removeAllListeners('appium-session-done');
       ipcRenderer.removeAllListeners('appium-prompt-keep-alive');
       unbindClient();
       dispatch({type: QUIT_SESSION_DONE});
       dispatch(push('/session'));
-      notification.error({
-        message: "Error",
-        description: reason || "Session has been terminated",
-        duration: 0
-      });
+      if (!killedByUser) {
+        notification.error({
+          message: "Error",
+          description: reason || "Session has been terminated",
+          duration: 0
+        });
+      }
     });
   };
 }
