@@ -1,19 +1,28 @@
-import {omit} from 'lodash';
+import { omit } from 'lodash';
 import formatJSON from 'format-json';
 
-import { NEW_SESSION_REQUESTED, NEW_SESSION_BEGAN, NEW_SESSION_DONE,
-        SAVE_SESSION_REQUESTED, SAVE_SESSION_DONE, GET_SAVED_SESSIONS_REQUESTED,
-        GET_SAVED_SESSIONS_DONE, SESSION_LOADING, SESSION_LOADING_DONE,
-        SET_CAPABILITY_PARAM, ADD_CAPABILITY, REMOVE_CAPABILITY, SET_CAPS,
-        SWITCHED_TABS, SAVE_AS_MODAL_REQUESTED, HIDE_SAVE_AS_MODAL_REQUESTED, SET_SAVE_AS_TEXT,
-        DELETE_SAVED_SESSION_REQUESTED, DELETE_SAVED_SESSION_DONE,
-        CHANGE_SERVER_TYPE, SET_SERVER_PARAM, SET_SERVER, SET_ATTACH_SESS_ID,
-        GET_SESSIONS_REQUESTED, GET_SESSIONS_DONE,
-        ENABLE_DESIRED_CAPS_EDITOR, ABORT_DESIRED_CAPS_EDITOR, SAVE_RAW_DESIRED_CAPS, SET_RAW_DESIRED_CAPS, SHOW_DESIRED_CAPS_JSON_ERROR,
-        ServerTypes } from '../actions/Session';
+import {
+  NEW_SESSION_REQUESTED, NEW_SESSION_BEGAN, NEW_SESSION_DONE,
+  SAVE_SESSION_REQUESTED, SAVE_SESSION_DONE, GET_SAVED_SESSIONS_REQUESTED,
+  GET_SAVED_SESSIONS_DONE, SESSION_LOADING, SESSION_LOADING_DONE,
+  SET_CAPABILITY_PARAM, ADD_CAPABILITY, REMOVE_CAPABILITY, SET_CAPS,
+  SWITCHED_TABS, SAVE_AS_MODAL_REQUESTED, HIDE_SAVE_AS_MODAL_REQUESTED,
+  SET_SAVE_AS_TEXT, DELETE_SAVED_SESSION_REQUESTED, DELETE_SAVED_SESSION_DONE,
+  CHANGE_SERVER_TYPE, SET_SERVER_PARAM, SET_SERVER, SET_ATTACH_SESS_ID,
+  GET_SESSIONS_REQUESTED, GET_SESSIONS_DONE, ENABLE_DESIRED_CAPS_EDITOR,
+  ABORT_DESIRED_CAPS_EDITOR, SAVE_RAW_DESIRED_CAPS, SET_RAW_DESIRED_CAPS,
+  SHOW_DESIRED_CAPS_JSON_ERROR, CHANGE_SESSION_MODE, CHANGE_TEST,
+  DELETE_SAVED_TEST_REQUESTED, DELETE_SAVED_TEST_DONE, SHOW_CAPS_MODAL,
+  HIDE_CAPS_MODAL, TEST_RUNNING, HIDE_TESTRUN_MODAL, TEST_COMPLETE,
+  TEST_ACTION_UPDATED, TEST_RUN_REQUESTED, SET_TEST_RESULTS, SHOW_RESULT,
+  TEST_SELECTED, ServerTypes, SessionModes
+} from '../actions/Session';
+
+import { SET_SAVED_TESTS } from '../actions/Inspector';
 
 // Make sure there's always at least one cap
 const INITIAL_STATE = {
+  mode: SessionModes.inspect,
   savedSessions: [],
   tabKey: 'new',
   serverType: ServerTypes.local,
@@ -41,6 +50,17 @@ const INITIAL_STATE = {
   isEditingDesiredCaps: false,
   isValidCapsJson: true,
   isValidatingCapsJson: false,
+
+  // playback stuff
+  savedTests: [],
+  testResults: [],
+  deletingTest: null,
+  capsModal: null,
+  testToRun: null,
+  testInProgress: null,
+  testResultToShow: null,
+  isTestRunning: false,
+  actionsStatus: [],
 };
 
 let nextState;
@@ -142,7 +162,7 @@ export default function session (state = INITIAL_STATE, action) {
     case SAVE_AS_MODAL_REQUESTED:
       return {
         ...state,
-        'showSaveAsModal': true,
+        showSaveAsModal: true,
       };
 
     case HIDE_SAVE_AS_MODAL_REQUESTED:
@@ -217,7 +237,7 @@ export default function session (state = INITIAL_STATE, action) {
         runningAppiumSessions: action.sessions || [],
       };
 
-    case ENABLE_DESIRED_CAPS_EDITOR:
+    case ENABLE_DESIRED_CAPS_EDITOR: // eslint-disable-line no-case-declarations
       const {caps} = state;
       let rawCaps = {};
       for (let {name, value} of caps) {
@@ -261,6 +281,53 @@ export default function session (state = INITIAL_STATE, action) {
         isValidCapsJson: action.isValidCapsJson,
         invalidCapsJsonReason: action.invalidCapsJsonReason,
       };
+
+    case CHANGE_SESSION_MODE:
+      return {
+        ...state,
+        mode: action.mode,
+      };
+
+    case SET_SAVED_TESTS:
+      return {...state, savedTests: action.tests};
+
+    case CHANGE_TEST:
+      break;
+    case DELETE_SAVED_TEST_REQUESTED:
+      return {...state, deletingTest: action.id};
+
+    case DELETE_SAVED_TEST_DONE:
+      return {...state, deletingTest: null};
+
+    case SHOW_CAPS_MODAL:
+      return {...state, capsModal: action.id};
+
+    case HIDE_CAPS_MODAL:
+      return {...state, capsModal: null};
+
+    case TEST_ACTION_UPDATED:
+      return {...state, actionsStatus: action.actions};
+
+    case TEST_SELECTED:
+      return {...state, testToRun: action.id};
+
+    case TEST_RUN_REQUESTED:
+      return {...state, testInProgress: state.testToRun, actionsStatus: []};
+
+    case TEST_RUNNING:
+      return {...state, isTestRunning: true};
+
+    case TEST_COMPLETE:
+      return {...state, isTestRunning: false};
+
+    case HIDE_TESTRUN_MODAL:
+      return {...state, testResultToShow: null, testInProgress: null, actionsStatus: []};
+
+    case SET_TEST_RESULTS:
+      return {...state, testResults: action.results};
+
+    case SHOW_RESULT:
+      return {...state, testResultToShow: action.id};
 
     default:
       return {...state};

@@ -83,8 +83,8 @@ export default class SavedSessions extends Component {
     }
 
 
-    return (<Row gutter={20}>
-      <Col span={12}>
+    return (<Row gutter={20} className={SessionCSS.savedSessionsRow}>
+      <Col span={12} className={SessionCSS.savedSessionsCol}>
         <Table className={SessionCSS['saved-sessions']}
          pagination={false}
          dataSource={dataSource}

@@ -18,7 +18,7 @@ function macMenuAppium (mainWindow) {
     }, {
       type: 'separator'
     }, {
-      label: 'New Session Window...',
+      label: 'New Session...',
       accelerator: 'Command+N',
       click () {
         createNewSessionWindow(mainWindow);
@@ -98,7 +98,9 @@ function macMenuView (mainWindow) {
       label: 'Toggle Developer Tools',
       accelerator: 'Alt+Command+I',
       click () {
-        mainWindow.toggleDevTools();
+        try {
+          mainWindow.toggleDevTools();
+        } catch (ign) {}
       }
     }] : [{
       label: 'Toggle Full Screen',
@@ -171,7 +173,7 @@ function otherMenuFile (mainWindow) {
   }, {
     type: 'separator'
   }, {
-    label: '&New Session Window...',
+    label: '&New Session...',
     accelerator: 'Ctrl+N',
     click () {
       createNewSessionWindow(mainWindow);
@@ -219,7 +221,9 @@ function otherMenuView (mainWindow) {
       label: 'Toggle &Developer Tools',
       accelerator: 'Alt+Ctrl+I',
       click () {
-        mainWindow.toggleDevTools();
+        try {
+          mainWindow.toggleDevTools();
+        } catch (ign) {}
       }
     }] : [{
       label: 'Toggle &Full Screen',

@@ -21,6 +21,8 @@ var batchedLogs = [];
 let appiumHandlers = {};
 let logFile;
 
+let savedTestWindows = [];
+
 // Delete saved server args, don't start until a server has been started
 settings.deleteSync('SERVER_ARGS');
 
@@ -40,8 +42,43 @@ async function killSession (sessionWinID, killedByUser=false) {
   if (handler) {
     await handler.close('', killedByUser);  
   }
-  
+
   delete appiumHandlers[sessionWinID];
+}
+
+function getBaseHTMLPath () {
+  // note that __dirname changes based on whether we're in dev or prod;
+  // in dev it's the actual dirname of the file, in prod it's the root
+  // of the project (where main.js is built), so switch accordingly
+  let htmlPath = path.resolve(__dirname,  isDev ? '..' : 'app', 'renderer', 'index.html');
+  // on Windows we'll get backslashes, but we don't want these for a browser URL, so replace
+  return htmlPath.replace("\\", "/");
+}
+
+function bindDevTools (win) {
+  // If it's dev, go ahead and open up the dev tools automatically
+  if (isDev) {
+    win.openDevTools();
+  }
+  win.webContents.on('context-menu', (e, props) => {
+    const {x, y} = props;
+
+    Menu.buildFromTemplate([{
+      label: 'Inspect element',
+      click () {
+        win.inspectElement(x, y);
+      }
+    }]).popup(win);
+  });
+}
+
+function bindSessionKillOnClose (win) {
+  // When you close the session window, kill its associated Appium session (if there is one)
+  let sessionID = win.webContents.id;
+  win.on('closed', async () => {
+    await killSession(sessionId);
+    win = null;
+  });
 }
 
 function connectStartServer (win) {
@@ -135,7 +172,7 @@ function connectGetDefaultArgs () {
 }
 
 /**
- * Opens a new window for creating new sessions
+ * Opens a new window for creating new inspector sessions
  */
 function connectCreateNewSessionWindow (win) {
   ipcMain.on('create-new-session-window', () => {
@@ -143,13 +180,13 @@ function connectCreateNewSessionWindow (win) {
   });
 }
 
-export function createNewSessionWindow (win) {
+export function createNewSessionWindow (mainWin) {
   // Create and open the Browser Window
   let sessionWin = new BrowserWindow({
     width: 1080,
     minWidth: 1080,
-    height: 570,
-    minHeight: 570,
+    height: 800,
+    minHeight: 800,
     title: "Start Session",
     backgroundColor: "#f2f2f2",
     frame: "customButtonsOnHover",
@@ -158,42 +195,19 @@ export function createNewSessionWindow (win) {
       devTools: true
     }
   });
-  // note that __dirname changes based on whether we're in dev or prod;
-  // in dev it's the actual dirname of the file, in prod it's the root
-  // of the project (where main.js is built), so switch accordingly
-  let sessionHTMLPath = path.resolve(__dirname,  isDev ? '..' : 'app', 'renderer', 'index.html');
-  // on Windows we'll get backslashes, but we don't want these for a browser URL, so replace
-  sessionHTMLPath = sessionHTMLPath.replace("\\", "/");
-  sessionHTMLPath += '#/session';
+  let sessionHTMLPath = `${getBaseHTMLPath()}#/session`;
   sessionWin.loadURL(`file://${sessionHTMLPath}`);
   sessionWin.show();
 
-  // When you close the session window, kill its associated Appium session (if there is one)
-  let sessionID = sessionWin.webContents.id;
-  sessionWin.on('closed', async () => {
-    await killSession(sessionID);
-    sessionWin = null;
-  });
+  bindSessionKillOnClose(sessionWin);
+  bindDevTools(sessionWin);
+  savedTestWindows.push(sessionWin);
 
   // When the main window is closed, close the session window too
-  win.once('closed', () => {
+  mainWin.once('closed', () => {
     sessionWin = null;
   });
 
-  // If it's dev, go ahead and open up the dev tools automatically
-  if (isDev) {
-    sessionWin.openDevTools();
-  }
-  sessionWin.webContents.on('context-menu', (e, props) => {
-    const {x, y} = props;
-
-    Menu.buildFromTemplate([{
-      label: 'Inspect element',
-      click () {
-        sessionWin.inspectElement(x, y);
-      }
-    }]).popup(sessionWin);
-  });
 }
 
 function connectCreateNewSession () {
@@ -244,12 +258,11 @@ function connectCreateNewSession () {
       // Try initializing it. If it fails, kill it and send error message to sender
       let p = driver.init(desiredCapabilities);
       event.sender.send('appium-new-session-successful');
-      await p;
+      let [sessionId] = await p;
 
       if (host !== '127.0.0.1' && host !== 'localhost') {
         handler.runKeepAliveLoop();
       }
-
 
       // we don't really support the web portion of apps for a number of
       // reasons, so pre-emptively ensure we're in native mode before doing the
@@ -258,7 +271,7 @@ function connectCreateNewSession () {
       try {
         await driver.context('NATIVE_APP');
       } catch (ign) {}
-      event.sender.send('appium-new-session-ready');
+      event.sender.send('appium-new-session-ready', sessionId);
     } catch (e) {
       // If the session failed, delete it from the cache
       await killSession(event.sender);
@@ -321,7 +334,7 @@ function connectClientMethodListener () {
             console.log(`Handling client method request with method '${methodName}' and args ${JSON.stringify(args)}`);
             res = await methodHandler.executeMethod(methodName, args, skipScreenshotAndSource);
           }
-        } else  if (strategy && selector) {
+        } else if (strategy && selector) {
           if (fetchArray) {
             console.log(`Fetching elements with selector '${selector}' and strategy ${strategy}`);
             res = await methodHandler.fetchElements(strategy, selector, skipScreenshotAndSource);

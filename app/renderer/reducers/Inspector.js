@@ -5,12 +5,12 @@ import { SET_SOURCE_AND_SCREENSHOT, QUIT_SESSION_REQUESTED, QUIT_SESSION_DONE,
   UNSELECT_HOVERED_ELEMENT, METHOD_CALL_REQUESTED, METHOD_CALL_DONE,
   SET_FIELD_VALUE, SET_EXPANDED_PATHS, SHOW_SEND_KEYS_MODAL,
   HIDE_SEND_KEYS_MODAL, START_RECORDING, PAUSE_RECORDING, CLEAR_RECORDING,
-  SET_ACTION_FRAMEWORK, RECORD_ACTION, CLOSE_RECORDER, SET_SHOW_BOILERPLATE, SET_SESSION_DETAILS, 
+  SET_ACTION_FRAMEWORK, RECORD_ACTION, CLOSE_RECORDER, SET_SHOW_BOILERPLATE, SET_SESSION_DETAILS,
   SHOW_LOCATOR_TEST_MODAL, HIDE_LOCATOR_TEST_MODAL, SET_LOCATOR_TEST_STRATEGY, SET_LOCATOR_TEST_VALUE,
-  SEARCHING_FOR_ELEMENTS, SEARCHING_FOR_ELEMENTS_COMPLETED, SET_LOCATOR_TEST_ELEMENT, CLEAR_SEARCH_RESULTS, 
+  SEARCHING_FOR_ELEMENTS, SEARCHING_FOR_ELEMENTS_COMPLETED, SET_LOCATOR_TEST_ELEMENT, CLEAR_SEARCH_RESULTS,
   ADD_ASSIGNED_VAR_CACHE, CLEAR_ASSIGNED_VAR_CACHE, SET_SCREENSHOT_INTERACTION_MODE,
-  SET_SWIPE_START, SET_SWIPE_END, CLEAR_SWIPE_ACTION, SET_SEARCHED_FOR_ELEMENT_BOUNDS, CLEAR_SEARCHED_FOR_ELEMENT_BOUNDS,
-  PROMPT_KEEP_ALIVE, HIDE_PROMPT_KEEP_ALIVE
+  SET_SWIPE_START, SET_SWIPE_END, CLEAR_SWIPE_ACTION, SET_SEARCHED_FOR_ELEMENT_BOUNDS, CLEAR_SEARCHED_FOR_ELEMENT_BOUNDS, SET_SAVED_TESTS, SHOW_SAVE_TEST_MODAL,
+  HIDE_SAVE_TEST_MODAL, PROMPT_KEEP_ALIVE, HIDE_PROMPT_KEEP_ALIVE
 } from '../actions/Inspector';
 
 const DEFAULT_FRAMEWORK = 'java';
@@ -24,12 +24,15 @@ const INITIAL_STATE = {
   actionFramework: DEFAULT_FRAMEWORK,
   sessionDetails: {},
   isLocatorTestModalVisible: false,
+  saveTestModalVisible: false,
   locatorTestStrategy: 'id',
   locatorTestValue: '',
   isSearchingForElements: false,
   assignedVarCache: {},
   screenshotInteractionMode: 'select',
   searchedForElementBounds: null,
+  savedTests: [],
+  screenshot: null,
   showKeepAlivePrompt: false,
 };
 
@@ -307,11 +310,29 @@ export default function inspector (state=INITIAL_STATE, action) {
           size: action.size,
         }
       };
-    
+
     case CLEAR_SEARCHED_FOR_ELEMENT_BOUNDS:
       return {
         ...state,
         searchedForElementBounds: null,
+      };
+
+    case SET_SAVED_TESTS:
+      return {
+        ...state,
+        savedTests: action.tests,
+      };
+
+    case SHOW_SAVE_TEST_MODAL:
+      return {
+        ...state,
+        saveTestModalVisible: true,
+      };
+
+    case HIDE_SAVE_TEST_MODAL:
+      return {
+        ...state,
+        saveTestModalVisible: false,
       };
 
     case PROMPT_KEEP_ALIVE:

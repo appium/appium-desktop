@@ -269,17 +269,21 @@
     fill: rgba(255,153,153,0.8);
 }
 
- .innerScreenshotContainer {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
- }
+.innerScreenshotContainer {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
 
- .innerScreenshotContainer .screenshotActionsPanel {
-    margin-bottom: 2px;
-    margin: 0 auto 2px auto;
- }
+.innerScreenshotContainer .screenshotActionsPanel {
+  margin-bottom: 2px;
+  margin: 0 auto 2px auto;
+}
 
- .action-controls {
-    margin-right: 20px;
- }
+.action-controls {
+  margin-right: 20px;
+}
+
+.saveTestName {
+  width: 100%;
+}

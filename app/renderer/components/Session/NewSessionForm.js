@@ -85,8 +85,7 @@ export default class NewSessionForm extends Component {
   render () {
     const {setCapabilityParam, caps, addCapability, removeCapability, saveSession, hideSaveAsModal, saveAsText, showSaveAsModal, setSaveAsText, isEditingDesiredCaps} = this.props;
 
-    return <div>
-      <Row type="flex" align="top" justify="start" className={SessionStyles.capsFormRow}>
+    return <Row type="flex" align="top" justify="start" className={SessionStyles.capsFormRow}>
       <Col order={1} className={`${SessionStyles.capsFormCol} ${isEditingDesiredCaps ? SessionStyles.capsFormDisabled : ''}`}>
         <Form inline>
           {caps.map((cap, index) => {
@@ -130,7 +129,6 @@ export default class NewSessionForm extends Component {
           <Input onChange={(e) => setSaveAsText(e.target.value)} addonBefore='Name' value={saveAsText}/>
         </Modal>
       </Col>
-      </Row>
-    </div>;
+    </Row>;
   }
 }

@@ -30,7 +30,7 @@ export default class RecordedActions extends Component {
   actionBar () {
     let {showBoilerplate, recordedActions, setActionFramework,
       toggleShowBoilerplate, clearRecording, closeRecorder,
-      actionFramework, isRecording
+      actionFramework, isRecording, showSaveTestModal
     } = this.props;
 
     let frameworkOpts = Object.keys(frameworks).map((f) => <Option value={f}>
@@ -59,6 +59,13 @@ export default class RecordedActions extends Component {
           <Tooltip title="Copy code to clipboard">
             <Button icon="copy"
              onClick={() => clipboard.writeText(this.code())}
+            />
+          </Tooltip>
+        }
+        {!!recordedActions.length &&
+          <Tooltip title="Save to test library...">
+            <Button icon="save"
+             onClick={showSaveTestModal}
             />
           </Tooltip>
         }

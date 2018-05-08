@@ -33,39 +33,84 @@
   filter: none;
 }
 
-.serverTabs {
-  min-height: 160px;
-}
-
-.serverTabs :global(.ant-tabs-bar) {
+.topmostTabs :global(.ant-tabs-bar) {
   -webkit-app-region: drag;
   padding-top: 2em;
   margin-top: -1em;
+  margin-bottom: 10px;
+}
+
+.sessionCard {
+  margin: 5px 0px;
+  background: #fbfbfb;
+  border: 1px solid #d0d0d0;
+}
+
+.sessionCard > :global(.ant-card-body) {
+  padding: 0px 10px;
+  height: 100%; /* for scrollability of children */
+}
+
+.sessionCardCaps {
+  margin-bottom: 15px;
+  flex: 5;
+}
+
+.sessionCardTests {
+  height: 160px;
+}
+
+.sessionCardTests > :global(.ant-card-body),
+.sessionCardResults > :global(.ant-card-body) {
+  padding: 0px;
+}
+
+.sessionCardTests :global(.ant-table) {
+  border: 0px;
+}
+
+.sessionCardTests :global(.ant-table-small .ant-table-body > table) {
+  padding: 0px;
+}
+
+.sessionCardResults {
+  height: 100%;
+}
+
+.sessionCardResults > :global(.ant-card-body) {
+  overflow-y: auto;
+}
+
+.sessionCardResults > :global(.ant-card-body::-webkit-scrollbar) {
+  width: 0px;
+}
+
+.serverTabs {
+  min-height: 160px;
 }
 
 .serverTabs :global(.ant-tabs-content) {
   height: 100px;
 }
 
-.scrollingTabCont {
-  border-bottom: 1px solid #d9d9d9;
-  margin-bottom: 15px;
-  flex-grow: 1;
-  display: flex;
+.scrollingTabs {
+  display: flex; /* set to flex so the tab bar and tab content can get their own height basis for scrolling */
   flex-direction: column;
+  height: 100%;
 }
 
-.scrollingTabCont :global(.ant-tabs-bar) {
-  margin-bottom: 0px;
+.scrollingTabs > :global(.ant-tabs-content),
+.scrollingTabs > :global(.ant-tabs-content) > :global(.ant-tabs-tabpane),
+.savedSessionsRow {
+  height: 100%;
 }
 
-.scrollingTab {
-  overflow-y: scroll;
-  flex-grow: 1;
-  padding-top: 16px;
+.savedSessionsCol {
+  height: 100%;
+  overflow-y: auto;
 }
 
-.scrollingTab::-webkit-scrollbar {
+.savedSessionsCol::-webkit-scrollbar {
   width: 0px;
 }
 
@@ -89,15 +134,25 @@
 }
 
 .capsFormCol {
-    min-width: 476px;
+  min-width: 476px;
+  height: 100%;
+  overflow-y: scroll;
+  padding-bottom: 10px;
+}
+
+.capsFormCol::-webkit-scrollbar, .capsFormattedCol::-webkit-scrollbar {
+  width: 0px;
 }
 
 .capsFormRow {
-    flex-wrap: nowrap;
+  flex-wrap: nowrap;
+  height: 100%;
 }
 
 .capsFormattedCol {
-    flex-grow: 1;
+  flex-grow: 1;
+  height: 100%;
+  overflow-y: auto;
 }
 
 .capsFormLastRow {

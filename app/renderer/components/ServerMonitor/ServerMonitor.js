@@ -73,6 +73,26 @@ class StartSessionButton extends Component {
   }
 }
 
+class StartPlaybackButton extends Component {
+  static propTypes = {
+    serverStatus: PropTypes.string.isRequired,
+    startPlayback: PropTypes.func.isRequired,
+  }
+
+  render () {
+    const {serverStatus, startPlayback} = this.props;
+    if (serverStatus !== STATUS_STOPPED && serverStatus !== STATUS_STOPPING) {
+      return <Tooltip title="Start Playback Session">
+        <Button className={styles.serverButton} id='startPlaybackBtn'
+          icon="code-o"
+          onClick={startPlayback} />
+      </Tooltip>;
+    } else {
+      return null;
+    }
+  }
+}
+
 class GetRawLogsButton extends Component {
   render () {
     return <Tooltip title="Get Raw Logs">
@@ -96,6 +116,7 @@ export default class ServerMonitor extends Component {
     serverStatus: PropTypes.string.isRequired,
     logLines: PropTypes.array.isRequired,
     startSession: PropTypes.func.isRequired,
+    startPlayback: PropTypes.func.isRequired,
     serverArgs: PropTypes.object.isRequired,
   }
 
@@ -184,6 +205,7 @@ export default class ServerMonitor extends Component {
           </div>
           <div className={`${styles['button-container']}`}>
             <StartSessionButton {...this.props} />
+            <StartPlaybackButton {...this.props} />
             <GetRawLogsButton {...this.props} />
             <StopButton {...this.props} />
           </div>

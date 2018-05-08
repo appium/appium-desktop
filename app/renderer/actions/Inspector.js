@@ -3,6 +3,7 @@ import { notification } from 'antd';
 import { push } from 'react-router-redux';
 import _ from 'lodash';
 import B from 'bluebird';
+import uuid from 'uuid';
 import { getLocators } from '../components/Inspector/shared';
 import { showError } from './Session';
 import { bindClient, unbindClient, callClientMethod } from './shared';
@@ -56,6 +57,11 @@ export const SET_SWIPE_END = 'SET_SWIPE_END';
 export const CLEAR_SWIPE_ACTION = 'CLEAR_SWIPE_ACTION';
 export const PROMPT_KEEP_ALIVE = 'PROMPT_KEEP_ALIVE';
 export const HIDE_PROMPT_KEEP_ALIVE = 'HIDE_PROMPT_KEEP_ALIVE';
+
+export const SAVED_TESTS = 'SAVED_TESTS';
+export const SET_SAVED_TESTS = 'SET_SAVED_TESTS';
+export const SHOW_SAVE_TEST_MODAL = 'SHOW_SAVE_TEST_MODAL';
+export const HIDE_SAVE_TEST_MODAL = 'HIDE_SAVE_TEST_MODAL';
 
 
 // Attributes on nodes that we know are unique to the node
@@ -134,7 +140,7 @@ const findElement = _.debounce(async function (strategyMap, dispatch, getState, 
       selector,
     });
 
-    // Set the elementId, variableName and variableType for the selected element 
+    // Set the elementId, variableName and variableType for the selected element
     // (check first that the selectedElementPath didn't change, to avoid race conditions)
     if (elementId && getState().inspector.selectedElementPath === path) {
       return dispatch({type: SET_SELECTED_ELEMENT_ID, elementId, variableName, variableType});
@@ -217,12 +223,12 @@ export function applyClientMethod (params) {
       }
       dispatch({type: METHOD_CALL_DONE});
       dispatch({
-        type: SET_SOURCE_AND_SCREENSHOT, 
-        source: source && xmlToJSON(source), 
+        type: SET_SOURCE_AND_SCREENSHOT,
+        source: source && xmlToJSON(source),
         sourceXML: source,
         screenshot,
         windowSize,
-        sourceError, 
+        sourceError,
         screenshotError,
         windowSizeError,
       });
@@ -292,7 +298,7 @@ export function pauseRecording () {
 export function clearRecording () {
   return (dispatch) => {
     dispatch({type: CLEAR_RECORDING});
-    ipcRenderer.send('appium-restart-recorder'); // Tell the main thread to start the variable count from 1 
+    ipcRenderer.send('appium-restart-recorder'); // Tell the main thread to start the variable count from 1
     dispatch({type: CLEAR_ASSIGNED_VAR_CACHE}); // Get rid of the variable cache
   };
 }
@@ -311,6 +317,13 @@ export function setActionFramework (framework) {
     }
     await settings.set(SAVED_FRAMEWORK, framework);
     dispatch({type: SET_ACTION_FRAMEWORK, framework});
+  };
+}
+
+export function getSavedTests () {
+  return async (dispatch) => {
+    const tests = await settings.get(SAVED_TESTS);
+    dispatch({type: SET_SAVED_TESTS, tests});
   };
 }
 
@@ -434,6 +447,38 @@ export function setSwipeEnd (swipeEndX, swipeEndY) {
 export function clearSwipeAction () {
   return (dispatch) => {
     dispatch({type: CLEAR_SWIPE_ACTION});
+  };
+}
+
+export function showSaveTestModal () {
+  return (dispatch) => {
+    dispatch({type: SHOW_SAVE_TEST_MODAL});
+  };
+}
+
+export function hideSaveTestModal () {
+  return (dispatch) => {
+    dispatch({type: HIDE_SAVE_TEST_MODAL});
+  };
+}
+
+export function saveTest (testName) {
+  return async (dispatch, getState) => {
+    const caps = getState().inspector.sessionDetails.desiredCapabilities;
+    const actions = getState().inspector.recordedActions;
+    const tests = await settings.get(SAVED_TESTS);
+    const testId = uuid.v4();
+    const otherTests = tests.filter((t) => t.name !== testName);
+    const recordedAt = Date.now();
+    const newTests = otherTests.concat([{
+      name: testName,
+      testId,
+      actions,
+      caps,
+      recordedAt,
+    }]);
+    await settings.set(SAVED_TESTS, newTests);
+    dispatch({type: SET_SAVED_TESTS, tests: newTests});
   };
 }
 
