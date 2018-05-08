@@ -37,10 +37,10 @@ async function deleteLogfile () {
 /**
  * Kill session associated with session browser window
  */
-async function killSession (sessionWinID) {
+async function killSession (sessionWinID, killedByUser=false) {
   let handler = appiumHandlers[sessionWinID];
   if (handler) {
-    await handler.close();
+    await handler.close('', killedByUser);  
   }
 
   delete appiumHandlers[sessionWinID];
@@ -260,8 +260,9 @@ function connectCreateNewSession () {
       event.sender.send('appium-new-session-successful');
       let [sessionId] = await p;
 
-      // Now that the session is running
-      handler.runKeepAliveLoop();
+      if (host !== '127.0.0.1' && host !== 'localhost') {
+        handler.runKeepAliveLoop();
+      }
 
       // we don't really support the web portion of apps for a number of
       // reasons, so pre-emptively ensure we're in native mode before doing the
@@ -313,7 +314,7 @@ function connectClientMethodListener () {
 
     try {
       if (methodName === 'quit') {
-        await killSession(renderer.id);
+        await killSession(renderer.id, true);
         // when we've quit the session, there's no source/screenshot to send
         // back
         renderer.send('appium-client-command-response', {

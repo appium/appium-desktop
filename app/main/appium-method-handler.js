@@ -1,11 +1,11 @@
 import Bluebird from 'bluebird';
 import wd from 'wd';
 
-const isProduction = process.env.NODE_ENV === 'production';
+const isDevelopment = process.env.NODE_ENV === 'development';
 
-const KEEP_ALIVE_PING_INTERVAL = isProduction ?   30 * 1000     : 15 * 1000;
-const NO_NEW_COMMAND_LIMIT = isProduction ?       5 * 60 * 1000 : 30 * 1000;
-const WAIT_FOR_USER_KEEP_ALIVE = isProduction ?   60 * 1000     : 30 * 1000;
+const KEEP_ALIVE_PING_INTERVAL = 5 * 1000;
+const NO_NEW_COMMAND_LIMIT = isDevelopment ?  30 * 1000 :  5 * 60 * 1000;
+const WAIT_FOR_USER_KEEP_ALIVE = 30 * 1000;
 
 export default class AppiumMethodHandler {
   constructor (driver, sender) {
@@ -21,12 +21,12 @@ export default class AppiumMethodHandler {
    * Ping server every 30 seconds to prevent `newCommandTimeout` from killing session
    */
   runKeepAliveLoop () {
-    // Every 30 seconds ping the server to keep session alive
     this.keepAlive = setInterval(() => {
       this.driver.sessionCapabilities(); // Pings the Appium server to keep it alive
       const now = +(new Date());
 
       // If the new command limit has been surpassed, prompt user if they want to keep session going
+      // Give them 30 seconds to respond
       if (now - this._lastActiveMoment > NO_NEW_COMMAND_LIMIT) {
         this.sender.send('appium-prompt-keep-alive');
 
@@ -203,9 +203,9 @@ export default class AppiumMethodHandler {
     this.elArrayVariableCounter = 1;
   }
 
-  async close (reason) {
+  async close (reason, killedByUser=false) {
     this.killKeepAliveLoop();
-    this.sender.send('appium-session-done', reason);
+    this.sender.send('appium-session-done', {reason, killedByUser});
     if (!this.driver._isAttachedSession) {
       try {
         await this.driver.quit();

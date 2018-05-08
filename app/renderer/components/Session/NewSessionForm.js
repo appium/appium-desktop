@@ -31,8 +31,10 @@ export default class NewSessionForm extends Component {
         placeholder='Value' checked={cap.value} onChange={(value) => setCapabilityParam(index, 'value', value)} />;
       case 'number': return <Input disabled={isEditingDesiredCaps} id={`desiredCapabilityValue_${index}`} placeholder='Value' value={cap.value}
         onChange={(e) => !isNaN(parseInt(e.target.value, 10)) ? setCapabilityParam(index, 'value', parseInt(e.target.value, 10)) : setCapabilityParam(index, 'value', undefined)} size="large"/>;
-      case 'object': return <Input disabled={isEditingDesiredCaps} id={`desiredCapabilityValue_${index}`} type='textarea' rows={4} placeholder='Value' value={cap.value}
-        onChange={(e) => setCapabilityParam(index, 'value', e.target.value)} size="large"/>;
+      case 'object':
+      case 'json_object':
+        return <Input disabled={isEditingDesiredCaps} id={`desiredCapabilityValue_${index}`} type='textarea' rows={4} placeholder='Value' value={cap.value}
+          onChange={(e) => setCapabilityParam(index, 'value', e.target.value)} size="large"/>;
       case 'file': return <div className={SessionStyles.fileControlWrapper}>
         <Input disabled={isEditingDesiredCaps} id={`desiredCapabilityValue_${index}`} placeholder='Value' value={cap.value} addonAfter={buttonAfter} size="large"/>
       </div>;
@@ -67,6 +69,7 @@ export default class NewSessionForm extends Component {
       case 'number':
         translatedValue = parseInt(translatedValue, 10) || 0;
         break;
+      case 'json_object':
       case 'object':
         translatedValue = translatedValue + '';
         break;
