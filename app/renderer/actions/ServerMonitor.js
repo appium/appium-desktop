@@ -9,7 +9,6 @@ export const LOGS_RECEIVED = 'LOGS_RECEIVED';
 export const LOGS_CLEARED = 'LOGS_CLEARED';
 export const MONITOR_CLOSED = 'MONITOR_CLOSED';
 export const START_SESSION_REQUEST = 'START_SESSION';
-export const START_PLAYBACK_REQUEST = 'START_PLAYBACK_WINDOW';
 export const SET_SERVER_ARGS = 'SET_SERVER_ARGS';
 
 export function stopServerReq () {
@@ -91,13 +90,6 @@ export function startSession () {
   return (dispatch) => {
     dispatch({type: START_SESSION_REQUEST});
     ipcRenderer.send('create-new-session-window');
-  };
-}
-
-export function startPlayback () {
-  return (dispatch) => {
-    dispatch({type: START_PLAYBACK_REQUEST});
-    ipcRenderer.send('create-playback-window');
   };
 }
 

@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
-import { ipcRenderer } from 'electron';
 import ReactDOM from 'react-dom';
 import { Card, Icon, Button, Spin, Tooltip, Modal } from 'antd';
 import Screenshot from './Screenshot';
 import SelectedElement from './SelectedElement';
 import Source from './Source';
-import SaveTestModal from './SaveTestModal';
 import SourceScrollButtons from './SourceScrollButtons';
 import InspectorStyles from './Inspector.css';
 import RecordedActions from './RecordedActions';
@@ -37,7 +35,6 @@ export default class Inspector extends Component {
     this.props.bindAppium();
     this.props.applyClientMethod({methodName: 'source'});
     this.props.getSavedActionFramework();
-    this.props.getSavedTests();
   }
 
   screenshotInteractionChange (mode) {
@@ -49,13 +46,11 @@ export default class Inspector extends Component {
   render () {
     const {screenshot, screenshotError, selectedElement = {},
       applyClientMethod, quitSession, isRecording, showRecord, startRecording,
-      pauseRecording, showLocatorTestModal, screenshotInteractionMode,
-      saveTestModalVisible, showKeepAlivePrompt, keepSessionAlive
-    } = this.props;
+      pauseRecording, showLocatorTestModal, screenshotInteractionMode, 
+      showKeepAlivePrompt, keepSessionAlive} = this.props;
     const {path} = selectedElement;
 
     let main = <div className={InspectorStyles['inspector-main']}>
-      {saveTestModalVisible && <SaveTestModal {...this.props} />}
       <div id='screenshotContainer' className={InspectorStyles['screenshot-container']}>
         {screenshot && <Screenshot {...this.props} />}
         {screenshotError && `Could not obtain screenshot: ${screenshotError}`}
@@ -137,7 +132,7 @@ export default class Inspector extends Component {
     return <div className={InspectorStyles['inspector-container']}>
       {controls}
       {main}
-      <Modal
+      <Modal 
         title="Session Inactive"
         visible={showKeepAlivePrompt}
         onOk={() => keepSessionAlive()}
