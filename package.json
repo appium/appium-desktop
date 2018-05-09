@@ -94,9 +94,9 @@
     "electron": "./node_modules/.bin/electron"
   },
   "dependencies": {
-    "appium": "^1.7.2",
     "ansi-to-html": "0.5",
     "antd": "2.10.1",
+    "appium": "1.8.0",
     "appium-support": "^2.12.0",
     "babel-core": "^6.26.0",
     "bluebird": "^3.5.1",
