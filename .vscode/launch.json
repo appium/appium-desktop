@@ -1,0 +1,19 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "name": "dev",
+        "type": "node",
+        "request": "launch",
+        "cwd": "${workspaceRoot}",
+        "runtimeExecutable": "npm",
+        "env": {
+          "NODE_ENV": "development"
+        },
+        "runtimeArgs": [
+            "run-script", "dev"
+        ],
+        "port": 5858
+      }
+    ]
+  }
