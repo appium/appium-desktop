@@ -86,9 +86,9 @@ npm run e2e
 ### Debugging
 
 #### Renderer
-The renderer uses Chromium and can be debugged using Chrome DevTools. When you run in dev (`npm run dev`) the Chrome DevTools
-window opens up on startup. To open it again, after it has been closed, right click on the window and select `Inspect Element` 
-to open it up.
+* The renderer uses Chromium and can be debugged using Chrome DevTools the same way a webpage is debugged
+* When you run dev (`npm run dev`) the Chrome DevTools window is opened on startup. 
+* To open it again, after it has been closed, right click on the window and select `Inspect Element` 
 
 #### Main
 * In Chrome Dev Tools
@@ -101,7 +101,7 @@ to open it up.
 * In VSCode
   * In the debug tab, run 'dev'
   * Set breakpoints directly in VSCode
-* For reference see on NodeJS debugging see
+* For reference on NodeJS debugging see:
   * https://electronjs.org/docs/tutorial/debugging-main-process-vscode
   * https://medium.com/@paul_irish/debugging-node-js-nightlies-with-chrome-devtools-7c4a1b95ae27
 
