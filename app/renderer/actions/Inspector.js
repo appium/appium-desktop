@@ -39,6 +39,8 @@ export const SET_SHOW_BOILERPLATE = 'SET_SHOW_BOILERPLATE';
 
 export const SHOW_LOCATOR_TEST_MODAL = 'SHOW_LOCATOR_TEST_MODAL';
 export const HIDE_LOCATOR_TEST_MODAL = 'HIDE_LOCATOR_TEST_MODAL';
+export const SHOW_PERFORM_ACTION_MODAL = 'SHOW_PERFORM_ACTION_MODAL';
+export const HIDE_PERFORM_ACTION_MODAL = 'HIDE_PERFORM_ACTION_MODAL';
 export const SET_LOCATOR_TEST_STRATEGY = 'SET_LOCATOR_TEST_STRATEGY';
 export const SET_LOCATOR_TEST_VALUE = 'SET_LOCATOR_TEST_VALUE';
 export const SEARCHING_FOR_ELEMENTS = 'SEARCHING_FOR_ELEMENTS';
@@ -349,6 +351,18 @@ export function hideLocatorTestModal () {
   return (dispatch) => {
     dispatch({type: HIDE_LOCATOR_TEST_MODAL});
     dispatch({type: CLEAR_SEARCHED_FOR_ELEMENT_BOUNDS});
+  };
+}
+
+export function showPerformActionModal () {
+  return (dispatch) => {
+    dispatch({type: SHOW_PERFORM_ACTION_MODAL});
+  };
+}
+
+export function hidePerformActionModal () {
+  return (dispatch) => {
+    dispatch({type: HIDE_PERFORM_ACTION_MODAL});
   };
 }
 
