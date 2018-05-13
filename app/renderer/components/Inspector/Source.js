@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Tree } from 'antd';
 import LocatorTestModal from './LocatorTestModal';
+import PerformActionModal from './PerformActionModal';
 import InspectorStyles from './Inspector.css';
 
 const {TreeNode} = Tree;
@@ -83,6 +84,7 @@ export default class Source extends Component {
         sourceError && `Could not obtain source: ${JSON.stringify(sourceError)}`
       }
       <LocatorTestModal {...this.props} />
+      <PerformActionModal {...this.props} />
     </div>;
   }
 }
