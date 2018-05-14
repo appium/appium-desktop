@@ -94,9 +94,9 @@
     "electron": "./node_modules/.bin/electron"
   },
   "dependencies": {
-    "appium": "^1.7.2",
     "ansi-to-html": "0.5",
     "antd": "2.10.1",
+    "appium": "1.8.0",
     "appium-support": "^2.12.0",
     "babel-core": "^6.26.0",
     "bluebird": "^3.5.1",
@@ -129,6 +129,7 @@
     "xpath": "0.0.24"
   },
   "devDependencies": {
+    "appium-fake-driver": "^0.4.0",
     "asar": "^0.14.0",
     "asyncbox": "^2.3.2",
     "babel-core": "6.x",
@@ -156,7 +157,7 @@
     "devtron": "1.x",
     "dir-compare": "^1.4.0",
     "electron": "2.0.0",
-    "electron-builder": "^20.0.0",
+    "electron-builder": "^20.13.2",
     "electron-builder-squirrel-windows": "^20.4.0",
     "electron-devtools-installer": "^2.2.3",
     "eslint": "3.x",
