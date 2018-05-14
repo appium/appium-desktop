@@ -11,6 +11,7 @@ test_script:
   - node --version
   - npm --version
   - npm run package-ci
+  - npm run package-nsis
 
 build: off
 
