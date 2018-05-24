@@ -16,7 +16,7 @@ You can always pick up the latest release at our
 GitHub.
 
 If you're on Windows or macOS, Appium Desktop will automatically provide you
-with updated versions of the app when they are released. If you encounter[
+with updated versions of the app when they are released. If you encounter
 a problem updating, simply delete or uninstall the app and re-download the
 latest from the link above.
 
