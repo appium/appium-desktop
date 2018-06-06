@@ -83,6 +83,29 @@ To run the e2e tests call
 npm run e2e
 ```
 
+### Debugging
+
+#### Renderer
+* The renderer uses Chromium and can be debugged using Chrome DevTools the same way a webpage is debugged
+* When you run dev (`npm run dev`) the Chrome DevTools window is opened on startup. 
+* To open it again, after it has been closed, right click on the window and select `Inspect Element` 
+
+#### Main
+* In Chrome Dev Tools
+  * Run dev (`npm run dev`). This sets an --inspect port at 5858
+  * Running in dev sets up an inspector port at 5858
+  * Open chrome://inspect in your chrome browser
+  * Click `Open dedicated DevTools for Node`
+  * Add a connection `localhost:5858`
+  * Start inspecting code under other tabs
+* In VSCode
+  * In the debug tab, run 'dev'
+  * Set breakpoints directly in VSCode
+* For reference on NodeJS debugging see:
+  * https://electronjs.org/docs/tutorial/debugging-main-process-vscode
+  * https://medium.com/@paul_irish/debugging-node-js-nightlies-with-chrome-devtools-7c4a1b95ae27
+
+
 ### Packaging and Releasing
 
 Appium Desktop uses [Electron Builder](https://github.com/electron-userland/electron-builder/) to build app. Read this document for instructions on how to set up your local environment so that you can build and package the app: https://github.com/electron-userland/electron-builder/wiki/Multi-Platform-Build
