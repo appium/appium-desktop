@@ -8,14 +8,12 @@ node_js:
 before_install:
 - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install --no-install-recommends
   -y icnsutils graphicsmagick xz-utils; fi
-- npm install -g npm@5
 addons:
   apt:
     packages:
     - xvfb
 before_script:
 - greenkeeper-lockfile-update
-- node --version
 - node --version
 - travis_wait 30 npm run package-ci # This command takes a long time, so increased the time limit to 30 minutes (default is 10 minutes)
 - greenkeeper-lockfile-upload
