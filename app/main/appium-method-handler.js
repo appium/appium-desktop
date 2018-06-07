@@ -125,7 +125,7 @@ export default class AppiumMethodHandler {
           .tap({x: args[0], y: args[1]})
           .perform();
       } else if (methodName === 'swipe') {
-        const [startX, startY, endX, endY]  = args;
+        const [startX, startY, endX, endY] = args;
         res = await (new wd.TouchAction(this.driver))
           .press({x: startX, y: startY})
           .moveTo({x: endX, y: endY})
