@@ -16,6 +16,9 @@ export default {
   },
 
   plugins: [
+    new webpack.EnvironmentPlugin([
+      'TARGET'
+    ]),
     new webpack.BannerPlugin(
       'require("source-map-support").install();',
       { raw: true, entryOnly: false }

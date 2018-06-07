@@ -27,8 +27,8 @@
     "test-unit": "mocha --compilers js:babel-core/register ./test/unit",
     "lint": "eslint app test *.js",
     "hot-server": "node -r ./node_modules/babel-register server.js --color",
-    "build-main": "cross-env NODE_ENV=production node -r ./node_modules/babel-register ./node_modules/webpack/bin/webpack --config webpack.config.electron.js --progress --profile --colors --color",
-    "build-renderer": "cross-env NODE_ENV=production node -r ./node_modules/babel-register ./node_modules/webpack/bin/webpack --config webpack.config.production.js --progress --profile --colors --color",
+    "build-main": "cross-env NODE_ENV=production node -r ./node_modules/babel-register ./node_modules/webpack/bin/webpack --display=minimal --config webpack.config.electron.js --progress --profile --colors --color",
+    "build-renderer": "cross-env NODE_ENV=production node -r ./node_modules/babel-register ./node_modules/webpack/bin/webpack --display=minimal --config webpack.config.production.js --progress --profile --colors --color",
     "build": "npm run build-main && npm run build-renderer",
     "clean": "rimraf node_modules && npm install",
     "start": "cross-env NODE_ENV=production electron ./",
@@ -136,6 +136,7 @@
     "xpath": "0.0.24"
   },
   "devDependencies": {
+    "7zip": "0.0.6",
     "appium-fake-driver": "^0.4.0",
     "asar": "^0.14.0",
     "asyncbox": "^2.3.2",
