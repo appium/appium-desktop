@@ -81,7 +81,7 @@ export default class HighlighterRects extends Component {
     const {swipeStart, swipeEnd, clearSwipeAction, applyClientMethod} = this.props;
     await applyClientMethod({
       methodName: 'swipe',
-      args: [swipeStart.x, swipeStart.y, swipeEnd.x - swipeStart.x, swipeEnd.y - swipeStart.y],
+      args: [swipeStart.x, swipeStart.y, swipeEnd.x, swipeEnd.y],
     });
     clearSwipeAction();
   }
