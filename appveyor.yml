@@ -4,7 +4,7 @@ environment:
     secure: fyB6CRcrHbroxaBvzN6aPHUEhHGc3ljbbTPtEqruaDVe/iO8/dZn4LOVNS/fAlSX
 install:
   - ps: Install-Product node $env:nodejs_version
-  - npm install -g npm@5
+  - npm install -g npm
   - npm ci
 
 test_script:
