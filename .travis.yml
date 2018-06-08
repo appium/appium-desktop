@@ -15,6 +15,8 @@ addons:
 before_script:
 - greenkeeper-lockfile-update
 - node --version
+- npm install -g npm@5.10
+- npm --version
 - travis_wait 30 npm run package-ci # This command takes a long time, so increased the time limit to 30 minutes (default is 10 minutes)
 - greenkeeper-lockfile-upload
 cache:
