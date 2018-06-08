@@ -1,7 +1,8 @@
-## [1.6.2](https://github.com/appium/appium-desktop/compare/v1.6.2...v1.6.1) (2018-06-07)
+## [1.6.2](https://github.com/appium/appium-desktop/compare/v1.6.2...v1.6.1) (2018-06-08)
 
 ### Changes
 * Feature: Upgrade to Appium 1.8.1
+* Fix: Use absolute coordinates for 'swipe'
 
 ## [1.6.1](https://github.com/appium/appium-desktop/compare/v1.6.1...v1.5.0) (2018-05-08)
 
