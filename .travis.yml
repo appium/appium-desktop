@@ -6,6 +6,7 @@ os:
 node_js:
 - '9'
 before_install:
+- nvm install 9
 - npm install -g npm@5.10
 - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install --no-install-recommends
   -y icnsutils graphicsmagick xz-utils; fi
