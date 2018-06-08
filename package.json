@@ -22,7 +22,7 @@
   "main": "main.js",
   "scripts": {
     "test": "npm run test-unit && npm run test-integration",
-    "test-e2e": "cross-env FORCE_NO_WRONG_FOLDER=true mocha --timeout 600000 --compilers js:babel-core/register --require ./node_modules/babel-polyfill/dist/polyfill.min.js ./test/e2e",
+    "test-e2e": "cross-env FORCE_NO_WRONG_FOLDER=true RUNNING_IN_SPECTRON=true mocha --timeout 600000 --require ./node_modules/babel-polyfill/dist/polyfill.min.js --require babel-core/register ./test/e2e",
     "test-integration": "mocha --timeout 600000 --compilers js:babel-core/register --require ./node_modules/babel-polyfill/dist/polyfill.min.js ./test/integration",
     "test-unit": "mocha --compilers js:babel-core/register ./test/unit",
     "lint": "eslint app test *.js",
