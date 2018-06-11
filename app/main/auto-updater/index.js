@@ -10,7 +10,7 @@ import B from 'bluebird';
 import { checkUpdate } from './update-checker';
 import { getFeedUrl } from './config';
 import _ from 'lodash';
-import env from '../../../env/.env';
+import env from '../../env';
 
 const isDev = process.env.NODE_ENV === 'development';
   
