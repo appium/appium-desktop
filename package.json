@@ -136,6 +136,7 @@
     "xpath": "0.0.24"
   },
   "devDependencies": {
+    "7zip": "0.0.6",
     "appium-fake-driver": "^0.4.0",
     "asar": "^0.14.0",
     "asyncbox": "^2.3.2",
