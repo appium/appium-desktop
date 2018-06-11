@@ -22,7 +22,10 @@ export default {
     new webpack.BannerPlugin(
       'require("source-map-support").install();',
       { raw: true, entryOnly: false }
-    )
+    ),
+    new webpack.DefinePlugin({
+      _ENV_: process.env.TARGET ? require(`./env/.env-${process.env.TARGET}`) : require('./env/.env')
+    })
   ],
 
   target: 'electron-main',
