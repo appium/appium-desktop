@@ -60,9 +60,9 @@ export default class Session extends Component {
             <TabPane tab={headspinTabHead} key={ServerTypes.headspin}>
               <ServerTabHeadspin {...this.props} />
             </TabPane>
-            <TabPane tab={browserstackTabHead} key={ServerTypes.browserstack}>
+            {!process.env.SAUCE_DEMO && <TabPane tab={browserstackTabHead} key={ServerTypes.browserstack}>
               <ServerTabBrowserstack {...this.props} />
-            </TabPane>
+            </TabPane>}
           </Tabs>
           <AdvancedServerParams {...this.props} />
         </div>
