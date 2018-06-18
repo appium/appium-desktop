@@ -177,7 +177,7 @@ export function createNewSessionWindow (win) {
 
   // When the main window is closed, close the session window too
   win.once('closed', () => {
-    sessionWin = null;
+    sessionWin.close();
   });
 
   // If it's dev, go ahead and open up the dev tools automatically
