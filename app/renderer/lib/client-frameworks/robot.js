@@ -36,8 +36,8 @@ ${this.getCapsVariables}
 
 *** Test Cases ***
 Test case name
-${this.indent(this.getApplicationInitialization(),4)}
-${this.indent(code,4)}
+${this.indent(this.getApplicationInitialization(), 4)}
+${this.indent(code, 4)}
 
 *** Test Teardonw ***
     Quit Application
