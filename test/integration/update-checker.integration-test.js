@@ -12,7 +12,6 @@ describe('updateChecker', function () {
 
   before(async function () {
     const latestReleaseUrl = `https://api.github.com/repos/appium/appium-desktop/releases/latest?access_token=${process.env.GITHUB_TOKEN}`;
-    console.log('@@@@checking', latestReleaseUrl);
     const res = JSON.parse(await request.get(latestReleaseUrl, {headers: {'user-agent': 'node.js'}}));
     latestVersion = res.name;
   });
