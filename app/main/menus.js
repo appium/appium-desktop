@@ -1,37 +1,25 @@
 import { app, shell, dialog } from 'electron';
-import settings from 'electron-settings';
+import _ from 'lodash';
 import { createNewSessionWindow } from './appium';
 import { checkNewUpdates } from './auto-updater';
-import _ from 'lodash';
+import CloudProvider from '../shared/cloud-providers';
 
 let menuTemplates = {mac: {}, other: {}};
 
 async function getCloudProvidersViewMenu () {
-  const CLOUD_PROVIDERS = [
-    'SauceLabs',
-    'TestObject',
-    'BrowserStack',
-    'Headspin',
-  ];
-
-  const checkedStatus = {};
-
-  // Set cloud provider visibility default to true
-  for (let provider of CLOUD_PROVIDERS) {
-    if (!_.isBoolean(await settings.get(provider))) {
-      await settings.set(provider, true);
-    }
-    checkedStatus[provider] = await settings.get(provider);
+  const providers = CloudProvider.getProviders();
+  const providersMenu = [];
+  for (let provider of _.values(providers)) {
+    providersMenu.push({
+      label: provider.label,
+      type: 'checkbox',
+      checked: await provider.isVisible(),
+      click (menuItem) {
+        provider.setVisible(menuItem.checked);
+      },
+    });
   }
-
-  return CLOUD_PROVIDERS.map((provider) => ({
-    label: provider,
-    type: 'checkbox',
-    checked: checkedStatus[provider],
-    click (menuItem) {
-      settings.set(provider, menuItem.checked);
-    }
-  }));
+  return providersMenu;
 }
 
 function macMenuAppium (mainWindow) {

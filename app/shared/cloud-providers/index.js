@@ -1,0 +1,40 @@
+import _ from 'lodash';
+import settings from 'electron-settings';
+import config from './config';
+
+export default class CloudProvider {
+
+  constructor (providerName, providerData) {
+    const {label} = providerData;
+    this.name = providerName;
+    this.label = label;
+  }
+
+  getSettingsKey (keyName) {
+    return `Providers.${this.name}.${keyName}`;
+  }
+
+  async isVisible () {
+    const visibilityKey = this.getSettingsKey('visible');
+    const isVisible = await settings.get(visibilityKey);
+    if (!_.isBoolean(isVisible)) {
+      await this.setVisible(true);
+      return true;
+    }
+    return isVisible;
+  }
+
+  async setVisible (isVisible = true) {
+    const visibilityKey = this.getSettingsKey('visible');
+    await settings.set(visibilityKey, isVisible);
+  }
+
+  static getProviders () {
+    const providers = {};
+    for (let [providerName, providerData] of _.toPairs(config)) {
+      providers[providerName] = new CloudProvider(providerName, providerData);
+    }
+    return providers;
+  }
+
+}
