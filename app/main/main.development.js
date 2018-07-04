@@ -1,5 +1,4 @@
 import { app, BrowserWindow, Menu } from 'electron';
-import unhandled from 'electron-unhandled';
 import { initializeIpc } from './appium';
 import menuTemplates from './menus';
 import path from 'path';
@@ -27,10 +26,6 @@ if (!isDev) {
   // and we need to do the same thing with PATH
   fixPath();
 }
-
-// Handle any uncaught exceptions or promise rejections
-
-unhandled();
 
 app.on('window-all-closed', () => {
   app.quit();

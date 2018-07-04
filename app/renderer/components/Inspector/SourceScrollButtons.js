@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { Icon, Button } from 'antd';
 import InspectorStyles from './Inspector.css';
-import { debounce } from 'lodash';
+import { debounce, isEqual, clone } from 'lodash';
 
 export default class SourceScrollButtons extends Component {
 
@@ -15,13 +15,20 @@ export default class SourceScrollButtons extends Component {
 
   componentDidMount () {
     this.checkShowScrollButtons();
+    this.expandedPaths = clone(this.props.expandedPaths);
     window.addEventListener('resize', this.debouncedCheckShowScrollButtons);
-    this.props.container.addEventListener('click', this.debouncedCheckShowScrollButtons);
   }
 
   componentWillUnmount () {
     window.removeEventListener('resize', this.debouncedCheckShowScrollButtons);
-    this.props.container.removeEventListener('click', this.debouncedCheckShowScrollButtons);
+  }
+
+  componentDidUpdate () {
+    // If the expandedPaths changed, check if we need to show the scroll buttons
+    if (!isEqual(this.props.expandedPaths, this.expandedPaths)) {
+      this.debouncedCheckShowScrollButtons();
+      this.expandedPaths = clone(this.props.expandedPaths);
+    }
   }
 
   scroll (amount) {

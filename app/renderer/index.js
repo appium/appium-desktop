@@ -4,7 +4,6 @@ import { Provider } from 'react-redux';
 import { Router, hashHistory } from 'react-router';
 import { syncHistoryWithStore } from 'react-router-redux';
 import electron from 'electron';
-import unhandled from 'electron-unhandled';
 import WrongFolder from './components/WrongFolder/WrongFolder';
 import routes from './routes';
 import configureStore from './store/configureStore';
@@ -15,8 +14,6 @@ const {app} = electron.remote;
 const isDev = process.env.NODE_ENV === 'development';
 const store = configureStore();
 const history = syncHistoryWithStore(hashHistory, store);
-
-unhandled();
 
 function shouldShowWrongFolderComponent () {
   // If we set an ENV to require it to NOT be shown don't show it
