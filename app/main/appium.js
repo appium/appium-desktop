@@ -147,7 +147,6 @@ function connectCreateNewSessionWindow (win) {
 
 function connectClearLogFile () {
   ipcMain.on('appium-clear-logfile', async (event, {logfilePath}) => {
-    console.log('Clearing log file', logfilePath);
     await fs.writeFile(logfilePath, '');
   });
 }
