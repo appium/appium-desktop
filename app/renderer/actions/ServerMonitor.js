@@ -77,10 +77,10 @@ export function closeMonitor () {
 }
 
 export function clearLogs () {
-  return async (dispatch, getState) => {
+  return (dispatch, getState) => {
     const logfilePath = getState().startServer.logfilePath;
     if (logfilePath) {
-      await fs.writeFile(logfilePath, '');
+      ipcRenderer.send('appium-clear-logfile', {logfilePath});
     }
     dispatch({type: LOGS_CLEARED});
   };

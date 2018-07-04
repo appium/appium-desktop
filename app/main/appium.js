@@ -2,6 +2,7 @@
 
 import { ipcMain, BrowserWindow, Menu, app } from 'electron';
 import { main as appiumServer } from 'appium';
+import unhandled from 'electron-unhandled';
 import { getDefaultArgs, getParser } from 'appium/build/lib/parser';
 import path from 'path';
 import wd from 'wd';
@@ -46,6 +47,7 @@ async function killSession (sessionWinID, killedByUser=false) {
 
 function connectStartServer (win) {
   ipcMain.on('start-server', async (event, args) => {
+    unhandled();
     // log the server logs to a file
     try {
       const dir = await tempDir.openDir();
@@ -140,6 +142,13 @@ function connectGetDefaultArgs () {
 function connectCreateNewSessionWindow (win) {
   ipcMain.on('create-new-session-window', () => {
     createNewSessionWindow(win);
+  });
+}
+
+function connectClearLogFile () {
+  ipcMain.on('appium-clear-logfile', async (event, {logfilePath}) => {
+    console.log('Clearing log file', logfilePath);
+    await fs.writeFile(logfilePath, '');
   });
 }
 
@@ -382,6 +391,7 @@ function initializeIpc (win) {
   connectRestartRecorder();
   connectMoveToApplicationsFolder();
   connectKeepAlive();
+  connectClearLogFile();
 
   setTimeout(checkNewUpdates, 10000);
 }
