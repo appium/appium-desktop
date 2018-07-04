@@ -2,7 +2,7 @@ import _ from 'lodash';
 import settings from 'electron-settings';
 import config from './config';
 
-export default class CloudProvider {
+class CloudProvider {
 
   constructor (providerName, providerData) {
     const {label} = providerData;
@@ -29,12 +29,12 @@ export default class CloudProvider {
     await settings.set(visibilityKey, isVisible);
   }
 
-  static getProviders () {
-    const providers = {};
-    for (let [providerName, providerData] of _.toPairs(config)) {
-      providers[providerName] = new CloudProvider(providerName, providerData);
-    }
-    return providers;
-  }
-
 }
+
+
+const providers = {};
+for (let [providerName, providerData] of _.toPairs(config)) {
+  providers[providerName] = new CloudProvider(providerName, providerData);
+}
+
+export default providers;

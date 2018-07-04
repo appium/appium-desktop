@@ -2,14 +2,13 @@ import { app, shell, dialog } from 'electron';
 import _ from 'lodash';
 import { createNewSessionWindow } from './appium';
 import { checkNewUpdates } from './auto-updater';
-import CloudProvider from '../shared/cloud-providers';
+import CloudProviders from '../shared/cloud-providers';
 
 let menuTemplates = {mac: {}, other: {}};
 
 async function getCloudProvidersViewMenu () {
-  const providers = CloudProvider.getProviders();
   const providersMenu = [];
-  for (let provider of _.values(providers)) {
+  for (let provider of _.values(CloudProviders)) {
     providersMenu.push({
       label: provider.label,
       type: 'checkbox',
