@@ -57,12 +57,12 @@ export default class Session extends Component {
             <TabPane tab={testObjectTabHead} key={ServerTypes.testobject}>
               <ServerTabTestobject {...this.props} />
             </TabPane>
-            <TabPane tab={headspinTabHead} key={ServerTypes.headspin}>
+            {!process.env.SAUCE_DEMO && <TabPane tab={headspinTabHead} key={ServerTypes.headspin}>
               <ServerTabHeadspin {...this.props} />
-            </TabPane>
-            <TabPane tab={browserstackTabHead} key={ServerTypes.browserstack}>
+            </TabPane>}
+            {!process.env.SAUCE_DEMO && <TabPane tab={browserstackTabHead} key={ServerTypes.browserstack}>
               <ServerTabBrowserstack {...this.props} />
-            </TabPane>
+            </TabPane>}
           </Tabs>
           <AdvancedServerParams {...this.props} />
         </div>
