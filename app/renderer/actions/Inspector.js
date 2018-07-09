@@ -139,9 +139,9 @@ const findElement = _.debounce(async function (strategyMap, dispatch, getState, 
     if (elementId && getState().inspector.selectedElementPath === path) {
       return dispatch({type: SET_SELECTED_ELEMENT_ID, elementId, variableName, variableType});
     }
-
-    return dispatch({type: SET_INTERACTIONS_NOT_AVAILABLE});
   }
+
+  return dispatch({type: SET_INTERACTIONS_NOT_AVAILABLE});
 }, 1000);
 
 export function selectElement (path) {
