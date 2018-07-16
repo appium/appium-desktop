@@ -69,7 +69,7 @@ export default class Inspector extends Component {
          className={InspectorStyles['source-tree-card']}>
           <Source {...this.props} />
         </Card>
-        {this.container && <SourceScrollButtons container={this.container} />}
+        {this.container && <SourceScrollButtons {...this.props} container={this.container} />}
       </div>
       <div id='selectedElementContainer' className={`${InspectorStyles['source-tree-container']} ${InspectorStyles['element-detail-container']}`}>
         <Card

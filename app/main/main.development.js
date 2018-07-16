@@ -27,7 +27,6 @@ if (!isDev) {
   fixPath();
 }
 
-
 app.on('window-all-closed', () => {
   app.quit();
 });
@@ -97,7 +96,5 @@ app.on('ready', async () => {
   }
 
   initializeIpc(mainWindow);
-
-
 });
 
