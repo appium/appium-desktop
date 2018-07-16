@@ -16,6 +16,7 @@ addons:
     packages:
     - xvfb
 before_script:
+- rvm get head # Workaround for Travis issue: https://github.com/travis-ci/travis-ci/issues/6307
 - greenkeeper-lockfile-update
 - node --version
 - npm --version
