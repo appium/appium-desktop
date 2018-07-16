@@ -84,7 +84,7 @@ ${this.indent(this.chainifyCode(code), 2)}
   {action: 'press', x: ${x1}, y: ${y1}},
   {action: 'moveTo', x: ${x2}, y: ${y2}},
   'release'
-];`;
+]);`;
   }
 }
 
