@@ -152,7 +152,7 @@ function connectClearLogFile () {
 export function createNewSessionWindow (win) {
   // Create and open the Browser Window
   let sessionWin = new BrowserWindow({
-    width: 300, // TODO: DO NOT COMMIT THIS!!!!!
+    width: 1080,
     minWidth: 1080,
     height: 570,
     minHeight: 570,
