@@ -143,6 +143,12 @@ function connectCreateNewSessionWindow (win) {
   });
 }
 
+function connectClearLogFile () {
+  ipcMain.on('appium-clear-logfile', async (event, {logfilePath}) => {
+    await fs.writeFile(logfilePath, '');
+  });
+}
+
 export function createNewSessionWindow (win) {
   // Create and open the Browser Window
   let sessionWin = new BrowserWindow({
@@ -382,6 +388,7 @@ function initializeIpc (win) {
   connectRestartRecorder();
   connectMoveToApplicationsFolder();
   connectKeepAlive();
+  connectClearLogFile();
 
   setTimeout(checkNewUpdates, 10000);
 }
