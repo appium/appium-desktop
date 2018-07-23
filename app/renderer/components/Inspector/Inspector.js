@@ -7,7 +7,7 @@ import Source from './Source';
 import SourceScrollButtons from './SourceScrollButtons';
 import InspectorStyles from './Inspector.css';
 import RecordedActions from './RecordedActions';
-import copy from 'copy-to-clipboard';
+const {clipboard} = require('electron')
 
 const ButtonGroup = Button.Group;
 
@@ -42,11 +42,6 @@ export default class Inspector extends Component {
     const {selectScreenshotInteractionMode, clearSwipeAction} = this.props;
     clearSwipeAction(); // When the action changes, reset the swipe action
     selectScreenshotInteractionMode(mode);
-  }
-
-  copySourceXMLToClipboard() {
-    const { sourceXML } = this.props;
-    copy(sourceXML);
   }
 
   render () {
@@ -130,7 +125,7 @@ export default class Inspector extends Component {
            <Button id='searchForElement' icon="search" onClick={showLocatorTestModal}/>
         </Tooltip>
         <Tooltip title="Copy XML Source to Clipboard">
-           <Button id='btnSourceXML' icon="copy" onClick={() => this.copySourceXMLToClipboard()}/>
+           <Button id='btnSourceXML' icon="copy" onClick={() => clipboard.writeText(this.props.sourceXML)}/>
         </Tooltip>
         <Tooltip title="Quit Session & Close Inspector">
           <Button id='btnClose' icon='close' onClick={() => quitSession()}/>
