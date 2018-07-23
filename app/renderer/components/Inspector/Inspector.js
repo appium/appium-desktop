@@ -7,7 +7,7 @@ import Source from './Source';
 import SourceScrollButtons from './SourceScrollButtons';
 import InspectorStyles from './Inspector.css';
 import RecordedActions from './RecordedActions';
-const {clipboard} = require('electron')
+import { clipboard } from 'electron';
 
 const ButtonGroup = Button.Group;
 
