@@ -7,6 +7,7 @@ import Source from './Source';
 import SourceScrollButtons from './SourceScrollButtons';
 import InspectorStyles from './Inspector.css';
 import RecordedActions from './RecordedActions';
+import { clipboard } from 'electron';
 
 const ButtonGroup = Button.Group;
 
@@ -47,7 +48,7 @@ export default class Inspector extends Component {
     const {screenshot, screenshotError, selectedElement = {},
       applyClientMethod, quitSession, isRecording, showRecord, startRecording,
       pauseRecording, showLocatorTestModal, screenshotInteractionMode, 
-      showKeepAlivePrompt, keepSessionAlive} = this.props;
+      showKeepAlivePrompt, keepSessionAlive, sourceXML} = this.props;
     const {path} = selectedElement;
 
     let main = <div className={InspectorStyles['inspector-main']}>
@@ -122,6 +123,9 @@ export default class Inspector extends Component {
         }
         <Tooltip title="Search for element">
            <Button id='searchForElement' icon="search" onClick={showLocatorTestModal}/>
+        </Tooltip>
+        <Tooltip title="Copy XML Source to Clipboard">
+           <Button id='btnSourceXML' icon="copy" onClick={() => clipboard.writeText(sourceXML)}/>
         </Tooltip>
         <Tooltip title="Quit Session & Close Inspector">
           <Button id='btnClose' icon='close' onClick={() => quitSession()}/>
