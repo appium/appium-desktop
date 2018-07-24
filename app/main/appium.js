@@ -355,12 +355,16 @@ function connectMoveToApplicationsFolder () {
   });
 }
 
+export function createNewConfigWindow (win) {
+  openBrowserWindow('config', {
+    title: "Config",
+    parent: win,
+  });
+}
+
 function connectOpenConfig (win) {
   ipcMain.on('appium-open-config', () => {
-    openBrowserWindow('config', {
-      title: "Config",
-      parent: win,
-    });
+    createNewConfigWindow(win);
   });
 }
 
