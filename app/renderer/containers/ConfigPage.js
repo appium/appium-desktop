@@ -4,7 +4,7 @@ import * as ConfigActions from '../actions/Config';
 import ConfigPage from '../components/Config/Config';
 
 function mapStateToProps (state) {
-  return state.inspector;
+  return state.config;
 }
 
 function mapDispatchToProps (dispatch) {

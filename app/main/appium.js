@@ -408,6 +408,21 @@ function connectOpenConfig () {
   });
 }
 
+function connectGetEnv () {
+  ipcMain.on('appium-get-env', (event) => {
+    event.sender.send('appium-env', {
+      defaultEnvironmentVariables: process.env,
+      savedEnvironmentVariables: settings.get('ENV', {}),
+    });
+  });
+}
+
+function connectSetEnv () {
+  ipcMain.on('appium-set-env', (event, data) => {
+    settings.set('ENV', data.env);
+  });
+}
+
 function initializeIpc (win) {
   // listen for 'start-server' from the renderer
   connectStartServer(win);
@@ -424,6 +439,8 @@ function initializeIpc (win) {
   connectKeepAlive();
   connectClearLogFile();
   connectOpenConfig();
+  connectGetEnv();
+  connectSetEnv();
 
   setTimeout(checkNewUpdates, 10000);
 }
