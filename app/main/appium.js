@@ -374,6 +374,31 @@ function connectMoveToApplicationsFolder () {
   });
 }
 
+function connectOpenConfig () {
+  ipcMain.on('appium-open-config', (/*evt*/) => {
+    const win = new BrowserWindow({
+      width: 1080,
+      minWidth: 1080,
+      height: 570,
+      minHeight: 570,
+      title: "Start Session",
+      backgroundColor: "#f2f2f2",
+      frame: "customButtonsOnHover",
+      titleBarStyle: 'hidden',
+      webPreferences: {
+        devTools: true
+      }
+    });
+
+    let configHTMLPath = path.resolve(__dirname,  isDev ? '..' : 'app', 'renderer', 'index.html');
+    // on Windows we'll get backslashes, but we don't want these for a browser URL, so replace
+    configHTMLPath = configHTMLPath.replace("\\", "/");
+    configHTMLPath += '#/config';
+    win.loadURL(`file://${configHTMLPath}`);
+    win.show();
+  });
+}
+
 function initializeIpc (win) {
   // listen for 'start-server' from the renderer
   connectStartServer(win);
@@ -389,6 +414,7 @@ function initializeIpc (win) {
   connectMoveToApplicationsFolder();
   connectKeepAlive();
   connectClearLogFile();
+  connectOpenConfig();
 
   setTimeout(checkNewUpdates, 10000);
 }
