@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 
-import { ipcMain, BrowserWindow, Menu, app } from 'electron';
+import { ipcMain, app } from 'electron';
 import { main as appiumServer } from 'appium';
 import { getDefaultArgs, getParser } from 'appium/build/lib/parser';
 import path from 'path';
@@ -11,9 +11,9 @@ import settings from '../settings';
 import AppiumMethodHandler from './appium-method-handler';
 import request from 'request-promise';
 import { checkNewUpdates } from './auto-updater';
+import { openBrowserWindow } from './helpers';
 
 const LOG_SEND_INTERVAL_MS = 250;
-const isDev = process.env.NODE_ENV === 'development';
 
 const defaultEnvironmentVariables = _.clone(process.env);
 
@@ -23,7 +23,6 @@ var batchedLogs = [];
 
 let appiumHandlers = {};
 let logFile;
-let configWin;
 
 // Delete saved server args, don't start until a server has been started
 settings.deleteSync('SERVER_ARGS');
@@ -166,29 +165,10 @@ function connectClearLogFile () {
 }
 
 export function createNewSessionWindow (win) {
-  // Create and open the Browser Window
-  let sessionWin = new BrowserWindow({
-    width: 1080,
-    minWidth: 1080,
-    height: 570,
-    minHeight: 570,
+  let sessionWin = openBrowserWindow('session', {
     title: "Start Session",
     titleBarStyle: 'hidden',
-    backgroundColor: "#f2f2f2",
-    frame: "customButtonsOnHover",
-    webPreferences: {
-      devTools: true
-    }
   });
-  // note that __dirname changes based on whether we're in dev or prod;
-  // in dev it's the actual dirname of the file, in prod it's the root
-  // of the project (where main.js is built), so switch accordingly
-  let sessionHTMLPath = path.resolve(__dirname,  isDev ? '..' : 'app', 'renderer', 'index.html');
-  // on Windows we'll get backslashes, but we don't want these for a browser URL, so replace
-  sessionHTMLPath = sessionHTMLPath.replace("\\", "/");
-  sessionHTMLPath += '#/session';
-  sessionWin.loadURL(`file://${sessionHTMLPath}`);
-  sessionWin.show();
 
   // When you close the session window, kill its associated Appium session (if there is one)
   let sessionID = sessionWin.webContents.id;
@@ -200,21 +180,6 @@ export function createNewSessionWindow (win) {
   // When the main window is closed, close the session window too
   win.once('closed', () => {
     sessionWin.close();
-  });
-
-  // If it's dev, go ahead and open up the dev tools automatically
-  if (isDev) {
-    sessionWin.openDevTools();
-  }
-  sessionWin.webContents.on('context-menu', (e, props) => {
-    const {x, y} = props;
-
-    Menu.buildFromTemplate([{
-      label: 'Inspect element',
-      click () {
-        sessionWin.inspectElement(x, y);
-      }
-    }]).popup(sessionWin);
   });
 }
 
@@ -390,37 +355,12 @@ function connectMoveToApplicationsFolder () {
   });
 }
 
-function connectOpenConfig () {
-  ipcMain.on('appium-open-config', (/*evt*/) => {
-    configWin = new BrowserWindow({
-      width: 1080,
-      minWidth: 1080,
-      height: 570,
-      minHeight: 570,
+function connectOpenConfig (win) {
+  ipcMain.on('appium-open-config', () => {
+    openBrowserWindow('config', {
       title: "Config",
-      backgroundColor: "#f2f2f2",
-      frame: "customButtonsOnHover",
-      webPreferences: {
-        devTools: true
-      }
+      parent: win,
     });
-
-    let configHTMLPath = path.resolve(__dirname,  isDev ? '..' : 'app', 'renderer', 'index.html');
-    // on Windows we'll get backslashes, but we don't want these for a browser URL, so replace
-    configHTMLPath = configHTMLPath.replace("\\", "/");
-    configHTMLPath += '#/config';
-    configWin.loadURL(`file://${configHTMLPath}`);
-    configWin.webContents.on('context-menu', (e, props) => {
-      const {x, y} = props;
-  
-      Menu.buildFromTemplate([{
-        label: 'Inspect element',
-        click () {
-          configWin.inspectElement(x, y);
-        }
-      }]).popup(configWin);
-    });
-    configWin.show();
   });
 }
 
@@ -459,7 +399,7 @@ function initializeIpc (win) {
   connectMoveToApplicationsFolder();
   connectKeepAlive();
   connectClearLogFile();
-  connectOpenConfig();
+  connectOpenConfig(win);
   connectGetEnv();
   connectSaveEnv();
 
