@@ -1,4 +1,3 @@
-import { ipcRenderer } from 'electron';
 import React, { Component, PropTypes } from 'react';
 import { Button } from 'antd';
 
@@ -30,10 +29,6 @@ export default class StartServer extends Component {
     }
   }
 
-  openConfig () {
-    ipcRenderer.send('appium-open-config');
-  }
-
   render () {
     const {tabId, switchTab} = this.props;
     return (
@@ -53,7 +48,6 @@ export default class StartServer extends Component {
               >Presets</Button>
             </Button.Group>
           </div>
-          <Button onClick={() => this.openConfig()}>Config</Button>
           {this.displayTab()}
         </div>
       </div>
