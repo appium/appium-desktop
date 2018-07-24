@@ -21,10 +21,3 @@ export function getEnvironmentVariables () {
     });
   };
 }
-
-export function saveEnvironmentVariables () {
-  return (dispatch, getState) => {
-    const {environmentVariables:env} = getState();
-    //ipcRenderer.send('appium-set-env', env);
-  };
-}

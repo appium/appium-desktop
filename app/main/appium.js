@@ -6,6 +6,7 @@ import { getDefaultArgs, getParser } from 'appium/build/lib/parser';
 import path from 'path';
 import wd from 'wd';
 import { fs, tempDir } from 'appium-support';
+import _ from 'lodash';
 import settings from '../settings';
 import AppiumMethodHandler from './appium-method-handler';
 import request from 'request-promise';
@@ -14,15 +15,30 @@ import { checkNewUpdates } from './auto-updater';
 const LOG_SEND_INTERVAL_MS = 250;
 const isDev = process.env.NODE_ENV === 'development';
 
+const defaultEnvironmentVariables = _.clone(process.env);
+
 var server = null;
 var logWatcher = null;
 var batchedLogs = [];
 
 let appiumHandlers = {};
 let logFile;
+let configWin;
 
 // Delete saved server args, don't start until a server has been started
 settings.deleteSync('SERVER_ARGS');
+
+// Sets the environment variables to a combination of process.env and whatever
+// the user saved
+async function setEnv () {
+  const savedEnv = await settings.get('ENV', {});
+  process.env = {
+    ...defaultEnvironmentVariables,
+    ...savedEnv,
+  };
+}
+
+setEnv();
 
 async function deleteLogfile () {
   if (logFile) {
@@ -157,6 +173,7 @@ export function createNewSessionWindow (win) {
     height: 570,
     minHeight: 570,
     title: "Start Session",
+    titleBarStyle: 'hidden',
     backgroundColor: "#f2f2f2",
     frame: "customButtonsOnHover",
     webPreferences: {
@@ -375,15 +392,14 @@ function connectMoveToApplicationsFolder () {
 
 function connectOpenConfig () {
   ipcMain.on('appium-open-config', (/*evt*/) => {
-    const win = new BrowserWindow({
+    configWin = new BrowserWindow({
       width: 1080,
       minWidth: 1080,
       height: 570,
       minHeight: 570,
-      title: "Start Session",
+      title: "Config",
       backgroundColor: "#f2f2f2",
       frame: "customButtonsOnHover",
-      titleBarStyle: 'hidden',
       webPreferences: {
         devTools: true
       }
@@ -393,33 +409,38 @@ function connectOpenConfig () {
     // on Windows we'll get backslashes, but we don't want these for a browser URL, so replace
     configHTMLPath = configHTMLPath.replace("\\", "/");
     configHTMLPath += '#/config';
-    win.loadURL(`file://${configHTMLPath}`);
-    win.webContents.on('context-menu', (e, props) => {
+    configWin.loadURL(`file://${configHTMLPath}`);
+    configWin.webContents.on('context-menu', (e, props) => {
       const {x, y} = props;
   
       Menu.buildFromTemplate([{
         label: 'Inspect element',
         click () {
-          win.inspectElement(x, y);
+          configWin.inspectElement(x, y);
         }
-      }]).popup(win);
+      }]).popup(configWin);
     });
-    win.show();
+    configWin.show();
   });
 }
 
 function connectGetEnv () {
-  ipcMain.on('appium-get-env', (event) => {
+  ipcMain.on('appium-get-env', async (event) => {
     event.sender.send('appium-env', {
-      defaultEnvironmentVariables: process.env,
-      savedEnvironmentVariables: settings.get('ENV', {}),
+      defaultEnvironmentVariables,
+      savedEnvironmentVariables: await settings.get('ENV', {}),
     });
   });
 }
 
-function connectSetEnv () {
-  ipcMain.on('appium-set-env', (event, data) => {
-    settings.set('ENV', data.env);
+function connectSaveEnv () {
+  ipcMain.on('appium-save-env', async (event, environmentVariables) => {
+    // Pluck unset values
+    const env = _.pickBy(environmentVariables, _.identity);
+
+    await settings.set('ENV', env);
+    setEnv();
+    event.sender.send('appium-save-env-done');
   });
 }
 
@@ -440,7 +461,7 @@ function initializeIpc (win) {
   connectClearLogFile();
   connectOpenConfig();
   connectGetEnv();
-  connectSetEnv();
+  connectSaveEnv();
 
   setTimeout(checkNewUpdates, 10000);
 }
