@@ -1,8 +1,7 @@
-export const NAME_OF_ACTION_1 = 'NAME_OF_ACTION_1';
-export const NAME_OF_ACTION_2 = 'NAME_OF_ACTION_2';
+export const SET_ENVIRONMENT_VARIABLE = 'SET_ENVIRONMENT_VARIABLE';
 
-export function someAction () {
-  return async (/*dispatch, getState*/) => {
-
+export function setEnvironmentVariable (name, value) {
+  return (dispatch) => {
+    dispatch({type: SET_ENVIRONMENT_VARIABLE, name, value});
   };
 }
