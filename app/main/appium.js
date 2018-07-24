@@ -159,7 +159,6 @@ export function createNewSessionWindow (win) {
     title: "Start Session",
     backgroundColor: "#f2f2f2",
     frame: "customButtonsOnHover",
-    titleBarStyle: 'hidden',
     webPreferences: {
       devTools: true
     }
@@ -395,6 +394,16 @@ function connectOpenConfig () {
     configHTMLPath = configHTMLPath.replace("\\", "/");
     configHTMLPath += '#/config';
     win.loadURL(`file://${configHTMLPath}`);
+    win.webContents.on('context-menu', (e, props) => {
+      const {x, y} = props;
+  
+      Menu.buildFromTemplate([{
+        label: 'Inspect element',
+        click () {
+          win.inspectElement(x, y);
+        }
+      }]).popup(win);
+    });
     win.show();
   });
 }
