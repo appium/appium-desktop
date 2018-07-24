@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { Input, Row, Col, Button } from 'antd';
 import styles from './Config.css';
 
-const {app} = remote;
+const {app, dialog, getCurrentWindow} = remote;
 
 export default class Config extends Component {
 
@@ -15,8 +15,18 @@ export default class Config extends Component {
     const {environmentVariables} = this.props;
     ipcRenderer.send('appium-save-env', environmentVariables);
     ipcRenderer.once('appium-save-env-done', () => {
-      app.relaunch();
-      app.exit();
+      const message = `Application must be restarted for changes to take effect`;
+      const dialogOptions = {type: 'info', buttons: ['Restart Now', 'Restart Later'], message};
+      dialog.showMessageBox(dialogOptions, (response) => {
+        if (response === 0) {
+          // If 'Restart Now' restart the application
+          app.relaunch();
+          app.exit();
+        } else {
+          // ...otherwise, just close the current window
+          getCurrentWindow().close();
+        }
+      });
     });
   }
 
