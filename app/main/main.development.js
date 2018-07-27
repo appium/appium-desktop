@@ -86,11 +86,11 @@ app.on('ready', async () => {
   });
 
   if (process.platform === 'darwin') {
-    template = menuTemplates.mac(mainWindow);
+    template = await menuTemplates.mac(mainWindow);
     menu = Menu.buildFromTemplate(template);
     Menu.setApplicationMenu(menu);
   } else {
-    template = menuTemplates.other(mainWindow);
+    template = await menuTemplates.other(mainWindow);
     menu = Menu.buildFromTemplate(template);
     mainWindow.setMenu(menu);
   }
