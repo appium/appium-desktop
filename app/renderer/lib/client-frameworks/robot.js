@@ -9,7 +9,7 @@ class RobotFramework extends Framework {
 
   get getCapsVariables() {
     return Object.keys(this.caps).map((k) => {
-      return `${k}    ${this.getPythonVal(this.caps[k])}`;
+      return `\$\{${k}\}    ${this.getPythonVal(this.caps[k])}`;
     }).join("\n");
   }
 
@@ -39,10 +39,10 @@ Test case name
 ${this.indent(this.getApplicationInitialization(), 4)}
 ${this.indent(code, 4)}
 
-*** Test Teardonw ***
+*** Test Teardown ***
     Quit Application
 
-*** Suite Teardonw ***
+*** Suite Teardown ***
     Close Application`;
   }
 
@@ -68,7 +68,7 @@ ${this.indent(code, 4)}
   getApplicationInitialization() {
     let varString = Object.keys(this.caps).map((k) => {
       return `${k}=\$\{${k}\}`;
-    }).join(" ");
+    }).join("  ");
     return `Open Application    \$\{REMOTE_URL\}   ${varString}`;
   }
 
