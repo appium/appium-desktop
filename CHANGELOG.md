@@ -1,3 +1,10 @@
+## [1.6.2](https://github.com/appium/appium-desktop/compare/v1.6.3...v1.6.2) (2018-08-02)
+
+### Changes
+* Feature: Make ANDROID_HOME and JAVA_HOME settable from the UI
+* Feature: Add icon for copying source XML to clipboard
+* Fix: Close session window when main window is closed
+
 ## [1.6.2](https://github.com/appium/appium-desktop/compare/v1.6.2...v1.6.1) (2018-06-08)
 
 ### Changes
