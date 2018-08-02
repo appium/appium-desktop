@@ -3,6 +3,10 @@ import React, { Component } from 'react';
 import { Input, Row, Col, Button } from 'antd';
 import styles from './Config.css';
 
+const ENV_VARIABLE_NAMES = [
+  'ANDROID_HOME', 'JAVA_HOME'
+];
+
 const {app, dialog, getCurrentWindow} = remote;
 
 export default class Config extends Component {
@@ -32,10 +36,6 @@ export default class Config extends Component {
 
   render () {
     const {setEnvironmentVariable, environmentVariables, defaultEnvironmentVariables} = this.props;
-
-    const ENV_VARIABLE_NAMES = [
-      'ANDROID_HOME', 'JAVA_HOME'
-    ];
 
     return <div className={styles.container}>
       <h3>Environment Variables</h3>

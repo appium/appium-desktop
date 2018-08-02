@@ -22,7 +22,7 @@ export default function inspector (state=INITIAL_STATE, action) {
     case SET_ENVIRONMENT_VARIABLES:
       return {
         ...state,
-        environmentVariables: action.savedEnvironmentVariables,
+        environmentVariables: action.savedEnvironmentVariables || {},
         defaultEnvironmentVariables: action.defaultEnvironmentVariables,
       };
 

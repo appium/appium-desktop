@@ -359,6 +359,8 @@ export function createNewConfigWindow (win) {
   openBrowserWindow('config', {
     title: "Config",
     parent: win,
+    width: 1080 / 2,
+    height: 1080 / 4,
   });
 }
 
@@ -383,7 +385,7 @@ function connectSaveEnv () {
     const env = _.pickBy(environmentVariables, _.identity);
 
     await settings.set('ENV', env);
-    setEnv();
+    await setEnv();
     event.sender.send('appium-save-env-done');
   });
 }
