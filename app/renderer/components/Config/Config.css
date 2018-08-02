@@ -1,0 +1,10 @@
+.container {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  padding: 4em 2em 2em 2em;
+}
+
+.row {
+  margin-bottom: 16px;
+}

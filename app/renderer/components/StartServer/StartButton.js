@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
-import { Button } from 'antd';
+import { Button, Icon } from 'antd';
+import { ipcRenderer } from 'electron';
 
 import styles from './StartButton.css';
 
@@ -16,6 +17,10 @@ export default class StartButton extends Component {
 
   noop (evt) {
     evt.preventDefault();
+  }
+
+  openConfig () {
+    ipcRenderer.send('appium-open-config');
   }
 
   render () {
@@ -35,6 +40,11 @@ export default class StartButton extends Component {
           {serverStarting ? "Starting..." : `Start Server v${serverVersion}`}
         </Button>
         <input type="submit" hidden={true} />
+        <Button id='configBtn'
+          className={styles.configButton}
+          onClick={() => this.openConfig()}>
+          Edit Configurations <Icon type="setting" />
+        </Button>
       </div>
     );
   }

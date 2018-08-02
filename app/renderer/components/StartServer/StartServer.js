@@ -30,7 +30,7 @@ export default class StartServer extends Component {
   }
 
   render () {
-    const {tabId, switchTab, serverVersion} = this.props;
+    const {tabId, switchTab} = this.props;
     return (
       <div className={styles.container}>
         <div className={styles.formAndLogo}>

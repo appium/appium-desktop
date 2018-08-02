@@ -5,6 +5,7 @@ import serverMonitor from './ServerMonitor';
 import session from './Session';
 import inspector from './Inspector';
 import updater from './Updater';
+import config from './Config';
 
 // create our root reducer
 const rootReducer = combineReducers({
@@ -14,6 +15,7 @@ const rootReducer = combineReducers({
   session,
   inspector,
   updater,
+  config,
 });
 
 export default rootReducer;

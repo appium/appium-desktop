@@ -1,6 +1,6 @@
 import { app, shell, dialog } from 'electron';
 import _ from 'lodash';
-import { createNewSessionWindow } from './appium';
+import { createNewSessionWindow, createNewConfigWindow} from './appium';
 import { checkNewUpdates } from './auto-updater';
 import CloudProviders from '../shared/cloud-providers';
 
@@ -39,6 +39,11 @@ function macMenuAppium (mainWindow) {
       accelerator: 'Command+N',
       click () {
         createNewSessionWindow(mainWindow);
+      }
+    }, {
+      label: 'Configurations',
+      click () {
+        createNewConfigWindow(mainWindow);
       }
     }, {
       type: 'separator'
