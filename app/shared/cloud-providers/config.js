@@ -11,4 +11,7 @@ export default {
   headspin: {
     label: 'HeadSpin',
   },
+  bitbar: {
+    label: 'Bitbar'
+  }
 };

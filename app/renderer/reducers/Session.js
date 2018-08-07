@@ -27,6 +27,7 @@ const INITIAL_STATE = {
     headspin: {},
     browserstack: {},
     advanced: {},
+    bitbar: {},
   },
   attachSessId: null,
 
@@ -175,7 +176,7 @@ export default function session (state = INITIAL_STATE, action) {
     case SET_SERVER:
       return {
         ...state,
-        // Only set remote, sauce, headspin, and testobject;
+        // Only set remote and cloud providers;
         // 'local' comes from electron-settings
         server: {
           ...state.server,
@@ -184,6 +185,7 @@ export default function session (state = INITIAL_STATE, action) {
           testobject: action.server.testobject || {},
           headspin: action.server.headspin || {},
           browserstack: action.server.browserstack || {},
+          bitbar: action.server.bitbar || {},
         },
         serverType: action.serverType || ServerTypes.local,
       };
