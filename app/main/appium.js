@@ -11,7 +11,7 @@ import settings from '../settings';
 import AppiumMethodHandler from './appium-method-handler';
 import request from 'request-promise';
 import { checkNewUpdates } from './auto-updater';
-import { openBrowserWindow } from './helpers';
+import { openBrowserWindow, setSavedEnv } from './helpers';
 
 const LOG_SEND_INTERVAL_MS = 250;
 
@@ -26,18 +26,6 @@ let logFile;
 
 // Delete saved server args, don't start until a server has been started
 settings.deleteSync('SERVER_ARGS');
-
-// Sets the environment variables to a combination of process.env and whatever
-// the user saved
-async function setEnv () {
-  const savedEnv = await settings.get('ENV', {});
-  process.env = {
-    ...defaultEnvironmentVariables,
-    ...savedEnv,
-  };
-}
-
-setEnv();
 
 async function deleteLogfile () {
   if (logFile) {
@@ -385,7 +373,7 @@ function connectSaveEnv () {
     const env = _.pickBy(environmentVariables, _.identity);
 
     await settings.set('ENV', env);
-    await setEnv();
+    await setSavedEnv();
     event.sender.send('appium-save-env-done');
   });
 }
