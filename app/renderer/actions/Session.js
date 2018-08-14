@@ -54,6 +54,7 @@ export const ServerTypes = {
   testobject: 'testobject',
   headspin: 'headspin',
   browserstack: 'browserstack',
+  bitbar: 'bitbar',
 };
 
 const JSON_TYPES = ['object', 'number', 'boolean'];
@@ -224,6 +225,23 @@ export function newSession (caps, attachSessId = null) {
           });
           return;
         }
+        https = true;
+        break;
+      case ServerTypes.bitbar:
+        host = process.env.BITBAR_HOST || "appium.bitbar.com";
+        port = 443;
+        path = "/wd/hub";
+        accessKey = session.server.bitbar.apiKey || process.env.BITBAR_API_KEY;
+        if (!accessKey) {
+          notification.error({
+            message: "Error",
+            description: "Bitbar API key required!",
+            duration: 4
+          });
+          return;
+        }
+        desiredCapabilities.testdroid_source = "appiumdesktop";
+        desiredCapabilities.testdroid_apiKey = accessKey;
         https = true;
         break;
       default:

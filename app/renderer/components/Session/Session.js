@@ -10,6 +10,7 @@ import ServerTabCustom from './ServerTabCustom';
 import ServerTabTestobject from './ServerTabTestobject';
 import ServerTabHeadspin from './ServerTabHeadspin';
 import ServerTabBrowserstack from './ServerTabBrowserstack';
+import ServerTabBitbar from './ServerTabBitbar';
 import { Tabs, Button, Spin, Icon } from 'antd';
 import { ServerTypes } from '../../actions/Session';
 import AdvancedServerParams from './AdvancedServerParams';
@@ -59,6 +60,7 @@ export default class Session extends Component {
     const testObjectTabHead = <span className={SessionStyles.tabText}><img src="images/testobject_logo.svg" /></span>;
     const headspinTabHead = <span className={SessionStyles.tabText}><img src="images/headspin_logo.svg" /></span>;
     const browserstackTabHead = <span className={SessionStyles.tabText}><img src="images/browserstack_logo.svg" /></span>;
+    const bitbarTabHead = <span className={SessionStyles.tabText}><img src="images/bitbar_logo.svg" /></span>;
     
     return <Spin spinning={!!sessionLoading}>
       <div className={SessionStyles['session-container']}>
@@ -82,6 +84,9 @@ export default class Session extends Component {
             { visibleProviders.browserstack && <TabPane tab={browserstackTabHead} key={ServerTypes.browserstack}>
               <ServerTabBrowserstack {...this.props} />
             </TabPane> }
+            {visibleProviders.bitbar && <TabPane tab={bitbarTabHead} key={ServerTypes.bitbar}>
+              <ServerTabBitbar {...this.props} />
+            </TabPane>}
           </Tabs>
           <AdvancedServerParams {...this.props} />
         </div>
