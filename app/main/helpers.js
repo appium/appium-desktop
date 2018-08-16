@@ -1,4 +1,5 @@
 import { BrowserWindow, Menu } from 'electron';
+import settings from '../settings';
 import path from 'path';
 
 const isDev = process.env.NODE_ENV === 'development';
@@ -50,4 +51,15 @@ export function openBrowserWindow (route, opts) {
   });
 
   return win;
+}
+
+
+// Sets the environment variables to a combination of process.env and whatever
+// the user saved
+export async function setSavedEnv () {
+  const savedEnv = await settings.get('ENV');
+  process.env = {
+    ...process.env,
+    ...savedEnv || {},
+  };
 }

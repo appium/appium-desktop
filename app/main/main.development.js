@@ -1,5 +1,6 @@
 import { app, BrowserWindow, Menu } from 'electron';
 import { initializeIpc } from './appium';
+import { setSavedEnv } from './helpers';
 import menuTemplates from './menus';
 import path from 'path';
 import shellEnv from 'shell-env';
@@ -26,6 +27,7 @@ if (!isDev) {
   // and we need to do the same thing with PATH
   fixPath();
 }
+setSavedEnv();
 
 app.on('window-all-closed', () => {
   app.quit();
