@@ -146,6 +146,7 @@ export default class AdvancedTab extends Component {
               {this.buildInput('logTimestamp', 'checkbox', 'Log Timestamps')}
               {this.buildInput('logNoColors', 'checkbox', 'Supress Log Color')}
               {this.buildInput('enforceStrictCaps', 'checkbox', 'Strict Caps Mode')}
+              {this.buildInput('relaxedSecurityEnabled', 'checkbox', 'Relaxed Security')}
               {this.buildInput('defaultCapabilities', 'textarea', 'Default Capabilities')}
             </div>
 
