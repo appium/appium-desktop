@@ -17,6 +17,11 @@ describe('updateChecker', function () {
   });
 
   describe('.checkUpdate', function () {
+    before(function () {
+      if (!process.env.GITHUB_TOKEN) {
+        return this.skip();
+      }
+    });
     it('not find anything if latest release is same as current release', async function () {
       await checkUpdate(latestVersion).should.eventually.equal(false);
     });
