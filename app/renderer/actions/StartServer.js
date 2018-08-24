@@ -32,6 +32,7 @@ export function startServer (evt) {
       ipcRenderer.removeAllListeners('appium-log-line');
       alert(`Error starting Appium server: ${message}`);
       dispatch({type: SERVER_START_ERR});
+      removeStartServerListeners();
     });
 
     ipcRenderer.once('appium-start-ok', () => {
@@ -41,6 +42,7 @@ export function startServer (evt) {
       dispatch({type: SERVER_START_OK});
       dispatch(setServerArgs(serverArgs));
       dispatch(push('/monitor'));
+      removeStartServerListeners();
     });
 
     ipcRenderer.on('appium-log-line', (event, logs) => {
@@ -51,6 +53,11 @@ export function startServer (evt) {
     ipcRenderer.once('path-to-logs', (event, logfilePath) => dispatch({type: SET_LOGFILE_PATH, logfilePath}));
     ipcRenderer.send('start-server', serverArgs);
   };
+}
+
+function removeStartServerListeners () {
+  ipcRenderer.removeAllListeners('appium-start-error');
+  ipcRenderer.removeAllListeners('appium-start-ok');
 }
 
 export function updateArgs (args) {

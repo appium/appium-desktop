@@ -21,6 +21,7 @@ export default class Config extends Component {
     ipcRenderer.once('appium-save-env-done', () => {
       const message = `Application must be restarted for changes to take effect`;
       const dialogOptions = {type: 'info', buttons: ['Restart Now', 'Restart Later'], message};
+      ipcRenderer.removeAllListeners('appium-save-env-done');
       dialog.showMessageBox(dialogOptions, (response) => {
         if (response === 0) {
           // If 'Restart Now' restart the application
