@@ -56,6 +56,7 @@ export const SET_SWIPE_END = 'SET_SWIPE_END';
 export const CLEAR_SWIPE_ACTION = 'CLEAR_SWIPE_ACTION';
 export const PROMPT_KEEP_ALIVE = 'PROMPT_KEEP_ALIVE';
 export const HIDE_PROMPT_KEEP_ALIVE = 'HIDE_PROMPT_KEEP_ALIVE';
+export const APP_INTERACTION_MODE = 'APP_INTERACTION_MODE';
 
 
 // Attributes on nodes that we know are unique to the node
@@ -447,5 +448,11 @@ export function keepSessionAlive () {
   return (dispatch) => {
     dispatch({type: HIDE_PROMPT_KEEP_ALIVE});
     ipcRenderer.send('appium-keep-session-alive');
+  };
+}
+
+export function setAppInteractionMode (appInteractionMode) {
+  return (dispatch) => {
+    dispatch({type: APP_INTERACTION_MODE, appInteractionMode});
   };
 }

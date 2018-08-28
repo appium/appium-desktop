@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
 import { Card, Icon, Button, Spin, Tooltip, Modal } from 'antd';
 import Screenshot from './Screenshot';
 import SelectedElement from './SelectedElement';
@@ -48,42 +47,12 @@ export default class Inspector extends Component {
     const {screenshot, screenshotError, selectedElement = {},
       applyClientMethod, quitSession, isRecording, showRecord, startRecording,
       pauseRecording, showLocatorTestModal, screenshotInteractionMode, 
-      showKeepAlivePrompt, keepSessionAlive, sourceXML} = this.props;
+      showKeepAlivePrompt, keepSessionAlive, sourceXML,
+      appInteractionMode, setAppInteractionMode} = this.props;
     const {path} = selectedElement;
 
-    let main = <div className={InspectorStyles['inspector-main']}>
-      <div id='screenshotContainer' className={InspectorStyles['screenshot-container']}>
-        {screenshot && <Screenshot {...this.props} />}
-        {screenshotError && `Could not obtain screenshot: ${screenshotError}`}
-        {!screenshot && !screenshotError &&
-          <Spin size="large" spinning={true}>
-            <div className={InspectorStyles.screenshotBox} />
-          </Spin>
-        }
-      </div>
-      <div id='sourceTreeContainer' className={InspectorStyles['source-tree-container']} ref={(div) => this.container = div} >
-        {showRecord &&
-          <RecordedActions {...this.props} />
-        }
-        <Card
-         title={<span><Icon type="file-text" /> App Source</span>}
-         className={InspectorStyles['source-tree-card']}>
-          <Source {...this.props} />
-        </Card>
-        {this.container && <SourceScrollButtons {...this.props} container={this.container} />}
-      </div>
-      <div id='selectedElementContainer' className={`${InspectorStyles['source-tree-container']} ${InspectorStyles['element-detail-container']}`}>
-        <Card
-         title={<span><Icon type="tag-o" /> Selected Element</span>}
-         className={InspectorStyles['selected-element-card']}>
-         {path && <SelectedElement {...this.props}/>}
-         {!path && <i>Select an element in the source to begin.</i>}
-        </Card>
-      </div>
-    </div>;
-
     let actionControls = <div className={InspectorStyles['action-controls']}>
-      <ButtonGroup size="large" value={screenshotInteractionMode}>
+      <ButtonGroup size="medium" value={screenshotInteractionMode}>
         <Tooltip title="Select Elements">
           <Button icon='select' onClick={() => {this.screenshotInteractionChange('select');}}
             type={screenshotInteractionMode === 'select' ? 'primary' : 'default'}
@@ -100,10 +69,52 @@ export default class Inspector extends Component {
           />
         </Tooltip>
       </ButtonGroup>
+      <ButtonGroup size="medium" style={{marginLeft: '8px'}}>
+        <Button onClick={() => setAppInteractionMode("appSource")}
+          type={appInteractionMode === 'appSource' ? 'primary' : 'default'}>App Source</Button>
+        <Button onClick={() => setAppInteractionMode("actions")}
+          type={appInteractionMode === 'actions' ? 'primary' : 'default'}>Actions</Button>
+      </ButtonGroup>
+    </div>;
+
+    let main = <div className={InspectorStyles['inspector-main']}>
+      <div id='screenshotContainer' className={InspectorStyles['screenshot-container']}>
+        {screenshot && <Screenshot {...this.props} />}
+        {screenshotError && `Could not obtain screenshot: ${screenshotError}`}
+        {!screenshot && !screenshotError &&
+          <Spin size="large" spinning={true}>
+            <div className={InspectorStyles.screenshotBox} />
+          </Spin>
+        }
+      </div>
+      <div id='sourceTreeContainer' className={InspectorStyles['source-tree-container']} ref={(div) => this.container = div} >
+        {showRecord &&
+          <RecordedActions {...this.props} />
+        }
+        {actionControls}
+        {appInteractionMode === 'appSource' && <Card
+         title={<span><Icon type="file-text" /> App Source</span>}
+         className={InspectorStyles['source-tree-card']}>
+          <Source {...this.props} />
+        </Card>}
+        {appInteractionMode === 'actions' && <Card
+         title={<span><Icon type="file-text" /> Actions</span>}
+         className={InspectorStyles['source-tree-card']}>
+          Actions!!!
+        </Card>}
+        {this.container && <SourceScrollButtons {...this.props} container={this.container} />}
+      </div>
+      <div id='selectedElementContainer' className={`${InspectorStyles['source-tree-container']} ${InspectorStyles['element-detail-container']}`}>
+        <Card
+         title={<span><Icon type="tag-o" /> Selected Element</span>}
+         className={InspectorStyles['selected-element-card']}>
+         {path && <SelectedElement {...this.props}/>}
+         {!path && <i>Select an element in the source to begin.</i>}
+        </Card>
+      </div>
     </div>;
 
     let controls = <div className={InspectorStyles['inspector-toolbar']}>
-      {actionControls}
       <ButtonGroup size="large">
         <Tooltip title="Back">
           <Button id='btnGoBack' icon='arrow-left' onClick={() => applyClientMethod({methodName: 'back'})}/>
