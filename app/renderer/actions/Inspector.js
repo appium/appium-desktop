@@ -58,6 +58,8 @@ export const PROMPT_KEEP_ALIVE = 'PROMPT_KEEP_ALIVE';
 export const HIDE_PROMPT_KEEP_ALIVE = 'HIDE_PROMPT_KEEP_ALIVE';
 export const APP_INTERACTION_MODE = 'APP_INTERACTION_MODE';
 
+export const SET_COMMAND_GROUP = 'SET_COMMAND_GROUP';
+export const SET_COMMAND = 'SET_COMMAND';
 
 // Attributes on nodes that we know are unique to the node
 const uniqueAttributes = [
@@ -454,5 +456,17 @@ export function keepSessionAlive () {
 export function setAppInteractionMode (appInteractionMode) {
   return (dispatch) => {
     dispatch({type: APP_INTERACTION_MODE, appInteractionMode});
+  };
+}
+
+export function setCommandGroup (commandGroup) {
+  return (dispatch) => {
+    dispatch({type: SET_COMMAND_GROUP, commandGroup});
+  };
+}
+
+export function setCommand (command) {
+  return (dispatch) => {
+    dispatch({type: SET_COMMAND, command});
   };
 }

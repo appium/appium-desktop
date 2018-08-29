@@ -3,6 +3,7 @@ import { Card, Icon, Button, Spin, Tooltip, Modal } from 'antd';
 import Screenshot from './Screenshot';
 import SelectedElement from './SelectedElement';
 import Source from './Source';
+import Actions from './Actions';
 import SourceScrollButtons from './SourceScrollButtons';
 import InspectorStyles from './Inspector.css';
 import RecordedActions from './RecordedActions';
@@ -53,7 +54,7 @@ export default class Inspector extends Component {
 
     let actionControls = <div className={InspectorStyles['action-controls']}>
       <ButtonGroup size="medium" value={screenshotInteractionMode}>
-        <Tooltip title="Select Elements">
+        <Tooltip title="Select element on screenshot to interact with it">
           <Button icon='select' onClick={() => {this.screenshotInteractionChange('select');}}
             type={screenshotInteractionMode === 'select' ? 'primary' : 'default'}
           />
@@ -98,9 +99,9 @@ export default class Inspector extends Component {
           <Source {...this.props} />
         </Card>}
         {appInteractionMode === 'actions' && <Card
-         title={<span><Icon type="file-text" /> Actions</span>}
+         title={<span><Icon type="code" /> Actions</span>}
          className={InspectorStyles['source-tree-card']}>
-          Actions!!!
+          <Actions {...this.props} />
         </Card>}
         {this.container && <SourceScrollButtons {...this.props} container={this.container} />}
       </div>
