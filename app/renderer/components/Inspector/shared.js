@@ -32,6 +32,7 @@ const STRATEGY_MAPPINGS = [
   ['name', 'accessibility id'],
   ['content-desc', 'accessibility id'],
   ['id', 'id'],
+  ['rntestid', 'id'],
   ['resource-id', 'id'],
 ];
 
