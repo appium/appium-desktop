@@ -11,7 +11,7 @@ import { SET_SOURCE_AND_SCREENSHOT, QUIT_SESSION_REQUESTED, QUIT_SESSION_DONE,
   ADD_ASSIGNED_VAR_CACHE, CLEAR_ASSIGNED_VAR_CACHE, SET_SCREENSHOT_INTERACTION_MODE,
   SET_SWIPE_START, SET_SWIPE_END, CLEAR_SWIPE_ACTION, SET_SEARCHED_FOR_ELEMENT_BOUNDS, CLEAR_SEARCHED_FOR_ELEMENT_BOUNDS,
   PROMPT_KEEP_ALIVE, HIDE_PROMPT_KEEP_ALIVE, APP_INTERACTION_MODE,
-  SET_COMMAND_GROUP, SET_COMMAND
+  SET_COMMAND_GROUP, SET_COMMAND, SET_COMMAND_CALL_RESULT
 } from '../actions/Inspector';
 
 const DEFAULT_FRAMEWORK = 'java';
@@ -341,12 +341,23 @@ export default function inspector (state=INITIAL_STATE, action) {
         ...state,
         commandGroup: action.commandGroup,
         command: null,
+        commandCallResult: null,
+        commandCallError: null,
       };
 
     case SET_COMMAND:
       return {
         ...state,
         command: action.command,
+        commandCallResult: null,
+        commandCallError: null,
+      };
+
+    case SET_COMMAND_CALL_RESULT:
+      return {
+        ...state,
+        commandCallResult: action.result,
+        commandCallError: action.error,
       };
 
     default:

@@ -60,6 +60,7 @@ export const APP_INTERACTION_MODE = 'APP_INTERACTION_MODE';
 
 export const SET_COMMAND_GROUP = 'SET_COMMAND_GROUP';
 export const SET_COMMAND = 'SET_COMMAND';
+export const SET_COMMAND_CALL_RESULT = 'SET_COMMAND_CALL_RESULT';
 
 // Attributes on nodes that we know are unique to the node
 const uniqueAttributes = [
@@ -468,5 +469,25 @@ export function setCommandGroup (commandGroup) {
 export function setCommand (command) {
   return (dispatch) => {
     dispatch({type: SET_COMMAND, command});
+  };
+}
+
+export function executeCommand () {
+  return async (dispatch, getState) => {
+    const {commandGroup, command} = getState().inspector;
+    let args = [];
+    if (commandGroup === 'executeMobile') {
+      args = [`mobile: ${command}`, ...args];
+    }
+    const params = {
+      methodName: commandGroup === 'executeMobile' ? 'execute' : command,
+      args,
+    };
+    try {
+      const result = await callClientMethod(params);
+      dispatch({type: SET_COMMAND_CALL_RESULT, result});
+    } catch (e) {
+      dispatch({type: SET_COMMAND_CALL_RESULT, error: e.message});
+    }
   };
 }

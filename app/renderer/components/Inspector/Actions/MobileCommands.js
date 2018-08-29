@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Select, Col, Row } from 'antd';
+import { Select, Col, Row, Button, Alert } from 'antd';
 import _ from 'lodash';
 import changeCase from 'change-case';
 import mobileCommands from './MobileCommandList';
@@ -9,7 +9,7 @@ const {Option} = Select;
 export default class MobileCommands extends Component {
 
   render () {
-    const {commandGroup, setCommandGroup, setCommand, command} = this.props;
+    const {commandGroup, setCommandGroup, setCommand, command, executeCommand, commandCallError, commandCallResult} = this.props;
     const groupPairs = _.toPairs(mobileCommands.groups);
     const commandsPairs = _.toPairs(mobileCommands.groups[commandGroup].commands);
 
@@ -30,6 +30,25 @@ export default class MobileCommands extends Component {
               !commandValue.skipUi && <Option key={commandName} value={commandName}>{commandValue.displayName || changeCase.titleCase(commandName)}</Option>
             ))}
           </Select>
+        </Col>
+      </Row>
+      {command && <Row gutter={16}>
+        <Col span={24}>
+            <Button type='primary' style={{width: '100%'}} onClick={() => executeCommand()}>Execute</Button>
+        </Col>
+      </Row>}
+      <Row gutter={16}>
+        <Col span={24}>
+        {commandCallResult && <Alert
+          message="Completed action"
+          description={commandCallError}
+          type="success"
+        />}
+        {commandCallError && <Alert
+          message="Could not complete command"
+          description={commandCallError}
+          type="error"
+        />}
         </Col>
       </Row>
     </div>;
