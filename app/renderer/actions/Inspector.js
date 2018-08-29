@@ -474,6 +474,7 @@ export function setCommand (command) {
 
 export function executeCommand () {
   return async (dispatch, getState) => {
+    // TODO: Add loading indicators between calls
     const {commandGroup, command} = getState().inspector;
     let args = [];
     if (commandGroup === 'executeMobile') {

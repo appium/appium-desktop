@@ -9,7 +9,7 @@ const MobileCommandList = {
         executeMobile: {
           skipUi: true,
           java: (methodName, jsonSerializableArgs) => {
-            let methodArgs;
+            /*let methodArgs;
             let def = MobileCommandList.executeMobile[methodName];
             if (typeof jsonObj === 'object') {
               let pairs = [];
@@ -27,7 +27,7 @@ const MobileCommandList = {
               methodArgs = jsonSerializableArgs;
             }
 
-            return `driver.executeScript("mobile: ${methodName}"), ${methodArgs}`;
+            return `driver.executeScript("mobile: ${methodName}"), ${methodArgs}`;*/
           },
         },
         viewportScreenshot: { automation: ['ios', 'xcui'] },
@@ -37,6 +37,12 @@ const MobileCommandList = {
     touch: {
       displayName: 'Touch'
     },
+    device: {
+      startActivity: {
+        automation: 'android',
+        
+      }
+    }
   }
 };
 

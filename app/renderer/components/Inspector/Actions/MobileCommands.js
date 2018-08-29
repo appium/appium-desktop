@@ -3,6 +3,7 @@ import { Select, Col, Row, Button, Alert } from 'antd';
 import _ from 'lodash';
 import changeCase from 'change-case';
 import mobileCommands from './MobileCommandList';
+import CommandArgs from './CommandArgs';
 
 const {Option} = Select;
 
@@ -32,11 +33,14 @@ export default class MobileCommands extends Component {
           </Select>
         </Col>
       </Row>
-      {command && <Row gutter={16}>
-        <Col span={24}>
-            <Button type='primary' style={{width: '100%'}} onClick={() => executeCommand()}>Execute</Button>
-        </Col>
-      </Row>}
+      {command && <div>
+        <CommandArgs {...this.props} />
+        <Row gutter={16}>
+          <Col span={24}>
+              <Button type='primary' style={{width: '100%'}} onClick={() => executeCommand()}>Execute</Button>
+          </Col>
+        </Row>
+      </div>}
       <Row gutter={16}>
         <Col span={24}>
         {commandCallResult && <Alert
