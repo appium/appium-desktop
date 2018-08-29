@@ -273,6 +273,7 @@ export function newSession (caps, attachSessId = null) {
     // If it failed, show an alert saying it failed
     ipcRenderer.once('appium-new-session-failed', (evt, e) => {
       dispatch({type: SESSION_LOADING_DONE});
+      removeNewSessionListeners();
       showError(e, 0);
     });
 
@@ -289,6 +290,7 @@ export function newSession (caps, attachSessId = null) {
         accessKey,
         https,
       })(dispatch);
+      removeNewSessionListeners();
       dispatch(push('/inspector'));
     });
 
@@ -466,8 +468,7 @@ export function getRunningSessions () {
   return (dispatch, getState) => {
     // Get currently running sessions for this server
     const state = getState().session;
-    const server = state.server;
-    const serverType = state.serverType;
+    const {server, serverType} = state;
     const serverInfo = server[serverType];
 
     dispatch({type: GET_SESSIONS_REQUESTED});
@@ -476,9 +477,11 @@ export function getRunningSessions () {
       ipcRenderer.once('appium-client-get-sessions-response', (evt, e) => {
         const res = JSON.parse(e.res);
         dispatch({type: GET_SESSIONS_DONE, sessions: res.value});
+        removeRunningSessionsListeners();
       });
       ipcRenderer.once('appium-client-get-sessions-fail', () => {
         dispatch({type: GET_SESSIONS_DONE});
+        removeRunningSessionsListeners();
       });
     } else {
       dispatch({type: GET_SESSIONS_DONE});
@@ -550,4 +553,14 @@ export function setRawDesiredCaps (rawDesiredCaps) {
     }
     dispatch({type: SET_RAW_DESIRED_CAPS, rawDesiredCaps, isValidCapsJson, invalidCapsJsonReason});
   };
+}
+
+function removeNewSessionListeners () {
+  ipcRenderer.removeAllListeners('appium-new-session-failed');
+  ipcRenderer.removeAllListeners('appium-new-session-ready');
+}
+
+function removeRunningSessionsListeners () {
+  ipcRenderer.removeAllListeners('appium-client-get-sessions-fail');
+  ipcRenderer.removeAllListeners('appium-client-get-sessions-response');
 }
