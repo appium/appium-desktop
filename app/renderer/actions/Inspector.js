@@ -61,6 +61,7 @@ export const APP_INTERACTION_MODE = 'APP_INTERACTION_MODE';
 export const SET_COMMAND_GROUP = 'SET_COMMAND_GROUP';
 export const SET_COMMAND = 'SET_COMMAND';
 export const SET_COMMAND_CALL_RESULT = 'SET_COMMAND_CALL_RESULT';
+export const SET_COMMAND_ARG = 'SET_COMMAND_ARG';
 
 // Attributes on nodes that we know are unique to the node
 const uniqueAttributes = [
@@ -472,11 +473,20 @@ export function setCommand (command) {
   };
 }
 
+export function setCommandArg (key, value) {
+  return (dispatch) => {
+    dispatch({type: SET_COMMAND_ARG, key, value});
+  };
+}
+
 export function executeCommand () {
   return async (dispatch, getState) => {
     // TODO: Add loading indicators between calls
-    const {commandGroup, command} = getState().inspector;
-    let args = [];
+    const {commandGroup, command, commandArgs} = getState().inspector;
+    let args = commandArgs;
+    if (!_.isArray(commandArgs)) {
+      args = [commandArgs];
+    }
     if (commandGroup === 'executeMobile') {
       args = [`mobile: ${command}`, ...args];
     }
@@ -484,6 +494,11 @@ export function executeCommand () {
       methodName: commandGroup === 'executeMobile' ? 'execute' : command,
       args,
     };
+
+    if (_.isEmpty(params.args)) {
+      delete params.args;
+    }
+
     try {
       const result = await callClientMethod(params);
       dispatch({type: SET_COMMAND_CALL_RESULT, result});

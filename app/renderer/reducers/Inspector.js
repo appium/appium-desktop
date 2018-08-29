@@ -11,7 +11,7 @@ import { SET_SOURCE_AND_SCREENSHOT, QUIT_SESSION_REQUESTED, QUIT_SESSION_DONE,
   ADD_ASSIGNED_VAR_CACHE, CLEAR_ASSIGNED_VAR_CACHE, SET_SCREENSHOT_INTERACTION_MODE,
   SET_SWIPE_START, SET_SWIPE_END, CLEAR_SWIPE_ACTION, SET_SEARCHED_FOR_ELEMENT_BOUNDS, CLEAR_SEARCHED_FOR_ELEMENT_BOUNDS,
   PROMPT_KEEP_ALIVE, HIDE_PROMPT_KEEP_ALIVE, APP_INTERACTION_MODE,
-  SET_COMMAND_GROUP, SET_COMMAND, SET_COMMAND_CALL_RESULT
+  SET_COMMAND_GROUP, SET_COMMAND, SET_COMMAND_ARG, SET_COMMAND_CALL_RESULT
 } from '../actions/Inspector';
 
 const DEFAULT_FRAMEWORK = 'java';
@@ -35,6 +35,7 @@ const INITIAL_STATE = {
   showKeepAlivePrompt: false,
   commandGroup: 'executeMobile',
   command: null,
+  commandArgs: {},
 };
 
 /**
@@ -343,6 +344,7 @@ export default function inspector (state=INITIAL_STATE, action) {
         command: null,
         commandCallResult: null,
         commandCallError: null,
+        commandArgs: null,
       };
 
     case SET_COMMAND:
@@ -351,6 +353,7 @@ export default function inspector (state=INITIAL_STATE, action) {
         command: action.command,
         commandCallResult: null,
         commandCallError: null,
+        commandArgs: null,
       };
 
     case SET_COMMAND_CALL_RESULT:
@@ -358,6 +361,15 @@ export default function inspector (state=INITIAL_STATE, action) {
         ...state,
         commandCallResult: action.result,
         commandCallError: action.error,
+      };
+
+    case SET_COMMAND_ARG:
+      return {
+        ...state,
+        commandArgs: {
+          ...state.commandArgs,
+          [action.key]: action.value
+        },
       };
 
     default:
