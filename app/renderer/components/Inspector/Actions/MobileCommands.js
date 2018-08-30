@@ -9,8 +9,23 @@ const {Option} = Select;
 
 export default class MobileCommands extends Component {
 
+  isHiddenCommand (commandValue, automationName) {
+    if (_.isString(automationName)) {
+      automationName = automationName.toLowerCase();
+    }
+    let automations = commandValue.automation;
+    if (!_.isArray(automations)) {
+      automations = [automations];
+    }
+
+    // Hide the command if there's and automation and it's not on the whitelist (allow 'fake' for testing/dev purposes)
+    return automationName && automationName !== 'fake' && !automations.includes(automationName);
+  }
+
   render () {
-    const {commandGroup, setCommandGroup, setCommand, command, executeCommand, commandCallError, commandCallResult} = this.props;
+    const {commandGroup, setCommandGroup, setCommand, command, executeCommand, commandCallError, commandCallResult, sessionDetails} = this.props;
+    const {desiredCapabilities} = sessionDetails;
+    const automationName = desiredCapabilities ? desiredCapabilities.automationName || desiredCapabilities.deviceName : null;
     const groupPairs = _.toPairs(mobileCommands.groups);
     const commandsPairs = _.toPairs(mobileCommands.groups[commandGroup].commands);
 
@@ -28,7 +43,7 @@ export default class MobileCommands extends Component {
         <Col span={24}>
           <Select style={{width: '100%'}} value={command} onChange={(value) => setCommand(value)}>
             {_.map(commandsPairs, ([commandName, commandValue]) => (
-              !commandValue.skipUi && <Option key={commandName} value={commandName}>{commandValue.displayName || changeCase.titleCase(commandName)}</Option>
+              !this.isHiddenCommand(commandValue, automationName) && <Option key={commandName} value={commandName}>{commandValue.displayName || changeCase.titleCase(commandName)}</Option>
             ))}
           </Select>
         </Col>
