@@ -1,4 +1,14 @@
-## [1.6.2](https://github.com/appium/appium-desktop/compare/v1.6.3...v1.6.2) (2018-08-02)
+## [1.7.0](https://github.com/appium/appium-desktop/compare/v1.7.0...v1.6.3) (2018-08-30)
+
+### Changes
+* Feature: Upgrade to Appium 1.9.0
+* Feature: Add relaxed security flag (#607)
+* Feature: Add Bitbar to cloud providers (#603)
+* Feature: Add React Native testID to strategy mappings (#614)
+* Fix: Remove unneeded ipc binding (#612)
+
+
+## [1.6.3](https://github.com/appium/appium-desktop/compare/v1.6.3...v1.6.2) (2018-08-02)
 
 ### Changes
 * Feature: Make ANDROID_HOME and JAVA_HOME settable from the UI
