@@ -120,7 +120,7 @@ function connectGetDefaultArgs () {
     evt.returnValue = getDefaultArgs();
   });
 
-  ipcMain.on('get-args-metadata', (evt) => {
+  ipcMain.on('get-args-metadata', (/*evt*/) => {
     // If argv isn't defined, set it now. If argv[1] isn't defined, set it to empty string.
     // If process.argv[1] is undefined, calling getParser() will break because argparse expects it to be a string
     if (!process.argv) {
@@ -130,10 +130,14 @@ function connectGetDefaultArgs () {
     if (!process.argv[1]) {
       process.argv[1] = '';
     }
+    // Temporarily remove this feature until 'getParser' issue (https://github.com/appium/appium/issues/11320) has been fixed 
+    /*const backupPathResolve = path.resolve;
+    path.resolve = () => "node_modules/appium/package.json";
     let defArgs = Object.keys(getDefaultArgs());
     evt.returnValue = getParser().rawArgs
                         .filter((a) => defArgs.indexOf(a[1].dest) !== -1)
                         .map((a) => a[1]);
+    path.resolve = backupPathResolve;*/
   });
 }
 
