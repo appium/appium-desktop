@@ -7,7 +7,9 @@ import { ipcRenderer } from 'electron';
 import { version as SERVER_VERSION } from 'appium/package.json';
 
 export const DEFAULT_ARGS = ipcRenderer.sendSync('get-default-args');
-export const ARG_DATA = ipcRenderer.sendSync('get-args-metadata');
+
+// TODO: Add this back when 'getParser' issue (https://github.com/appium/appium/issues/11320) has been fixed
+//export const ARG_DATA = ipcRenderer.sendSync('get-args-metadata');
 
 const initialState = {
   serverArgs: {...DEFAULT_ARGS},
