@@ -108,9 +108,15 @@ this case, attaching to the local server will be disabled.
 
 These are the options for launching a session against a non-local Appium server:
 
-* A custom host/port configuration: this is useful if you want to launch an Inspector session against an Appium server running on another machine in your network, for example.
-* Sauce Labs: if you don't have access to, say, iOS simulators on your machine, you can leverage your [Sauce Labs](https://saucelabs.com) account to start an Appium session in the cloud.
-* TestObject: you can also utilize [TestObject](https://testobject.com)'s cloud of real devices for a real device-based Inspector session.
+|     Endpoint     |                                                        Description                                                         |
+| ---------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| Automatic server | Automatically utilizes the currently-running Appium server                                                                 |
+| Custom Server    | Launch a session on an Appium server running on another machine over the network                                           |
+| Sauce Labs       | Launch a session on the [Sauce Labs](https://saucelabs.com) cloud. [Documentation](https://wiki.saucelabs.com/)            |
+| TestObject       | Launch a session on the [TestObject](https://testobject.com) cloud. [Documentation](https://wiki.saucelabs.com/)           |
+| Headspin         | Launch a session on the [Headspin](https://headspin.com) cloud. [Documentation](https://docs.headspin.io/)                 |
+| BrowserStack     | Launch a session on the [Browserstack](https://browserstack.com) cloud. [Documentation](https://www.browserstack.com/docs) |
+| Bitbar           | Launch a session on the [Bitbar](https://bitbar.com) cloud. [Documentation](http://docs.bitbar.com/)                       |
 
 It should be straightforward to get set up with any of these options. Simply
 enter your details in the input fields provided.
@@ -121,7 +127,9 @@ Desired capabilities are how you configure your Appium session. They tell the
 Appium server what kind of platform and app you want to automate. If you are
 unfamiliar with the concept of desired capabilities, or which desired
 capabilities are required to launch Appium sessions of various types, you
-should consult the Appium documentation.
+should consult the Appium documentation. Additionally, if you're using one of
+the cloud providers, consult their documentation for possible vendor-specific
+details.
 
 Appium Desktop does not restrict your creation of desired capabilities in any
 way, nor will it validate them for you. It simply provides a nice UI for
