@@ -11,6 +11,7 @@ steps:
   inputs:
     versionSpec: '9.x'
 - script: |
+    apt install xvfb libxtst6 libxss1 libgtk2.0-0 -y
     apt install libnss3 libasound2 libgconf-2-4 -y
     npm install
     npm run package-ci
