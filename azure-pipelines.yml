@@ -11,6 +11,7 @@ steps:
   inputs:
     versionSpec: '9.x'
 - script: |
+    apt install libnss3 libasound2 libgconf-2-4 -y
     npm install
     npm run package-ci
   displayName: 'Install dependencies and run packager'
