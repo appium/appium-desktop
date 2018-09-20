@@ -7,7 +7,7 @@ import { checkUpdate } from '../../app/main/auto-updater/update-checker';
 chai.should();
 chai.use(chaiAsPromised);
 
-describe('updateChecker', function () {
+describe.skip('updateChecker', function () {
   let latestVersion;
 
   before(async function () {
