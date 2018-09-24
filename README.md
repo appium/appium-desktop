@@ -1,4 +1,4 @@
-# Appium Desktop [![Build Status](https://travis-ci.org/appium/appium-desktop.svg?branch=master)](https://travis-ci.org/appium/appium-desktop)
+# Appium Desktop [![Travis Build Status](https://travis-ci.org/appium/appium-desktop.svg?branch=master)](https://travis-ci.org/appium/appium-desktop) [![Azure Build Status](https://dev.azure.com/dan0777/dan/_apis/build/status/appium.appium-desktop)](https://dev.azure.com/dan0777/dan/_build/latest?definitionId=1)
 
 ![Action screenshot](docs/images/screen-inspector-and-logs.png)
 
