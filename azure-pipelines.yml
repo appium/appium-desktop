@@ -3,26 +3,21 @@
 # Add steps that analyze code, save build artifacts, deploy, and more:
 # https://docs.microsoft.com/vsts/pipelines/languages/javascript
 jobs:
-  - template: jobs/build.yml  # Template reference
+  - template: ci-jobs/build.yml  # Template reference
     parameters:
       name: macOS
       pool:
         vmImage: 'macOS-10.13'
 
-  - template: jobs/build.yml  # Template reference
+  - template: ci-jobs/build.yml  # Template reference
     parameters:
       name: Linux
       pool:
         vmImage: 'Ubuntu-16.04'
 
-steps:
-- task: NodeTool@0
-  inputs:
-    versionSpec: '9.x'
-- script: |
-    apt install xvfb libxtst6 libxss1 libgtk2.0-0 -y
-    apt install libnss3 libasound2 libgconf-2-4 -y
-    npm install
-    npm run package-ci
-  displayName: 'Install dependencies and run packager'
-
+  - template: ci-jobs/build.yml  # Template reference
+    parameters:
+      name: Windows
+      pool:
+        vmImage: 'vs2017-win2016'
+      sign: true  # Extra step on Windows only
