@@ -12,7 +12,3 @@ jobs:
     pool: 'Hosted Linux Preview'
     name: 'linux_build'
     xvfb: true
-- template: ci-jobs/build.yml
-  parameters:
-    pool: 'Hosted Windows Container'
-    name: 'windows_build'
