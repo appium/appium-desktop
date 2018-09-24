@@ -15,7 +15,7 @@ steps:
 parameters:
   name: ''
   pool: ''
-  sign: false
+  xvfb: false
 jobs:
   - job: ${{parameters.name}}
     pool: ${{parameters.pool}}
@@ -23,10 +23,15 @@ jobs:
     - task: NodeTool@0
       inputs:
         versionSpec: '9.x'
+    - ${{ if eq(parameters.xvfb, 'true') }}:
+      - script: "Xvfb :99 -screen 0 1600x900x24 &"
     - script: |
         npm install
         npm run package-ci
       displayName: 'Install dependencies and run packager'
+<<<<<<< HEAD
     - ${{ if eq(parameters.sign, 'true') }}:
       - script: sign
+>>>>>>> Fix
+=======
 >>>>>>> Fix
