@@ -49,7 +49,7 @@ describe('application launch', function () {
 
   it('starts the server and opens a new session window', async function () {
     // Start the server
-    await client.waitForExist(main.startServerButton);
+    await client.waitForExist(main.startServerButton, 30000);
     await main.startServer();
 
     // Wait for the server monitor container to be present
