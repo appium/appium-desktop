@@ -9,7 +9,7 @@ pool:
 steps:
 - task: NodeTool@0
   inputs:
-    versionSpec: '9.x'
+    versionSpec: '8.x'
 - script: |
     apt install xvfb libxtst6 libxss1 libgtk2.0-0 -y
     apt install libnss3 libasound2 libgconf-2-4 -y
