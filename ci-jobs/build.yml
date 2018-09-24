@@ -2,6 +2,7 @@
 # Build a general Node.js application with npm.
 # Add steps that analyze code, save build artifacts, deploy, and more:
 # https://docs.microsoft.com/vsts/pipelines/languages/javascript
+<<<<<<< HEAD
 steps:
 - task: NodeTool@0
   inputs:
@@ -10,3 +11,22 @@ steps:
     npm install
     npm run package-ci
   displayName: 'Install dependencies and run packager'
+=======
+parameters:
+  name: ''
+  pool: ''
+  sign: false
+jobs:
+  - job: ${{parameters.name}}
+    pool: ${{parameters.pool}}
+    steps:
+    - task: NodeTool@0
+      inputs:
+        versionSpec: '9.x'
+    - script: |
+        npm install
+        npm run package-ci
+      displayName: 'Install dependencies and run packager'
+    - ${{ if eq(parameters.sign, 'true') }}:
+      - script: sign
+>>>>>>> Fix
