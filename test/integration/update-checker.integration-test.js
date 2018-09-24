@@ -11,17 +11,16 @@ describe.skip('updateChecker', function () {
   let latestVersion;
 
   before(async function () {
+    console.log('@@@@@@@@CSC_LINK', process.env.CSC_LINK);
+    if (!process.env.GITHUB_TOKEN) {
+      return this.skip();
+    }
     const latestReleaseUrl = `https://api.github.com/repos/appium/appium-desktop/releases/latest?access_token=${process.env.GITHUB_TOKEN}`;
     const res = JSON.parse(await request.get(latestReleaseUrl, {headers: {'user-agent': 'node.js'}}));
     latestVersion = res.name;
   });
 
   describe('.checkUpdate', function () {
-    before(function () {
-      if (!process.env.GITHUB_TOKEN) {
-        return this.skip();
-      }
-    });
     it('not find anything if latest release is same as current release', async function () {
       await checkUpdate(latestVersion).should.eventually.equal(false);
     });
