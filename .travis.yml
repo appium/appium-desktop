@@ -3,7 +3,6 @@ sudo: required
 node: 
 os:
 - linux
-- osx
 node_js:
 - '9'
 before_install:
