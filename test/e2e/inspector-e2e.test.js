@@ -34,7 +34,7 @@ describe('inspector window', function () {
     await inspector.open('session');
 
     // Set the desired capabilities
-    await client.waitForExist(inspector.addDesiredCapabilityButton, 30000);
+    await client.waitForExist(inspector.addDesiredCapabilityButton);
     await inspector.addDCaps(DEFAULT_CAPS);
 
     // Set the fake driver server and port

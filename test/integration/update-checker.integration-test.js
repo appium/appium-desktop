@@ -7,11 +7,11 @@ import { checkUpdate } from '../../app/main/auto-updater/update-checker';
 chai.should();
 chai.use(chaiAsPromised);
 
+// TODO: Fix this once pipelines is fully working
 describe.skip('updateChecker', function () {
   let latestVersion;
 
   before(async function () {
-    console.log('@@@@@@@@CSC_LINK', process.env.CSC_LINK);
     if (!process.env.GITHUB_TOKEN) {
       return this.skip();
     }
