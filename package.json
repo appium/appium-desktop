@@ -11,7 +11,7 @@
     "email": "",
     "url": "https://github.com/appium"
   },
-  "license": "APACHE2",
+  "license": "APACHE2", 
   "bugs": {
     "url": "https://github.com/appium/appium-desktop/issues"
   },
