@@ -1,0 +1,21 @@
+# Node.js
+# Build a general Node.js application with npm.
+# Add steps that analyze code, save build artifacts, deploy, and more:
+# https://docs.microsoft.com/vsts/pipelines/languages/javascript
+parameters:
+  name: ''
+  pool: ''
+  xvfb: false
+jobs:
+  - job: ${{parameters.name}}
+    pool: ${{parameters.pool}}
+    steps:
+    - task: NodeTool@0
+      inputs:
+        versionSpec: '9.x'
+    - ${{ if eq(parameters.xvfb, 'true') }}:
+      - script: "Xvfb :99 -screen 0 1600x900x24 &"
+    - script: |
+        npm install
+        npm run package-ci
+      displayName: 'Install dependencies and run packager'

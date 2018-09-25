@@ -2,16 +2,13 @@
 # Build a general Node.js application with npm.
 # Add steps that analyze code, save build artifacts, deploy, and more:
 # https://docs.microsoft.com/vsts/pipelines/languages/javascript
-
-pool:
-  vmImage: 'Hosted MacOS Preview'
-
-steps:
-- task: NodeTool@0
-  inputs:
-    versionSpec: '9.x'
-- script: |
-    npm install
-    npm run package-ci
-  displayName: 'Install dependencies and run packager'
-
+jobs:
+- template: ci-jobs/build.yml
+  parameters:
+    pool: 'Hosted MacOS Preview'
+    name: 'osx_build'
+#- template: ci-jobs/build.yml
+  #parameters:
+    #pool: 'Hosted Linux Preview'
+    #name: 'linux_build'
+    #xvfb: true
