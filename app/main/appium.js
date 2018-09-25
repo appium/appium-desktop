@@ -2,13 +2,13 @@
 
 import { ipcMain, app } from 'electron';
 import { main as appiumServer } from 'appium';
-import { getDefaultArgs, getParser } from 'appium/build/lib/parser';
+import { getDefaultArgs } from 'appium/build/lib/parser';
 import path from 'path';
 import wd from 'wd';
 import { fs, tempDir } from 'appium-support';
 import _ from 'lodash';
 import settings from '../settings';
-import AppiumMethodHandler from './appium-method-handler';
+import {createSession, killSession, getSessionHandler} from './appium-method-handler';
 import request from 'request-promise';
 import { checkNewUpdates } from './auto-updater';
 import { openBrowserWindow, setSavedEnv } from './helpers';
@@ -21,7 +21,6 @@ var server = null;
 var logWatcher = null;
 var batchedLogs = [];
 
-let appiumHandlers = {};
 let logFile;
 
 // Delete saved server args, don't start until a server has been started
@@ -33,18 +32,6 @@ async function deleteLogfile () {
       await fs.rimraf(logFile);
     } catch (ign) { }
   }
-}
-
-/**
- * Kill session associated with session browser window
- */
-async function killSession (sessionWinID, killedByUser=false) {
-  let handler = appiumHandlers[sessionWinID];
-  if (handler) {
-    await handler.close('', killedByUser);  
-  }
-  
-  delete appiumHandlers[sessionWinID];
 }
 
 function connectStartServer (win) {
@@ -164,8 +151,8 @@ export function createNewSessionWindow (win) {
 
   // When you close the session window, kill its associated Appium session (if there is one)
   let sessionID = sessionWin.webContents.id;
-  sessionWin.on('closed', async () => {
-    await killSession(sessionID);
+  sessionWin.on('closed', () => {
+    killSession(sessionID);
     sessionWin = null;
   });
 
@@ -182,8 +169,9 @@ function connectCreateNewSession () {
 
     try {
       // If there is an already active session, kill it. Limit one session per window.
-      if (appiumHandlers[event.sender.id]) {
-        await killSession(event.sender);
+      const windowId = event.sender.id;
+      if (getSessionHandler(windowId)) {
+        killSession(windowId);
       }
 
       // Create the driver and cache it by the sender ID
@@ -196,7 +184,8 @@ function connectCreateNewSession () {
         https,
       });
       driver.configureHttp({rejectUnauthorized, proxy});
-      const handler = appiumHandlers[event.sender.id] = new AppiumMethodHandler(driver, event.sender);
+      const handler = createSession(driver, event.sender, windowId);
+
 
       // If we're just attaching to an existing session, do that and
       // short-circuit the rest of the logic
@@ -240,7 +229,7 @@ function connectCreateNewSession () {
       event.sender.send('appium-new-session-ready');
     } catch (e) {
       // If the session failed, delete it from the cache
-      await killSession(event.sender);
+      killSession(event.sender.id);
       event.sender.send('appium-new-session-failed', e);
     }
   });
@@ -248,13 +237,13 @@ function connectCreateNewSession () {
 
 function connectRestartRecorder () {
   ipcMain.on('appium-restart-recorder', (evt) => {
-    appiumHandlers[evt.sender.id].restart();
+    getSessionHandler(evt.sender.id).restart();
   });
 }
 
 function connectKeepAlive () {
   ipcMain.on('appium-keep-session-alive', (evt) => {
-    appiumHandlers[evt.sender.id].keepSessionAlive();
+    getSessionHandler(evt.sender.id).keepSessionAlive();
   });
 }
 
@@ -276,11 +265,11 @@ function connectClientMethodListener () {
     } = data;
 
     let renderer = evt.sender;
-    let methodHandler = appiumHandlers[renderer.id];
+    let methodHandler = getSessionHandler(renderer.id);
 
     try {
       if (methodName === 'quit') {
-        await killSession(renderer.id, true);
+        killSession(renderer.id, true);
         // when we've quit the session, there's no source/screenshot to send
         // back
         renderer.send('appium-client-command-response', {
