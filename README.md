@@ -1,10 +1,9 @@
 # Appium Desktop [![Travis Build Status](https://travis-ci.org/appium/appium-desktop.svg?branch=master)](https://travis-ci.org/appium/appium-desktop) [![Azure Build Status](https://dev.azure.com/dan0777/dan/_apis/build/status/appium.appium-desktop)](https://dev.azure.com/dan0777/dan/_build/latest?definitionId=1)
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/dpgraham/appium-desktop.svg)](https://greenkeeper.io/)
 ![Action screenshot](docs/images/screen-inspector-and-logs.png)
 
-Appium Desktop is an open source app for Mac, Windows, and Linux which gives
-you the power of the [Appium](http://appium.io) automation server in
-a beautiful and flexible UI. It is a combination of a few Appium-related tools:
+Appium Desktop is an app for Mac, Windows, and Linux which gives you the power of the [Appium](http://appium.io) automation server in a beautiful and flexible UI. It is a combination of a few Appium-related tools:
 
 * A graphical interface for the Appium Server. You can set options, start/stop the server, see logs, etc... You also don't need to use Node/NPM to install Appium, as the Node runtime comes bundled with Appium Desktop.
 * An Inspector that you can use to look at your app's elements, get basic information about them, and perform basic interactions with them. This is useful as a way to learn about Appium or as a way to learn about your app so you can write tests for it.
