@@ -7,9 +7,9 @@ node_js:
 - '9'
 before_install:
 - nvm install 9
-- npm install -g npm@5.10
+- npm install -g npm@5
 - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install --no-install-recommends
-  -y icnsutils graphicsmagick xz-utils; fi
+  -y icnsutils graphicsmagick xz-utils; fi # Packages that need to be installed to make Electron work on Linux
 addons:
   apt:
     packages:
@@ -26,6 +26,7 @@ cache:
   - "$HOME/.electron"
   - "$HOME/.cache"
 install:
+- npm install appium-base-driver # Hack fix for Chromedriver installation problem
 - npm install
 - export DISPLAY=':99.0'
 - Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
