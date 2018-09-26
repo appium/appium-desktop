@@ -1,3 +1,8 @@
+## [1.7.1](https://github.com/appium/appium-desktop/compare/v1.7.1...v1.7.0) (2018-09-26)
+
+### Changes
+* Feature: Upgrade to Appium 1.9.1
+
 ## [1.7.0](https://github.com/appium/appium-desktop/compare/v1.7.0...v1.6.3) (2018-08-30)
 
 ### Changes
