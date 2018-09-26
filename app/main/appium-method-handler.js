@@ -1,5 +1,7 @@
 import Bluebird from 'bluebird';
 import wd from 'wd';
+import log from 'electron-log';
+import _ from 'lodash';
 
 const isDevelopment = process.env.NODE_ENV === 'development';
 
@@ -210,6 +212,42 @@ export default class AppiumMethodHandler {
       try {
         await this.driver.quit();
       } catch (ign) { }
+    }
+  }
+
+  static appiumHandlers = {}
+
+  static createSession (driver, sender, winId) {
+    const {appiumHandlers} = AppiumMethodHandler;
+    log.info(`Creating method handler for session with window id: ${winId}`);
+    const handler = AppiumMethodHandler.appiumHandlers[winId] = new AppiumMethodHandler(driver, sender);
+    log.info(`The following session window ID's have active sessions: '${JSON.stringify(_.keys(appiumHandlers))}'`);
+    return handler;
+  }
+
+  static killSession (winId, killedByUser) {
+    const {appiumHandlers} = AppiumMethodHandler;
+    const handler = appiumHandlers[winId];
+    delete AppiumMethodHandler.appiumHandlers[winId];
+    log.info(`Killing session for window with id: ${winId}`);
+
+    if (handler) {
+      handler.close('', killedByUser);
+    }
+
+    log.info(`Deleted session for window with id: ${winId}`);
+    log.info(`The following session window ID's have active sessions: '${JSON.stringify(_.keys(appiumHandlers))}'`);
+  }
+
+  static getSessionHandler (winId) {
+    log.info(`Retrieving session for window with id: ${winId}`);
+    const {appiumHandlers} = AppiumMethodHandler;
+    const handler = appiumHandlers[winId];
+    if (handler) {
+      return handler;
+    } else {
+      log.error(`Could not find session with window id '${winId}'. Availalable sessions are: '${JSON.stringify(_.keys(appiumHandlers))}'`);
+      return false;
     }
   }
 
