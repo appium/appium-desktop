@@ -118,7 +118,7 @@
     "highlight.js": "9.x",
     "lodash": "4.x",
     "moment": "^2.20.1",
-    "postcss": "^6.0.0",
+    "postcss": "^7.0.4",
     "react": "^15.6.2",
     "react-dom": "^15.6.2",
     "react-redux": "4.x",
