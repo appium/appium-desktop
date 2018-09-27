@@ -141,7 +141,7 @@
     "asar": "^0.14.0",
     "asyncbox": "^2.3.2",
     "babel-core": "6.x",
-    "babel-eslint": "^7.2.3",
+    "babel-eslint": "^10.0.1",
     "babel-loader": "^6.4.1",
     "babel-plugin-add-module-exports": "0.x",
     "babel-plugin-dev-expression": "0.x",
