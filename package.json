@@ -137,7 +137,7 @@
   },
   "devDependencies": {
     "7zip": "0.0.6",
-    "appium-fake-driver": "^0.4.0",
+    "appium-fake-driver": "^0.6.0",
     "asar": "^0.14.0",
     "asyncbox": "^2.3.2",
     "babel-core": "6.x",
