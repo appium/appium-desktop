@@ -27,7 +27,11 @@ export default {
   },
   resolve: {
     extensions: ['', '.js', '.jsx', '.json'],
-    packageMains: ['webpack', 'browser', 'web', 'browserify', ['jam', 'main'], 'main']
+    packageMains: ['webpack', 'browser', 'web', 'browserify', ['jam', 'main'], 'main'],
+    alias: {
+      opencv4nodejs: path.resolve(__dirname, 'app', 'empty-module'),
+      'mjpeg-consumer': path.resolve(__dirname, 'app', 'empty-module'),
+    }
   },
   node: {
     __dirname: false,
