@@ -1,6 +1,5 @@
 import { ipcRenderer, shell } from 'electron';
 import { push } from 'react-router-redux';
-import { fs } from 'appium-support';
 
 export const SERVER_STOP_REQ = 'SERVER_STOP_REQ';
 export const SERVER_STOP_OK = 'SERVER_STOP_OK';
