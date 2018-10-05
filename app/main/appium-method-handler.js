@@ -215,8 +215,6 @@ export default class AppiumMethodHandler {
     }
   }
 
-  static appiumHandlers = {}
-
   static createSession (driver, sender, winId) {
     const {appiumHandlers} = AppiumMethodHandler;
     log.info(`Creating method handler for session with window id: ${winId}`);
@@ -252,3 +250,5 @@ export default class AppiumMethodHandler {
   }
 
 }
+
+AppiumMethodHandler.appiumHandlers = {};

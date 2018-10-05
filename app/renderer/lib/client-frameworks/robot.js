@@ -7,7 +7,7 @@ class RobotFramework extends Framework {
     return "python";
   }
 
-  get getCapsVariables() {
+  get getCapsVariables () {
     return Object.keys(this.caps).map((k) => {
       return `\$\{${k}\}    ${this.getPythonVal(this.caps[k])}`;
     }).join("\n");
@@ -65,7 +65,7 @@ ${this.indent(code, 4)}
     return `# ${this.lastID}`;
   } 
 
-  getApplicationInitialization() {
+  getApplicationInitialization () {
     let varString = Object.keys(this.caps).map((k) => {
       return `${k}=\$\{${k}\}`;
     }).join("  ");
