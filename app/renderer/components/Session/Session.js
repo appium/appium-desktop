@@ -21,7 +21,12 @@ const {TabPane} = Tabs;
 
 export default class Session extends Component {
 
-  state = {visibleProviders: {}};
+  constructor (props) {
+    super(props);
+    this.state = {
+      visibleProviders: {}
+    };
+  }
 
   componentWillMount () {
     const {setLocalServerParams, getSavedSessions, setSavedServerParams, getRunningSessions} = this.props;

@@ -7,7 +7,6 @@ class JsWdFramework extends Framework {
   }
 
   wrapWithBoilerplate (code) {
-    let host = JSON.stringify(this.host);
     let caps = JSON.stringify(this.caps);
     return `// Requires the admc/wd client library
 // (npm install wd)

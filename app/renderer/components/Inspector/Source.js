@@ -34,7 +34,7 @@ export default class Source extends Component {
     return <span>
       &lt;<b className={InspectorStyles.sourceTag}>{tagName}</b>{attrs}&gt;
     </span>;
-  }i
+  }
 
   /**
    * Binds to antd Tree onSelect. If an item is being unselected, path is undefined
@@ -51,7 +51,7 @@ export default class Source extends Component {
   }
 
   render () {
-    const {source, sourceError, setExpandedPaths, expandedPaths, selectedElement = {}, showLocatorTestModal} = this.props;
+    const {source, sourceError, setExpandedPaths, expandedPaths, selectedElement = {}} = this.props;
     const {path} = selectedElement;
 
     // Recursives through the source and renders a TreeNode for an element

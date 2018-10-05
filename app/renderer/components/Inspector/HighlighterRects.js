@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
 import { debounce } from 'lodash';
 import HighlighterRect from './HighlighterRect';
 import B from 'bluebird';
-import { parseCoordinates } from './shared';
 
 /**
  * Shows screenshot of running application and divs that highlight the elements' bounding boxes

@@ -3,23 +3,6 @@ import { retryInterval } from 'asyncbox';
 import BasePage from './base-page-object';
 
 export default class InspectorPage extends BasePage {
-
-  static selectors = {
-    customServerHost: '#customServerHost',
-    customServerPort: '#customServerPort',
-    addDesiredCapabilityButton: '#btnAddDesiredCapability',
-    formSubmitButton: '#btnStartSession',
-    inspectorToolbar: 'div[class*=Inspector__inspector-toolbar]',
-    selectedElementBody: '#selectedElementContainer .ant-card-body',
-    tapSelectedElementButton:  '#selectedElementContainer #btnTapElement',
-    sourceTreeNode: '#sourceContainer .ant-tree-node-content-wrapper',
-    recordedActionsPane: 'div[class*=Inspector__recorded-actions]',
-    startRecordingButton: '#btnStartRecording',
-    pauseRecordingButton: '#btnPause',
-    reloadButton: '#btnReload',
-    screenshotLoadingIndicator: '#screenshotContainer .ant-spin-dot',
-  };
-
   constructor (client) {
     super(client);
     Object.assign(this, InspectorPage.selectors);
@@ -76,3 +59,19 @@ export default class InspectorPage extends BasePage {
   }
 
 }
+
+InspectorPage.selectors = {
+  customServerHost: '#customServerHost',
+  customServerPort: '#customServerPort',
+  addDesiredCapabilityButton: '#btnAddDesiredCapability',
+  formSubmitButton: '#btnStartSession',
+  inspectorToolbar: 'div[class*=Inspector__inspector-toolbar]',
+  selectedElementBody: '#selectedElementContainer .ant-card-body',
+  tapSelectedElementButton:  '#selectedElementContainer #btnTapElement',
+  sourceTreeNode: '#sourceContainer .ant-tree-node-content-wrapper',
+  recordedActionsPane: 'div[class*=Inspector__recorded-actions]',
+  startRecordingButton: '#btnStartRecording',
+  pauseRecordingButton: '#btnPause',
+  reloadButton: '#btnReload',
+  screenshotLoadingIndicator: '#screenshotContainer .ant-spin-dot',
+};

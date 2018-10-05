@@ -46,7 +46,7 @@ ${this.indent(code, 4)}
     Close Application`;
   }
 
-  codeFor_findAndAssign (strategy, locator, localVar, isArray) {
+  codeFor_findAndAssign (strategy, locator/*, localVar, isArray*/) {
     let suffixMap = {
       xpath: "xpath",
       'accessibility id': 'accessibility_id',
@@ -72,11 +72,11 @@ ${this.indent(code, 4)}
     return `Open Application    \$\{REMOTE_URL\}   ${varString}`;
   }
 
-  codeFor_click (varName, varIndex) {
+  codeFor_click (/*varName, varIndex*/) {
     return `Click Element    ${this.lastID}`;
   }
 
-  codeFor_clear (varName, varIndex) {
+  codeFor_clear (/*varName, varIndex*/) {
     return `Clear Text    ${this.lastID}`;
   }
 
