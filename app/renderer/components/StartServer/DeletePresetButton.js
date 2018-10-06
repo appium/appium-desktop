@@ -4,11 +4,6 @@ import { Button } from 'antd';
 import styles from './StartButton.css';
 
 export default class DeletePresetButton extends Component {
-  static propTypes = {
-    presetDeleting: PropTypes.bool.isRequired,
-    deletePreset: PropTypes.func.isRequired,
-  }
-
   render () {
     const {presetDeleting, deletePreset} = this.props;
 
@@ -22,3 +17,8 @@ export default class DeletePresetButton extends Component {
     );
   }
 }
+
+DeletePresetButton.propTypes = {
+  presetDeleting: PropTypes.bool.isRequired,
+  deletePreset: PropTypes.func.isRequired,
+};

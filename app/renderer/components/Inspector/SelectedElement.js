@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
 import _ from 'lodash';
 import { getLocators } from './shared';
 import styles from './Inspector.css';
-import { Button, Row, Col, Input, Modal, Table, Alert, Spin } from 'antd';
+import { Button, Row, Col, Input, Modal, Table, Alert } from 'antd';
 
 const ButtonGroup = Button.Group;
 

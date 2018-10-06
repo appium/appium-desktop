@@ -4,11 +4,6 @@ import { Button } from 'antd';
 import styles from './StartButton.css';
 
 export default class SavePresetButton extends Component {
-  static propTypes = {
-    presetSaving: PropTypes.bool.isRequired,
-    savePreset: PropTypes.func.isRequired,
-  }
-
   render () {
     const {presetSaving, savePreset} = this.props;
 
@@ -23,3 +18,8 @@ export default class SavePresetButton extends Component {
     );
   }
 }
+
+SavePresetButton.propTypes = {
+  presetSaving: PropTypes.bool.isRequired,
+  savePreset: PropTypes.func.isRequired,
+};

@@ -7,7 +7,7 @@ class RobotFramework extends Framework {
     return "python";
   }
 
-  get getCapsVariables() {
+  get getCapsVariables () {
     return Object.keys(this.caps).map((k) => {
       return `\$\{${k}\}    ${this.getPythonVal(this.caps[k])}`;
     }).join("\n");
@@ -46,7 +46,7 @@ ${this.indent(code, 4)}
     Close Application`;
   }
 
-  codeFor_findAndAssign (strategy, locator, localVar, isArray) {
+  codeFor_findAndAssign (strategy, locator/*, localVar, isArray*/) {
     let suffixMap = {
       xpath: "xpath",
       'accessibility id': 'accessibility_id',
@@ -65,18 +65,18 @@ ${this.indent(code, 4)}
     return `# ${this.lastID}`;
   } 
 
-  getApplicationInitialization() {
+  getApplicationInitialization () {
     let varString = Object.keys(this.caps).map((k) => {
       return `${k}=\$\{${k}\}`;
     }).join("  ");
     return `Open Application    \$\{REMOTE_URL\}   ${varString}`;
   }
 
-  codeFor_click (varName, varIndex) {
+  codeFor_click (/*varName, varIndex*/) {
     return `Click Element    ${this.lastID}`;
   }
 
-  codeFor_clear (varName, varIndex) {
+  codeFor_clear (/*varName, varIndex*/) {
     return `Clear Text    ${this.lastID}`;
   }
 

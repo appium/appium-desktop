@@ -152,8 +152,14 @@ export default function inspector (state=INITIAL_STATE, action) {
       };
 
     case HIDE_SEND_KEYS_MODAL:
-      const nextState = omit(state, 'sendKeysModalVisible');
-      return omit(nextState, 'action.sendKeys');
+      return {
+        ...state,
+        sendKeysModalVisible: false,
+        action: {
+          ...state.action,
+          sendKeys: null,
+        }
+      };
 
     case START_RECORDING:
       return {

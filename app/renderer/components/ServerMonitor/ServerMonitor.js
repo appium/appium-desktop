@@ -25,10 +25,6 @@ function leveler (level) {
 }
 
 class StopButton extends Component {
-  static propTypes = {
-    serverStatus: PropTypes.string.isRequired,
-  }
-
   render () {
     const {serverStatus, stopServer, closeMonitor} = this.props;
     let btn = <Tooltip title="Stop Server"
@@ -53,12 +49,11 @@ class StopButton extends Component {
   }
 }
 
-class StartSessionButton extends Component {
-  static propTypes = {
-    serverStatus: PropTypes.string.isRequired,
-    startSession: PropTypes.func.isRequired,
-  }
+StopButton.propTypes = {
+  serverStatus: PropTypes.string.isRequired,
+};
 
+class StartSessionButton extends Component {
   render () {
     const {serverStatus, startSession} = this.props;
     if (serverStatus !== STATUS_STOPPED && serverStatus !== STATUS_STOPPING) {
@@ -72,6 +67,11 @@ class StartSessionButton extends Component {
     }
   }
 }
+
+StartSessionButton.propTypes = {
+  serverStatus: PropTypes.string.isRequired,
+  startSession: PropTypes.func.isRequired,
+};
 
 class GetRawLogsButton extends Component {
   render () {
@@ -88,15 +88,6 @@ export default class ServerMonitor extends Component {
   constructor (props) {
     super(props);
     this.keydownListener = this.keydownListener.bind(this);
-  }
-
-  static propTypes = {
-    stopServer: PropTypes.func.isRequired,
-    closeMonitor: PropTypes.func.isRequired,
-    serverStatus: PropTypes.string.isRequired,
-    logLines: PropTypes.array.isRequired,
-    startSession: PropTypes.func.isRequired,
-    serverArgs: PropTypes.object.isRequired,
   }
 
   keydownListener (e) {
@@ -196,3 +187,12 @@ export default class ServerMonitor extends Component {
     );
   }
 }
+
+ServerMonitor.propTypes = {
+  stopServer: PropTypes.func.isRequired,
+  closeMonitor: PropTypes.func.isRequired,
+  serverStatus: PropTypes.string.isRequired,
+  logLines: PropTypes.array.isRequired,
+  startSession: PropTypes.func.isRequired,
+  serverArgs: PropTypes.object.isRequired,
+};

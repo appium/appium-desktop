@@ -50,7 +50,7 @@ export default class PresetsTab extends Component {
   }
 
   selectPreset (presetName) {
-    const {serverArgs, updateArgs, serverVersion} = this.props;
+    const {serverArgs, updateArgs} = this.props;
 
     this.setState({selectedPreset: presetName});
 
