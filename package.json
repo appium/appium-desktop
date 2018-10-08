@@ -195,7 +195,7 @@
     "rimraf": "^2.6.2",
     "sinon": "^2.4.1",
     "spectron": "^3.7.2",
-    "style-loader": "^0.19.1",
+    "style-loader": "^0.23.1",
     "webpack": "1.x",
     "webpack-dev-middleware": "^1.12.2",
     "webpack-hot-middleware": "^2.21.0",
