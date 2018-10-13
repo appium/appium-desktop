@@ -173,7 +173,7 @@ export function newSession (caps, attachSessId = null) {
         break;
       case ServerTypes.remote:
         host = session.server.remote.hostname;
-        port = session.server.remote.port;
+        port = session.server.remote.port || 4723;
         path = session.server.remote.path;
         https = session.server.remote.ssl;
         break;
