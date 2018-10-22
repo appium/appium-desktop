@@ -5,6 +5,7 @@ import path from 'path';
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import dirCompare from 'dir-compare';
+import { retryInterval } from 'asyncbox';
 import MainPage from './pages/main-page-object';
 
 const platform = os.platform();
@@ -36,19 +37,18 @@ after(function () {
 });
 
 describe('application launch', function () {
-  let initialWindowCount;
 
   let main;
   let client;
 
-  before(async function () {
+  before(function () {
     client = this.app.client;
     main = new MainPage(client);
-    initialWindowCount = await this.app.client.getWindowCount();
   });
 
   it('starts the server and opens a new session window', async function () {
     // Start the server
+    const initialWindowCount = await client.getWindowCount();
     await client.waitForExist(main.startServerButton);
     await main.startServer();
 
@@ -59,8 +59,7 @@ describe('application launch', function () {
 
     // Start a new session and confirm that it opens a new window
     await main.startNewSession();
-    await client.pause(500);
-    await client.getWindowCount().should.eventually.equal(initialWindowCount + 1);
+    await retryInterval(5, 1000, async () => await client.getWindowCount().should.eventually.equal(initialWindowCount + 1));
   });
 
   it('check that WebDriverAgent folder is the same in /releases as it is in /node_modules (regression test for https://github.com/appium/appium-desktop/issues/417)', async function () {
