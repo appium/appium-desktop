@@ -1,6 +1,6 @@
 {
   "name": "appium-desktop",
-  "version": "1.7.0",
+  "version": "1.8.0",
   "description": "Graphical interface for the Appium server, and an app inspector",
   "repository": {
     "type": "git",
@@ -191,6 +191,7 @@
     "node-libs-browser": "^2.1.0",
     "react-addons-test-utils": "^15.6.2",
     "redux-logger": "2.x",
+    "release": "^4.0.2",
     "request": "^2.83.0",
     "rimraf": "^2.6.2",
     "sinon": "^2.4.1",
