@@ -1,5 +1,6 @@
 import { Application } from  'spectron';
 import { fs } from 'appium-support';
+import B from 'bluebird';
 import os from 'os';
 import path from 'path';
 import chai from 'chai';
@@ -54,12 +55,13 @@ describe('application launch', function () {
 
     // Wait for the server monitor container to be present
     await client.waitForExist(main.serverMonitorContainer);
+    await B.delay(5000);
     const source = await client.source();
     source.value.indexOf('Welcome to Appium').should.be.above(0);
 
     // Start a new session and confirm that it opens a new window
     await main.startNewSession();
-    await retryInterval(5, 1000, async () => await client.getWindowCount().should.eventually.equal(initialWindowCount + 1));
+    await retryInterval(15, 1000, async () => await client.getWindowCount().should.eventually.equal(initialWindowCount + 1));
   });
 
   it('check that WebDriverAgent folder is the same in /releases as it is in /node_modules (regression test for https://github.com/appium/appium-desktop/issues/417)', async function () {
