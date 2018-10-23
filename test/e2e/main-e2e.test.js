@@ -1,5 +1,6 @@
 import { Application } from  'spectron';
 import { fs } from 'appium-support';
+import B from 'bluebird';
 import os from 'os';
 import path from 'path';
 import chai from 'chai';
@@ -54,6 +55,7 @@ describe('application launch', function () {
 
     // Wait for the server monitor container to be present
     await client.waitForExist(main.serverMonitorContainer);
+    await B.delay(5000);
     const source = await client.source();
     source.value.indexOf('Welcome to Appium').should.be.above(0);
 
