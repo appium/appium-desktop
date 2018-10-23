@@ -59,7 +59,7 @@ describe('application launch', function () {
 
     // Start a new session and confirm that it opens a new window
     await main.startNewSession();
-    await retryInterval(5, 1000, async () => await client.getWindowCount().should.eventually.equal(initialWindowCount + 1));
+    await retryInterval(15, 1000, async () => await client.getWindowCount().should.eventually.equal(initialWindowCount + 1));
   });
 
   it('check that WebDriverAgent folder is the same in /releases as it is in /node_modules (regression test for https://github.com/appium/appium-desktop/issues/417)', async function () {
