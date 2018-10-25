@@ -1,5 +1,5 @@
 environment:
-  nodejs_version: "9"
+  nodejs_version: "10"
   GH_TOKEN:
     secure: fyB6CRcrHbroxaBvzN6aPHUEhHGc3ljbbTPtEqruaDVe/iO8/dZn4LOVNS/fAlSX
 install:
