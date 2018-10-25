@@ -4,7 +4,7 @@ node:
 os:
 - linux
 node_js:
-- '9'
+- '10'
 before_install:
 - nvm install 9
 - npm install -g npm@5
@@ -29,7 +29,7 @@ cache:
   - "$HOME/.cache"
 install:
 - npm install appium-base-driver # Hack fix for Chromedriver installation problem
-- npm install
+- npm ci
 - export DISPLAY=':99.0'
 - Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
 dist: trusty
