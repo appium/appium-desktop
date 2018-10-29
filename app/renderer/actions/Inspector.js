@@ -71,6 +71,11 @@ const uniqueAttributes = [
  */
 function xmlToJSON (source) {
   let xmlDoc;
+  
+  // Replace strings with Unicode format &#012345 with #012345
+  // The &# unicode format breaks the parser
+  source = source.replace(/&#([0-9]*)/g, "#$1");
+
   let recursive = (xmlNode, parentPath, index) => {
 
     // Translate attributes array to an object
@@ -90,8 +95,7 @@ function xmlToJSON (source) {
       path,
     };
   };
-
-  xmlDoc = (new DOMParser()).parseFromString(source, 'text/xml');
+  xmlDoc = (new DOMParser()).parseFromString(source, "application/xml");
   let sourceXML = xmlDoc.children[0];
   return recursive(sourceXML);
 }
