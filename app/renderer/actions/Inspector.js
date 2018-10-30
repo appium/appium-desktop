@@ -74,7 +74,7 @@ function xmlToJSON (source) {
   
   // Replace strings with Unicode format &#012345 with #012345
   // The &# unicode format breaks the parser
-  source = source.replace(/&#([0-9]*)/g, "#$1");
+  source = source.replace(/&#([0-9]{4,})/g, "#$1");
 
   let recursive = (xmlNode, parentPath, index) => {
 
