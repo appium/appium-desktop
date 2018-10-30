@@ -9,7 +9,7 @@ class JsWdIoFramework extends Framework {
   chainifyCode (code) {
     return code
       .replace(/let .+ = /g, '')
-      .replace(/(\n|^)(driver|el.+)\./g, '\n.')
+      .replace(/(\n|^)(driver|el[0-9]+)\./g, '\n.')
       .replace(/;\n/g, '\n');
   }
 
