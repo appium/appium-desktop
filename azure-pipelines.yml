@@ -9,5 +9,5 @@ jobs:
     name: 'osx_build'
 - template: ci-jobs/build.yml
   parameters:
-    pool: 'Hosted'
+    pool: 'Hosted Agent'
     name: 'win_build'
