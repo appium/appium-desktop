@@ -11,6 +11,6 @@ jobs:
 =======
 - template: ci-jobs/build.yml
   parameters:
-    pool: 'Hosted'
+    pool: 'Hosted Agent'
     name: 'win_build'
 >>>>>>> Empty Commit
