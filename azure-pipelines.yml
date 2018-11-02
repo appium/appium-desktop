@@ -10,7 +10,7 @@ jobs:
 <<<<<<< HEAD
 =======
 - template: ci-jobs/build.yml
-  parameters: 
+  parameters:
     pool: 'Hosted'
     name: 'win_build'
 >>>>>>> Empty Commit
