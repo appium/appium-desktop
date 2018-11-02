@@ -8,6 +8,6 @@ jobs:
     pool: 'Hosted MacOS Preview'
     name: 'osx_build'
 - template: ci-jobs/build.yml
-  parameters: 
+  parameters:
     pool: 'Hosted'
     name: 'win_build'
