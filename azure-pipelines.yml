@@ -7,8 +7,3 @@ jobs:
   parameters:
     pool: 'Hosted MacOS Preview'
     name: 'osx_build'
-#- template: ci-jobs/build.yml
-  #parameters:
-    #pool: 'Hosted Linux Preview'
-    #name: 'linux_build'
-    #xvfb: true
