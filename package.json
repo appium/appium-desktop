@@ -102,7 +102,7 @@
   },
   "dependencies": {
     "ansi-to-html": "~0.6.7",
-    "antd": "2.10.1",
+    "antd": "3.10.5",
     "appium": "^1.9.1",
     "appium-support": "^2.22.0",
     "babel-core": "^6.26.0",
