@@ -184,7 +184,7 @@
     "greenkeeper-lockfile": "^1.15.1",
     "image-webpack-loader": "^4.4.0",
     "jquery": "^3.2.1",
-    "jsdom": "^12.1.0",
+    "jsdom": "^13.0.0",
     "json-loader": "^0.5.7",
     "minimist": "1.x",
     "mocha": "^3.5.3",
