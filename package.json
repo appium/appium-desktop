@@ -158,7 +158,7 @@
     "chai": "^3.5.0",
     "chai-as-promised": "^6.0.0",
     "check-engines": "^1.5.0",
-    "concurrently": "^3.5.1",
+    "concurrently": "^4.1.0",
     "cross-env": "^3.2.4",
     "css-loader": "^1.0.1",
     "del": "2.x",
