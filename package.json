@@ -197,7 +197,7 @@
     "sinon": "^2.4.1",
     "spectron": "^5.0.0",
     "style-loader": "^0.23.1",
-    "webpack": "1.x",
+    "webpack": "^4.26.0",
     "webpack-dev-middleware": "^1.12.2",
     "webpack-hot-middleware": "^2.21.0",
     "xmldom": "^0.1.27"
