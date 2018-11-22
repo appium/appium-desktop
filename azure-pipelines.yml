@@ -10,5 +10,5 @@ jobs:
 - template: ci-jobs/build.yml
   parameters:
     pool:
-        vmImage: 'vs2017-win2016'
+        vmImage: 'win1803'
     name: 'win_build'
