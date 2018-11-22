@@ -9,5 +9,6 @@ jobs:
     name: 'osx_build'
 - template: ci-jobs/build.yml
   parameters:
-    pool: 'Hosted'
+    pool:
+        vmImage: 'vs2017-win2016'
     name: 'win_build'
