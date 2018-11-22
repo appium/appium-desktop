@@ -19,3 +19,8 @@ jobs:
         npm ci
         npm run package-ci
       displayName: 'Install dependencies and run packager'
+    - task: PublishTestResults@2
+      displayName: 'Publish Test Results'
+      inputs:
+        testResultsFiles: '**junit*.xml'
+        testRunTitle: TestRun ${{ parameters.name }} $(node_version)
