@@ -10,8 +10,10 @@
     "mocha": true,
     "node": true
   },
-  "ecmafeatures": {
-    "jsx": true
+  "parserOptions": {
+    "ecmafeatures": {
+      "jsx": true
+    }
   },
   "settings": {
     "import/resolver": "webpack"
