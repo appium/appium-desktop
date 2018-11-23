@@ -9,3 +9,4 @@ main.js.map
 .DS_Store
 
 Certificates.p12
+junit-testresults.xml
