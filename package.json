@@ -133,7 +133,7 @@
     "temp": "0.x",
     "uuid": "3.x",
     "wd": "^1.6.0",
-    "xpath": "0.0.24"
+    "xpath": "0.0.27"
   },
   "devDependencies": {
     "7zip": "0.0.6",
