@@ -4,6 +4,7 @@ dist
 release
 main.js
 main.js.map
+main.map
 
 *.log
 .DS_Store
