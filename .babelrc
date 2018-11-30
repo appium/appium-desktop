@@ -1,21 +1,16 @@
 {
-  "presets": ["es2015", "stage-0", "react"],
-  "plugins": ["add-module-exports"],
+  "presets": [],
+  "plugins": ["@babel/plugin-transform-runtime", "transform-class-properties"],
   "env": {
     "production": {
-      "presets": ["react-optimize"],
-      "plugins": [
-        "babel-plugin-transform-remove-console",
-        "babel-plugin-transform-remove-debugger",
-        "babel-plugin-dev-expression"
-      ]
+      "presets": [],
+      "plugins": []
     },
     "development": {
-      "presets": ["react-hmre"]
+      "presets": []
     },
     "test": {
       "plugins": [
-        ["webpack-loaders", { "config": "webpack.config.node.js", "verbose": false }]
       ]
     }
   }
