@@ -13,5 +13,8 @@ export default {
   },
   bitbar: {
     label: 'Bitbar'
+  },
+  kobiton: {
+    label: 'Kobiton'
   }
 };

@@ -116,6 +116,7 @@ These are the options for launching a session against a non-local Appium server:
 | Headspin         | Launch a session on the [Headspin](https://headspin.com) cloud. [Documentation](https://docs.headspin.io/)                 |
 | BrowserStack     | Launch a session on the [Browserstack](https://browserstack.com) cloud. [Documentation](https://www.browserstack.com/docs) |
 | Bitbar           | Launch a session on the [Bitbar](https://bitbar.com) cloud. [Documentation](http://docs.bitbar.com/)                       |
+| Kobiton           | Launch a session on the [Kobiton](https://kobiton.com) cloud. [Documentation](https://docs.kobiton.com/)                       |
 
 It should be straightforward to get set up with any of these options. Simply
 enter your details in the input fields provided.
