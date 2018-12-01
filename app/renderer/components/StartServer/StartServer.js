@@ -34,7 +34,7 @@ export default class StartServer extends Component {
     return (
       <div className={styles.container}>
         <div className={styles.formAndLogo}>
-          <img src={'images/appium_logo.png'} className={styles.logo} />
+          <img src={'../app/renderer/images/appium_logo.png'} className={styles.logo} />
           <div className={styles.tabs}>
             <Button.Group className={styles.tabButtons}>
               <Button type={tabId === TAB_SIMPLE ? "primary" : null }

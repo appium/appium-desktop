@@ -168,7 +168,7 @@ export default class ServerMonitor extends Component {
     return (
       <div className={styles.container} id='serverMonitorContainer'>
         <div className={`${styles.bar} ${styles['bar-'+serverStatus]}`}>
-          <img src={'images/appium_small_magenta.png'} className={styles.logo} />
+          <img src={'../app/renderer/images/appium_small_magenta.png'} className={styles.logo} />
           <div className={`${styles.status} ${styles[serverStatus]}`}>
             <span className={`icon anticon ${statusIcon}`} />
             {statusMsg}

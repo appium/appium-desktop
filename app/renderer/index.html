@@ -5,27 +5,11 @@
     <title>Appium</title>
     <link rel="stylesheet" href="../../node_modules/font-awesome/css/font-awesome.min.css" />
     <link rel="stylesheet" href="../../node_modules/antd/dist/antd.css" />
-    <link rel="stylesheet" href="../../app/renderer/styles/app.global.css" />
-    <link rel="stylesheet" href="../../app/renderer/styles/github-gist-theme.global.css" />
-    <script>
-      (function() {
-        if (!process.env.HOT) {
-          const link = document.createElement('link');
-          link.rel = 'stylesheet';
-          link.href = '../../dist/bundle.css';
-          document.write(link.outerHTML);
-        }
-      }());
-    </script>
+    <link rel="stylesheet" href="styles/app.global.css" />
+    <link rel="stylesheet" href="styles/github-gist-theme.global.css" />
   </head>
   <body>
-    <div id="root"></div>
-    <script>
-      (function() {
-        const script = document.createElement('script');
-        script.src = (process.env.HOT) ? 'http://localhost:3000/dist/bundle.js' : '../../dist/bundle.js';
-        document.write(script.outerHTML);
-      }());
-    </script>
+    <div id="root"></div>ssss
+    <script type="text/javascript" src="index.js"></script>
   </body>
 </html>
