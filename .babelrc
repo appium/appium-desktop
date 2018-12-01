@@ -10,8 +10,7 @@
       "presets": ["@babel/env"]
     },
     "test": {
-      "plugins": [
-      ]
+      "presets": ["@babel/env"],
     }
   }
 }

@@ -5,13 +5,13 @@ import { DOMParser } from 'xmldom';
 import xpath from 'xpath';
 import sinon from 'sinon';
 
-const should = chai.should();
+const should = chai.should;
 chai.use(chaiAsPromised);
 
 // Helper that checks that the optimal xpath for a node is the one that we expect and also
 // checks that the XPath successfully locates the node in it's doc
 function testXPath (doc, node, expectedXPath, uniqueAttributes) {
-  getOptimalXPath(doc, node, uniqueAttributes).should.equal(expectedXPath);
+  should(getOptimalXPath(doc, node, uniqueAttributes)).equal(expectedXPath);
   xpath.select(expectedXPath, doc)[0].should.equal(node);
 }
 
