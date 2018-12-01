@@ -214,41 +214,40 @@ export default class AppiumMethodHandler {
       } catch (ign) { }
     }
   }
+}
 
-  static createSession (driver, sender, winId) {
-    const {appiumHandlers} = AppiumMethodHandler;
-    log.info(`Creating method handler for session with window id: ${winId}`);
-    const handler = AppiumMethodHandler.appiumHandlers[winId] = new AppiumMethodHandler(driver, sender);
-    log.info(`The following session window ID's have active sessions: '${JSON.stringify(_.keys(appiumHandlers))}'`);
+export function createSession (driver, sender, winId) {
+  const {appiumHandlers} = AppiumMethodHandler;
+  log.info(`Creating method handler for session with window id: ${winId}`);
+  const handler = AppiumMethodHandler.appiumHandlers[winId] = new AppiumMethodHandler(driver, sender);
+  log.info(`The following session window ID's have active sessions: '${JSON.stringify(_.keys(appiumHandlers))}'`);
+  return handler;
+}
+
+export function killSession (winId, killedByUser) {
+  const {appiumHandlers} = AppiumMethodHandler;
+  const handler = appiumHandlers[winId];
+  delete AppiumMethodHandler.appiumHandlers[winId];
+  log.info(`Killing session for window with id: ${winId}`);
+
+  if (handler) {
+    handler.close('', killedByUser);
+  }
+
+  log.info(`Deleted session for window with id: ${winId}`);
+  log.info(`The following session window ID's have active sessions: '${JSON.stringify(_.keys(appiumHandlers))}'`);
+}
+
+export function getSessionHandler (winId) {
+  log.info(`Retrieving session for window with id: ${winId}`);
+  const {appiumHandlers} = AppiumMethodHandler;
+  const handler = appiumHandlers[winId];
+  if (handler) {
     return handler;
+  } else {
+    log.error(`Could not find session with window id '${winId}'. Availalable sessions are: '${JSON.stringify(_.keys(appiumHandlers))}'`);
+    return false;
   }
-
-  static killSession (winId, killedByUser) {
-    const {appiumHandlers} = AppiumMethodHandler;
-    const handler = appiumHandlers[winId];
-    delete AppiumMethodHandler.appiumHandlers[winId];
-    log.info(`Killing session for window with id: ${winId}`);
-
-    if (handler) {
-      handler.close('', killedByUser);
-    }
-
-    log.info(`Deleted session for window with id: ${winId}`);
-    log.info(`The following session window ID's have active sessions: '${JSON.stringify(_.keys(appiumHandlers))}'`);
-  }
-
-  static getSessionHandler (winId) {
-    log.info(`Retrieving session for window with id: ${winId}`);
-    const {appiumHandlers} = AppiumMethodHandler;
-    const handler = appiumHandlers[winId];
-    if (handler) {
-      return handler;
-    } else {
-      log.error(`Could not find session with window id '${winId}'. Availalable sessions are: '${JSON.stringify(_.keys(appiumHandlers))}'`);
-      return false;
-    }
-  }
-
 }
 
 AppiumMethodHandler.appiumHandlers = {};

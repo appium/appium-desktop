@@ -7,7 +7,7 @@
       "plugins": []
     },
     "development": {
-      "presets": []
+      "presets": ["@babel/env"]
     },
     "test": {
       "plugins": [

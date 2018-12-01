@@ -32,7 +32,7 @@
     "build": "npm run build-main && npm run build-renderer",
     "clean": "rimraf node_modules && npm install",
     "start": "cross-env RUNNING_LOCALLY=true FORCE_NO_WRONG_FOLDER=true electron ./",
-    "start-hot": "cross-env HOT=1 NODE_ENV=development electron -r ./node_modules/babel-register -r ./node_modules/babel-polyfill --inspect=5858 ./app/main/main.development --color",
+    "start-hot": "cross-env NODE_ENV=development electron -r @babel/register -r @babel/polyfill ./app/main/main.development.js --color",
     "postinstall": "node node_modules/fbjs-scripts/node/check-dev-engines.js package.json && rimraf node_modules/jimp/browser",
     "dev": "concurrently --kill-others \"npm run hot-server\" \"npm run start-hot\" --color",
     "dev-wrong-folder": "cross-env WRONG_FOLDER=true npm run dev",
