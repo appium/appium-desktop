@@ -4,7 +4,7 @@ import { ipcRenderer } from 'electron';
 
 import styles from './StartButton.css';
 
-export default class StartButton extends Component {
+class StartButton extends Component {
   isEnabled () {
     return !(this.props.serverStarting || this.props.disabledOverride);
   }
@@ -37,7 +37,7 @@ export default class StartButton extends Component {
         <Button id='configBtn'
           className={styles.configButton}
           onClick={() => this.openConfig()}>
-          Edit Configurations <Icon type="setting" />
+          Edit Configurations! <Icon type="setting" />
         </Button>
       </div>
     );
@@ -49,3 +49,10 @@ StartButton.propTypes = {
   startServer: PropTypes.func.isRequired,
   disabledOverride: PropTypes.bool,
 };
+
+if (module.hot) {
+  const { hot } = require('react-hot-loader');
+  module.exports = hot(module)(StartButton);
+} else {
+  module.exports = StartButton;
+}

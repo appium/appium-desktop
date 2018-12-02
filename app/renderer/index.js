@@ -6,11 +6,10 @@ import { syncHistoryWithStore } from 'react-router-redux';
 import electron from 'electron';
 import WrongFolder from './components/WrongFolder/WrongFolder';
 import routes from './routes';
-import configureStore from './store/configureStore';
+import store from './store/store';
 
-const {app} = electron.remote;
+const { app } = electron.remote;
 const isDev = process.env.NODE_ENV === 'development';
-const store = configureStore();
 const history = syncHistoryWithStore(hashHistory, store);
 
 function shouldShowWrongFolderComponent () {
@@ -27,12 +26,22 @@ function shouldShowWrongFolderComponent () {
   }
 }
 
-render(
-  <Provider store={store}>
-    {shouldShowWrongFolderComponent() ?
-      <WrongFolder /> :
-      <Router history={history} routes={routes} />
-    }
-  </Provider>,
-  document.getElementById('root')
-);
+const router = <Router history={history}>
+  {routes}
+</Router>;
+
+function renderApp () {
+  render(
+    <Provider store={store}>
+      {shouldShowWrongFolderComponent() ?
+        <WrongFolder /> :
+        router
+      }
+    </Provider>,
+    document.getElementById('root')
+  );
+}
+
+renderApp();
+
+module.hot.accept(renderApp);

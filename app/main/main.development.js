@@ -2,7 +2,6 @@ import { app, BrowserWindow, Menu } from 'electron';
 import { initializeIpc } from './appium';
 import { setSavedEnv } from './helpers';
 import menuTemplates from './menus';
-import path from 'path';
 import shellEnv from 'shell-env';
 import fixPath from 'fix-path';
 
