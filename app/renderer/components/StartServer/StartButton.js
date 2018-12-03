@@ -37,7 +37,7 @@ class StartButton extends Component {
         <Button id='configBtn'
           className={styles.configButton}
           onClick={() => this.openConfig()}>
-          Edit Configurations! <Icon type="setting" />
+          Edit Configurations <Icon type="setting" />
         </Button>
       </div>
     );
@@ -50,9 +50,4 @@ StartButton.propTypes = {
   disabledOverride: PropTypes.bool,
 };
 
-if (module.hot) {
-  const { hot } = require('react-hot-loader');
-  module.exports = hot(module)(StartButton);
-} else {
-  module.exports = StartButton;
-}
+module.exports = StartButton;
