@@ -173,7 +173,7 @@ describe('util.js', function () {
         </node>`);
         const node = doc.getElementById('hello');
         node.getAttribute = () => { throw new Error('Some unexpected error'); };
-        should.not.exist(getOptimalXPath(doc, node));	
+        should.not.exist(getOptimalXPath(doc, node));
       });
     });
   });
