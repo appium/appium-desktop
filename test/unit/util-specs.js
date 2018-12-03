@@ -5,7 +5,7 @@ import { DOMParser } from 'xmldom';
 import xpath from 'xpath';
 import sinon from 'sinon';
 
-const should = chai.should;
+const should = chai.should();
 chai.use(chaiAsPromised);
 
 // Helper that checks that the optimal xpath for a node is the one that we expect and also
@@ -173,7 +173,7 @@ describe('util.js', function () {
         </node>`);
         const node = doc.getElementById('hello');
         node.getAttribute = () => { throw new Error('Some unexpected error'); };
-        should(getOptimalXPath(doc, node)).not.exist;
+        should.not.exist(getOptimalXPath(doc, node));	
       });
     });
   });

@@ -4,7 +4,7 @@ import { ipcRenderer } from 'electron';
 
 import styles from './StartButton.css';
 
-class StartButton extends Component {
+export default class StartButton extends Component {
   isEnabled () {
     return !(this.props.serverStarting || this.props.disabledOverride);
   }
@@ -49,5 +49,3 @@ StartButton.propTypes = {
   startServer: PropTypes.func.isRequired,
   disabledOverride: PropTypes.bool,
 };
-
-module.exports = StartButton;
