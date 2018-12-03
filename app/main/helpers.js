@@ -25,7 +25,7 @@ export function openBrowserWindow (route, opts) {
   // note that __dirname changes based on whether we're in dev or prod;
   // in dev it's the actual dirname of the file, in prod it's the root
   // of the project (where main.js is built), so switch accordingly
-  let htmlPath = path.resolve(__dirname,  isDev ? '..' : 'app', 'renderer', 'index.html');
+  let htmlPath = path.resolve(__dirname,  'dist', 'index.html');
   
   // on Windows we'll get backslashes, but we don't want these for a browser URL, so replace
   htmlPath = htmlPath.replace("\\", "/");
