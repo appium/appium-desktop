@@ -55,6 +55,7 @@ export const ServerTypes = {
   headspin: 'headspin',
   browserstack: 'browserstack',
   bitbar: 'bitbar',
+  kobiton: 'kobiton'
 };
 
 const JSON_TYPES = ['object', 'number', 'boolean'];
@@ -242,6 +243,23 @@ export function newSession (caps, attachSessId = null) {
         }
         desiredCapabilities.testdroid_source = "appiumdesktop";
         desiredCapabilities.testdroid_apiKey = accessKey;
+        https = true;
+        break;
+      case ServerTypes.kobiton:
+        host = process.env.KOBITON_HOST || "api.kobiton.com";
+        port = 443;
+        path = "/wd/hub";
+        username = session.server.kobiton.username || process.env.KOBITON_USERNAME;
+        desiredCapabilities["kobiton.source"] = "appiumdesktop";
+        accessKey = session.server.kobiton.accessKey || process.env.KOBITON_ACCESS_KEY;
+        if (!username || !accessKey) {
+          notification.error({
+            message: "Error",
+            description: "KOBITON username and api key are required!",
+            duration: 4
+          });
+          return;
+        }
         https = true;
         break;
       default:
