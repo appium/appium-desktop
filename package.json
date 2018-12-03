@@ -21,36 +21,28 @@
   "homepage": "https://github.com/appium/appium-desktop",
   "main": "main.js",
   "scripts": {
-    "//": "TEST SCRIPTS",
-    "test": "npm run lint && npm run test-unit && npm run test-integration",
+    "//": "APPLICATION PACKAGERS",
+    "test": "npm run test-unit && npm run test-integration",
     "test-e2e": "cross-env FORCE_NO_WRONG_FOLDER=true NODE_ENV=test RUNNING_IN_SPECTRON=true mocha --timeout 600000 --reporter mocha-multi-reporters --reporter-options configFile=./test/mochareporters.json ./test/e2e",
     "test-integration": "cross-env NODE_ENV=test mocha --reporter mocha-multi-reporters --reporter-options configFile=./test/mochareporters.json ./test/integration",
     "test-unit": "cross-env NODE_ENV=test mocha --reporter mocha-multi-reporters --reporter-options configFile=./test/mochareporters.json ./test/unit/",
     "lint": "eslint app test *.js",
-
-    "//": "PRODUCTION BUILD SCRIPTS",
     "build-main": "cross-env NODE_ENV=production parcel build --target node --out-dir . --out-file main.js ./app/main/main.development.js",
     "build-renderer": "cross-env NODE_ENV=production parcel build --out-dir dist --target electron --public-url . ./app/renderer/index.html",
     "build": "npm run clean && npm run build-main && npm run build-renderer",
     "start": "cross-env RUNNING_LOCALLY=true FORCE_NO_WRONG_FOLDER=true electron ./",
-
-    "//": "DEV BUILD SCRIPTS",
     "watch-main": "cross-env NODE_ENV=developpment parcel --target node --out-dir . --out-file main.js ./app/main/main.development.js",
     "watch-renderer": "cross-env NODE_ENV=developpment parcel --out-dir dist --target electron --public-url . ./app/renderer/index.html",
     "start-dev": "cross-env RUNNING_LOCALLY=true FORCE_NO_WRONG_FOLDER=true NODE_ENV=development electron ./",
     "dev": "cross-env NODE_ENV=development concurrently --kill-others \"npm run watch-main\" \"npm run watch-renderer\" \"npm run start-dev\" ",
     "dev-wrong-folder": "cross-env WRONG_FOLDER=true npm run dev",
-
     "clean": "rimraf dist/",
-
-    "//": "APPLICATION PACKAGERS",
     "package": "npm run build && build --publish never",
     "package-win": "npm run build && build --win --x64",
     "package-linux": "npm run build && build --linux",
     "package-all": "npm run build && build -mwl",
     "package-nsis": "cross-env TARGET=nsis npm run build && build --win nsis --publish onTagOrDraft && build --win nsis-web --publish onTagOrDraft",
     "package-ci": "check-engines && npm run test && npm run build && build --dir && npm run test-e2e && build --publish onTagOrDraft",
-
     "postinstall": "node node_modules/fbjs-scripts/node/check-dev-engines.js package.json && rimraf node_modules/jimp/browser",
     "postversion": "git pull --tags && git push && git push --tags"
   },
@@ -152,6 +144,7 @@
     "appium-fake-driver": "^0.6.2",
     "asar": "^0.14.0",
     "asyncbox": "^2.3.2",
+    "babel-eslint": "^10.0.1",
     "chai": "^3.5.0",
     "chai-as-promised": "^7.1.1",
     "check-engines": "^1.5.0",
