@@ -7,6 +7,7 @@ import SessionPage from './containers/SessionPage';
 import InspectorPage from './containers/InspectorPage';
 import ConfigPage from './containers/ConfigPage';
 
+
 const routes = <Route path="/" component={App}>
   <IndexRoute component={StartServerPage} />
   <Route path="monitor" component={ServerMonitorPage} />

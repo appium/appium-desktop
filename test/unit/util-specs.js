@@ -11,7 +11,7 @@ chai.use(chaiAsPromised);
 // Helper that checks that the optimal xpath for a node is the one that we expect and also
 // checks that the XPath successfully locates the node in it's doc
 function testXPath (doc, node, expectedXPath, uniqueAttributes) {
-  should(getOptimalXPath(doc, node, uniqueAttributes)).equal(expectedXPath);
+  getOptimalXPath(doc, node, uniqueAttributes).should.equal(expectedXPath);
   xpath.select(expectedXPath, doc)[0].should.equal(node);
 }
 
@@ -173,7 +173,7 @@ describe('util.js', function () {
         </node>`);
         const node = doc.getElementById('hello');
         node.getAttribute = () => { throw new Error('Some unexpected error'); };
-        should.not.exist(getOptimalXPath(doc, node));
+        should(getOptimalXPath(doc, node)).not.exist;
       });
     });
   });

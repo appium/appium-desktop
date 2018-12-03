@@ -27,6 +27,9 @@ before(async function () {
   this.timeout(process.env.TRAVIS || process.env.APPVEYOR ? 10 * 60 * 1000 : 30 * 1000);
   this.app = new Application({
     path: appPath,
+    env: {
+      FORCE_NO_WRONG_FOLDER: true,
+    }
   });
   await this.app.start();
 });

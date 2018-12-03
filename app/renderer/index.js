@@ -13,17 +13,17 @@ const isDev = process.env.NODE_ENV === 'development';
 const history = syncHistoryWithStore(hashHistory, store);
 
 function shouldShowWrongFolderComponent () {
+  // If we set an ENV to show wrong folder
+  if (process.env.WRONG_FOLDER) {
+    return true;
+  }
+
   // If we set an ENV to require it to NOT be shown don't show it
   if (process.env.FORCE_NO_WRONG_FOLDER) {
     return false;
   }
 
-  // Note: app.isInApplicationsFolder is undefined if it's not a Mac
-  if (app.isInApplicationsFolder && !app.isInApplicationsFolder() && !isDev) {
-    return true;
-  } else if (isDev && process.env.WRONG_FOLDER) {
-    return true;
-  }
+  return (app.isInApplicationsFolder && !app.isInApplicationsFolder()) && !isDev;
 }
 
 const router = <Router history={history}>
@@ -44,4 +44,6 @@ function renderApp () {
 
 renderApp();
 
-module.hot.accept(renderApp);
+if (module.hot) {
+  module.hot.accept(renderApp);
+}
