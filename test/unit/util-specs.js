@@ -133,7 +133,7 @@ describe('util.js', function () {
             </child>
           </child>
         </root>`);
-        const grandchildren =  doc.getElementsByTagName('grandchild');
+        const grandchildren = doc.getElementsByTagName('grandchild');
         testXPath(doc, grandchildren[0], '(//child[@id="foo"])[1]/grandchild[1]');
         testXPath(doc, grandchildren[1], '(//child[@id="foo"])[1]/grandchild[2]');
         testXPath(doc, grandchildren[2], '(//child[@id="foo"])[2]/grandchild');

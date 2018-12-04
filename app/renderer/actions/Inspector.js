@@ -71,7 +71,7 @@ const uniqueAttributes = [
  */
 function xmlToJSON (source) {
   let xmlDoc;
-  
+
   // Replace strings with Unicode format &#012345 with #012345
   // The &# unicode format breaks the parser
   source = source.replace(/&#([0-9]{4,})/g, "#$1");
@@ -138,7 +138,7 @@ const findElement = _.debounce(async function (strategyMap, dispatch, getState, 
       selector,
     });
 
-    // Set the elementId, variableName and variableType for the selected element 
+    // Set the elementId, variableName and variableType for the selected element
     // (check first that the selectedElementPath didn't change, to avoid race conditions)
     if (elementId && getState().inspector.selectedElementPath === path) {
       return dispatch({type: SET_SELECTED_ELEMENT_ID, elementId, variableName, variableType});
@@ -207,7 +207,7 @@ export function applyClientMethod (params) {
     try {
       dispatch({type: METHOD_CALL_REQUESTED});
       let {source, screenshot, windowSize, result, sourceError, screenshotError, windowSizeError,
-        variableName, variableIndex, strategy, selector} = await callClientMethod(params);
+           variableName, variableIndex, strategy, selector} = await callClientMethod(params);
       if (isRecording) {
         // Add 'findAndAssign' line of code. Don't do it for arrays though. Arrays already have 'find' expression
         if (strategy && selector && !variableIndex && variableIndex !== 0) {
@@ -221,12 +221,12 @@ export function applyClientMethod (params) {
       }
       dispatch({type: METHOD_CALL_DONE});
       dispatch({
-        type: SET_SOURCE_AND_SCREENSHOT, 
-        source: source && xmlToJSON(source), 
+        type: SET_SOURCE_AND_SCREENSHOT,
+        source: source && xmlToJSON(source),
         sourceXML: source,
         screenshot,
         windowSize,
-        sourceError, 
+        sourceError,
         screenshotError,
         windowSizeError,
       });
@@ -296,7 +296,7 @@ export function pauseRecording () {
 export function clearRecording () {
   return (dispatch) => {
     dispatch({type: CLEAR_RECORDING});
-    ipcRenderer.send('appium-restart-recorder'); // Tell the main thread to start the variable count from 1 
+    ipcRenderer.send('appium-restart-recorder'); // Tell the main thread to start the variable count from 1
     dispatch({type: CLEAR_ASSIGNED_VAR_CACHE}); // Get rid of the variable cache
   };
 }
@@ -401,7 +401,7 @@ export function setLocatorTestElement (elementId) {
     dispatch({type: CLEAR_SEARCHED_FOR_ELEMENT_BOUNDS});
     if (elementId) {
       try {
-        const [location, size] = await(B.all([
+        const [location, size] = await (B.all([
           callClientMethod({methodName: 'getLocation', args: [elementId], skipScreenshotAndSource: true, skipRecord: true}),
           callClientMethod({methodName: 'getSize', args: [elementId], skipScreenshotAndSource: true, skipRecord: true}),
         ]));

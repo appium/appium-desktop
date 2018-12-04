@@ -1,4 +1,4 @@
-import { Application } from  'spectron';
+import { Application } from 'spectron';
 import { fs } from 'appium-support';
 import B from 'bluebird';
 import os from 'os';
@@ -68,13 +68,13 @@ describe('application launch', function () {
   });
 
   it('check that WebDriverAgent folder is the same in /releases as it is in /node_modules (regression test for https://github.com/appium/appium-desktop/issues/417)', async function () {
-    // NOTE: This isn't really an "e2e" test, but the test has to be written here because the /release 
+    // NOTE: This isn't really an "e2e" test, but the test has to be written here because the /release
     // folder needs to be built in order to run the test
     if (platform !== 'darwin') {
       return this.skip();
     }
 
-    const resourcesWDAPath = path.join(__dirname, '..', '..', 'release', 'mac', 'Appium.app', 'Contents', 'Resources', 
+    const resourcesWDAPath = path.join(__dirname, '..', '..', 'release', 'mac', 'Appium.app', 'Contents', 'Resources',
       'app', 'node_modules', 'appium-xcuitest-driver', 'WebDriverAgent');
 
     await fs.exists(path.join(resourcesWDAPath, 'PrivateHeaders')).should.eventually.be.true;

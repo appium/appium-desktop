@@ -1,6 +1,6 @@
 /**
  * Auto Updater
- * 
+ *
  * Similar to https://electronjs.org/docs/api/auto-updater#events
  * See https://electronjs.org/docs/tutorial/updates for documentation
  */
@@ -14,23 +14,23 @@ import env from '../../env';
 
 const isDev = process.env.NODE_ENV === 'development';
 const runningLocally = isDev || process.env.RUNNING_LOCALLY;
-  
+
 let checkNewUpdates = _.noop;
 
 if (!runningLocally) {
 
   autoUpdater.setFeedURL(getFeedUrl(app.getVersion()));
 
-  /** 
+  /**
    * Check for new updates
    */
   checkNewUpdates = async function (fromMenu) {
-    // autoupdate.checkForUpdates always downloads updates immediately 
-    // This method (getUpdate) let's us take a peek to see if there is an update 
+    // autoupdate.checkForUpdates always downloads updates immediately
+    // This method (getUpdate) let's us take a peek to see if there is an update
     // available before calling .checkForUpdates
     const update = await checkUpdate(app.getVersion());
     if (update) {
-      let {name, notes, pub_date:pubDate} = update;
+      let {name, notes, pub_date: pubDate} = update;
       pubDate = moment(pubDate).format('MMM Do YYYY, h:mma');
 
       let detail = `Release Date: ${pubDate}\n\nRelease Notes: ${notes.replace("*", "\n*")}`;

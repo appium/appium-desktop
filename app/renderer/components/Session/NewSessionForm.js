@@ -4,7 +4,7 @@ import { remote } from 'electron';
 import FormattedCaps from './FormattedCaps';
 import SessionStyles from './Session.css';
 const {dialog} = remote;
-const {Item:FormItem} = Form;
+const {Item: FormItem} = Form;
 const {Option} = Select;
 
 export default class NewSessionForm extends Component {
@@ -87,49 +87,49 @@ export default class NewSessionForm extends Component {
 
     return <div>
       <Row type="flex" align="top" justify="start" className={SessionStyles.capsFormRow}>
-      <Col order={1} className={`${SessionStyles.capsFormCol} ${isEditingDesiredCaps ? SessionStyles.capsFormDisabled : ''}`}>
-        <Form inline>
-          {caps.map((cap, index) => {
-            return <div key={index} className={SessionStyles['desired-capabilities-form-container']}>
+        <Col order={1} className={`${SessionStyles.capsFormCol} ${isEditingDesiredCaps ? SessionStyles.capsFormDisabled : ''}`}>
+          <Form inline>
+            {caps.map((cap, index) => {
+              return <div key={index} className={SessionStyles['desired-capabilities-form-container']}>
+                <FormItem>
+                  <Input disabled={isEditingDesiredCaps} id={`desiredCapabilityName_${index}`} placeholder='Name' value={cap.name} onChange={(e) => setCapabilityParam(index, 'name', e.target.value)}/>
+                </FormItem>
+                <FormItem>
+                  <Select disabled={isEditingDesiredCaps} onChange={(val) => this.handleSetType(index, val)} defaultValue={cap.type} size="large" style={{width: 120}}>
+                    <Option value='text'>text</Option>
+                    <Option value='boolean'>boolean</Option>
+                    <Option value='number'>number</Option>
+                    <Option value='object'>JSON object</Option>
+                    <Option value='file'>filepath</Option>
+                  </Select>
+                </FormItem>
+                <FormItem className={SessionStyles.capsValueControl}>
+                  {this.getCapsControl(cap, index)}
+                </FormItem>
+                <FormItem>
+                  <Button {...{disabled: caps.length <= 1 || isEditingDesiredCaps}} icon='delete' onClick={() => removeCapability(index)}/>
+                </FormItem>
+              </div>;
+            })}
+            <div className={SessionStyles.capsFormLastRow}>
               <FormItem>
-                <Input disabled={isEditingDesiredCaps} id={`desiredCapabilityName_${index}`} placeholder='Name' value={cap.name} onChange={(e) => setCapabilityParam(index, 'name', e.target.value)}/>
+                <Button disabled={isEditingDesiredCaps} id='btnAddDesiredCapability' icon='plus' onClick={addCapability} className={SessionStyles['add-desired-capability-button']} />
               </FormItem>
-              <FormItem>
-                <Select disabled={isEditingDesiredCaps} onChange={(val) => this.handleSetType(index, val)} defaultValue={cap.type} size="large" style={{width: 120}}>
-                  <Option value='text'>text</Option>
-                  <Option value='boolean'>boolean</Option>
-                  <Option value='number'>number</Option>
-                  <Option value='object'>JSON object</Option>
-                  <Option value='file'>filepath</Option>
-                </Select>
-              </FormItem>
-              <FormItem className={SessionStyles.capsValueControl}>
-                {this.getCapsControl(cap, index)}
-              </FormItem>
-              <FormItem>
-                <Button {...{disabled: caps.length <= 1 || isEditingDesiredCaps}} icon='delete' onClick={() => removeCapability(index)}/>
-              </FormItem>
-            </div>;
-          })}
-          <div className={SessionStyles.capsFormLastRow}>
-            <FormItem>
-              <Button disabled={isEditingDesiredCaps} id='btnAddDesiredCapability' icon='plus' onClick={addCapability} className={SessionStyles['add-desired-capability-button']} />
-            </FormItem>
-          </div>
-        </Form>
-      </Col>
+            </div>
+          </Form>
+        </Col>
 
-      <Col order={2} className={SessionStyles.capsFormattedCol}>
-        <FormattedCaps {...this.props} />
-        <Modal visible={showSaveAsModal}
-          title='Save Capability Set As...'
-          okText='Save'
-          cancelText='Cancel'
-          onCancel={hideSaveAsModal}
-          onOk={() => saveSession(caps, {name: saveAsText})}>
-          <Input onChange={(e) => setSaveAsText(e.target.value)} addonBefore='Name' value={saveAsText}/>
-        </Modal>
-      </Col>
+        <Col order={2} className={SessionStyles.capsFormattedCol}>
+          <FormattedCaps {...this.props} />
+          <Modal visible={showSaveAsModal}
+            title='Save Capability Set As...'
+            okText='Save'
+            cancelText='Cancel'
+            onCancel={hideSaveAsModal}
+            onOk={() => saveSession(caps, {name: saveAsText})}>
+            <Input onChange={(e) => setSaveAsText(e.target.value)} addonBefore='Name' value={saveAsText}/>
+          </Modal>
+        </Col>
       </Row>
     </div>;
   }

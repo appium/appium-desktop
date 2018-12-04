@@ -97,7 +97,7 @@ export default class AdvancedTab extends Component {
     const form = (
       <div>
         <form className={styles.input}
-         onSubmit={this.savePreset.bind(this)}>
+          onSubmit={this.savePreset.bind(this)}>
           <Input autoFocus
             ref="presetName"
             name={"presetName"}
@@ -112,14 +112,14 @@ export default class AdvancedTab extends Component {
 
     return (
       <Modal
-       visible={this.state.modalOpen}
-       className={styles.presetModal}
-       title="Save Server Arguments Preset"
-       width={340}
-       okText="Save"
-       onOk={this.savePreset.bind(this)}
-       cancelText="Cancel"
-       onCancel={this.closePresetModal.bind(this)}
+        visible={this.state.modalOpen}
+        className={styles.presetModal}
+        title="Save Server Arguments Preset"
+        width={340}
+        okText="Save"
+        onOk={this.savePreset.bind(this)}
+        cancelText="Cancel"
+        onCancel={this.closePresetModal.bind(this)}
       >
         {form}
       </Modal>

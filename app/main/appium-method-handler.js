@@ -6,7 +6,7 @@ import _ from 'lodash';
 const isDevelopment = process.env.NODE_ENV === 'development';
 
 const KEEP_ALIVE_PING_INTERVAL = 5 * 1000;
-const NO_NEW_COMMAND_LIMIT = isDevelopment ?  30 * 1000 :  5 * 60 * 1000;
+const NO_NEW_COMMAND_LIMIT = isDevelopment ? 30 * 1000 : 5 * 60 * 1000;
 const WAIT_FOR_USER_KEEP_ALIVE = 30 * 1000;
 
 export default class AppiumMethodHandler {
@@ -104,7 +104,7 @@ export default class AppiumMethodHandler {
       this.elementCache[el.value] = res;
       return res;
     });
-    
+
     return {variableName, variableType, strategy, selector, elements};
   }
 
@@ -121,7 +121,7 @@ export default class AppiumMethodHandler {
       }
       res = await cachedEl.el[methodName].apply(cachedEl.el, args);
     } else {
-       // Specially handle the tap and swipe method
+      // Specially handle the tap and swipe method
       if (methodName === 'tap') {
         res = await (new wd.TouchAction(this.driver))
           .tap({x: args[0], y: args[1]})
@@ -160,7 +160,7 @@ export default class AppiumMethodHandler {
   async executeMethod (methodName, args = [], skipScreenshotAndSource = false) {
     return await this._execute({methodName, args, skipScreenshotAndSource});
   }
-  
+
   async _getSourceAndScreenshot () {
     let source, sourceError, screenshot, screenshotError, windowSize, windowSizeError;
     try {
@@ -180,10 +180,10 @@ export default class AppiumMethodHandler {
       }
       screenshotError = e;
     }
-    
+
     try {
       windowSize = await this.driver.getWindowSize();
-      
+
     } catch (e) {
       if (e.status === 6) {
         throw e;
@@ -202,10 +202,10 @@ export default class AppiumMethodHandler {
 
     // Restart the variable counter
     this.elVariableCounter = 1;
-    this.elArrayVariableCounter = 1;   
+    this.elArrayVariableCounter = 1;
   }
 
-  async close (reason, killedByUser=false) {
+  async close (reason, killedByUser = false) {
     this.killKeepAliveLoop();
     this.sender.send('appium-session-done', {reason, killedByUser});
     if (!this.driver._isAttachedSession) {

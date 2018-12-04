@@ -74,8 +74,8 @@ describe('appiumDriverExtender', function () {
     it('should call the click method and have the variableName, variableType, etc... returned to it with source/screenshot', async function () {
       const {id, variableName, variableType} = await appiumHandler.fetchElement('xpath', '//MockListItem');
       should.not.exist(variableName); // Shouldn't have a cached variable name until a method is performed on it
-      const {source, screenshot, variableName:repeatedVariableName, 
-        variableType:repeatedVariableType, id:repeatedId} = await appiumHandler.executeElementCommand(id, 'click');
+      const {source, screenshot, variableName: repeatedVariableName,
+             variableType: repeatedVariableType, id: repeatedId} = await appiumHandler.executeElementCommand(id, 'click');
       repeatedVariableName.should.exist;
       variableType.should.equal(repeatedVariableType);
       id.should.equal(repeatedId);
@@ -86,8 +86,8 @@ describe('appiumDriverExtender', function () {
       const {elements} = await appiumHandler.fetchElements('xpath', '//MockListItem');
       for (let element of elements) {
         const {id, variableName, variableType} = element;
-        const {source, screenshot, variableName:repeatedVariableName, 
-          variableType:repeatedVariableType, id:repeatedId} = await appiumHandler.executeElementCommand(id, 'click');
+        const {source, screenshot, variableName: repeatedVariableName,
+               variableType: repeatedVariableType, id: repeatedId} = await appiumHandler.executeElementCommand(id, 'click');
         variableName.should.equal(repeatedVariableName);
         variableType.should.equal(repeatedVariableType);
         id.should.equal(repeatedId);

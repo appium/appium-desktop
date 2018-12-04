@@ -40,7 +40,7 @@ export default class PresetsTab extends Component {
   }
 
   selectedPresetData (presetName = null) {
-    if (!presetName) presetName = this.state.selectedPreset;
+    if (!presetName) {presetName = this.state.selectedPreset;}
     const {presets} = this.props;
     const preset = presets[presetName];
     if (preset._modified) {
@@ -81,9 +81,9 @@ export default class PresetsTab extends Component {
       <ul className={styles.presetsList}>
         {_.toPairs(presets).map((p) =>
           <a
-           onClick={this.selectPreset.bind(this, p[0])}
-           key={p[0]}
-           className={styles.presetLink}
+            onClick={this.selectPreset.bind(this, p[0])}
+            key={p[0]}
+            className={styles.presetLink}
           >
             <li className={`${styles.preset} ${p[0] === this.state.selectedPreset ? styles.presetItemActive : ""}`}>
               <div className={styles.presetItemTitle}>{p[0]}</div>
@@ -117,7 +117,7 @@ export default class PresetsTab extends Component {
       return (
         <div className={styles.presetsDetail}>
           <Table columns={columns} dataSource={data} size="small"
-           pagination={false}
+            pagination={false}
           />
         </div>
       );

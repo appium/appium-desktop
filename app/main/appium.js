@@ -17,9 +17,9 @@ const LOG_SEND_INTERVAL_MS = 250;
 
 const defaultEnvironmentVariables = _.clone(process.env);
 
-var server = null;
-var logWatcher = null;
-var batchedLogs = [];
+let server = null;
+let logWatcher = null;
+let batchedLogs = [];
 
 let logFile;
 
@@ -117,7 +117,7 @@ function connectGetDefaultArgs () {
     if (!process.argv[1]) {
       process.argv[1] = '';
     }
-    // Temporarily remove this feature until 'getParser' issue (https://github.com/appium/appium/issues/11320) has been fixed 
+    // Temporarily remove this feature until 'getParser' issue (https://github.com/appium/appium/issues/11320) has been fixed
     /*const backupPathResolve = path.resolve;
     path.resolve = () => "node_modules/appium/package.json";
     let defArgs = Object.keys(getDefaultArgs());
@@ -165,7 +165,7 @@ export function createNewSessionWindow (win) {
 function connectCreateNewSession () {
   ipcMain.on('appium-create-new-session', async (event, args) => {
     const {desiredCapabilities, host, port, path, username, accessKey, https,
-      attachSessId, rejectUnauthorized, proxy} = args;
+           attachSessId, rejectUnauthorized, proxy} = args;
 
     try {
       // If there is an already active session, kill it. Limit one session per window.
@@ -289,7 +289,7 @@ function connectClientMethodListener () {
             console.log(`Handling client method request with method '${methodName}' and args ${JSON.stringify(args)}`);
             res = await methodHandler.executeMethod(methodName, args, skipScreenshotAndSource);
           }
-        } else  if (strategy && selector) {
+        } else if (strategy && selector) {
           if (fetchArray) {
             console.log(`Fetching elements with selector '${selector}' and strategy ${strategy}`);
             res = await methodHandler.fetchElements(strategy, selector, skipScreenshotAndSource);

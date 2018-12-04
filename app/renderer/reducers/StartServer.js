@@ -1,7 +1,7 @@
 import { SERVER_START_REQ, SERVER_START_OK, SERVER_START_ERR, GET_PRESETS,
          UPDATE_ARGS, SWITCH_TAB, PRESET_SAVE_REQ, PRESET_SAVE_OK,
          PRESET_DELETE_REQ, PRESET_DELETE_OK, SET_LOGFILE_PATH,
-       } from '../actions/StartServer';
+} from '../actions/StartServer';
 
 import { ipcRenderer } from 'electron';
 import { version as SERVER_VERSION } from 'appium/package.json';

@@ -27,9 +27,9 @@ export default class StartButton extends Component {
     return (
       <div>
         <Button {...buttonProps} id='startServerBtn'
-         className={styles.startButton}
-         type="primary"
-         onClick={this.isEnabled() ? startServer : this.noop}
+          className={styles.startButton}
+          type="primary"
+          onClick={this.isEnabled() ? startServer : this.noop}
         >
           {serverStarting ? "Starting..." : `Start Server v${serverVersion}`}
         </Button>

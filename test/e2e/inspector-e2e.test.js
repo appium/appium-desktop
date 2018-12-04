@@ -23,7 +23,7 @@ let client;
 describe('inspector window', function () {
 
   let inspector, server;
-  
+
   before(async function () {
     // Start an Appium fake driver server
     server = await startAppiumFakeDriverServer(FAKE_DRIVER_PORT, '127.0.0.1');
