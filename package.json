@@ -166,7 +166,7 @@
     "eslint-plugin-promise": "^3.6.0",
     "eslint-plugin-react": "6.x",
     "express": "^4.16.2",
-    "fbjs-scripts": "^0.8.1",
+    "fbjs-scripts": "^1.0.1",
     "greenkeeper-lockfile": "^1.15.1",
     "jquery": "^3.3.1",
     "jsdom": "^13.0.0",
