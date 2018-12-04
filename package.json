@@ -184,7 +184,7 @@
     "release": "^4.0.2",
     "request": "^2.83.0",
     "rimraf": "^2.6.2",
-    "sinon": "^2.4.1",
+    "sinon": "^7.1.1",
     "spectron": "^5.0.0",
     "style-loader": "^0.23.1",
     "xmldom": "^0.1.27"
