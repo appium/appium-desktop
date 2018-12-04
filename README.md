@@ -1,4 +1,4 @@
-# Appium Desktop [![Travis Build Status](https://travis-ci.org/appium/appium-desktop.svg?branch=master)](https://travis-ci.org/appium/appium-desktop) [![Azure Build Status](https://dev.azure.com/dan0777/dan/_apis/build/status/appium.appium-desktop)](https://dev.azure.com/dan0777/dan/_build/latest?definitionId=1)
+# Appium Desktop [![Travis Build Status](https://travis-ci.org/appium/appium-desktop.svg?branch=master)](https://travis-ci.org/appium/appium-desktop) [![Build Status](https://dev.azure.com/AppiumCI/Appium%20Desktop/_apis/build/status/appium.appium-desktop)](https://dev.azure.com/AppiumCI/Appium%20Desktop/_build/latest?definitionId=1)
 
 [![Greenkeeper badge](https://badges.greenkeeper.io/dpgraham/appium-desktop.svg)](https://greenkeeper.io/)
 ![Action screenshot](docs/images/screen-inspector-and-logs.png)
