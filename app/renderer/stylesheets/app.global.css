@@ -1,0 +1,67 @@
+body {
+  color: #222 !important;
+  box-sizing: border-box;
+}
+
+#root {
+  height: 100%;
+  background: linear-gradient(180deg, #f9f9f9, #f2f2f2, 5%, #f2f2f2, 95%, #d9d9d9);
+}
+
+#root .ant-spin-nested-loading > div > .ant-spin {
+  max-height: initial;
+}
+
+.window {
+  background-color: #cde4f5 !important;
+  width: 100%;
+  height: 100%;
+}
+
+.list-group-item.active {
+  background-color: #662d91 !important;
+}
+
+.ant-spin-nested-loading, .ant-spin-container {
+  height: 100%;
+}
+
+.ant-notification {
+  width: 80%;
+  margin-right: 10%;
+}
+
+.inner-button {
+  position: absolute;
+  top: 0;
+  right: 4px;
+  z-index: 1000;
+}
+
+body::-webkit-scrollbar {
+  width: 0px;
+  background: transparent;
+}
+
+body::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+.ant-input-group .ant-select {
+  height: 100%;
+}
+
+.ant-input-group .ant-select-selection {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  height: 100%;
+  padding-top: 0;
+}
+
+.ant-input-group .ant-select-selection .ant-select-selection-selected-value {
+  padding-top: 2px;
+}
+
+.ant-input-group .select-container {
+  height: 32px;
+}
