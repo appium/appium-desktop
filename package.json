@@ -118,6 +118,7 @@
     "lodash": "4.x",
     "moment": "^2.20.1",
     "postcss": "^7.0.4",
+    "prop-types": "^15.6.2",
     "react": "^15.6.2",
     "react-dom": "^15.6.2",
     "react-redux": "^5.1.0",
