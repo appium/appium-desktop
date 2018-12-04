@@ -1,5 +1,5 @@
 import { BrowserWindow, Menu } from 'electron';
-import settings from '../settings';
+import settings from './settings';
 import path from 'path';
 
 const isDev = process.env.NODE_ENV === 'development';
