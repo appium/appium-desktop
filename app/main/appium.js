@@ -7,7 +7,7 @@ import path from 'path';
 import wd from 'wd';
 import { fs, tempDir } from 'appium-support';
 import _ from 'lodash';
-import settings from './settings';
+import settings from '../shared/settings';
 import {createSession, killSession, getSessionHandler} from './appium-method-handler';
 import request from 'request-promise';
 import { checkNewUpdates } from './auto-updater';
