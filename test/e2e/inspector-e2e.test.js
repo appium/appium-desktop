@@ -22,11 +22,11 @@ let client;
 
 describe('inspector window', function () {
 
-  let inspector;
+  let inspector, server;
   
   before(async function () {
     // Start an Appium fake driver server
-    startAppiumFakeDriverServer(FAKE_DRIVER_PORT, '127.0.0.1');
+    server = await startAppiumFakeDriverServer(FAKE_DRIVER_PORT, '127.0.0.1');
 
     // Navigate to session URL
     client = this.app.client;
@@ -46,6 +46,7 @@ describe('inspector window', function () {
   });
 
   after(async function () {
+    await server.close();
     await inspector.goHome();
   });
 
