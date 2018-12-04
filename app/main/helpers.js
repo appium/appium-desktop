@@ -21,9 +21,9 @@ export function openBrowserWindow (route, opts) {
     ...defaultOpts,
     ...opts,
   });
-
-  let htmlPath = path.resolve(__dirname, 'dist', 'index.html');
-
+  
+  let htmlPath = path.resolve(__dirname,  'renderer', 'index.html');
+  
   // on Windows we'll get backslashes, but we don't want these for a browser URL, so replace
   htmlPath = htmlPath.replace("\\", "/");
   htmlPath += `#/${route}`;
