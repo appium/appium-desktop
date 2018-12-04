@@ -31,7 +31,7 @@ export default class InspectorPage extends BasePage {
       await this.client.setValue(this.desiredCapabilityNameInput(i), name);
       await this.client.setValue(this.desiredCapabilityValueInput(i), value);
       await this.client.click(this.addDesiredCapabilityButton);
-    }   
+    }
   }
 
   async startSession () {
@@ -67,7 +67,7 @@ InspectorPage.selectors = {
   formSubmitButton: '#btnStartSession',
   inspectorToolbar: 'div[class*=_inspector-toolbar]',
   selectedElementBody: '#selectedElementContainer .ant-card-body',
-  tapSelectedElementButton:  '#selectedElementContainer #btnTapElement',
+  tapSelectedElementButton: '#selectedElementContainer #btnTapElement',
   sourceTreeNode: '#sourceContainer .ant-tree-node-content-wrapper',
   recordedActionsPane: 'div[class*=_recorded-actions]',
   startRecordingButton: '#btnStartRecording',

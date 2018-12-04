@@ -29,10 +29,10 @@ export default class LocatedElements extends Component {
         <a onClick={(e) => e.preventDefault() || clearSearchResults()}>&lt;&lt; Back</a>
       </p>
       Elements (<span>{locatedElements.length}</span>):
-      <Col> 
+      <Col>
         <select className={InspectorStyles['locator-search-results']}
           multiple='true'
-          onChange={(e) => setLocatorTestElement(e.target.value)} 
+          onChange={(e) => setLocatorTestElement(e.target.value)}
           value={[locatorTestElement]}>
           {locatedElements.map((elementId) => (
             <option key={elementId} value={elementId}>{elementId}</option>
@@ -41,7 +41,7 @@ export default class LocatedElements extends Component {
         </select>
         {locatedElements.length > 0 && <div className={InspectorStyles['locator-test-interactions-container']}>
           <div>
-            <Button size='small' 
+            <Button size='small'
               disabled={!locatorTestElement}
               onClick={() => applyClientMethod({methodName: 'click', elementId: locatorTestElement})}>Tap Element
             </Button>

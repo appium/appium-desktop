@@ -36,7 +36,7 @@ export default class Screenshot extends Component {
 
   async handleScreenshotClick () {
     const {screenshotInteractionMode, applyClientMethod,
-      swipeStart, swipeEnd, setSwipeStart, setSwipeEnd} = this.props;
+           swipeStart, swipeEnd, setSwipeStart, setSwipeEnd} = this.props;
     const {x, y} = this.state;
 
     if (screenshotInteractionMode === 'tap') {
@@ -101,7 +101,7 @@ export default class Screenshot extends Component {
 
   render () {
     const {screenshot, methodCallInProgress, screenshotInteractionMode,
-      swipeStart, swipeEnd} = this.props;
+           swipeStart, swipeEnd} = this.props;
     const {scaleRatio, x, y} = this.state;
 
     // If we're tapping or swiping, show the 'crosshair' cursor style
@@ -137,7 +137,7 @@ export default class Screenshot extends Component {
           {swipeInstructions && <Tooltip visible={true} placement="top" title={swipeInstructions}>{screenImg}</Tooltip>}
           {!swipeInstructions && screenImg}
           {screenshotInteractionMode === 'select' && this.containerEl && <HighlighterRects {...this.props} containerEl={this.containerEl} />}
-          {screenshotInteractionMode === 'swipe' &&  
+          {screenshotInteractionMode === 'swipe' &&
             <svg className={styles.swipeSvg}>
               {swipeStart && !swipeEnd && <circle
                 cx={swipeStart.x / scaleRatio}

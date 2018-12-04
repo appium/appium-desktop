@@ -23,7 +23,7 @@ export default class AttachToSession extends Component {
         </Card>
       </FormItem>
       <FormItem>
-        <Select showSearch 
+        <Select showSearch
           mode='combobox'
           notFoundContent='None found'
           placeholder='Enter your session ID here'

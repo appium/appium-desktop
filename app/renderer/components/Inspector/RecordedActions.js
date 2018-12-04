@@ -29,8 +29,8 @@ export default class RecordedActions extends Component {
 
   actionBar () {
     let {showBoilerplate, recordedActions, setActionFramework,
-      toggleShowBoilerplate, clearRecording, closeRecorder,
-      actionFramework, isRecording
+         toggleShowBoilerplate, clearRecording, closeRecorder,
+         actionFramework, isRecording
     } = this.props;
 
     let frameworkOpts = Object.keys(frameworks).map((f) => <Option value={f}>
@@ -42,36 +42,36 @@ export default class RecordedActions extends Component {
     return <div>
       {!!recordedActions.length &&
         <Select defaultValue={actionFramework} onChange={setActionFramework}
-         className={InspectorStyles['framework-dropdown']} size="small">
+          className={InspectorStyles['framework-dropdown']} size="small">
           {frameworkOpts}
         </Select>
       }
       {(!!recordedActions.length || !isRecording) &&
         <ButtonGroup size="small">
-        {!!recordedActions.length &&
+          {!!recordedActions.length &&
           <Tooltip title="Show/Hide Boilerplate Code">
             <Button onClick={toggleShowBoilerplate} icon="export"
-             type={boilerplateType}
+              type={boilerplateType}
             />
           </Tooltip>
-        }
-        {!!recordedActions.length &&
+          }
+          {!!recordedActions.length &&
           <Tooltip title="Copy code to clipboard">
             <Button icon="copy"
-             onClick={() => clipboard.writeText(this.code())}
+              onClick={() => clipboard.writeText(this.code())}
             />
           </Tooltip>
-        }
-        {!!recordedActions.length &&
+          }
+          {!!recordedActions.length &&
           <Tooltip title="Clear Actions">
             <Button icon="delete" onClick={clearRecording}/>
           </Tooltip>
-        }
-        {!isRecording &&
+          }
+          {!isRecording &&
           <Tooltip title="Close Recorder">
             <Button icon="close" onClick={closeRecorder}/>
           </Tooltip>
-        }
+          }
         </ButtonGroup>
       }
     </div>;
@@ -83,8 +83,8 @@ export default class RecordedActions extends Component {
     const highlightedCode = this.code(false);
 
     return <Card title={<span><Icon type="code-o"/> Recorder</span>}
-     className={InspectorStyles['recorded-actions']}
-     extra={this.actionBar()}
+      className={InspectorStyles['recorded-actions']}
+      extra={this.actionBar()}
     >
       {!recordedActions.length &&
        <div className={InspectorStyles['no-recorded-actions']}>
@@ -93,7 +93,7 @@ export default class RecordedActions extends Component {
       }
       {!!recordedActions.length &&
        <div className={InspectorStyles['recorded-code']}
-        dangerouslySetInnerHTML={{__html: highlightedCode}} />
+         dangerouslySetInnerHTML={{__html: highlightedCode}} />
       }
     </Card>;
   }

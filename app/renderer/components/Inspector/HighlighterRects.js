@@ -30,8 +30,8 @@ export default class HighlighterRects extends Component {
   }
 
   async handleScreenshotClick () {
-    const {screenshotInteractionMode, applyClientMethod, 
-      swipeStart, swipeEnd, setSwipeStart, setSwipeEnd} = this.props;
+    const {screenshotInteractionMode, applyClientMethod,
+           swipeStart, swipeEnd, setSwipeStart, setSwipeEnd} = this.props;
     const {x, y} = this.state;
 
     if (screenshotInteractionMode === 'tap') {
@@ -127,7 +127,7 @@ export default class HighlighterRects extends Component {
 
     // If the use selected an element that they searched for, highlight that element
     if (searchedForElementBounds && isLocatorTestModalVisible) {
-      const {location:elLocation, size} = searchedForElementBounds;
+      const {location: elLocation, size} = searchedForElementBounds;
       highlighterRects.push(<HighlighterRect elSize={size} elLocation={elLocation} scaleRatio={scaleRatio} xOffset={highlighterXOffset} />);
     }
 

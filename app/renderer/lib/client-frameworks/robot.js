@@ -1,3 +1,5 @@
+/* eslint no-useless-escape: 0 */
+
 import Framework from './framework';
 
 class RobotFramework extends Framework {
@@ -31,7 +33,7 @@ class RobotFramework extends Framework {
 Library           AppiumLibrary
 
 *** Variables ***
-\$\{REMOTE_URL\}   ${this.serverUrl}
+$\{REMOTE_URL\}   ${this.serverUrl}
 ${this.getCapsVariables}
 
 *** Test Cases ***
@@ -63,7 +65,7 @@ ${this.indent(code, 4)}
     //TODO: in the robot case, we need the ID on the codeFor_ for execution
     this.lastID = `${strategy}=${locator}`;
     return `# ${this.lastID}`;
-  } 
+  }
 
   getApplicationInitialization () {
     let varString = Object.keys(this.caps).map((k) => {

@@ -26,15 +26,15 @@ export default class LocatorTestModal extends Component {
   render () {
     const {isLocatorTestModalVisible, isSearchingForElements, locatedElements} = this.props;
 
-    return <Modal visible={isLocatorTestModalVisible} 
+    return <Modal visible={isLocatorTestModalVisible}
       okText={locatedElements ? 'Done' : 'Search'}
       cancelText='Cancel'
       title='Search for element'
       confirmLoading={isSearchingForElements}
       onOk={this.onSubmit.bind(this)}
       onCancel={this.onCancel.bind(this)}>
-        {!locatedElements && <ElementLocator {...this.props} />}
-        {locatedElements && <LocatedElements {...this.props} />}
+      {!locatedElements && <ElementLocator {...this.props} />}
+      {locatedElements && <LocatedElements {...this.props} />}
     </Modal>;
   }
 }

@@ -60,7 +60,7 @@ export default class SourceScrollButtons extends Component {
   }
 
   render () {
-    return  this.state.show ? <div className={InspectorStyles['scroll-buttons']}>
+    return this.state.show ? <div className={InspectorStyles['scroll-buttons']}>
       <Button disabled={!this.state.disableScrollLeft} onClick={() => this.scroll(-20)}><Icon type='left' /></Button>
       <Button disabled={!this.state.disableScrollRight} className={InspectorStyles['scroll-right']} onClick={() => this.scroll(20)}><Icon type='right' /></Button>
     </div> : null;

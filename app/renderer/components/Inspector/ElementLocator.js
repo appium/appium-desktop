@@ -38,23 +38,23 @@ export default class ElementLocator extends Component {
     ];
 
     return <div>
-        <Row>
-          <Col>
+      <Row>
+        <Col>
             Locator Strategy:
-            <Select className={InspectorStyles['locator-strategy-selector']}
-              onChange={(value) => setLocatorTestStrategy(value)}
-              value={locatorTestStrategy}>
-              {locatorStrategies.map(([strategyValue, strategyName]) => (
-                <Option key={strategyValue} value={strategyValue}>{strategyName}</Option>
-              ))}
-            </Select>
-          </Col>
-        </Row> <Row>
+          <Select className={InspectorStyles['locator-strategy-selector']}
+            onChange={(value) => setLocatorTestStrategy(value)}
+            value={locatorTestStrategy}>
+            {locatorStrategies.map(([strategyValue, strategyName]) => (
+              <Option key={strategyValue} value={strategyValue}>{strategyName}</Option>
+            ))}
+          </Select>
+        </Col>
+      </Row> <Row>
           Selector:
-          <Col>
-            <Input onChange={(e) => setLocatorTestValue(e.target.value)} value={locatorTestValue} />
-          </Col>
-        </Row>
-      </div>;
+        <Col>
+          <Input onChange={(e) => setLocatorTestValue(e.target.value)} value={locatorTestValue} />
+        </Col>
+      </Row>
+    </div>;
   }
 }

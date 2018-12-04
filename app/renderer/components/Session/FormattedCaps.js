@@ -12,7 +12,7 @@ export default class NewSessionForm extends Component {
 
   render () {
     const {caps, title, isEditingDesiredCaps, startDesiredCapsEditor, abortDesiredCapsEditor, saveRawDesiredCaps, setRawDesiredCaps, rawDesiredCaps,
-      isValidCapsJson, invalidCapsJsonReason} = this.props;
+           isValidCapsJson, invalidCapsJsonReason} = this.props;
     return caps && <Card title={title || "JSON Representation"}
       className={SessionCSS['formatted-caps']}>
       <div className={SessionCSS.capsEditorControls}>
@@ -20,7 +20,7 @@ export default class NewSessionForm extends Component {
           <Button onClick={abortDesiredCapsEditor} icon='close' className={SessionCSS.capsEditorButton} />
         </Tooltip> }
         {isEditingDesiredCaps && <Tooltip title='Save'>
-          <Button onClick={saveRawDesiredCaps} icon='save'  className={SessionCSS.capsEditorButton} />
+          <Button onClick={saveRawDesiredCaps} icon='save' className={SessionCSS.capsEditorButton} />
         </Tooltip>}
         {!isEditingDesiredCaps && <Tooltip title='Edit Raw JSON' placement="topRight" >
           <Button onClick={startDesiredCapsEditor} icon='edit' />

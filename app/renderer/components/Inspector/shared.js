@@ -13,9 +13,9 @@ export function parseCoordinates (element) {
     width = parseInt(width, 10);
     height = parseInt(height, 10);
     return {x1: x, y1: y, x2: x + width, y2: y + height};
-  } else { 
+  } else {
     return {};
-  } 
+  }
 }
 
 export function isUnique (attrName, attrValue, sourceXML) {
@@ -27,7 +27,7 @@ export function isUnique (attrName, attrValue, sourceXML) {
   return xpath.select(`//*[@${attrName}="${attrValue}"]`, doc).length < 2;
 }
 
-// Map of the optimal strategies. 
+// Map of the optimal strategies.
 const STRATEGY_MAPPINGS = [
   ['name', 'accessibility id'],
   ['content-desc', 'accessibility id'],

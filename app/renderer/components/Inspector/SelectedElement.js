@@ -18,14 +18,14 @@ export default class SelectedElement extends Component {
   }
 
   handleSendKeys () {
-    const {sendKeys, applyClientMethod, hideSendKeysModal, selectedElementId:elementId} = this.props;
+    const {sendKeys, applyClientMethod, hideSendKeysModal, selectedElementId: elementId} = this.props;
     applyClientMethod({methodName: 'sendKeys', elementId, args: [sendKeys]});
     hideSendKeysModal();
   }
 
   render () {
-    const {applyClientMethod, setFieldValue, sendKeys, selectedElement, sendKeysModalVisible, showSendKeysModal, 
-      hideSendKeysModal, selectedElementId:elementId, sourceXML, elementInteractionsNotAvailable} = this.props;
+    const {applyClientMethod, setFieldValue, sendKeys, selectedElement, sendKeysModalVisible, showSendKeysModal,
+           hideSendKeysModal, selectedElementId: elementId, sourceXML, elementInteractionsNotAvailable} = this.props;
     const {attributes, xpath} = selectedElement;
 
     // Get the columns for the attributes table
@@ -83,7 +83,7 @@ export default class SelectedElement extends Component {
     }
 
     return <div>
-      {elementInteractionsNotAvailable && <Row type="flex" gutter={10}> 
+      {elementInteractionsNotAvailable && <Row type="flex" gutter={10}>
         <Col>
           <Alert type="info" message="Interactions are not available for this element" showIcon />
         </Col>
@@ -102,9 +102,9 @@ export default class SelectedElement extends Component {
       {showXpathWarning &&
         <div>
           <Alert
-           message="Using XPath locators is not recommended and can lead to fragile tests. Ask your development team to provide unique accessibility locators instead!"
-           type="warning"
-           showIcon
+            message="Using XPath locators is not recommended and can lead to fragile tests. Ask your development team to provide unique accessibility locators instead!"
+            type="warning"
+            showIcon
           />
           <br />
         </div>
@@ -120,7 +120,7 @@ export default class SelectedElement extends Component {
         cancelText='Cancel'
         onCancel={hideSendKeysModal}
         onOk={this.handleSendKeys}>
-            <Input placeholder='Enter keys' value={sendKeys} onChange={(e) => setFieldValue('sendKeys', e.target.value)} />
+        <Input placeholder='Enter keys' value={sendKeys} onChange={(e) => setFieldValue('sendKeys', e.target.value)} />
       </Modal>
     </div>;
   }

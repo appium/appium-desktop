@@ -5,7 +5,7 @@ export default class MainPage extends BasePage {
     super(client);
     Object.assign(this, MainPage.selectors);
   }
-  
+
   async startServer () {
     await this.client.click(this.startServerButton);
   }

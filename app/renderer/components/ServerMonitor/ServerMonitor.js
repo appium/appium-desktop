@@ -30,21 +30,21 @@ class StopButton extends Component {
   render () {
     const {serverStatus, stopServer, closeMonitor} = this.props;
     let btn = <Tooltip title="Stop Server"
-               placement="bottomLeft">
+      placement="bottomLeft">
       <Button icon="pause" className={styles.serverButton}
-       onClick={stopServer} />
+        onClick={stopServer} />
     </Tooltip>;
     if (serverStatus === STATUS_STOPPED) {
       btn = <Tooltip title="Close Logs" placement="bottomLeft">
         <Button className={styles.serverButton}
-         icon="close"
-         onClick={closeMonitor} />
+          icon="close"
+          onClick={closeMonitor} />
       </Tooltip>;
     } else if (serverStatus === STATUS_STOPPING) {
       btn = <Tooltip title="Stopping..." visible={true}
-             placement="bottomLeft">
+        placement="bottomLeft">
         <Button icon="pause"
-         className={styles.serverButton} type="disabled" />
+          className={styles.serverButton} type="disabled" />
       </Tooltip>;
     }
     return btn;
@@ -79,8 +79,8 @@ class GetRawLogsButton extends Component {
   render () {
     return <Tooltip title="Get Raw Logs">
       <Button className={styles.serverButton}
-       icon="download"
-       onClick={() => this.props.getRawLogs()} />
+        icon="download"
+        onClick={() => this.props.getRawLogs()} />
     </Tooltip>;
   }
 }
@@ -169,7 +169,7 @@ export default class ServerMonitor extends Component {
 
     return (
       <div className={styles.container} id='serverMonitorContainer'>
-        <div className={`${styles.bar} ${styles['bar-'+serverStatus]}`}>
+        <div className={`${styles.bar} ${styles['bar-' + serverStatus]}`}>
           <img src={AppiumSmallMagenta} className={styles.logo} />
           <div className={`${styles.status} ${styles[serverStatus]}`}>
             <span className={`icon anticon ${statusIcon}`} />

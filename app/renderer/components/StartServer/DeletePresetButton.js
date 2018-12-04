@@ -10,8 +10,8 @@ export default class DeletePresetButton extends Component {
     return (
       <div>
         <Button className={styles.startButton}
-         type={presetDeleting ? "disabled" : null}
-         onClick={deletePreset}
+          type={presetDeleting ? "disabled" : null}
+          onClick={deletePreset}
         >{presetDeleting ? "Deleting..." : "Delete Preset"}</Button>
       </div>
     );

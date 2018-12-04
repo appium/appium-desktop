@@ -63,9 +63,9 @@ export default class Session extends Component {
 
   render () {
     const {newSessionBegan, savedSessions, tabKey, switchTabs,
-      changeServerType, serverType, server,
-      requestSaveAsModal, newSession, caps, capsUUID, saveSession, isCapsDirty,
-      sessionLoading, attachSessId} = this.props;
+           changeServerType, serverType, server,
+           requestSaveAsModal, newSession, caps, capsUUID, saveSession, isCapsDirty,
+           sessionLoading, attachSessId} = this.props;
     const { visibleProviders } = this.state || {};
 
     const isAttaching = tabKey === 'attach';
@@ -76,7 +76,7 @@ export default class Session extends Component {
     const browserstackTabHead = <span className={SessionStyles.tabText}><img src={BrowserStackLogo} /></span>;
     const bitbarTabHead = <span className={SessionStyles.tabText}><img src={BitBarLogo} /></span>;
     const kobitonTabHead = <span className={SessionStyles.tabText}><img src={KobitonLogo} /></span>;
-    
+
     return <Spin spinning={!!sessionLoading}>
       <div className={SessionStyles['session-container']}>
         <div id='serverTypeTabs'>

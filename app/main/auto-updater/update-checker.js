@@ -8,6 +8,6 @@ export async function checkUpdate (currentVersion) {
       return JSON.parse(res);
     }
   } catch (ign) { }
-  
+
   return false;
 }

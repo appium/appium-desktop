@@ -1,9 +1,8 @@
 import XPath from 'xpath';
-import _ from 'lodash';
 
 /**
  * Get an optimal XPath for a DOMNode
- * @param {*} domNode {DOMNode} 
+ * @param {*} domNode {DOMNode}
  * @param {*} uniqueAttributes {array[string]} Attributes we know are unique (defaults to just 'id')
  */
 export function getOptimalXPath (doc, domNode, uniqueAttributes = ['id']) {
@@ -45,12 +44,12 @@ export function getOptimalXPath (doc, domNode, uniqueAttributes = ['id']) {
       // Get the siblings
       const childNodes = Array.prototype.slice.call(domNode.parentNode.childNodes, 0).filter((childNode) => (
         childNode.nodeType === 1 && childNode.tagName === domNode.tagName
-      )); 
-      
+      ));
+
       // If there's more than one sibling, append the index
       if (childNodes.length > 1) {
         let index = childNodes.indexOf(domNode);
-        xpath +=  `[${index + 1}]`;
+        xpath += `[${index + 1}]`;
       }
     }
 

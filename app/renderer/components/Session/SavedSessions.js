@@ -14,7 +14,7 @@ export default class SavedSessions extends Component {
     this.getRowClassName = this.getRowClassName.bind(this);
   }
 
-  onRowClick (record)  {
+  onRowClick (record) {
     const {setCaps} = this.props;
     let session = this.sessionFromUUID(record.key);
     setCaps(session.caps, session.uuid);
@@ -22,7 +22,7 @@ export default class SavedSessions extends Component {
 
   getRowClassName (record) {
     const {capsUUID} = this.props;
-    return capsUUID === record.key ? SessionCSS.selected: '';
+    return capsUUID === record.key ? SessionCSS.selected : '';
   }
 
   handleDelete (uuid) {
@@ -62,8 +62,8 @@ export default class SavedSessions extends Component {
         return (
           <div>
             <Button icon='edit'
-             onClick={() => {setCaps(session.caps, session.uuid); switchTabs('new');}}
-             className={SessionCSS['edit-session']}
+              onClick={() => {setCaps(session.caps, session.uuid); switchTabs('new');}}
+              className={SessionCSS['edit-session']}
             />
             <Button icon='delete' onClick={this.handleDelete(session.uuid)}/>
           </div>
@@ -86,16 +86,16 @@ export default class SavedSessions extends Component {
     return (<Row gutter={20}>
       <Col span={12}>
         <Table className={SessionCSS['saved-sessions']}
-         pagination={false}
-         dataSource={dataSource}
-         columns={columns}
-         onRowClick={this.onRowClick}
-         rowClassName={this.getRowClassName}
+          pagination={false}
+          dataSource={dataSource}
+          columns={columns}
+          onRowClick={this.onRowClick}
+          rowClassName={this.getRowClassName}
         />
       </Col>
       <Col span={12} className={SessionCSS.savedCaps}>
         <FormattedCaps {...this.props}
-         title={capsUUID ? this.sessionFromUUID(capsUUID).name : null}
+          title={capsUUID ? this.sessionFromUUID(capsUUID).name : null}
         />
       </Col>
     </Row>);

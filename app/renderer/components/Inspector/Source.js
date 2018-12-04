@@ -24,9 +24,9 @@ export default class Source extends Component {
       if (attributes[attr]) {
         attrs.push(<span key={attr}>&nbsp;
           <i
-           className={InspectorStyles.sourceAttrName}
+            className={InspectorStyles.sourceAttrName}
           >{attr}</i>=<span
-           className={InspectorStyles.sourceAttrValue}
+            className={InspectorStyles.sourceAttrValue}
           >&quot;{attributes[attr]}&quot;</span>
         </span>);
       }
@@ -56,8 +56,8 @@ export default class Source extends Component {
 
     // Recursives through the source and renders a TreeNode for an element
     let recursive = (elemObj) => {
-      if (!elemObj) return null;
-      if (elemObj.children.length === 0) return null;
+      if (!elemObj) {return null;}
+      if (elemObj.children.length === 0) {return null;}
 
       return elemObj.children.map((el) => {
         return <TreeNode title={this.getFormattedTag(el)} key={el.path}>

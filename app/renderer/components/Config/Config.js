@@ -43,10 +43,10 @@ export default class Config extends Component {
       {ENV_VARIABLE_NAMES.map((ENV_NAME) => (
         <Row key={ENV_NAME} className={styles.row} gutter={16}>
           <Col span={24}>
-            <Input addonBefore={ENV_NAME} 
+            <Input addonBefore={ENV_NAME}
               placeholder={defaultEnvironmentVariables[ENV_NAME]}
-              onChange={(evt) => setEnvironmentVariable(ENV_NAME, evt.target.value)} 
-              value={environmentVariables[ENV_NAME]}  />
+              onChange={(evt) => setEnvironmentVariable(ENV_NAME, evt.target.value)}
+              value={environmentVariables[ENV_NAME]} />
           </Col>
         </Row>
       ))}

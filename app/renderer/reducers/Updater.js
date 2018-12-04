@@ -1,4 +1,4 @@
-import {  SET_UPDATE_STATE } from '../actions/Updater';
+import { SET_UPDATE_STATE } from '../actions/Updater';
 
 const INITIAL_STATE = {};
 
