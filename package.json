@@ -150,7 +150,6 @@
     "concurrently": "^4.1.0",
     "cross-env": "^5.2.0",
     "css-loader": "^1.0.1",
-    "del": "2.x",
     "devtron": "1.x",
     "dir-compare": "^1.4.0",
     "electron": "^3.0.10",
