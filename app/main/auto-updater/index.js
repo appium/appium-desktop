@@ -13,10 +13,11 @@ import _ from 'lodash';
 import env from '../../env';
 
 const isDev = process.env.NODE_ENV === 'development';
+const runningLocally = isDev || process.env.RUNNING_LOCALLY;
   
 let checkNewUpdates = _.noop;
 
-if (!isDev) {
+if (!runningLocally) {
 
   autoUpdater.setFeedURL(getFeedUrl(app.getVersion()));
 

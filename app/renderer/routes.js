@@ -7,12 +7,11 @@ import SessionPage from './containers/SessionPage';
 import InspectorPage from './containers/InspectorPage';
 import ConfigPage from './containers/ConfigPage';
 
-export default (
-  <Route path="/" component={App}>
-    <IndexRoute component={StartServerPage} />
-    <Route path="monitor" component={ServerMonitorPage} />
-    <Route path="session" component={SessionPage} />
-    <Route path="inspector" component={InspectorPage} />
-    <Route path="config" component={ConfigPage} />
-  </Route>
-);
+
+export default <Route path="/" component={App}>
+  <IndexRoute component={StartServerPage} />
+  <Route path="monitor" component={ServerMonitorPage} />
+  <Route path="session" component={SessionPage} />
+  <Route path="inspector" component={InspectorPage} />
+  <Route path="config" component={ConfigPage} />
+</Route>;

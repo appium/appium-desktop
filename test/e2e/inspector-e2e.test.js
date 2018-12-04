@@ -67,7 +67,7 @@ describe('inspector window', function () {
     await inspector.reload();
     const spinDots = await client.elements(inspector.screenshotLoadingIndicator);
     spinDots.value.length.should.equal(1);
-    await retryInterval(15, 100, async function () {
+    await retryInterval(15, 1000, async function () {
       const spinDots = await client.elements(inspector.screenshotLoadingIndicator);
       spinDots.value.length.should.equal(0);
     });

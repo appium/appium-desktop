@@ -1,4 +1,5 @@
 import XPath from 'xpath';
+import _ from 'lodash';
 
 /**
  * Get an optimal XPath for a DOMNode
@@ -42,7 +43,7 @@ export function getOptimalXPath (doc, domNode, uniqueAttributes = ['id']) {
     // If this node has siblings of the same tagName, get the index of this node
     if (domNode.parentNode) {
       // Get the siblings
-      const childNodes = [...domNode.parentNode.childNodes].filter((childNode) => (
+      const childNodes = Array.prototype.slice.call(domNode.parentNode.childNodes, 0).filter((childNode) => (
         childNode.nodeType === 1 && childNode.tagName === domNode.tagName
       )); 
       

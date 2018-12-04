@@ -5,6 +5,8 @@ import { STATUS_RUNNING, STATUS_STOPPING,
 import styles from './ServerMonitor.css';
 import AnsiConverter from 'ansi-to-html';
 
+import AppiumSmallMagenta from '../../images/appium_small_magenta.png';
+
 const convert = new AnsiConverter({fg: '#bbb', bg: '#222'});
 const MAX_LOGS_RENDERED = 1000;
 
@@ -168,7 +170,7 @@ export default class ServerMonitor extends Component {
     return (
       <div className={styles.container} id='serverMonitorContainer'>
         <div className={`${styles.bar} ${styles['bar-'+serverStatus]}`}>
-          <img src={'images/appium_small_magenta.png'} className={styles.logo} />
+          <img src={AppiumSmallMagenta} className={styles.logo} />
           <div className={`${styles.status} ${styles[serverStatus]}`}>
             <span className={`icon anticon ${statusIcon}`} />
             {statusMsg}

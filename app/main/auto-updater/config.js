@@ -1,12 +1,15 @@
-const config = {
-  baseFeedUrl: `https://hazel-server-pxufsrwofl.now.sh`,
-  getFeedUrl (version) {
-    let platform = process.platform;
-    if (platform.toLowerCase() === 'linux') {
-      platform = 'AppImage';
-    }
-    return `${config.baseFeedUrl}/update/${platform}/${version}`;
-  }
-};
+const baseFeedUrl = `https://hazel-server-pxufsrwofl.now.sh`;
 
-export default config;
+export function getFeedUrl (version) {
+  let platform = process.platform;
+  if (platform.toLowerCase() === 'linux') {
+    platform = 'AppImage';
+  }
+  return `${baseFeedUrl}/update/${platform}/${version}`;
+}
+
+
+export default {
+  baseFeedUrl,
+  getFeedUrl,
+};

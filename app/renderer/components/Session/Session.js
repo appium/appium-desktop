@@ -18,6 +18,14 @@ import AdvancedServerParams from './AdvancedServerParams';
 import SessionStyles from './Session.css';
 import CloudProviders from '../../../shared/cloud-providers';
 
+// ParcelJS handles image loading by exporting a path to the image
+import SauceLogo from '../../images/sauce_logo.svg';
+import TestObjectLogo from '../../images/testobject_logo.svg';
+import HeadSpinLogo from '../../images/headspin_logo.svg';
+import BrowserStackLogo from '../../images/browserstack_logo.svg';
+import BitBarLogo from '../../images/bitbar_logo.svg';
+import KobitonLogo from '../../images/kobiton_logo.svg';
+
 const {TabPane} = Tabs;
 
 export default class Session extends Component {
@@ -62,12 +70,12 @@ export default class Session extends Component {
 
     const isAttaching = tabKey === 'attach';
 
-    const sauceTabHead = <span className={SessionStyles.tabText}><img src="images/sauce_logo.svg" /></span>;
-    const testObjectTabHead = <span className={SessionStyles.tabText}><img src="images/testobject_logo.svg" /></span>;
-    const headspinTabHead = <span className={SessionStyles.tabText}><img src="images/headspin_logo.svg" /></span>;
-    const browserstackTabHead = <span className={SessionStyles.tabText}><img src="images/browserstack_logo.svg" /></span>;
-    const bitbarTabHead = <span className={SessionStyles.tabText}><img src="images/bitbar_logo.svg" /></span>;
-    const kobitonTabHead = <span className={SessionStyles.tabText}><img src="images/kobiton_logo.svg" /></span>;
+    const sauceTabHead = <span className={SessionStyles.tabText}><img src={SauceLogo} /></span>;
+    const testObjectTabHead = <span className={SessionStyles.tabText}><img src={TestObjectLogo} /></span>;
+    const headspinTabHead = <span className={SessionStyles.tabText}><img src={HeadSpinLogo} /></span>;
+    const browserstackTabHead = <span className={SessionStyles.tabText}><img src={BrowserStackLogo} /></span>;
+    const bitbarTabHead = <span className={SessionStyles.tabText}><img src={BitBarLogo} /></span>;
+    const kobitonTabHead = <span className={SessionStyles.tabText}><img src={KobitonLogo} /></span>;
     
     return <Spin spinning={!!sessionLoading}>
       <div className={SessionStyles['session-container']}>

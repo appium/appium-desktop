@@ -2,7 +2,6 @@ import { app, BrowserWindow, Menu } from 'electron';
 import { initializeIpc } from './appium';
 import { setSavedEnv } from './helpers';
 import menuTemplates from './menus';
-import path from 'path';
 import shellEnv from 'shell-env';
 import fixPath from 'fix-path';
 
@@ -10,8 +9,6 @@ let menu;
 let template;
 let mainWindow = null;
 const isDev = process.env.NODE_ENV === 'development';
-// __dirname is this dir in dev, and the project root (where main.js is built) in prod
-const indexPath = path.resolve(__dirname, isDev ? '..' : 'app');
 
 
 if (isDev) {
@@ -61,7 +58,7 @@ app.on('ready', async () => {
     minHeight: 600,
   });
 
-  mainWindow.loadURL(`file://${indexPath}/renderer/index.html`);
+  mainWindow.loadURL(`file://${__dirname}/dist/index.html`);
 
   mainWindow.webContents.on('did-finish-load', () => {
     mainWindow.show();
