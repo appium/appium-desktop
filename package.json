@@ -42,7 +42,7 @@
     "package-all": "npm run build && build -mwl",
     "package-nsis": "cross-env TARGET=nsis npm run build && build --win nsis --publish onTagOrDraft && build --win nsis-web --publish onTagOrDraft",
     "package-ci": "check-engines && npm run test && npm run build && build --dir && npm run test-e2e && build --publish onTagOrDraft",
-    "postinstall": "node node_modules/fbjs-scripts/node/check-dev-engines.js package.json && rimraf node_modules/jimp/browser && npm run build",
+    "postinstall": "node node_modules/fbjs-scripts/node/check-dev-engines.js package.json && rimraf node_modules/jimp/browser",
     "postversion": "git pull --tags && git push && git push --tags"
   },
   "build": {
