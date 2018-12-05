@@ -6,8 +6,6 @@ os:
 node_js:
 - '10'
 before_install:
-- nvm install 9
-- npm install -g npm@5
 - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install --no-install-recommends
   -y icnsutils graphicsmagick xz-utils; fi
 - npm install -g greenkeeper-lockfile
