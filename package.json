@@ -28,7 +28,7 @@
     "lint": "eslint app/ test/",
     "build-main": "cross-env NODE_ENV=production parcel build --target node --out-dir ./dist --out-file main.js ./app/main.js",
     "build-renderer": "cross-env NODE_ENV=production parcel build --out-dir ./dist/renderer --target electron --public-url . ./app/renderer/index.html",
-    "build": "npm run clean && npm run build-main && npm run build-renderer",
+    "build": "npm run build-main && npm run build-renderer",
     "start": "cross-env RUNNING_LOCALLY=true FORCE_NO_WRONG_FOLDER=true electron ./",
     "clean": "rimraf dist/",
     "watch-main": "cross-env NODE_ENV=development parcel --target node --out-dir ./dist --out-file main.js ./app/main.js",
@@ -41,7 +41,7 @@
     "package-linux": "npm run build && build --linux",
     "package-all": "npm run build && build -mwl",
     "package-nsis": "cross-env TARGET=nsis npm run build && build --win nsis --publish onTagOrDraft && build --win nsis-web --publish onTagOrDraft",
-    "package-ci": "node ./check-engines package.json && npm run test && npm run build && build --publish onTagOrDraft && npm run test-e2e ",
+    "package-ci": "npm run clean && node ./check-engines package.json && npm run test && npm run build && build --publish onTagOrDraft && npm run test-e2e ",
     "postinstall": "node ./check-engines package.json package.json && rimraf node_modules/jimp/browser",
     "postversion": "git pull --tags && git push && git push --tags"
   },
