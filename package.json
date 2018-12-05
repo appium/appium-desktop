@@ -41,8 +41,8 @@
     "package-linux": "npm run build && build --linux",
     "package-all": "npm run build && build -mwl",
     "package-nsis": "cross-env TARGET=nsis npm run build && build --win nsis --publish onTagOrDraft && build --win nsis-web --publish onTagOrDraft",
-    "package-ci": "check-engines && npm run test && npm run build && build --dir && npm run test-e2e && build --publish onTagOrDraft",
-    "postinstall": "node node_modules/fbjs-scripts/node/check-dev-engines.js package.json && rimraf node_modules/jimp/browser",
+    "package-ci": "node ./check-engines package.json && npm run test && npm run build && build --dir && npm run test-e2e && build --publish onTagOrDraft",
+    "postinstall": "node ./check-engines package.json package.json && rimraf node_modules/jimp/browser",
     "postversion": "git pull --tags && git push && git push --tags"
   },
   "build": {
@@ -104,7 +104,7 @@
     "ansi-to-html": "~0.6.7",
     "antd": "2.10.1",
     "appium": "^1.10.0",
-    "appium-support": "^2.22.0",
+    "appium-support": "^2.25.0",
     "bluebird": "^3.5.1",
     "css-modules-require-hook": "^4.2.3",
     "electron-debug": "^2.0.0",
@@ -168,7 +168,6 @@
     "eslint-plugin-promise": "^4.0.1",
     "eslint-plugin-react": "^7.11.1",
     "express": "^4.16.2",
-    "fbjs-scripts": "^1.0.1",
     "greenkeeper-lockfile": "^1.15.1",
     "jquery": "^3.3.1",
     "jsdom": "^13.0.0",
@@ -194,7 +193,7 @@
     "npm": ">=3.x"
   },
   "engines": {
-    "node": ">=9.x",
+    "node": ">=10.x",
     "npm": ">=5.x"
   }
 }
