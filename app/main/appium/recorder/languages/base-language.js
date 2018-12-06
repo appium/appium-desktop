@@ -7,6 +7,15 @@ export default class BaseLanguage {
   invoke () {
     return this[this.statement.method]();
   }
+
+  getElVarName () {
+    const {elVarName, elArrayVarName, elArrayVarIndex} = this.statement;
+    if (elVarName) {
+      return elVarName;
+    } else if (elArrayVarName) {
+      return `${elArrayVarName}[${elArrayVarIndex}]`;
+    }
+  }
 }
 
 // List of available methods

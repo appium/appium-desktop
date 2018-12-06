@@ -1,4 +1,8 @@
 import JSWD from './languages/js-wd';
+import JSWDIO from './languages/js-wdio';
+import Ruby from './languages/ruby';
+import Java from './languages/java';
+import Python from './languages/python';
 
 /**
  * Define an Appium 'Statement' as an object that can then
@@ -24,13 +28,22 @@ class Statement {
   }
 
   /**
-   * 
+   * Convert this statement to a language statement
    * @param {String} language Can be one of the 'RecordingLanguages'
    */
   toLanguage (language) {
+    const {JS_WD, JS_WDIO, PYTHON, RUBY, JAVA} = RecordingLanguages;
     switch (language) {
-      case RecordingLanguages.JS_WD:
+      case JS_WD:
         return (new JSWD(this)).invoke();
+      case JS_WDIO:
+        return (new JSWDIO(this)).invoke();
+      case JAVA:
+        return (new Java(this)).invoke();
+      case RUBY:
+        return (new Ruby(this)).invoke();
+      case PYTHON:
+        return (new Python(this)).invoke();
       default:
         return '';
     }

@@ -7,7 +7,7 @@ export default class JSWD extends BaseLanguage {
   }
 
   click () {
-    return `await ${this.getElVarName()}.click()`;
+    return `await ${this.getElVarName()}.click();`;
   }
 
   getElVarName () {
