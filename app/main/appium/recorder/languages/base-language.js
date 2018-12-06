@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import commands from './commands-enum';
 
 export default class BaseLanguage {
 
@@ -26,13 +27,6 @@ export default class BaseLanguage {
   }
 }
 
-// List of available methods
-export const COMMANDS = {
-  CLICK: 'click',
-  FIND_ELEMENT: 'findElement',
-  FIND_ELEMENTS: 'findElements',
-};
-
-for (let [, command] of _.toPairs(COMMANDS)) {
+for (let [, command] of _.toPairs(commands)) {
   BaseLanguage[command] = () => `//No conversion for ${command}`;
 }

@@ -1,4 +1,5 @@
 import BaseLanguage from './base-language';
+import commands from './commands-enum';
 
 export default class JSWD extends BaseLanguage {
 
@@ -10,11 +11,11 @@ export default class JSWD extends BaseLanguage {
     return `await ${this.getElVarName()}.click();`;
   }
 
-  findElement () {
+  [commands.FIND_ELEMENT] () {
     return `let ${this.varName} = await driver.elementById('some-unique-id');`;
   }
 
-  findElements () {
+  [commands.FIND_ELEMENTS] () {
     return `let ${this.varName} = await driver.elementsById('some-unique-id');`;
   }
 

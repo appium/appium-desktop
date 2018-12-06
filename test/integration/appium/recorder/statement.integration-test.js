@@ -9,32 +9,34 @@ chai.use(chaiAsPromised);
 
 describe('Statement', function () {
   describe('.toLanguage()', function () {
-    it('should translate element methods', function () {
-      // Test a matrix of element names, methods and expected results
-      for (let testCase of ElemTestCases) {
-        for (let [language, expectedResult] of _.toPairs(testCase[2])) {
+    // Test a matrix of element names, methods and expected results
+    for (let testCase of ElemTestCases) {
+      const [varName, method] = testCase;
+      for (let [language, expectedResult] of _.toPairs(testCase[2])) {
+        it(`should translate '${method}' statement to '${language}' `, function () {
           const statementStr = new StatementBuilder()
-            .withElVarName(testCase[0])
-            .withMethod(testCase[1])
+            .withElVarName(varName)
+            .withMethod(method)
             .build()
             .toLanguage(language);
           statementStr.should.equal(expectedResult);
-        }
+        });
       }
-    });
+    }
 
-    it('should translate element find methods', function () {
-      for (let testCase of ElemFindTestCases) {
-        for (let [language, expectedResult] of _.toPairs(testCase[3])) {
+    for (let testCase of ElemFindTestCases) {
+      for (let [language, expectedResult] of _.toPairs(testCase[3])) {
+        const [method, varName, args] = testCase;
+        it(`should translate element finding statement '${method}' for '${language}`, function () {
           const statementStr = new StatementBuilder()
-            .withMethod(testCase[0])
-            .withVarName(testCase[1])
-            .withArgs(testCase[2])
+            .withMethod(method)
+            .withVarName(varName)
+            .withArgs(args)
             .build()
             .toLanguage(language);
           statementStr.should.equal(expectedResult);
-        }
+        });
       }
-    });
+    }
   });
 });

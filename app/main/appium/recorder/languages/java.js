@@ -1,4 +1,5 @@
 import BaseLanguage from './base-language';
+import commands from './commands-enum';
 
 let suffixMap = {
   xpath: "XPath",
@@ -17,15 +18,15 @@ export default class Java extends BaseLanguage {
     super(...args);
   }
 
-  click () {
+  [commands.CLICK] () {
     return `${this.getElVarName()}.click();`;
   }
 
-  findElement () {
+  [commands.FIND_ELEMENT] () {
     return `MobileElement ${this.varName} = (MobileElement) driver.findElementBy${suffixMap[this.args[0]]}(${JSON.stringify(this.args[1])});`;
   }
 
-  findElements () {
-    return `List<MobileElement> ${this.varName} = (MobileElement) driver.findElementsBy${suffixMap[this.args[0]]}("${JSON.stringify(this.args[1])}");`;
+  [commands.FIND_ELEMENTS] () {
+    return `List<MobileElement> ${this.varName} = (MobileElement) driver.findElementsBy${suffixMap[this.args[0]]}(${JSON.stringify(this.args[1])});`;
   }
 }

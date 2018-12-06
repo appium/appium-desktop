@@ -1,4 +1,5 @@
 import BaseLanguage from './base-language';
+import commands from './commands-enum';
 
 export default class JSWDIO extends BaseLanguage {
 
@@ -10,11 +11,11 @@ export default class JSWDIO extends BaseLanguage {
     return `${this.getElVarName()}.click();`;
   }
 
-  findElement () {
+  [commands.FIND_ELEMENT] () {
     return `let ${this.varName} = driver.element(${JSON.stringify(this._getSelector())});`;
   }
 
-  findElements () {
+  [commands.FIND_ELEMENTS] () {
     return `let ${this.varName} = driver.elements(${JSON.stringify(this._getSelector())});`;
   }
 
