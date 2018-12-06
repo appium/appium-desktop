@@ -134,6 +134,7 @@
     "temp": "0.x",
     "uuid": "3.x",
     "wd": "^1.6.0",
+    "webdriverio": "^4.14.1",
     "xpath": "0.0.27"
   },
   "devDependencies": {
