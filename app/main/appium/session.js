@@ -11,6 +11,10 @@ export default class Session {
     await this.client.init();
   }
 
+  async end () {
+    await this.client.end();
+  }
+
   async fetchElement (strategy, selector) {
 
   }
