@@ -21,7 +21,7 @@ describe('Session', function () {
     await server.close();
   });
 
-  describe.only('.init()', function () {
+  describe('.init()', function () {
     it('should start a WebDriverIO fake driver session and close it', async function () {
       const session = await new Session(DEFAULT_CAPS);
       await session.init();
@@ -40,14 +40,16 @@ describe('Session', function () {
     let session;
     before(async function () {
       session = await new Session(DEFAULT_CAPS);
+      await session.init();
     });
 
     after(async function () {
-      // await 
+      await session.end(); 
     });
 
     it('should fetch element and it should return the source and screenshot too', async function () {
-
+      const { element } = await session.fetchElement('id', 'Button1');
+      element.value.ELEMENT.should.equal('1');
     });
     it('should fetch element and be able to suppress source and screenshot', async function () {
 

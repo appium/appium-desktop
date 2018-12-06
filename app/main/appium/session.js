@@ -1,9 +1,12 @@
 const webdriverio = require("webdriverio");
+const { getSelector } = require("./utils");
 
 export default class Session {
 
   constructor (args) {
     this.args = args;
+    this.elementCache = new Map();
+    this.elementIdCounter = 1;
   }
 
   async init () {
@@ -16,7 +19,11 @@ export default class Session {
   }
 
   async fetchElement (strategy, selector) {
-
+    const wdioSelector = getSelector(strategy, selector);
+    const element = await this.client.element(wdioSelector);
+    return {
+      element,
+    };
   }
 
   async fetchElements (strategy, selector) {
@@ -24,6 +31,7 @@ export default class Session {
   }
 
   async executeElementCommand (elementId, methodName, args = [], skipScreenshotAndSource = false) {
+    // Execute the method and then log what was executed
     return await this._execute({elementId, methodName, args, skipScreenshotAndSource});
   }
 
@@ -32,7 +40,7 @@ export default class Session {
   }
 
   async _execute ({elementId, methodName, args, skipScreenshotAndSource}) {
-
+    // Execute the method
   }
 
   async _getSourceAndScreenshot () {
