@@ -44,6 +44,7 @@ driver.quit`;
       throw new Error(`Strategy ${strategy} can't be code-gened`);
     }
     if (isArray) {
+      // TODO: Fix this in master.... should be the other way around (element vs elements)
       return `${localVar} = driver.find_element(${suffixMap[strategy]}, ${JSON.stringify(locator)})`;
     } else {
       return `${localVar} = driver.find_elements(${suffixMap[strategy]}, ${JSON.stringify(locator)})`;

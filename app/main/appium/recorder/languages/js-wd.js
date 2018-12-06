@@ -10,6 +10,14 @@ export default class JSWD extends BaseLanguage {
     return `await ${this.getElVarName()}.click();`;
   }
 
+  findElement () {
+    return `let ${this.varName} = await driver.elementById('some-unique-id');`;
+  }
+
+  findElements () {
+    return `let ${this.varName} = await driver.elementsById('some-unique-id');`;
+  }
+
   getElVarName () {
     const {elVarName, elArrayVarName, elArrayVarIndex} = this.statement;
     if (elVarName) {

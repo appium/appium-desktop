@@ -60,7 +60,7 @@ export const RecordingLanguages = {
   ROBOT: 'robot',
 };
 
-export class RecordBuilder {
+export class StatementBuilder {
 
   withVarName (varName) {
     this.varName = varName;

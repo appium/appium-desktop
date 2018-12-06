@@ -1,11 +1,19 @@
+import _ from 'lodash';
+
 export default class BaseLanguage {
 
   constructor (statement) {
     this.statement = statement;
+    this.varName = statement.varName;
+    this.method = statement.method;
+    this.elVarName = statement.elVarName;
+    this.elArrayVarIndex = statement.elArrayVarIndex;
+    this.args = statement.args;
+
   }
 
   invoke () {
-    return this[this.statement.method]();
+    return this[this.method]();
   }
 
   getElVarName () {
@@ -19,10 +27,12 @@ export default class BaseLanguage {
 }
 
 // List of available methods
-const commands = [
-  'click',
-];
+export const COMMANDS = {
+  CLICK: 'click',
+  FIND_ELEMENT: 'findElement',
+  FIND_ELEMENTS: 'findElements',
+};
 
-for (let command of commands) {
+for (let [, command] of _.toPairs(COMMANDS)) {
   BaseLanguage[command] = () => `//No conversion for ${command}`;
 }
