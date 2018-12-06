@@ -1,5 +1,5 @@
 import { BrowserWindow, Menu } from 'electron';
-import settings from '../settings';
+import settings from '../shared/settings';
 import path from 'path';
 
 const isDev = process.env.NODE_ENV === 'development';
@@ -22,7 +22,7 @@ export function openBrowserWindow (route, opts) {
     ...opts,
   });
 
-  let htmlPath = path.resolve(__dirname, 'dist', 'index.html');
+  let htmlPath = path.resolve(__dirname, 'renderer', 'index.html');
 
   // on Windows we'll get backslashes, but we don't want these for a browser URL, so replace
   htmlPath = htmlPath.replace("\\", "/");

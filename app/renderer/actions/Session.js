@@ -1,5 +1,5 @@
 import { ipcRenderer } from 'electron';
-import settings from '../../settings';
+import settings from '../../shared/settings';
 import { v4 as UUID } from 'uuid';
 import { push } from 'react-router-redux';
 import { notification } from 'antd';

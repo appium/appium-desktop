@@ -1,7 +1,7 @@
 import { app, BrowserWindow, Menu } from 'electron';
-import { initializeIpc } from './appium';
-import { setSavedEnv } from './helpers';
-import menuTemplates from './menus';
+import { initializeIpc } from './main/appium';
+import { setSavedEnv } from './main/helpers';
+import menuTemplates from './main/menus';
 import shellEnv from 'shell-env';
 import fixPath from 'fix-path';
 
@@ -9,7 +9,6 @@ let menu;
 let template;
 let mainWindow = null;
 const isDev = process.env.NODE_ENV === 'development';
-
 
 if (isDev) {
   require('electron-debug')(); // eslint-disable-line global-require
@@ -58,7 +57,7 @@ app.on('ready', async () => {
     minHeight: 600,
   });
 
-  mainWindow.loadURL(`file://${__dirname}/dist/index.html`);
+  mainWindow.loadURL(`file://${__dirname}/renderer/index.html`);
 
   mainWindow.webContents.on('did-finish-load', () => {
     mainWindow.show();

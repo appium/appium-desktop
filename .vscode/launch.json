@@ -2,18 +2,20 @@
     "version": "0.2.0",
     "configurations": [
       {
-        "name": "dev",
+        "name": "Debug",
         "type": "node",
         "request": "launch",
         "cwd": "${workspaceRoot}",
-        "runtimeExecutable": "npm",
-        "env": {
-          "NODE_ENV": "development"
+        "preLaunchTask": "npm: build",
+        "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/electron",
+        "windows": {
+          "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/electron.cmd"
         },
-        "runtimeArgs": [
-            "run-script", "dev"
-        ],
-        "port": 5858
+        "env": {
+          "RUNNING_LOCALLY": "true",
+          "FORCE_NO_WRONG_FOLDER": "true"
+        },
+        "args": ["."]
       },
       {
         "name": "Mocha current file",

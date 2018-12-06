@@ -2,7 +2,7 @@
 import { ipcRenderer } from 'electron';
 import { push } from 'react-router-redux';
 import { serverLogsReceived, clearLogs, setServerArgs } from './ServerMonitor';
-import settings from '../../settings';
+import settings from '../../shared/settings';
 
 export const SERVER_START_REQ = 'SERVER_START_REQ';
 export const SERVER_START_OK = 'SERVER_START_OK';

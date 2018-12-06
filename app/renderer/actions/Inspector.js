@@ -8,7 +8,7 @@ import { showError } from './Session';
 import { bindClient, unbindClient, callClientMethod } from './shared';
 import { getOptimalXPath } from '../util';
 import frameworks from '../lib/client-frameworks';
-import settings from '../../settings';
+import settings from '../../shared/settings';
 
 export const SET_SESSION_DETAILS = 'SET_SESSION_DETAILS';
 export const SET_SOURCE_AND_SCREENSHOT = 'SET_SOURCE_AND_SCREENSHOT';
