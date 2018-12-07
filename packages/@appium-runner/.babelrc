@@ -1,0 +1,17 @@
+{
+  "presets": [],
+  "plugins": [],
+  "env": {
+    "production": {
+      "presets": [],
+      "plugins": []
+    },
+    "development": {
+      "presets": [],
+      "plugins": [],
+    },
+    "test": {
+      "presets": [],
+    }
+  }
+}
