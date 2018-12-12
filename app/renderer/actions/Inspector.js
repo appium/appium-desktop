@@ -302,18 +302,18 @@ export function clearRecording () {
 }
 
 export function getSavedActionFramework () {
-  return async (dispatch) => {
-    let framework = await settings.get(SAVED_FRAMEWORK);
+  return (dispatch) => {
+    let framework = settings.get(SAVED_FRAMEWORK);
     dispatch({type: SET_ACTION_FRAMEWORK, framework});
   };
 }
 
 export function setActionFramework (framework) {
-  return async (dispatch) => {
+  return (dispatch) => {
     if (!frameworks[framework]) {
       throw new Error(`Framework '${framework}' not supported`);
     }
-    await settings.set(SAVED_FRAMEWORK, framework);
+    settings.set(SAVED_FRAMEWORK, framework);
     dispatch({type: SET_ACTION_FRAMEWORK, framework});
   };
 }

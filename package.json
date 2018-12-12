@@ -110,7 +110,7 @@
     "css-modules-require-hook": "^4.2.3",
     "electron-debug": "^2.0.0",
     "electron-log": "^2.2.17",
-    "electron-settings": "2.x",
+    "electron-settings": "^3.2.0",
     "electron-updater": "^4.0.1",
     "fix-path": "^2.1.0",
     "font-awesome": "4.x",

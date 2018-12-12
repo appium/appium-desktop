@@ -153,7 +153,7 @@ export function removeCapability (index) {
  * Start a new appium session with the given caps
  */
 export function newSession (caps, attachSessId = null) {
-  return async (dispatch, getState) => {
+  return (dispatch, getState) => {
 
     dispatch({type: NEW_SESSION_REQUESTED, caps});
 
@@ -313,8 +313,8 @@ export function newSession (caps, attachSessId = null) {
     });
 
     // Save the current server settings
-    await settings.set(SESSION_SERVER_PARAMS, session.server);
-    await settings.set(SESSION_SERVER_TYPE, session.serverType);
+    settings.set(SESSION_SERVER_PARAMS, session.server);
+    settings.set(SESSION_SERVER_TYPE, session.serverType);
   };
 }
 
@@ -326,7 +326,7 @@ export function saveSession (caps, params) {
   return async (dispatch) => {
     let {name, uuid} = params;
     dispatch({type: SAVE_SESSION_REQUESTED});
-    let savedSessions = await settings.get(SAVED_SESSIONS);
+    let savedSessions = settings.get(SAVED_SESSIONS);
     if (!uuid) {
 
       // If it's a new session, add it to the list
@@ -347,7 +347,7 @@ export function saveSession (caps, params) {
         }
       }
     }
-    await settings.set(SAVED_SESSIONS, savedSessions);
+    settings.set(SAVED_SESSIONS, savedSessions);
     await getSavedSessions()(dispatch);
     dispatch({type: SET_CAPS, caps, uuid});
     dispatch({type: SAVE_SESSION_DONE});
@@ -358,9 +358,9 @@ export function saveSession (caps, params) {
  * Get the sessions saved by the user
  */
 export function getSavedSessions () {
-  return async (dispatch) => {
+  return (dispatch) => {
     dispatch({type: GET_SAVED_SESSIONS_REQUESTED});
-    let savedSessions = await settings.get(SAVED_SESSIONS);
+    let savedSessions = settings.get(SAVED_SESSIONS);
     dispatch({type: GET_SAVED_SESSIONS_DONE, savedSessions});
   };
 }
@@ -405,11 +405,11 @@ export function setSaveAsText (saveAsText) {
  * Delete a saved session
  */
 export function deleteSavedSession (uuid) {
-  return async (dispatch) => {
+  return (dispatch) => {
     dispatch({type: DELETE_SAVED_SESSION_REQUESTED, uuid});
-    let savedSessions = await settings.get(SAVED_SESSIONS);
+    let savedSessions = settings.get(SAVED_SESSIONS);
     let newSessions = savedSessions.filter((session) => session.uuid !== uuid);
-    await settings.set(SAVED_SESSIONS, newSessions);
+    settings.set(SAVED_SESSIONS, newSessions);
     dispatch({type: DELETE_SAVED_SESSION_DONE});
     dispatch({type: GET_SAVED_SESSIONS_DONE, savedSessions: newSessions});
   };
@@ -451,8 +451,8 @@ export function setServerParam (name, value, serverType) {
  * defaults to what the currently running appium server is
  */
 export function setLocalServerParams () {
-  return async (dispatch, getState) => {
-    let serverArgs = await settings.get(SERVER_ARGS);
+  return (dispatch, getState) => {
+    let serverArgs = settings.get(SERVER_ARGS);
     // Get saved server args from settings and set local server settings to it. If there are no saved args, set local
     // host and port to undefined
     if (serverArgs) {
@@ -473,9 +473,9 @@ export function setLocalServerParams () {
  * Params are saved whenever there's a new session
  */
 export function setSavedServerParams () {
-  return async (dispatch) => {
-    let server = await settings.get(SESSION_SERVER_PARAMS);
-    let serverType = await settings.get(SESSION_SERVER_TYPE);
+  return (dispatch) => {
+    let server = settings.get(SESSION_SERVER_PARAMS);
+    let serverType = settings.get(SESSION_SERVER_TYPE);
     if (server) {
       dispatch({type: SET_SERVER, server, serverType});
     }

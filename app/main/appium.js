@@ -24,7 +24,7 @@ let batchedLogs = [];
 let logFile;
 
 // Delete saved server args, don't start until a server has been started
-settings.deleteSync('SERVER_ARGS');
+settings.delete('SERVER_ARGS');
 
 async function deleteLogfile () {
   if (logFile) {
@@ -75,7 +75,7 @@ function connectStartServer (win) {
     try {
       // set up the appium server running in this thread
       server = await appiumServer(args, true);
-      await settings.set('SERVER_ARGS', args);
+      settings.set('SERVER_ARGS', args);
       win.webContents.send('appium-start-ok');
     } catch (e) {
       win.webContents.send('appium-start-error', e.message);
@@ -97,7 +97,7 @@ function connectStopServer (win) {
     }
 
     clearInterval(logWatcher);
-    await settings.delete('SERVER_ARGS');
+    settings.delete('SERVER_ARGS');
   });
 }
 
@@ -352,10 +352,10 @@ function connectOpenConfig (win) {
 }
 
 function connectGetEnv () {
-  ipcMain.on('appium-get-env', async (event) => {
+  ipcMain.on('appium-get-env', (event) => {
     event.sender.send('appium-env', {
       defaultEnvironmentVariables,
-      savedEnvironmentVariables: await settings.get('ENV', {}),
+      savedEnvironmentVariables: settings.get('ENV', {}),
     });
   });
 }
@@ -365,7 +365,7 @@ function connectSaveEnv () {
     // Pluck unset values
     const env = _.pickBy(environmentVariables, _.identity);
 
-    await settings.set('ENV', env);
+    settings.set('ENV', env);
     await setSavedEnv();
     event.sender.send('appium-save-env-done');
   });

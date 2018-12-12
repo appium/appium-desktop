@@ -53,8 +53,8 @@ export function openBrowserWindow (route, opts) {
 
 // Sets the environment variables to a combination of process.env and whatever
 // the user saved
-export async function setSavedEnv () {
-  const savedEnv = await settings.get('ENV');
+export function setSavedEnv () {
+  const savedEnv = settings.get('ENV');
   process.env = {
     ...process.env,
     ...savedEnv || {},

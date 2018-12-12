@@ -16,7 +16,7 @@ class CloudProvider {
 
   async isVisible () {
     const visibilityKey = this.getSettingsKey('visible');
-    const isVisible = await settings.get(visibilityKey);
+    const isVisible = settings.get(visibilityKey);
     if (!_.isBoolean(isVisible)) {
       await this.setVisible(true);
       return true;
@@ -24,9 +24,9 @@ class CloudProvider {
     return isVisible;
   }
 
-  async setVisible (isVisible = true) {
+  setVisible (isVisible = true) {
     const visibilityKey = this.getSettingsKey('visible');
-    await settings.set(visibilityKey, isVisible);
+    settings.set(visibilityKey, isVisible);
   }
 
 }

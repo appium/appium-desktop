@@ -73,13 +73,13 @@ export function switchTab (tabId) {
 }
 
 export function savePreset (name, args) {
-  return async (dispatch) => {
+  return (dispatch) => {
     dispatch({type: PRESET_SAVE_REQ});
-    let presets = await settings.get(PRESETS);
+    let presets = settings.get(PRESETS);
     try {
       presets[name] = args;
       presets[name]._modified = Date.now();
-      await settings.set(PRESETS, presets);
+      settings.set(PRESETS, presets);
     } catch (e) {
       console.error(e);
       alert(`There was a problem saving preset: ${e.message}`);
@@ -89,9 +89,9 @@ export function savePreset (name, args) {
 }
 
 export function getPresets () {
-  return async (dispatch) => {
+  return (dispatch) => {
     try {
-      let presets = await settings.get(PRESETS);
+      let presets = settings.get(PRESETS);
       dispatch({type: GET_PRESETS, presets});
     } catch (e) {
       console.error(e);
@@ -101,12 +101,12 @@ export function getPresets () {
 }
 
 export function deletePreset (name) {
-  return async (dispatch) => {
+  return (dispatch) => {
     dispatch({type: PRESET_DELETE_REQ});
-    let presets = await settings.get(PRESETS);
+    let presets = settings.get(PRESETS);
     try {
       delete presets[name];
-      await settings.set(PRESETS);
+      settings.set(PRESETS);
     } catch (e) {
       console.error(e);
       alert(`There was a problem deleting preset: ${e.message}`);
