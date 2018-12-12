@@ -2,7 +2,7 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 
 export default class App extends React.Component {
-  render () {    
+  render () {
     const { children } = this.props;
     return <React.Fragment>{children}</React.Fragment>;
   }
