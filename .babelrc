@@ -1,6 +1,11 @@
 {
   "presets": [],
-  "plugins": ["@babel/plugin-transform-runtime", "transform-class-properties"],
+  "plugins": [
+    "@babel/plugin-transform-runtime", 
+    "transform-class-properties", 
+    "lodash",
+    ["import", { "libraryName": "antd" }, "ant"],
+  ],
   "env": {
     "production": {
       "presets": [],
