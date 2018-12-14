@@ -12,11 +12,6 @@
     flex-flow: column;
 }
 
-.session-container {
-    width: 100%;
-    padding: 1em;
-}
-
 .sessionFooter {
   text-align: right;
   height: 30px;
@@ -135,10 +130,6 @@
   background-color: #d6e8ff;
 }
 
-.customServerInputLeft {
-  width: 98% !important;
-}
-
 .capsEditorControls {
   position: absolute;
   right: 0;
@@ -153,4 +144,8 @@
   width: 100%;
   height: 100%;
   border-color: lightgray;
+}
+
+.advancedSettingsContainer {
+  padding-top: 12px;
 }

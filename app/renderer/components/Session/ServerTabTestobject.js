@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form, Input, Select, Row, Col } from 'antd';
+import { Form, Input, Radio, Row, Col } from 'antd';
 
 const FormItem = Form.Item;
 
@@ -17,18 +17,14 @@ export default class ServerTabTestobject extends Component {
           </FormItem>
         </Col>
       </Row>
-      <Row>
+      <Row gutter={8}>
         <Col span={24}>
           <FormItem>
-            <div className="ant-input-wrapper ant-input-group">
-              <div className="ant-input-group-addon">TestObject Data Center</div>
-              <div className="select-container">
-                <Select defaultValue='us1' id='testObjectDataCenter' addonBefore='TestObject Data Center' value={server.testobject.dataCenter} onChange={(value) => setServerParam('dataCenter', value)}>
-                  <Select.Option value='us1'>US</Select.Option>
-                  <Select.Option value='eu1'>EU</Select.Option>
-                </Select>
-              </div>
-            </div>
+            <div class="ant-input-group-addon" style={{"height": "32px", "border-right": "1", "border-right-style": "solid"}}>TestObject Data Center</div>
+            <Radio.Group style={{"margin-left": "8px"}} buttonStyle="solid" defaultValue='us1' id='testObjectDataCenter' value={server.testobject.dataCenter} onChange={(e) => setServerParam('dataCenter', e.target.value)}>
+              <Radio value='us1'>US</Radio>
+              <Radio value='eu1'>EU</Radio>
+            </Radio.Group>
           </FormItem>
         </Col>
       </Row>

@@ -101,3 +101,9 @@
   display: inline-block;
   width: 10px;
 }
+
+.button-container button {
+  padding: 8px;
+  margin-right: 8px;
+  height: auto;
+}
