@@ -38,7 +38,7 @@ export default class AttachToSession extends Component {
             </Select>
           </Col>
           <Col span={1}>
-            <div style={{"float": "right"}}>
+            <div className={SessionCSS.btnReload}>
               <Button onClick={getRunningSessions} icon='reload' />
             </div>
           </Col>

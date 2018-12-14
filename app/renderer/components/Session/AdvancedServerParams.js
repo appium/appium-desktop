@@ -35,6 +35,6 @@ export default class AdvancedServerParams extends Component {
           </Collapse>
         </div>
       </Col>
-    </Row>
+    </Row>;
   }
 }

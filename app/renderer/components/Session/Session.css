@@ -21,6 +21,10 @@
   height: 30px;
 }
 
+.sessionFooter .desiredCapsLink {
+  float: left;
+}
+
 .tabText img {
   height: 20px;
   position: relative;
@@ -68,13 +72,14 @@
   width: 0px;
 }
 
-.formatted-caps {
+.formattedCaps {
     width: 100%;
     margin-bottom: 15px;
+    margin-left: 12px;
     min-height: 250px;
 }
 
-.formatted-caps pre {
+.formattedCaps pre {
   white-space: pre-wrap;
   word-wrap: break-word;
 }
@@ -89,6 +94,10 @@
 
 .capsFormCol {
     min-width: 476px;
+}
+
+.capsFormRow {
+  font-size: 14px;
 }
 
 .capsValueControl {
@@ -135,4 +144,22 @@
 
 .edit-session {
   margin-right: 10px;
+}
+
+.btnReload {
+  float: right;
+  margin-left: 8px;
+}
+
+.btnDeleteCap {
+  float: right;
+}
+
+.inputDataCenter {
+  margin-left: 8px;
+}
+
+.addonDataCenter {
+  height: 32px;
+  border-right: 1px solid #d9d9d9 !important;
 }

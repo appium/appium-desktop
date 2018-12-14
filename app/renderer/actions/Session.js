@@ -462,7 +462,7 @@ export function setLocalServerParams () {
       dispatch({type: SET_SERVER_PARAM, serverType: ServerTypes.local, name: 'port', value: undefined});
       dispatch({type: SET_SERVER_PARAM, serverType: ServerTypes.local, name: 'hostname', value: undefined});
       if (getState().session.serverType === 'local') {
-        changeServerType('remote')(dispatch);
+        changeServerType('remote')(dispatch, getState);
       }
     }
   };

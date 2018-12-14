@@ -90,7 +90,7 @@ export default class NewSessionForm extends Component {
         <Col order={1} span={12} className={`${SessionStyles.capsFormCol} ${isEditingDesiredCaps ? SessionStyles.capsFormDisabled : ''}`}>
           <Form>
             {caps.map((cap, index) => {
-              return <div style={{"fontSize": "12px"}} key={index}>
+              return <div key={index}>
                 <Row gutter={8}>
                   <Col span={7}>
                     <FormItem>
@@ -114,7 +114,7 @@ export default class NewSessionForm extends Component {
                     </FormItem>
                   </Col>
                   <Col span={2}>
-                    <div style={{"float": "right"}}>
+                    <div className={SessionStyles.btnDeleteCap}>
                       <FormItem>
                         <Button {...{disabled: caps.length <= 1 || isEditingDesiredCaps}} icon='delete' onClick={() => removeCapability(index)}/>
                       </FormItem>
