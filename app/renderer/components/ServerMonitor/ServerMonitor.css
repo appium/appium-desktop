@@ -53,7 +53,7 @@
   color: orange;
 }
 
-.status span {
+.status i {
   margin-right: 10px;
 }
 
@@ -95,41 +95,9 @@
   -webkit-user-select: text;
 }
 
-.term span.icon {
+.term i {
   margin-right: 8px;
   font-size: 0.9em;
   display: inline-block;
   width: 10px;
-}
-
-.term :global(span.anticon-info-circle:before) {
-  color: #5252bf;
-}
-
-.term :global(span.anticon-exclamation-circle:before) {
-  color: yellow;
-}
-
-.term :global(span.anticon-close-circle:before) {
-  color: red;
-}
-
-.term :global(span.anticon-message:before) {
-  color: #999;
-}
-
-.term .last {
-  border-bottom: 1px dashed #a0a0a0;
-  margin-top: 10px;
-}
-
-.button-container button {
-  padding: 8px;
-  margin-right: 8px;
-  height: auto;
-}
-
-.term .timestamp {
-  color: #666;
-  margin-right: 0.6em;
 }
