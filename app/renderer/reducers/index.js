@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import { routerReducer as routing } from 'react-router-redux';
+import { connectRouter } from 'connected-react-router';
 import startServer from './StartServer';
 import serverMonitor from './ServerMonitor';
 import session from './Session';
@@ -8,14 +8,14 @@ import updater from './Updater';
 import config from './Config';
 
 // create our root reducer
-const rootReducer = combineReducers({
-  routing,
-  startServer,
-  serverMonitor,
-  session,
-  inspector,
-  updater,
-  config,
-});
-
-export default rootReducer;
+export default function createRootReducer (history) {
+  return combineReducers({
+    router: connectRouter(history),
+    startServer,
+    serverMonitor,
+    session,
+    inspector,
+    updater,
+    config,
+  });
+}

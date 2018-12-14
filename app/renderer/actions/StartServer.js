@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import { ipcRenderer } from 'electron';
-import { push } from 'react-router-redux';
+import { push } from 'connected-react-router';
 import { serverLogsReceived, clearLogs, setServerArgs } from './ServerMonitor';
 import settings from '../../shared/settings';
 

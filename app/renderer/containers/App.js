@@ -1,9 +1,10 @@
-import { Component } from 'react';
+import * as React from 'react';
 import PropTypes from 'prop-types';
 
-export default class App extends Component {
+export default class App extends React.Component {
   render () {
-    return this.props.children;
+    const { children } = this.props;
+    return <React.Fragment>{children}</React.Fragment>;
   }
 }
 
