@@ -1,19 +1,32 @@
 @import "../../../node_modules/antd/dist/antd.less";
 
+// ANTD variables
 @font-size-base: 12px;
+@font-family : "Helvetica Neue For Number", -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+@input-addon-bg: #eee;
 
+// Global styles
 body {
   color: #222 !important;
   box-sizing: border-box;
 }
 
+body::-webkit-scrollbar {
+  width: 0px;
+  background: transparent;
+}
+
+body::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+
 #root {
   height: 100%;
   background: linear-gradient(180deg, #f9f9f9, #f2f2f2, 5%, #f2f2f2, 95%, #d9d9d9);
-}
-
-#root .ant-spin-nested-loading > div > .ant-spin {
-  max-height: initial;
+  .ant-spin-nested-loading > div > .ant-spin {
+    max-height: initial;
+  }
 }
 
 .window {
@@ -42,31 +55,28 @@ body {
   z-index: 1000;
 }
 
-body::-webkit-scrollbar {
-  width: 0px;
-  background: transparent;
-}
+.ant-input-group {
+  .ant-select {
+    height: 100%;
+  }
+  
+  .ant-select-selection {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    height: 100%;
+    padding-top: 0;
+    .ant-select-selection-selected-value {
+      padding-top: 2px;
+    }
+  }
 
-body::-webkit-scrollbar-corner {
-  background: transparent;
-}
+  .ant-input-group-addon {
+    padding-left: @padding-xs;
+  }  
+  
+  .select-container {
+    height: 32px;
+  }
 
-.ant-input-group .ant-select {
-  height: 100%;
-}
 
-.ant-input-group .ant-select-selection {
-  border-top-left-radius: 0;
-  border-bottom-left-radius: 0;
-  height: 100%;
-  padding-top: 0;
 }
-
-.ant-input-group .ant-select-selection .ant-select-selection-selected-value {
-  padding-top: 2px;
-}
-
-.ant-input-group .select-container {
-  height: 32px;
-}
-

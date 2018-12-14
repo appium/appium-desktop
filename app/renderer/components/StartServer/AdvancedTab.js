@@ -36,7 +36,7 @@ export default class AdvancedTab extends Component {
           <Input ref={argName} type="text"
             defaultValue={serverArgs[argName]}
             name={argName} onChange={updateArg.bind(this)}
-            addonBefore={label} size="large"
+            addonBefore={label}
           />
         </div>
       );
@@ -47,7 +47,7 @@ export default class AdvancedTab extends Component {
         <div className={styles.input}>
           <Checkbox ref={argName}
             name={argName} defaultChecked={serverArgs[argName]}
-            onChange={updateArg.bind(this)} size="large"
+            onChange={updateArg.bind(this)}
           >{label}</Checkbox>
         </div>
       );
