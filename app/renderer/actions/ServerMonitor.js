@@ -1,5 +1,5 @@
 import { ipcRenderer, shell } from 'electron';
-import { push } from 'react-router-redux';
+import { push } from 'connected-react-router';
 
 export const SERVER_STOP_REQ = 'SERVER_STOP_REQ';
 export const SERVER_STOP_OK = 'SERVER_STOP_OK';

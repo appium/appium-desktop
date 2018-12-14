@@ -1,7 +1,7 @@
 import { ipcRenderer } from 'electron';
 import settings from '../../shared/settings';
 import { v4 as UUID } from 'uuid';
-import { push } from 'react-router-redux';
+import { push } from 'connected-react-router';
 import { notification } from 'antd';
 import { debounce, toPairs } from 'lodash';
 import { setSessionDetails } from './Inspector';
