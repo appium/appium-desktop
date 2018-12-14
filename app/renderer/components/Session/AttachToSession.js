@@ -16,6 +16,7 @@ export default class AttachToSession extends Component {
 
   render () {
     let {attachSessId, setAttachSessId, runningAppiumSessions, getRunningSessions} = this.props;
+    attachSessId = attachSessId || "";
     return (<Form>
       <FormItem>
         <Card>

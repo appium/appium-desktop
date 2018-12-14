@@ -3,13 +3,17 @@
     color: white;
 }
 
-.session-container {
+.sessionContainer {
     width: 100%;
     height: 100%;
     padding: 1em;
     background: linear-gradient(180deg, #f9f9f9, #f2f2f2, 5%, #f2f2f2, 95%, #d9d9d9);
     display: flex;
     flex-flow: column;
+}
+
+.serverTabs :global(.ant-row > div) {
+  height: 56px;
 }
 
 .sessionFooter {

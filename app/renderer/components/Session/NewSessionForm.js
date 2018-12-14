@@ -88,9 +88,9 @@ export default class NewSessionForm extends Component {
     return <div>
       <Row type="flex" align="top" justify="start" className={SessionStyles.capsFormRow}>
         <Col order={1} span={12} className={`${SessionStyles.capsFormCol} ${isEditingDesiredCaps ? SessionStyles.capsFormDisabled : ''}`}>
-          <Form inline>
+          <Form>
             {caps.map((cap, index) => {
-              return <div style={{"font-size": "12px"}} key={index}>
+              return <div style={{"fontSize": "12px"}} key={index}>
                 <Row gutter={8}>
                   <Col span={7}>
                     <FormItem>

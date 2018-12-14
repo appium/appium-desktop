@@ -78,8 +78,8 @@ export default class Session extends Component {
     const kobitonTabHead = <span className={SessionStyles.tabText}><img src={KobitonLogo} /></span>;
 
     return <Spin spinning={!!sessionLoading}>
-      <div className={SessionStyles['session-container']}>
-        <div id='serverTypeTabs'>
+      <div className={SessionStyles.sessionContainer}>
+        <div id='serverTypeTabs' className={SessionStyles.serverTab}>
           <Tabs activeKey={serverType} onChange={changeServerType} className={SessionStyles.serverTabs}>
             <TabPane disabled={!server.local.port} tab='Automatic Server' key={ServerTypes.local}>
               <ServerTabAutomatic {...this.props} />

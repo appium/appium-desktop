@@ -20,8 +20,8 @@ export default class ServerTabTestobject extends Component {
       <Row gutter={8}>
         <Col span={24}>
           <FormItem>
-            <div class="ant-input-group-addon" style={{"height": "32px", "border-right": "1", "border-right-style": "solid"}}>TestObject Data Center</div>
-            <Radio.Group style={{"margin-left": "8px"}} buttonStyle="solid" defaultValue='us1' id='testObjectDataCenter' value={server.testobject.dataCenter} onChange={(e) => setServerParam('dataCenter', e.target.value)}>
+            <div class="ant-input-group-addon" style={{"height": "32px", "borderRightStyle": "solid"}}>TestObject Data Center</div>
+            <Radio.Group style={{"marginLeft": "8px"}} buttonStyle="solid" defaultValue='us1' id='testObjectDataCenter' value={server.testobject.dataCenter} onChange={(e) => setServerParam('dataCenter', e.target.value)}>
               <Radio value='us1'>US</Radio>
               <Radio value='eu1'>EU</Radio>
             </Radio.Group>
