@@ -1,49 +1,29 @@
 import React from 'react';
 import { render } from 'react-dom';
-import { Provider } from 'react-redux';
-import { Router, hashHistory } from 'react-router';
-import { syncHistoryWithStore } from 'react-router-redux';
-import electron from 'electron';
-import WrongFolder from './components/WrongFolder/WrongFolder';
-import routes from './routes';
-import store from './store/store';
+import Root from './containers/Root';
+import { AppContainer } from 'react-hot-loader';
+import Store from './store/configureStore';
 
-const { app } = electron.remote;
-const isDev = process.env.NODE_ENV === 'development';
-const history = syncHistoryWithStore(hashHistory, store);
+const { history, configureStore } = Store;
 
-function shouldShowWrongFolderComponent () {
-  // If we set an ENV to show wrong folder
-  if (process.env.WRONG_FOLDER) {
-    return true;
-  }
+const store = configureStore();
 
-  // If we set an ENV to require it to NOT be shown don't show it
-  if (process.env.FORCE_NO_WRONG_FOLDER) {
-    return false;
-  }
-
-  return (app.isInApplicationsFolder && !app.isInApplicationsFolder()) && !isDev;
-}
-
-const router = <Router history={history}>
-  {routes}
-</Router>;
-
-function renderApp () {
-  render(
-    <Provider store={store}>
-      {shouldShowWrongFolderComponent() ?
-        <WrongFolder /> :
-        router
-      }
-    </Provider>,
-    document.getElementById('root')
-  );
-}
-
-renderApp();
+render(
+  <AppContainer>
+    <Root store={store} history={history} />
+  </AppContainer>,
+  document.getElementById('root')
+);
 
 if (module.hot) {
-  module.hot.accept(renderApp);
+  module.hot.accept('./containers/Root', () => {
+    // eslint-disable-next-line global-require
+    const NextRoot = require('./containers/Root').default;
+    render(
+      <AppContainer>
+        <NextRoot store={store} history={history} />
+      </AppContainer>,
+      document.getElementById('root')
+    );
+  });
 }

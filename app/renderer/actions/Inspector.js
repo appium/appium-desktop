@@ -1,6 +1,6 @@
 import { ipcRenderer } from 'electron';
 import { notification } from 'antd';
-import { push } from 'react-router-redux';
+import { push } from 'connected-react-router';
 import _ from 'lodash';
 import B from 'bluebird';
 import { getLocators } from '../components/Inspector/shared';
