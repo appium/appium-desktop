@@ -26,17 +26,17 @@ export default class NewSessionForm extends Component {
       onClick={() => this.getLocalFilePath((filepath) => setCapabilityParam(index, 'value', filepath[0]))} />;
 
     switch (cap.type) {
-      case 'text': return <Input disabled={isEditingDesiredCaps} id={`desiredCapabilityValue_${index}`} placeholder='Value' value={cap.value} onChange={(e) => setCapabilityParam(index, 'value', e.target.value)} size="large"/>;
+      case 'text': return <Input disabled={isEditingDesiredCaps} id={`desiredCapabilityValue_${index}`} placeholder='Value' value={cap.value} onChange={(e) => setCapabilityParam(index, 'value', e.target.value)} />;
       case 'boolean': return <Switch disabled={isEditingDesiredCaps} id={`desiredCapabilityValue_${index}`} checkedChildren={'true'} unCheckedChildren={'false'}
         placeholder='Value' checked={cap.value} onChange={(value) => setCapabilityParam(index, 'value', value)} />;
       case 'number': return <Input disabled={isEditingDesiredCaps} id={`desiredCapabilityValue_${index}`} placeholder='Value' value={cap.value}
-        onChange={(e) => !isNaN(parseInt(e.target.value, 10)) ? setCapabilityParam(index, 'value', parseInt(e.target.value, 10)) : setCapabilityParam(index, 'value', undefined)} size="large"/>;
+        onChange={(e) => !isNaN(parseInt(e.target.value, 10)) ? setCapabilityParam(index, 'value', parseInt(e.target.value, 10)) : setCapabilityParam(index, 'value', undefined)} />;
       case 'object':
       case 'json_object':
         return <Input disabled={isEditingDesiredCaps} id={`desiredCapabilityValue_${index}`} type='textarea' rows={4} placeholder='Value' value={cap.value}
-          onChange={(e) => setCapabilityParam(index, 'value', e.target.value)} size="large"/>;
+          onChange={(e) => setCapabilityParam(index, 'value', e.target.value)} />;
       case 'file': return <div className={SessionStyles.fileControlWrapper}>
-        <Input disabled={isEditingDesiredCaps} id={`desiredCapabilityValue_${index}`} placeholder='Value' value={cap.value} addonAfter={buttonAfter} size="large"/>
+        <Input disabled={isEditingDesiredCaps} id={`desiredCapabilityValue_${index}`} placeholder='Value' value={cap.value} addonAfter={buttonAfter} />
       </div>;
 
       default:
@@ -87,39 +87,52 @@ export default class NewSessionForm extends Component {
 
     return <div>
       <Row type="flex" align="top" justify="start" className={SessionStyles.capsFormRow}>
-        <Col order={1} className={`${SessionStyles.capsFormCol} ${isEditingDesiredCaps ? SessionStyles.capsFormDisabled : ''}`}>
+        <Col order={1} span={12} className={`${SessionStyles.capsFormCol} ${isEditingDesiredCaps ? SessionStyles.capsFormDisabled : ''}`}>
           <Form inline>
             {caps.map((cap, index) => {
-              return <div key={index} className={SessionStyles['desired-capabilities-form-container']}>
-                <FormItem>
-                  <Input disabled={isEditingDesiredCaps} id={`desiredCapabilityName_${index}`} placeholder='Name' value={cap.name} onChange={(e) => setCapabilityParam(index, 'name', e.target.value)}/>
-                </FormItem>
-                <FormItem>
-                  <Select disabled={isEditingDesiredCaps} onChange={(val) => this.handleSetType(index, val)} defaultValue={cap.type} size="large" style={{width: 120}}>
-                    <Option value='text'>text</Option>
-                    <Option value='boolean'>boolean</Option>
-                    <Option value='number'>number</Option>
-                    <Option value='object'>JSON object</Option>
-                    <Option value='file'>filepath</Option>
-                  </Select>
-                </FormItem>
-                <FormItem className={SessionStyles.capsValueControl}>
-                  {this.getCapsControl(cap, index)}
-                </FormItem>
-                <FormItem>
-                  <Button {...{disabled: caps.length <= 1 || isEditingDesiredCaps}} icon='delete' onClick={() => removeCapability(index)}/>
-                </FormItem>
+              return <div style={{"font-size": "12px"}} key={index}>
+                <Row gutter={8}>
+                  <Col span={7}>
+                    <FormItem>
+                      <Input disabled={isEditingDesiredCaps} id={`desiredCapabilityName_${index}`} placeholder='Name' value={cap.name} onChange={(e) => setCapabilityParam(index, 'name', e.target.value)}/>
+                    </FormItem>
+                  </Col>
+                  <Col span={8}>
+                    <FormItem>
+                      <Select disabled={isEditingDesiredCaps} onChange={(val) => this.handleSetType(index, val)} defaultValue={cap.type}>
+                        <Option value='text'>text</Option>
+                        <Option value='boolean'>boolean</Option>
+                        <Option value='number'>number</Option>
+                        <Option value='object'>JSON object</Option>
+                        <Option value='file'>filepath</Option>
+                      </Select>
+                    </FormItem>
+                  </Col>
+                  <Col span={7}>
+                    <FormItem>
+                      {this.getCapsControl(cap, index)}
+                    </FormItem>
+                  </Col>
+                  <Col span={2}>
+                    <div style={{"float": "right"}}>
+                      <FormItem>
+                        <Button {...{disabled: caps.length <= 1 || isEditingDesiredCaps}} icon='delete' onClick={() => removeCapability(index)}/>
+                      </FormItem>
+                    </div>
+                  </Col>
+                </Row>
               </div>;
             })}
-            <div className={SessionStyles.capsFormLastRow}>
-              <FormItem>
-                <Button disabled={isEditingDesiredCaps} id='btnAddDesiredCapability' icon='plus' onClick={addCapability} className={SessionStyles['add-desired-capability-button']} />
-              </FormItem>
-            </div>
+            <Row>
+              <Col span={24}>
+                <FormItem>
+                  <Button disabled={isEditingDesiredCaps} id='btnAddDesiredCapability' icon='plus' onClick={addCapability} className={SessionStyles['add-desired-capability-button']} />
+                </FormItem>
+              </Col>
+            </Row>
           </Form>
         </Col>
-
-        <Col order={2} className={SessionStyles.capsFormattedCol}>
+        <Col order={2} span={12} className={SessionStyles.capsFormattedCol}>
           <FormattedCaps {...this.props} />
           <Modal visible={showSaveAsModal}
             title='Save Capability Set As...'

@@ -87,19 +87,6 @@
     min-width: 476px;
 }
 
-.capsFormRow {
-    flex-wrap: nowrap;
-}
-
-.capsFormattedCol {
-    flex-grow: 1;
-}
-
-.capsFormLastRow {
-  width: 100%;
-  text-align: right;
-}
-
 .capsValueControl {
   width: 142px;
 }
@@ -107,18 +94,6 @@
 .fileControlWrapper :global(.ant-input-group),
 .capsValueControl textarea {
   max-width: 142px;
-}
-
-.desired-capabilities-form-container {
-    margin-bottom: 1em;
-}
-
-.desired-capabilities-form-container .add-desired-capability-button {
-    display: none;
-}
-
-.desired-capabilities-form-container:last-child .add-desired-capability-button {
-    display: initial;
 }
 
 .localDesc {
@@ -148,4 +123,12 @@
 
 .advancedSettingsContainer {
   padding-top: 12px;
+}
+
+.add-desired-capability-button {
+  float: right;
+}
+
+.edit-session {
+  margin-right: 10px;
 }

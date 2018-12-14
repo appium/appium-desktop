@@ -13,26 +13,27 @@ export default class NewSessionForm extends Component {
   render () {
     const {caps, title, isEditingDesiredCaps, startDesiredCapsEditor, abortDesiredCapsEditor, saveRawDesiredCaps, setRawDesiredCaps, rawDesiredCaps,
            isValidCapsJson, invalidCapsJsonReason} = this.props;
-    return caps && <Card title={title || "JSON Representation"}
-      className={SessionCSS['formatted-caps']}>
-      <div className={SessionCSS.capsEditorControls}>
-        {isEditingDesiredCaps && <Tooltip title='Cancel'>
-          <Button onClick={abortDesiredCapsEditor} icon='close' className={SessionCSS.capsEditorButton} />
-        </Tooltip> }
-        {isEditingDesiredCaps && <Tooltip title='Save'>
-          <Button onClick={saveRawDesiredCaps} icon='save' className={SessionCSS.capsEditorButton} />
-        </Tooltip>}
-        {!isEditingDesiredCaps && <Tooltip title='Edit Raw JSON' placement="topRight" >
-          <Button onClick={startDesiredCapsEditor} icon='edit' />
-        </Tooltip> }
-      </div>
-      {isEditingDesiredCaps && <div>
-        <textarea rows='9' onChange={(e) => setRawDesiredCaps(e.target.value)} value={rawDesiredCaps} className={SessionCSS.capsEditor} />
-        {!isValidCapsJson && <Alert message={invalidCapsJsonReason} type="error" />}
-      </div>}
-      {!isEditingDesiredCaps && <div>
-        <pre>{this.getFormattedJSON(caps)}</pre>
-      </div>}
-    </Card>;
+    return caps && <div style={{"margin-left": "12px"}}>
+      <Card title={title || "JSON Representation"} className={SessionCSS['formatted-caps']}>
+        <div className={SessionCSS.capsEditorControls}>
+          {isEditingDesiredCaps && <Tooltip title='Cancel'>
+            <Button onClick={abortDesiredCapsEditor} icon='close' className={SessionCSS.capsEditorButton} />
+          </Tooltip> }
+          {isEditingDesiredCaps && <Tooltip title='Save'>
+            <Button onClick={saveRawDesiredCaps} icon='save' className={SessionCSS.capsEditorButton} />
+          </Tooltip>}
+          {!isEditingDesiredCaps && <Tooltip title='Edit Raw JSON' placement="topRight" >
+            <Button onClick={startDesiredCapsEditor} icon='edit' />
+          </Tooltip> }
+        </div>
+        {isEditingDesiredCaps && <div>
+          <textarea rows='9' onChange={(e) => setRawDesiredCaps(e.target.value)} value={rawDesiredCaps} className={SessionCSS.capsEditor} />
+          {!isValidCapsJson && <Alert message={invalidCapsJsonReason} type="error" />}
+        </div>}
+        {!isEditingDesiredCaps && <div>
+          <pre>{this.getFormattedJSON(caps)}</pre>
+        </div>}
+      </Card>
+    </div>;
   }
 }
