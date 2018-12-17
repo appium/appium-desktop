@@ -22,7 +22,7 @@ export default class ServerTabSauce extends Component {
         </Col>
       </Row>
       <Row gutter={8}>
-        <Col span={10} style={{'paddingLeft': '10px'}}>
+        <Col span={10}>
           <FormItem>
             <Checkbox checked={!!server.sauce.useSCProxy} onChange={(e) => setServerParam('useSCProxy', e.target.checked)}> Proxy through Sauce Connect's Selenium Relay</Checkbox>
           </FormItem>

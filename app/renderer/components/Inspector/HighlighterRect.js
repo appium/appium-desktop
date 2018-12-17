@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
 import InspectorCSS from './Inspector.css';
 import { parseCoordinates } from './shared';
 

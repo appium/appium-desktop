@@ -3,7 +3,7 @@
     color: white;
 }
 
-.session-container {
+.sessionContainer {
     width: 100%;
     height: 100%;
     padding: 1em;
@@ -12,14 +12,17 @@
     flex-flow: column;
 }
 
-.session-container {
-    width: 100%;
-    padding: 1em;
+.serverTabs :global(.ant-row > div) {
+  height: 56px;
 }
 
 .sessionFooter {
   text-align: right;
   height: 30px;
+}
+
+.sessionFooter .desiredCapsLink {
+  float: left;
 }
 
 .tabText img {
@@ -69,13 +72,14 @@
   width: 0px;
 }
 
-.formatted-caps {
+.formattedCaps {
     width: 100%;
     margin-bottom: 15px;
+    margin-left: 12px;
     min-height: 250px;
 }
 
-.formatted-caps pre {
+.formattedCaps pre {
   white-space: pre-wrap;
   word-wrap: break-word;
 }
@@ -93,16 +97,7 @@
 }
 
 .capsFormRow {
-    flex-wrap: nowrap;
-}
-
-.capsFormattedCol {
-    flex-grow: 1;
-}
-
-.capsFormLastRow {
-  width: 100%;
-  text-align: right;
+  font-size: 14px;
 }
 
 .capsValueControl {
@@ -114,18 +109,6 @@
   max-width: 142px;
 }
 
-.desired-capabilities-form-container {
-    margin-bottom: 1em;
-}
-
-.desired-capabilities-form-container .add-desired-capability-button {
-    display: none;
-}
-
-.desired-capabilities-form-container:last-child .add-desired-capability-button {
-    display: initial;
-}
-
 .localDesc {
     font-style: italic;
     color: #666;
@@ -133,10 +116,6 @@
 
 .selected {
   background-color: #d6e8ff;
-}
-
-.customServerInputLeft {
-  width: 98% !important;
 }
 
 .capsEditorControls {
@@ -153,4 +132,34 @@
   width: 100%;
   height: 100%;
   border-color: lightgray;
+}
+
+.advancedSettingsContainer {
+  padding-top: 12px;
+}
+
+.add-desired-capability-button {
+  float: right;
+}
+
+.edit-session {
+  margin-right: 10px;
+}
+
+.btnReload {
+  float: right;
+  margin-left: 8px;
+}
+
+.btnDeleteCap {
+  float: right;
+}
+
+.inputDataCenter {
+  margin-left: 8px;
+}
+
+.addonDataCenter {
+  height: 32px;
+  border-right: 1px solid #d9d9d9 !important;
 }
