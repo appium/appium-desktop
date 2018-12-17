@@ -37,8 +37,3 @@ export default class Root extends Component {
     );
   }
 }
-
-/*Root.propTypes = {
-  store: PropTypes.element.isRequired,
-  history: PropTypes.element.isRequired,
-};*/

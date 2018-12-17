@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form, Card, Select, Button } from 'antd';
+import { Form, Card, Select, Button, Row, Col } from 'antd';
 import SessionCSS from './Session.css';
 
 const FormItem = Form.Item;
@@ -16,6 +16,7 @@ export default class AttachToSession extends Component {
 
   render () {
     let {attachSessId, setAttachSessId, runningAppiumSessions, getRunningSessions} = this.props;
+    attachSessId = attachSessId || "";
     return (<Form>
       <FormItem>
         <Card>
@@ -23,19 +24,25 @@ export default class AttachToSession extends Component {
         </Card>
       </FormItem>
       <FormItem>
-        <Select showSearch
-          mode='combobox'
-          notFoundContent='None found'
-          placeholder='Enter your session ID here'
-          value={attachSessId}
-          onChange={(value) => setAttachSessId(value)}>
-          {runningAppiumSessions.map((session) => <Select.Option key={session.id} value={session.id}>
-            <div>{session.id} -- {formatCaps(session.capabilities)}</div>
-          </Select.Option>)}
-        </Select>
-        <div className='inner-button'>
-          <Button onClick={getRunningSessions} icon='reload' />
-        </div>
+        <Row>
+          <Col span={23}>
+            <Select showSearch
+              mode='combobox'
+              notFoundContent='None found'
+              placeholder='Enter your session ID here'
+              value={attachSessId}
+              onChange={(value) => setAttachSessId(value)}>
+              {runningAppiumSessions.map((session) => <Select.Option key={session.id} value={session.id}>
+                <div>{session.id} -- {formatCaps(session.capabilities)}</div>
+              </Select.Option>)}
+            </Select>
+          </Col>
+          <Col span={1}>
+            <div className={SessionCSS.btnReload}>
+              <Button onClick={getRunningSessions} icon='reload' />
+            </div>
+          </Col>
+        </Row>
       </FormItem>
     </Form>);
   }

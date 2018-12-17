@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Button, Tooltip } from 'antd';
+import { Button, Tooltip, Icon } from 'antd';
 import { STATUS_RUNNING, STATUS_STOPPING,
          STATUS_STOPPED } from '../../reducers/ServerMonitor';
 import styles from './ServerMonitor.css';
@@ -126,15 +126,15 @@ export default class ServerMonitor extends Component {
     let statusIcon, statusMsg;
     switch (serverStatus) {
       case STATUS_RUNNING:
-        statusIcon = "anticon-retweet";
+        statusIcon = "play-circle";
         statusMsg = "The server is running";
         break;
       case STATUS_STOPPED:
-        statusIcon = "anticon-pause-circle";
+        statusIcon = "pause-circle";
         statusMsg = "The server is stopped";
         break;
       case STATUS_STOPPING:
-        statusIcon = "anticon-loading";
+        statusIcon = "loading";
         statusMsg = "The server is waiting for all connections to close";
         break;
       default:
@@ -143,9 +143,10 @@ export default class ServerMonitor extends Component {
 
     let logLineSection = logLines.slice(logLines.length - MAX_LOGS_RENDERED).map((line, i) => {
       let icn = leveler(line.level);
+
       return (
         <div key={i}>
-          <span className={`${styles.icon} anticon anticon-${icn}`} />
+          <Icon type={icn} theme="filled" />
           {
             serverArgs.logTimestamp &&
             <span className={styles.timestamp}>
@@ -173,7 +174,7 @@ export default class ServerMonitor extends Component {
         <div className={`${styles.bar} ${styles['bar-' + serverStatus]}`}>
           <img src={AppiumSmallMagenta} className={styles.logo} />
           <div className={`${styles.status} ${styles[serverStatus]}`}>
-            <span className={`icon anticon ${statusIcon}`} />
+            <Icon type={statusIcon} theme="filled" />
             {statusMsg}
           </div>
           <div className={`${styles['button-container']}`}>

@@ -17,11 +17,11 @@ export default class SimpleTab extends Component {
           <Input ref="address" defaultValue={serverArgs.address}
             addonBefore="Host"
             name="address" onChange={updateArg.bind(this)}
-            size="large" id="simpleHostInput"
+            id="simpleHostInput"
           />
           <Input ref="port" defaultValue={serverArgs.port}
             addonBefore="Port" name="port" onChange={updateArg.bind(this)}
-            size="large" id="simplePortInput"
+            id="simplePortInput"
           />
           <div className="form-actions">
             <StartButton {...{serverStarting, startServer, serverVersion}} />
