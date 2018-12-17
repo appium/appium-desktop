@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Form, Row, Col, Input, Checkbox } from 'antd';
-import SessionStyles from './Session.css';
 
 const FormItem = Form.Item;
 
