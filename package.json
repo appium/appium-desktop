@@ -110,6 +110,7 @@
     "bluebird": "^3.5.1",
     "connected-react-router": "^6.0.0",
     "css-modules-require-hook": "^4.2.3",
+    "dpgraham-wd": "^1.11.2",
     "electron-debug": "^2.0.0",
     "electron-log": "^2.2.17",
     "electron-settings": "^2.2.4",
@@ -125,6 +126,7 @@
     "prop-types": "^15.6.2",
     "react": "^16.6.3",
     "react-dom": "^16.6.3",
+    "react-hot-loader": "^4.3.12",
     "react-redux": "^6.0.0",
     "react-router": "^4.3.1",
     "redux": "^4.0.1",
@@ -136,9 +138,7 @@
     "teen_process": "^1.11.0",
     "temp": "0.x",
     "uuid": "3.x",
-    "wd": "^1.6.0",
-    "xpath": "0.0.27",
-    "react-hot-loader": "^4.3.12"
+    "xpath": "0.0.27"
   },
   "devDependencies": {
     "7zip": "0.0.6",
