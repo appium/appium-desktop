@@ -2,7 +2,7 @@ import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import { startServer as startAppiumFakeDriverServer } from 'appium-fake-driver';
 import path from 'path';
-import wd from 'wd';
+import wd from 'dpgraham-wd';
 import AppiumMethodHandler from '../../app/main/appium-method-handler';
 
 const should = chai.should();

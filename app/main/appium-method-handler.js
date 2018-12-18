@@ -1,5 +1,5 @@
 import Bluebird from 'bluebird';
-import wd from 'wd';
+import wd from 'dpgraham-wd';
 import log from 'electron-log';
 import _ from 'lodash';
 

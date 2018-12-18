@@ -107,6 +107,7 @@
     "appium-support": "^2.22.0",
     "bluebird": "^3.5.1",
     "css-modules-require-hook": "^4.2.3",
+    "dpgraham-wd": "^1.11.2",
     "electron-debug": "^1.5.0",
     "electron-log": "^1.3.0",
     "electron-settings": "2.x",
@@ -132,8 +133,7 @@
     "teen_process": "^1.11.0",
     "temp": "0.x",
     "uuid": "3.x",
-    "wd": "^1.6.0",
-    "xpath": "0.0.24"
+    "xpath": "0.0.27"
   },
   "devDependencies": {
     "7zip": "0.0.6",

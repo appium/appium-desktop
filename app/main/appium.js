@@ -4,7 +4,7 @@ import { ipcMain, app } from 'electron';
 import { main as appiumServer } from 'appium';
 import { getDefaultArgs } from 'appium/build/lib/parser';
 import path from 'path';
-import wd from 'wd';
+import wd from 'dpgraham-wd';
 import { fs, tempDir } from 'appium-support';
 import _ from 'lodash';
 import settings from '../settings';
