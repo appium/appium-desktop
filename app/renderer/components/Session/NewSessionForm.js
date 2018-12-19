@@ -119,7 +119,7 @@ export default class NewSessionForm extends Component {
                     </FormItem>
                   </div>
                 </Col>
-              </Row>
+              </Row>;
             })}
             <Row>
               <Col span={24}>
