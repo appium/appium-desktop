@@ -90,38 +90,36 @@ export default class NewSessionForm extends Component {
         <Col order={1} span={12} className={`${SessionStyles.capsFormCol} ${isEditingDesiredCaps ? SessionStyles.capsFormDisabled : ''}`}>
           <Form>
             {caps.map((cap, index) => {
-              return <div key={index}>
-                <Row gutter={8}>
-                  <Col span={7}>
+              return <Row gutter={8} key={index}>
+                <Col span={7}>
+                  <FormItem>
+                    <Input disabled={isEditingDesiredCaps} id={`desiredCapabilityName_${index}`} placeholder='Name' value={cap.name} onChange={(e) => setCapabilityParam(index, 'name', e.target.value)}/>
+                  </FormItem>
+                </Col>
+                <Col span={8}>
+                  <FormItem>
+                    <Select disabled={isEditingDesiredCaps} onChange={(val) => this.handleSetType(index, val)} defaultValue={cap.type}>
+                      <Option value='text'>text</Option>
+                      <Option value='boolean'>boolean</Option>
+                      <Option value='number'>number</Option>
+                      <Option value='object'>JSON object</Option>
+                      <Option value='file'>filepath</Option>
+                    </Select>
+                  </FormItem>
+                </Col>
+                <Col span={7}>
+                  <FormItem>
+                    {this.getCapsControl(cap, index)}
+                  </FormItem>
+                </Col>
+                <Col span={2}>
+                  <div className={SessionStyles.btnDeleteCap}>
                     <FormItem>
-                      <Input disabled={isEditingDesiredCaps} id={`desiredCapabilityName_${index}`} placeholder='Name' value={cap.name} onChange={(e) => setCapabilityParam(index, 'name', e.target.value)}/>
+                      <Button {...{disabled: caps.length <= 1 || isEditingDesiredCaps}} icon='delete' onClick={() => removeCapability(index)}/>
                     </FormItem>
-                  </Col>
-                  <Col span={8}>
-                    <FormItem>
-                      <Select disabled={isEditingDesiredCaps} onChange={(val) => this.handleSetType(index, val)} defaultValue={cap.type}>
-                        <Option value='text'>text</Option>
-                        <Option value='boolean'>boolean</Option>
-                        <Option value='number'>number</Option>
-                        <Option value='object'>JSON object</Option>
-                        <Option value='file'>filepath</Option>
-                      </Select>
-                    </FormItem>
-                  </Col>
-                  <Col span={7}>
-                    <FormItem>
-                      {this.getCapsControl(cap, index)}
-                    </FormItem>
-                  </Col>
-                  <Col span={2}>
-                    <div className={SessionStyles.btnDeleteCap}>
-                      <FormItem>
-                        <Button {...{disabled: caps.length <= 1 || isEditingDesiredCaps}} icon='delete' onClick={() => removeCapability(index)}/>
-                      </FormItem>
-                    </div>
-                  </Col>
-                </Row>
-              </div>;
+                  </div>
+                </Col>
+              </Row>
             })}
             <Row>
               <Col span={24}>

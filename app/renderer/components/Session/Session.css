@@ -100,6 +100,10 @@
   font-size: 14px;
 }
 
+.capsFormRow :global(.ant-form-item) {
+  margin-bottom: 0.5em;
+}
+
 .capsValueControl {
   width: 142px;
 }
