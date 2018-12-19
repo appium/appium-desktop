@@ -10,7 +10,6 @@ import advancedStyles from './AdvancedTab.css';
 import styles from './PresetsTab.css';
 
 export default class PresetsTab extends Component {
-  static propTypes = {...propTypes};
 
   constructor (props) {
     super(props);
@@ -146,3 +145,5 @@ export default class PresetsTab extends Component {
     );
   }
 }
+
+PresetsTab.propTypes = {...propTypes};
