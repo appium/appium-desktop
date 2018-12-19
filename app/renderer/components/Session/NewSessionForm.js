@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Button, Switch, Input, Modal, Form, Icon, Row, Col, Select } from 'antd';
 import { remote } from 'electron';
 import FormattedCaps from './FormattedCaps';
+import CapabilityControl from './CapabilityControl';
 import SessionStyles from './Session.css';
 const {dialog} = remote;
 const {Item: FormItem} = Form;
@@ -16,32 +17,6 @@ export default class NewSessionForm extends Component {
       }
     });
     this.handleSetType = this.handleSetType.bind(this);
-  }
-
-  getCapsControl (cap, index) {
-    const {setCapabilityParam, isEditingDesiredCaps} = this.props;
-
-    const buttonAfter = <Icon className={SessionStyles['filepath-button']}
-      type="file"
-      onClick={() => this.getLocalFilePath((filepath) => setCapabilityParam(index, 'value', filepath[0]))} />;
-
-    switch (cap.type) {
-      case 'text': return <Input disabled={isEditingDesiredCaps} id={`desiredCapabilityValue_${index}`} placeholder='Value' value={cap.value} onChange={(e) => setCapabilityParam(index, 'value', e.target.value)} />;
-      case 'boolean': return <Switch disabled={isEditingDesiredCaps} id={`desiredCapabilityValue_${index}`} checkedChildren={'true'} unCheckedChildren={'false'}
-        placeholder='Value' checked={cap.value} onChange={(value) => setCapabilityParam(index, 'value', value)} />;
-      case 'number': return <Input disabled={isEditingDesiredCaps} id={`desiredCapabilityValue_${index}`} placeholder='Value' value={cap.value}
-        onChange={(e) => !isNaN(parseInt(e.target.value, 10)) ? setCapabilityParam(index, 'value', parseInt(e.target.value, 10)) : setCapabilityParam(index, 'value', undefined)} />;
-      case 'object':
-      case 'json_object':
-        return <Input disabled={isEditingDesiredCaps} id={`desiredCapabilityValue_${index}`} type='textarea' rows={4} placeholder='Value' value={cap.value}
-          onChange={(e) => setCapabilityParam(index, 'value', e.target.value)} />;
-      case 'file': return <div className={SessionStyles.fileControlWrapper}>
-        <Input disabled={isEditingDesiredCaps} id={`desiredCapabilityValue_${index}`} placeholder='Value' value={cap.value} addonAfter={buttonAfter} />
-      </div>;
-
-      default:
-        throw `Invalid cap type: ${cap.type}`;
-    }
   }
 
   /**
@@ -109,7 +84,7 @@ export default class NewSessionForm extends Component {
                 </Col>
                 <Col span={7}>
                   <FormItem>
-                    {this.getCapsControl(cap, index)}
+                    <CapabilityControl cap={cap} onSetCapabilityParam={(value) => setCapabilityParam(index, 'value', value)} id={`desiredCapabilityValue_${index}`} />
                   </FormItem>
                 </Col>
                 <Col span={2}>
