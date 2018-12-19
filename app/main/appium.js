@@ -317,16 +317,18 @@ function connectClientMethodListener () {
   });
 }
 
+const getCurrentSessions = _.debounce(async (evt, data) => {
+  const {host, port, ssl} = data;
+  try {
+    const res = await request(`http${ssl ? 's' : ''}://${host}:${port}/wd/hub/sessions`);
+    evt.sender.send('appium-client-get-sessions-response', {res});
+  } catch (e) {
+    evt.sender.send('appium-client-get-sessions-fail');
+  }
+}, 2000);
+
 function connectGetSessionsListener () {
-  ipcMain.on('appium-client-get-sessions', async (evt, data) => {
-    const {host, port, ssl} = data;
-    try {
-      const res = await request(`http${ssl ? 's' : ''}://${host}:${port}/wd/hub/sessions`);
-      evt.sender.send('appium-client-get-sessions-response', {res});
-    } catch (e) {
-      evt.sender.send('appium-client-get-sessions-fail');
-    }
-  });
+  ipcMain.on('appium-client-get-sessions', getCurrentSessions);
 }
 
 function connectMoveToApplicationsFolder () {
