@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Switch, Input, Modal, Form, Icon, Row, Col, Select } from 'antd';
+import { Button, Input, Modal, Form, Row, Col, Select } from 'antd';
 import { remote } from 'electron';
 import FormattedCaps from './FormattedCaps';
 import CapabilityControl from './CapabilityControl';

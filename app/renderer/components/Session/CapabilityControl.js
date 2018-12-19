@@ -1,11 +1,6 @@
 import React, { Component } from 'react';
-import { Button, Switch, Input, Modal, Form, Icon, Row, Col, Select } from 'antd';
-import { remote } from 'electron';
-import FormattedCaps from './FormattedCaps';
+import { Switch, Input, Icon } from 'antd';
 import SessionStyles from './Session.css';
-const {dialog} = remote;
-const {Item: FormItem} = Form;
-const {Option} = Select;
 
 export default class NewSessionForm extends Component {
 
@@ -16,7 +11,6 @@ export default class NewSessionForm extends Component {
       type="file"
       onClick={() => this.getLocalFilePath((filepath) => onSetCapabilityParam(filepath[0]))} />;
 
-    console.log('*****cap', cap);
     switch (cap.type) {
       case 'text': return <Input disabled={isEditingDesiredCaps} id={id} placeholder='Value' value={cap.value} onChange={(e) => onSetCapabilityParam(e.target.value)} />;
       case 'boolean': return <Switch disabled={isEditingDesiredCaps} id={id} checkedChildren={'true'} unCheckedChildren={'false'}
