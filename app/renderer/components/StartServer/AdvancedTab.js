@@ -17,7 +17,6 @@ import styles from './AdvancedTab.css';
 // suppressAdbKillServer, webkitDebugProxyPort, defaultCapabilities
 
 export default class AdvancedTab extends Component {
-  static propTypes = {...propTypes};
 
   constructor (props) {
     super(props);
@@ -175,3 +174,5 @@ export default class AdvancedTab extends Component {
     );
   }
 }
+
+AdvancedTab.propTypes = {...propTypes};

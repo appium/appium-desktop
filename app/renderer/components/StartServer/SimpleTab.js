@@ -6,7 +6,6 @@ import StartButton from './StartButton';
 import styles from './SimpleTab.css';
 
 export default class SimpleTab extends Component {
-  static propTypes = {...propTypes}
 
   render () {
     const {startServer, serverArgs, serverStarting, serverVersion} = this.props;
@@ -31,3 +30,5 @@ export default class SimpleTab extends Component {
     );
   }
 }
+
+SimpleTab.propTypes = {...propTypes};

@@ -13,11 +13,6 @@ import AppiumLogo from '../../images/appium_logo.png';
 const TAB_SIMPLE = 0, TAB_ADVANCED = 1, TAB_PRESETS = 2;
 
 export default class StartServer extends Component {
-  static propTypes = {
-    ...propTypes,
-    tabId: PropTypes.number.isRequired,
-    switchTab: PropTypes.func.isRequired,
-  }
 
   displayTab () {
     switch (this.props.tabId) {
@@ -57,3 +52,9 @@ export default class StartServer extends Component {
     );
   }
 }
+
+StartServer.propTypes = {
+  ...propTypes,
+  tabId: PropTypes.number.isRequired,
+  switchTab: PropTypes.func.isRequired,
+};
