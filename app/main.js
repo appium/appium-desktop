@@ -1,3 +1,5 @@
+/* eslint global-require: off */
+
 import { app, BrowserWindow, Menu } from 'electron';
 import { initializeIpc } from './main/appium';
 import { setSavedEnv } from './main/helpers';
@@ -57,7 +59,7 @@ app.on('ready', async () => {
     minHeight: 600,
   });
 
-  mainWindow.loadURL(`file://${__dirname}/renderer/index.html`);
+  mainWindow.loadURL(`file://${__dirname}/../dist/renderer/index.html`);
 
   mainWindow.webContents.on('did-finish-load', () => {
     mainWindow.show();
