@@ -161,7 +161,7 @@
     "cross-env": "^5.2.0",
     "devtron": "1.x",
     "dir-compare": "^1.4.0",
-    "electron": "^3.0.13",
+    "electron": "^4.0.0",
     "electron-builder": "^20.38.2",
     "electron-builder-lib": "^20.15.3",
     "electron-builder-squirrel-windows": "^20.38.2",
