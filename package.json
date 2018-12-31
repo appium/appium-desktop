@@ -187,7 +187,7 @@
     "postcss-modules": "^1.4.1",
     "pre-commit": "^1.2.2",
     "react-addons-test-utils": "^15.6.2",
-    "release": "^4.0.2",
+    "release": "^5.0.0",
     "request": "^2.83.0",
     "rimraf": "^2.6.2",
     "sinon": "^7.1.1",
