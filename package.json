@@ -43,10 +43,15 @@
     "package-linux": "npm run build && build --linux",
     "package-all": "npm run build && build -mwl",
     "package-nsis": "cross-env TARGET=nsis npm run build && build --win nsis --publish onTagOrDraft && build --win nsis-web --publish onTagOrDraft",
-    "package-ci": "node ./check-engines package.json && npm run clean && npm run build && npm run test && build --publish onTagOrDraft && npm run test-e2e ",
+    "package-ci": "node ./check-engines package.json && npm run clean && npm run build && npm run test && build --publish onTagOrDraft && npm run test-e2e",
     "postinstall": "node ./check-engines package.json package.json && rimraf node_modules/jimp/browser",
     "postversion": "git pull --tags && git push && git push --tags",
-    "pre-commit": "npm run lint && mocha --reporter dot ./test/unit"
+    "pre-commit": "npm run lint && mocha --reporter dot ./test/unit",
+    "__SENTRY_SCRIPTS__": "",
+    "sentry:export-version": "cross-env VERSION=$(sentry-cli releases propose-version) && echo $VERSION",
+    "sentry:create-release": "sentry-cli releases new -p appium-desktop appium-desktop@$VERSION",
+    "sentry:upload-sourcemaps": "sentry-cli releases files appium-desktop@$VERSION upload-sourcemaps ./dist",
+    "sentry:finalize": "sentry-cli releases finalize appium-desktop@$VERSION"
   },
   "pre-commit": [
     "pre-commit"
@@ -107,6 +112,8 @@
   },
   "dependencies": {
     "@babel/polyfill": "^7.0.0",
+    "@sentry/cli": "^1.37.2",
+    "@sentry/electron": "^0.14.0",
     "ansi-to-html": "~0.6.7",
     "antd": "^3.11.2",
     "appium": "^1.10.0",
@@ -129,6 +136,7 @@
     "prop-types": "^15.6.2",
     "react": "^16.6.3",
     "react-dom": "^16.6.3",
+    "react-hot-loader": "^4.3.12",
     "react-redux": "^6.0.0",
     "react-router": "^4.3.1",
     "redux": "^4.0.1",
@@ -141,8 +149,7 @@
     "temp": "0.x",
     "uuid": "3.x",
     "wd": "^1.6.0",
-    "xpath": "0.0.27",
-    "react-hot-loader": "^4.3.12"
+    "xpath": "0.0.27"
   },
   "devDependencies": {
     "7zip": "0.0.6",
@@ -175,6 +182,7 @@
     "eslint-plugin-promise": "^4.0.1",
     "eslint-plugin-react": "^7.11.1",
     "express": "^4.16.2",
+    "git-rev-sync": "^1.12.0",
     "greenkeeper-lockfile": "^1.15.1",
     "jquery": "^3.3.1",
     "jsdom": "^13.0.0",

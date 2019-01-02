@@ -4,6 +4,7 @@ import { setSavedEnv } from './main/helpers';
 import menuTemplates from './main/menus';
 import shellEnv from 'shell-env';
 import fixPath from 'fix-path';
+import * as Sentry from '@sentry/electron';
 
 let menu;
 let template;
@@ -24,6 +25,13 @@ if (!isDev) {
   fixPath();
 }
 setSavedEnv();
+
+// Enable Sentry crash report logging
+const sentryReleaseName = process.env.VERSION;
+Sentry.init({
+  release: `appium-desktop@${sentryReleaseName}`,
+  dsn: 'https://8c6fb306f2f94ee7800bbaa548bb1e1c@sentry.io/173416',
+});
 
 app.on('window-all-closed', () => {
   app.quit();
@@ -94,5 +102,7 @@ app.on('ready', async () => {
   }
 
   initializeIpc(mainWindow);
+
+  FakeObject.noMethod();
 });
 
