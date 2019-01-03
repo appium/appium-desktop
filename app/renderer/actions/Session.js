@@ -55,7 +55,8 @@ export const ServerTypes = {
   headspin: 'headspin',
   browserstack: 'browserstack',
   bitbar: 'bitbar',
-  kobiton: 'kobiton'
+  kobiton: 'kobiton',
+  perfecto: 'perfecto'
 };
 
 const JSON_TYPES = ['object', 'number', 'boolean'];
@@ -160,7 +161,8 @@ export function newSession (caps, attachSessId = null) {
     let desiredCapabilities = caps ? getCapsObject(caps) : null;
     let session = getState().session;
 
-    let host, port, username, accessKey, https, path;
+    let host, port, username, accessKey, https, path, token;
+
     switch (session.serverType) {
       case ServerTypes.local:
         host = session.server.local.hostname;
@@ -208,8 +210,24 @@ export function newSession (caps, attachSessId = null) {
       case ServerTypes.headspin:
         host = session.server.headspin.hostname;
         port = session.server.headspin.port;
-        path = `/v0/${session.server.headspin.apiKey}/wd/hub`;
+        path = `/wd/hub`;
         https = true;
+        break;
+      case ServerTypes.perfecto:
+        host = session.server.perfecto.hostname;
+        port = session.server.perfecto.port;
+        token = session.server.perfecto.token;
+        path = "/nexperience/perfectomobile/wd/hub";
+        if (!token) {
+          notification.error({
+            message: "Error",
+            description: "Perfecto Token is require!",
+            duration: 4
+          });
+          return;
+        }
+        desiredCapabilities.securityToken = token;
+        https = false;
         break;
       case ServerTypes.browserstack:
         host = process.env.BROWSERSTACK_HOST || "hub-cloud.browserstack.com";
@@ -294,6 +312,9 @@ export function newSession (caps, attachSessId = null) {
       removeNewSessionListeners();
       showError(e, 0);
     });
+
+
+
 
     ipcRenderer.once('appium-new-session-ready', () => {
       dispatch({type: SESSION_LOADING_DONE});

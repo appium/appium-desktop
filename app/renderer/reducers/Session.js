@@ -29,6 +29,7 @@ const INITIAL_STATE = {
     advanced: {},
     bitbar: {},
     kobiton: {},
+    perfecto: {},
   },
   attachSessId: null,
 
@@ -188,6 +189,8 @@ export default function session (state = INITIAL_STATE, action) {
           browserstack: action.server.browserstack || {},
           bitbar: action.server.bitbar || {},
           kobiton: action.server.kobiton || {},
+          perfecto: action.server.perfecto || {},
+
         },
         serverType: action.serverType || ServerTypes.local,
       };
