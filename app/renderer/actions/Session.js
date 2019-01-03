@@ -210,7 +210,7 @@ export function newSession (caps, attachSessId = null) {
       case ServerTypes.headspin:
         host = session.server.headspin.hostname;
         port = session.server.headspin.port;
-        path = `/wd/hub`;
+        path = `/v0/${session.server.headspin.apiKey}/wd/hub`;
         https = true;
         break;
       case ServerTypes.perfecto:
