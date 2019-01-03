@@ -221,7 +221,7 @@ export function newSession (caps, attachSessId = null) {
         if (!token) {
           notification.error({
             message: "Error",
-            description: "Perfecto Token is require!",
+            description: "Perfecto SecurityToken is required",
             duration: 4
           });
           return;
