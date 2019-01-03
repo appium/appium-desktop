@@ -4,7 +4,7 @@ import { setSavedEnv } from './main/helpers';
 import menuTemplates from './main/menus';
 import shellEnv from 'shell-env';
 import fixPath from 'fix-path';
-import * as Sentry from '@sentry/electron';
+import { initSentry } from './shared/sentry';
 
 let menu;
 let template;
@@ -27,10 +27,7 @@ if (!isDev) {
 setSavedEnv();
 
 // Enable Sentry crash report logging
-Sentry.init({
-  release: `appium-desktop@${process.env.VERSION}`,
-  dsn: 'https://257ba0d06bae49d183c8612c137b41f7@sentry.io/1363327',
-});
+initSentry();
 
 app.on('window-all-closed', () => {
   app.quit();
@@ -64,7 +61,7 @@ app.on('ready', async () => {
     minHeight: 600,
   });
 
-  mainWindow.loadURL(`file://${__dirname}/renderer/index.html`);
+  mainWindow.loadURL(`file://${__dirname}/index.html`);
 
   mainWindow.webContents.on('did-finish-load', () => {
     mainWindow.show();
@@ -89,15 +86,6 @@ app.on('ready', async () => {
       }
     }]).popup(mainWindow);
   });
-
-  function throwError () {
-    throw new Error('Some error happened 151');
-  }
-
-  // TODO: Remove this later... this is to test Sentry only
-  setTimeout(function () {
-    throwError();
-  }, 5000);
 
   if (process.platform === 'darwin') {
     template = await menuTemplates.mac(mainWindow);

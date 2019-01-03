@@ -27,14 +27,14 @@
     "test-unit": "cross-env NODE_ENV=test mocha --reporter mocha-multi-reporters --reporter-options configFile=./test/mochareporters.json ./test/unit/",
     "lint": "eslint app/ test/",
     "build-main": "cross-env NODE_ENV=production parcel build --target node --public-url . --out-dir ./dist --out-file main.js ./app/main.js",
-    "build-renderer": "cross-env NODE_ENV=production parcel build --out-dir ./dist/renderer --target electron --public-url . ./app/renderer/index.html",
+    "build-renderer": "cross-env NODE_ENV=production parcel build --no-content-hash --out-dir ./dist --target electron --public-url . ./app/renderer/index.html",
     "build": "npm run build-main && npm run build-renderer",
     "start": "cross-env RUNNING_LOCALLY=true FORCE_NO_WRONG_FOLDER=true electron ./",
     "clean": "rimraf dist/",
     "watch-main": "cross-env NODE_ENV=development parcel --target node --out-dir ./dist --out-file main.js ./app/main.js",
-    "watch-renderer": "cross-env NODE_ENV=development parcel --out-dir ./dist/renderer --target electron --public-url . ./app/renderer/index.html",
+    "watch-renderer": "cross-env NODE_ENV=development parcel --out-dir ./dist --target electron --public-url . ./app/renderer/index.html",
     "build-main-dev": "cross-env NODE_ENV=development parcel build --target node --out-dir ./dist --out-file main.js ./app/main.js",
-    "build-renderer-dev": "cross-env NODE_ENV=development parcel build --out-dir ./dist/renderer --target electron --public-url . ./app/renderer/index.html",
+    "build-renderer-dev": "cross-env NODE_ENV=development parcel build --out-dir ./dist --target electron --public-url . ./app/renderer/index.html",
     "start-dev": "cross-env RUNNING_LOCALLY=true FORCE_NO_WRONG_FOLDER=true NODE_ENV=development electron --inspect ./",
     "dev": "cross-env NODE_ENV=development npm run build-main-dev && npm run build-renderer-dev && concurrently --kill-others \"npm run start-dev\" \"npm run watch-main\" \"npm run watch-renderer\" ",
     "dev-wrong-folder": "cross-env WRONG_FOLDER=true npm run dev",
@@ -52,7 +52,7 @@
     "sentry:create-release": "sentry-cli releases new -p appium-desktop appium-desktop@$VERSION",
     "sentry:upload-sourcemaps": "sentry-cli releases files appium-desktop@$VERSION upload-sourcemaps ./dist",
     "sentry:finalize": "sentry-cli releases finalize appium-desktop@$VERSION",
-    "sentry-release": "npm run sentry:create-release && rimraf dist/ && npm run build && npm run sentry:upload-sourcemaps && npm run sentry:finalize"
+    "sentry-release": "npm run sentry:create-release && npm run sentry:upload-sourcemaps && npm run sentry:finalize"
   },
   "pre-commit": [
     "pre-commit"
