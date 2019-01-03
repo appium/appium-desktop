@@ -27,10 +27,9 @@ if (!isDev) {
 setSavedEnv();
 
 // Enable Sentry crash report logging
-const sentryReleaseName = process.env.VERSION;
 Sentry.init({
-  release: `appium-desktop@${sentryReleaseName}`,
-  dsn: 'https://8c6fb306f2f94ee7800bbaa548bb1e1c@sentry.io/173416',
+  release: `appium-desktop@${process.env.VERSION}`,
+  dsn: 'https://257ba0d06bae49d183c8612c137b41f7@sentry.io/1363327',
 });
 
 app.on('window-all-closed', () => {
@@ -91,6 +90,15 @@ app.on('ready', async () => {
     }]).popup(mainWindow);
   });
 
+  function throwError () {
+    throw new Error('Some error happened 151');
+  }
+
+  // TODO: Remove this later... this is to test Sentry only
+  setTimeout(function () {
+    throwError();
+  }, 5000);
+
   if (process.platform === 'darwin') {
     template = await menuTemplates.mac(mainWindow);
     menu = Menu.buildFromTemplate(template);
@@ -102,7 +110,5 @@ app.on('ready', async () => {
   }
 
   initializeIpc(mainWindow);
-
-  FakeObject.noMethod();
 });
 

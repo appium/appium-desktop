@@ -26,7 +26,7 @@
     "test-integration": "cross-env NODE_ENV=test mocha --reporter mocha-multi-reporters --reporter-options configFile=./test/mochareporters.json ./test/integration",
     "test-unit": "cross-env NODE_ENV=test mocha --reporter mocha-multi-reporters --reporter-options configFile=./test/mochareporters.json ./test/unit/",
     "lint": "eslint app/ test/",
-    "build-main": "cross-env NODE_ENV=production parcel build --target node --out-dir ./dist --out-file main.js ./app/main.js",
+    "build-main": "cross-env NODE_ENV=production parcel build --target node --public-url . --out-dir ./dist --out-file main.js ./app/main.js",
     "build-renderer": "cross-env NODE_ENV=production parcel build --out-dir ./dist/renderer --target electron --public-url . ./app/renderer/index.html",
     "build": "npm run build-main && npm run build-renderer",
     "start": "cross-env RUNNING_LOCALLY=true FORCE_NO_WRONG_FOLDER=true electron ./",
@@ -51,7 +51,8 @@
     "sentry:export-version": "cross-env VERSION=$(sentry-cli releases propose-version) && echo $VERSION",
     "sentry:create-release": "sentry-cli releases new -p appium-desktop appium-desktop@$VERSION",
     "sentry:upload-sourcemaps": "sentry-cli releases files appium-desktop@$VERSION upload-sourcemaps ./dist",
-    "sentry:finalize": "sentry-cli releases finalize appium-desktop@$VERSION"
+    "sentry:finalize": "sentry-cli releases finalize appium-desktop@$VERSION",
+    "sentry-release": "npm run sentry:create-release && rimraf dist/ && npm run build && npm run sentry:upload-sourcemaps && npm run sentry:finalize"
   },
   "pre-commit": [
     "pre-commit"
