@@ -1,0 +1,1 @@
+export VERSION=$(npx sentry-cli releases propose-version)

@@ -5,6 +5,7 @@ import menuTemplates from './main/menus';
 import shellEnv from 'shell-env';
 import fixPath from 'fix-path';
 import { initSentry } from './shared/sentry';
+import { promptUser } from './main/sentry-permission-prompt';
 
 let menu;
 let template;
@@ -86,6 +87,8 @@ app.on('ready', async () => {
       }
     }]).popup(mainWindow);
   });
+
+  promptUser();
 
   if (process.platform === 'darwin') {
     template = await menuTemplates.mac(mainWindow);
