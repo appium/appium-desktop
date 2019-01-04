@@ -1,5 +1,5 @@
 import { Application } from 'spectron';
-import { fs } from 'appium-support';
+import { fs, logger } from 'appium-support';
 import B from 'bluebird';
 import os from 'os';
 import path from 'path';
@@ -8,6 +8,8 @@ import chaiAsPromised from 'chai-as-promised';
 import dirCompare from 'dir-compare';
 import { retryInterval } from 'asyncbox';
 import MainPage from './pages/main-page-object';
+
+const log = logger.getLogger('E2E Test');
 
 const platform = os.platform();
 
@@ -25,6 +27,13 @@ if (platform === 'linux') {
 
 before(async function () {
   this.timeout(process.env.TRAVIS || process.env.APPVEYOR ? 10 * 60 * 1000 : 60 * 1000);
+  log.info(`Running Appium from: ${appPath}`);
+  log.info(`Checking that "${appPath}" exists`);
+  const applicationExists = await fs.exists(appPath);
+  if (!applicationExists) {
+    log.error(`Could not run tests. "${appPath}" does not exist.`);
+    process.exit(1);
+  }
   this.app = new Application({
     path: appPath,
     env: {
