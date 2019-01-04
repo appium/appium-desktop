@@ -3,6 +3,11 @@ const { logger } = require('appium-support');
 
 const log = logger.getLogger('SENTRY RELEASE');
 
+if (!process.env.SENTRY_AUTH_TOKEN) {
+  log.warn('Could not run release script because SENTRY_AUTH_TOKEN not provided.');
+  process.exit(0);
+}
+
 // Executes 'sentry-cli' commands
 function execSentry (cmd) {
   return execSync(`npx sentry-cli ${cmd}`, {encoding: 'utf8'});
