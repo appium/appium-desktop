@@ -12,7 +12,7 @@ import ServerTabHeadspin from './ServerTabHeadspin';
 import ServerTabBrowserstack from './ServerTabBrowserstack';
 import ServerTabBitbar from './ServerTabBitbar';
 import ServerTabKobiton from './ServerTabKobiton';
-import SereverTabPerfecto from './ServerTabPerfecto';
+import ServerTabPerfecto from './ServerTabPerfecto';
 import { Tabs, Button, Spin, Icon } from 'antd';
 import { ServerTypes } from '../../actions/Session';
 import AdvancedServerParams from './AdvancedServerParams';
@@ -109,7 +109,7 @@ export default class Session extends Component {
               <ServerTabKobiton {...this.props} />
             </TabPane> }
             { visibleProviders.perfecto && <TabPane tab={perfectoTabHead} key={ServerTypes.perfecto}>
-              <SereverTabPerfecto {...this.props} />
+              <ServerTabPerfecto {...this.props} />
             </TabPane> }
           </Tabs>
           <AdvancedServerParams {...this.props} />
