@@ -34,13 +34,16 @@ before(async function () {
     log.error(`Could not run tests. "${appPath}" does not exist.`);
     process.exit(1);
   }
+  log.info(`App exists. Creating Spectron Application instance`);
   this.app = new Application({
     path: appPath,
     env: {
       FORCE_NO_WRONG_FOLDER: true,
     }
   });
+  log.info(`Spectron Application instance created. Starting app`);
   await this.app.start();
+  log.info(`App started`);
 });
 
 after(function () {
