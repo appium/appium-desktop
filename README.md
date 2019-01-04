@@ -117,6 +117,7 @@ These are the options for launching a session against a non-local Appium server:
 | BrowserStack     | Launch a session on the [Browserstack](https://browserstack.com) cloud. [Documentation](https://www.browserstack.com/docs) |
 | Bitbar           | Launch a session on the [Bitbar](https://bitbar.com) cloud. [Documentation](http://docs.bitbar.com/)                       |
 | Kobiton           | Launch a session on the [Kobiton](https://kobiton.com) cloud. [Documentation](https://docs.kobiton.com/)                       |
+| Perfecto         | Launch a session on the [Perfecto](https://www.perfecto.io) cloud. [Documentation](https://developers.perfectomobile.com/display/PD/Appium) |
 
 It should be straightforward to get set up with any of these options. Simply
 enter your details in the input fields provided.
