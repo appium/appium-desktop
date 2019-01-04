@@ -160,7 +160,6 @@ export function newSession (caps, attachSessId = null) {
 
     let desiredCapabilities = caps ? getCapsObject(caps) : null;
     let session = getState().session;
-
     let host, port, username, accessKey, https, path, token;
 
     switch (session.serverType) {
@@ -216,7 +215,7 @@ export function newSession (caps, attachSessId = null) {
       case ServerTypes.perfecto:
         host = session.server.perfecto.hostname;
         port = session.server.perfecto.port;
-        token = session.server.perfecto.token;
+        token = session.server.perfecto.token || process.env.PERFECTO_TOKEN;
         path = "/nexperience/perfectomobile/wd/hub";
         if (!token) {
           notification.error({
@@ -312,9 +311,6 @@ export function newSession (caps, attachSessId = null) {
       removeNewSessionListeners();
       showError(e, 0);
     });
-
-
-
 
     ipcRenderer.once('appium-new-session-ready', () => {
       dispatch({type: SESSION_LOADING_DONE});
