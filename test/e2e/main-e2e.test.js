@@ -24,7 +24,7 @@ if (platform === 'linux') {
 }
 
 before(async function () {
-  this.timeout(process.env.TRAVIS || process.env.APPVEYOR ? 10 * 60 * 1000 : 30 * 1000);
+  this.timeout(process.env.TRAVIS || process.env.APPVEYOR ? 10 * 60 * 1000 : 60 * 1000);
   this.app = new Application({
     path: appPath,
     env: {
