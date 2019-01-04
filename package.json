@@ -43,16 +43,11 @@
     "package-linux": "npm run build && build --linux",
     "package-all": "npm run build && build -mwl",
     "package-nsis": "cross-env TARGET=nsis npm run build && build --win nsis --publish onTagOrDraft && build --win nsis-web --publish onTagOrDraft",
-    "package-ci": "node ./check-engines package.json && npm run clean && npm run build && npm run test && build --publish onTagOrDraft && npm run test-e2e",
-    "postinstall": "node ./check-engines package.json package.json && rimraf node_modules/jimp/browser",
+    "package-ci": "node ./check-engines package.json && npm run clean && npm run build && npm run test && npm run sentry-release && build --publish onTagOrDraft && npm run test-e2e",
+    "postinstall": "node ./check-engines package.json package.json && rimraf node_modules/jimp/browser && node ./sentry-set-version",
     "postversion": "git pull --tags && git push && git push --tags",
     "pre-commit": "npm run lint && mocha --reporter dot ./test/unit",
-    "__SENTRY_SCRIPTS__": "",
-    "sentry:export-version": "cross-env VERSION=$(sentry-cli releases propose-version) && echo $VERSION",
-    "sentry:create-release": "sentry-cli releases new -p appium-desktop appium-desktop@$VERSION",
-    "sentry:upload-sourcemaps": "sentry-cli releases files appium-desktop@$VERSION upload-sourcemaps ./dist",
-    "sentry:finalize": "sentry-cli releases finalize appium-desktop@$VERSION",
-    "sentry-release": "npm run sentry:create-release && npm run sentry:upload-sourcemaps && npm run sentry:finalize"
+    "sentry-release": "node ./sentry-release-script"
   },
   "pre-commit": [
     "pre-commit"
@@ -113,7 +108,6 @@
   },
   "dependencies": {
     "@babel/polyfill": "^7.0.0",
-    "@sentry/cli": "^1.37.2",
     "@sentry/electron": "^0.14.0",
     "ansi-to-html": "~0.6.7",
     "antd": "^3.11.2",
@@ -157,6 +151,7 @@
     "@babel/core": "^7.2.0",
     "@babel/plugin-transform-runtime": "^7.2.0",
     "@babel/register": "^7.0.0",
+    "@sentry/cli": "^1.37.2",
     "appium-fake-driver": "^0.6.2",
     "asar": "^0.14.0",
     "asyncbox": "^2.3.2",
