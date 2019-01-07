@@ -16,5 +16,8 @@ export default {
   },
   kobiton: {
     label: 'Kobiton'
+  },
+  perfecto: {
+    label: 'Perfecto'
   }
 };
