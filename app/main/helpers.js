@@ -22,7 +22,7 @@ export function openBrowserWindow (route, opts) {
     ...opts,
   });
 
-  let htmlPath = path.resolve(__dirname, 'renderer', 'index.html');
+  let htmlPath = path.resolve(__dirname, 'index.html');
 
   // on Windows we'll get backslashes, but we don't want these for a browser URL, so replace
   htmlPath = htmlPath.replace("\\", "/");

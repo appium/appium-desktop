@@ -9,3 +9,4 @@ main.map
 
 Certificates.p12
 .cache/
+sentry-version.js

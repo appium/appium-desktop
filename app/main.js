@@ -4,6 +4,8 @@ import { setSavedEnv } from './main/helpers';
 import menuTemplates from './main/menus';
 import shellEnv from 'shell-env';
 import fixPath from 'fix-path';
+import { initSentry } from './shared/sentry';
+import { promptUser } from './main/sentry-permission-prompt';
 
 let menu;
 let template;
@@ -24,6 +26,9 @@ if (!isDev) {
   fixPath();
 }
 setSavedEnv();
+
+// Enable Sentry crash report logging
+initSentry();
 
 app.on('window-all-closed', () => {
   app.quit();
@@ -57,7 +62,7 @@ app.on('ready', async () => {
     minHeight: 600,
   });
 
-  mainWindow.loadURL(`file://${__dirname}/renderer/index.html`);
+  mainWindow.loadURL(`file://${__dirname}/index.html`);
 
   mainWindow.webContents.on('did-finish-load', () => {
     mainWindow.show();
@@ -82,6 +87,8 @@ app.on('ready', async () => {
       }
     }]).popup(mainWindow);
   });
+
+  promptUser();
 
   if (process.platform === 'darwin') {
     template = await menuTemplates.mac(mainWindow);
