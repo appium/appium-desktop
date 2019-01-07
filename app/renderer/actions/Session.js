@@ -216,11 +216,11 @@ export function newSession (caps, attachSessId = null) {
         host = session.server.perfecto.hostname;
         port = session.server.perfecto.port;
         token = session.server.perfecto.token || process.env.PERFECTO_TOKEN;
-        path = "/nexperience/perfectomobile/wd/hub";
+        path = '/nexperience/perfectomobile/wd/hub';
         if (!token) {
           notification.error({
-            message: "Error",
-            description: "Perfecto SecurityToken is required",
+            message: 'Error',
+            description: 'Perfecto SecurityToken is required',
             duration: 4
           });
           return;
