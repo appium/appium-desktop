@@ -113,9 +113,9 @@ export default class Screenshot extends Component {
     let swipeInstructions = null;
     if (screenshotInteractionMode === 'swipe' && (!swipeStart || !swipeEnd)) {
       if (!swipeStart) {
-        swipeInstructions = "Click swipe start point";
+        swipeInstructions = 'Click swipe start point';
       } else if (!swipeEnd) {
-        swipeInstructions = "Click swipe end point";
+        swipeInstructions = 'Click swipe end point';
       }
     }
 

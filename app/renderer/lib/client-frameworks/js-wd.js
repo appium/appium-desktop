@@ -3,7 +3,7 @@ import Framework from './framework';
 class JsWdFramework extends Framework {
 
   get language () {
-    return "js";
+    return 'js';
   }
 
   wrapWithBoilerplate (code) {
@@ -28,7 +28,7 @@ main().catch(console.log);
 
   codeFor_findAndAssign (strategy, locator, localVar, isArray) {
     let suffixMap = {
-      xpath: "XPath",
+      xpath: 'XPath',
       'accessibility id': 'AccessibilityId',
       'id': 'Id',
       'name': 'Name',
@@ -81,6 +81,6 @@ main().catch(console.log);
 
 }
 
-JsWdFramework.readableName = "JS - WD (Promise)";
+JsWdFramework.readableName = 'JS - WD (Promise)';
 
 export default JsWdFramework;

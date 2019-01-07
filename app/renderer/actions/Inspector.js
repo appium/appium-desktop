@@ -74,7 +74,7 @@ function xmlToJSON (source) {
 
   // Replace strings with Unicode format &#012345 with #012345
   // The &# unicode format breaks the parser
-  source = source.replace(/&#([0-9]{4,})/g, "#$1");
+  source = source.replace(/&#([0-9]{4,})/g, '#$1');
 
   let recursive = (xmlNode, parentPath, index) => {
 
@@ -95,7 +95,7 @@ function xmlToJSON (source) {
       path,
     };
   };
-  xmlDoc = (new DOMParser()).parseFromString(source, "application/xml");
+  xmlDoc = (new DOMParser()).parseFromString(source, 'application/xml');
   let sourceXML = xmlDoc.children[0];
   return recursive(sourceXML);
 }
@@ -120,8 +120,8 @@ export function bindAppium () {
       dispatch(push('/session'));
       if (!killedByUser) {
         notification.error({
-          message: "Error",
-          description: reason || "Session has been terminated",
+          message: 'Error',
+          description: reason || 'Session has been terminated',
           duration: 0
         });
       }

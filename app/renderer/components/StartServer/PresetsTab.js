@@ -84,7 +84,7 @@ export default class PresetsTab extends Component {
             key={p[0]}
             className={styles.presetLink}
           >
-            <li className={`${styles.preset} ${p[0] === this.state.selectedPreset ? styles.presetItemActive : ""}`}>
+            <li className={`${styles.preset} ${p[0] === this.state.selectedPreset ? styles.presetItemActive : ''}`}>
               <div className={styles.presetItemTitle}>{p[0]}</div>
               <div className={styles.presetItemDesc}>{`Saved ${moment(p[1]._modified).fromNow()}`}</div>
             </li>
@@ -121,7 +121,7 @@ export default class PresetsTab extends Component {
         </div>
       );
     }
-    return "";
+    return '';
   }
 
   render () {
@@ -132,7 +132,7 @@ export default class PresetsTab extends Component {
         <form onSubmit={startServer}>
           <div className={styles.presetsSection}>
             {this.hasPresets() ? this.presetList() : this.emptyPresetList()}
-            {this.presetIsSelected() ? this.presetDetail() : ""}
+            {this.presetIsSelected() ? this.presetDetail() : ''}
           </div>
           <div className={advancedStyles.actions}>
             <StartButton {...{serverStarting, startServer, serverVersion, disabledOverride: !this.presetIsSelected()}} />

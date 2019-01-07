@@ -22,14 +22,14 @@ export default class AdvancedTab extends Component {
     super(props);
     this.state = {
       modalOpen: false,
-      newPresetName: "",
+      newPresetName: '',
     };
   }
 
   buildInput (argName, type, label) {
     const {serverArgs} = this.props;
 
-    if (type === "text") {
+    if (type === 'text') {
       return (
         <div className={styles.input}>
           <Input ref={argName} type="text"
@@ -41,7 +41,7 @@ export default class AdvancedTab extends Component {
       );
     }
 
-    if (type === "checkbox") {
+    if (type === 'checkbox') {
       return (
         <div className={styles.input}>
           <Checkbox ref={argName}
@@ -52,8 +52,8 @@ export default class AdvancedTab extends Component {
       );
     }
 
-    if (type === "textarea") {
-      return "";
+    if (type === 'textarea') {
+      return '';
     }
 
     throw new Error(`Invalid type ${type}`);
@@ -99,7 +99,7 @@ export default class AdvancedTab extends Component {
           onSubmit={this.savePreset.bind(this)}>
           <Input autoFocus
             ref="presetName"
-            name={"presetName"}
+            name={'presetName'}
             addonBefore="Preset name"
             onChange={this.updatePresetName.bind(this)}
             size="large"

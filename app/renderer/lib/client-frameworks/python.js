@@ -3,12 +3,12 @@ import Framework from './framework';
 class PythonFramework extends Framework {
 
   get language () {
-    return "python";
+    return 'python';
   }
 
   getPythonVal (jsonVal) {
     if (typeof jsonVal === 'boolean') {
-      return jsonVal ? "True" : "False";
+      return jsonVal ? 'True' : 'False';
     }
     return JSON.stringify(jsonVal);
   }
@@ -16,7 +16,7 @@ class PythonFramework extends Framework {
   wrapWithBoilerplate (code) {
     let capStr = Object.keys(this.caps).map((k) => {
       return `caps[${JSON.stringify(k)}] = ${this.getPythonVal(this.caps[k])}`;
-    }).join("\n");
+    }).join('\n');
     return `# This sample code uses the Appium python client
 # pip install Appium-Python-Client
 # Then you can paste this into a file and simply run with Python
@@ -34,7 +34,7 @@ driver.quit()`;
 
   codeFor_findAndAssign (strategy, locator, localVar, isArray) {
     let suffixMap = {
-      xpath: "xpath",
+      xpath: 'xpath',
       'accessibility id': 'accessibility_id',
       'id': 'id',
       'name': 'name', // TODO: How does Python use name selector
@@ -83,6 +83,6 @@ driver.quit()`;
   }
 }
 
-PythonFramework.readableName = "Python";
+PythonFramework.readableName = 'Python';
 
 export default PythonFramework;

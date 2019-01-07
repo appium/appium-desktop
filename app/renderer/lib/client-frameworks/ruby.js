@@ -3,13 +3,13 @@ import Framework from './framework';
 class RubyFramework extends Framework {
 
   get language () {
-    return "ruby";
+    return 'ruby';
   }
 
   wrapWithBoilerplate (code) {
     let capStr = Object.keys(this.caps).map((k) => {
       return `caps[${JSON.stringify(k)}] = ${JSON.stringify(this.caps[k])}`;
-    }).join("\n");
+    }).join('\n');
     return `# This sample code uses the Appium ruby client
 # gem install appium_lib
 # Then you can paste this into a file and simply run with Ruby
@@ -31,7 +31,7 @@ driver.quit`;
 
   codeFor_findAndAssign (strategy, locator, localVar, isArray) {
     let suffixMap = {
-      xpath: ":xpath",
+      xpath: ':xpath',
       'accessibility id': ':accessibility_id',
       'id': ':id',
       'name': ':name',
@@ -85,6 +85,6 @@ driver.quit`;
   }
 }
 
-RubyFramework.readableName = "Ruby";
+RubyFramework.readableName = 'Ruby';
 
 export default RubyFramework;

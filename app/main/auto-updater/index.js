@@ -33,7 +33,7 @@ if (!runningLocally) {
       let {name, notes, pub_date: pubDate} = update;
       pubDate = moment(pubDate).format('MMM Do YYYY, h:mma');
 
-      let detail = `Release Date: ${pubDate}\n\nRelease Notes: ${notes.replace("*", "\n*")}`;
+      let detail = `Release Date: ${pubDate}\n\nRelease Notes: ${notes.replace('*', '\n*')}`;
       if (env.NO_AUTO_UPDATE) {
         detail += `\n\nhttps://www.github.com/appium/appium-desktop/releases/latest`;
       }

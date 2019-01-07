@@ -21,7 +21,7 @@ export default class ServerTabTestobject extends Component {
       <Row gutter={8}>
         <Col span={24}>
           <FormItem>
-            <div className={["ant-input-group-addon", SessionStyles.addonDataCenter].join(' ') }>TestObject Data Center</div>
+            <div className={['ant-input-group-addon', SessionStyles.addonDataCenter].join(' ') }>TestObject Data Center</div>
             <Radio.Group className={SessionStyles.inputDataCenter} buttonStyle="solid" defaultValue='us1' id='testObjectDataCenter' value={server.testobject.dataCenter} onChange={(e) => setServerParam('dataCenter', e.target.value)}>
               <Radio value='us1'>US</Radio>
               <Radio value='eu1'>EU</Radio>
