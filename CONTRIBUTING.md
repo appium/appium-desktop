@@ -155,3 +155,7 @@ Instructions will be given by the GitHub Bot when you make a pull request.
 
 Just use the GitHub issue tracker to submit your bug reports and feature
 requests. If you are submitting a bug report, please follow the [issue template](https://github.com/appium/appium-desktop/issues/new).
+
+### Sentry
+
+Appium Desktop has crash logs reported to it using [Sentry](https://sentry.io/appium/appiumdesktop/). This requires permission to access.
