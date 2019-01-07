@@ -37,7 +37,7 @@ export default class RecordedActions extends Component {
       {frameworks[f].readableName}
     </Option>);
 
-    let boilerplateType = showBoilerplate ? "primary" : "default";
+    let boilerplateType = showBoilerplate ? 'primary' : 'default';
 
     return <div>
       {!!recordedActions.length &&

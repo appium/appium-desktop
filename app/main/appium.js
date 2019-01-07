@@ -145,7 +145,7 @@ function connectClearLogFile () {
 
 export function createNewSessionWindow (win) {
   let sessionWin = openBrowserWindow('session', {
-    title: "Start Session",
+    title: 'Start Session',
     titleBarStyle: 'hidden',
   });
 
@@ -205,7 +205,7 @@ function connectCreateNewSession () {
 
       // If someone didn't specify connectHardwareKeyboard, set it to true by
       // default
-      if (typeof desiredCapabilities.connectHardwareKeyboard === "undefined") {
+      if (typeof desiredCapabilities.connectHardwareKeyboard === 'undefined') {
         desiredCapabilities.connectHardwareKeyboard = true;
       }
 
@@ -340,7 +340,7 @@ function connectMoveToApplicationsFolder () {
 
 export function createNewConfigWindow (win) {
   openBrowserWindow('config', {
-    title: "Config",
+    title: 'Config',
     parent: win,
     width: 1080 / 2,
     height: 1080 / 4,

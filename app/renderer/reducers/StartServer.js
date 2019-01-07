@@ -15,7 +15,7 @@ const initialState = {
   serverArgs: {...DEFAULT_ARGS},
   serverVersion: SERVER_VERSION,
   serverStarting: false,
-  serverFailMsg: "",
+  serverFailMsg: '',
   tabId: 0,
   presetSaving: false,
   presetDeleting: false,

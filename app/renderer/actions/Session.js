@@ -92,12 +92,12 @@ export function showError (e, methodName, secs = 5) {
   } else {
     errMessage = 'Could not start session';
   }
-  if (errMessage === "ECONNREFUSED") {
+  if (errMessage === 'ECONNREFUSED') {
     errMessage = "Could not connect to server; are you sure it's running?";
   }
 
   notification.error({
-    message: "Error",
+    message: 'Error',
     description: errMessage,
     duration: secs
   });
@@ -164,11 +164,11 @@ export function newSession (caps, attachSessId = null) {
     switch (session.serverType) {
       case ServerTypes.local:
         host = session.server.local.hostname;
-        if (host === "0.0.0.0") {
+        if (host === '0.0.0.0') {
           // if we're on windows, we won't be able to connect directly to '0.0.0.0'
           // so just connect to localhost; if we're listening on all interfaces,
           // that will of course include 127.0.0.1 on all platforms
-          host = "localhost";
+          host = 'localhost';
         }
         port = session.server.local.port;
         break;
@@ -182,15 +182,15 @@ export function newSession (caps, attachSessId = null) {
         host = 'ondemand.saucelabs.com';
         port = 80;
         if (session.server.sauce.useSCProxy) {
-          host = session.server.sauce.scHost || "localhost";
+          host = session.server.sauce.scHost || 'localhost';
           port = parseInt(session.server.sauce.scPort, 10) || 4445;
         }
         username = session.server.sauce.username || process.env.SAUCE_USERNAME;
         accessKey = session.server.sauce.accessKey || process.env.SAUCE_ACCESS_KEY;
         if (!username || !accessKey) {
           notification.error({
-            message: "Error",
-            description: "Sauce username and access key are required!",
+            message: 'Error',
+            description: 'Sauce username and access key are required!',
             duration: 4
           });
           return;
@@ -212,16 +212,16 @@ export function newSession (caps, attachSessId = null) {
         https = true;
         break;
       case ServerTypes.browserstack:
-        host = process.env.BROWSERSTACK_HOST || "hub-cloud.browserstack.com";
+        host = process.env.BROWSERSTACK_HOST || 'hub-cloud.browserstack.com';
         port = 443;
-        path = "/wd/hub";
+        path = '/wd/hub';
         username = session.server.browserstack.username || process.env.BROWSERSTACK_USERNAME;
-        desiredCapabilities["browserstack.source"] = "appiumdesktop";
+        desiredCapabilities['browserstack.source'] = 'appiumdesktop';
         accessKey = session.server.browserstack.accessKey || process.env.BROWSERSTACK_ACCESS_KEY;
         if (!username || !accessKey) {
           notification.error({
-            message: "Error",
-            description: "Browserstack username and access key are required!",
+            message: 'Error',
+            description: 'Browserstack username and access key are required!',
             duration: 4
           });
           return;
@@ -229,33 +229,33 @@ export function newSession (caps, attachSessId = null) {
         https = true;
         break;
       case ServerTypes.bitbar:
-        host = process.env.BITBAR_HOST || "appium.bitbar.com";
+        host = process.env.BITBAR_HOST || 'appium.bitbar.com';
         port = 443;
-        path = "/wd/hub";
+        path = '/wd/hub';
         accessKey = session.server.bitbar.apiKey || process.env.BITBAR_API_KEY;
         if (!accessKey) {
           notification.error({
-            message: "Error",
-            description: "Bitbar API key required!",
+            message: 'Error',
+            description: 'Bitbar API key required!',
             duration: 4
           });
           return;
         }
-        desiredCapabilities.testdroid_source = "appiumdesktop";
+        desiredCapabilities.testdroid_source = 'appiumdesktop';
         desiredCapabilities.testdroid_apiKey = accessKey;
         https = true;
         break;
       case ServerTypes.kobiton:
-        host = process.env.KOBITON_HOST || "api.kobiton.com";
+        host = process.env.KOBITON_HOST || 'api.kobiton.com';
         port = 443;
-        path = "/wd/hub";
+        path = '/wd/hub';
         username = session.server.kobiton.username || process.env.KOBITON_USERNAME;
-        desiredCapabilities["kobiton.source"] = "appiumdesktop";
+        desiredCapabilities['kobiton.source'] = 'appiumdesktop';
         accessKey = session.server.kobiton.accessKey || process.env.KOBITON_ACCESS_KEY;
         if (!username || !accessKey) {
           notification.error({
-            message: "Error",
-            description: "KOBITON username and api key are required!",
+            message: 'Error',
+            description: 'KOBITON username and api key are required!',
             duration: 4
           });
           return;

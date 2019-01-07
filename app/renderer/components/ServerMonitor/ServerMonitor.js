@@ -13,17 +13,17 @@ const MAX_LOGS_RENDERED = 1000;
 
 function leveler (level) {
   switch (level) {
-    case "debug":
-      return "message";
-    case "warn":
-      return "exclamation-circle";
-    case "error":
-      return "close-circle";
-    case "silly":
-      return "paper-clip";
-    case "info":
+    case 'debug':
+      return 'message';
+    case 'warn':
+      return 'exclamation-circle';
+    case 'error':
+      return 'close-circle';
+    case 'silly':
+      return 'paper-clip';
+    case 'info':
     default:
-      return "info-circle";
+      return 'info-circle';
   }
 }
 
@@ -126,16 +126,16 @@ export default class ServerMonitor extends Component {
     let statusIcon, statusMsg;
     switch (serverStatus) {
       case STATUS_RUNNING:
-        statusIcon = "play-circle";
-        statusMsg = "The server is running";
+        statusIcon = 'play-circle';
+        statusMsg = 'The server is running';
         break;
       case STATUS_STOPPED:
-        statusIcon = "pause-circle";
-        statusMsg = "The server is stopped";
+        statusIcon = 'pause-circle';
+        statusMsg = 'The server is stopped';
         break;
       case STATUS_STOPPING:
-        statusIcon = "loading";
-        statusMsg = "The server is waiting for all connections to close";
+        statusIcon = 'loading';
+        statusMsg = 'The server is waiting for all connections to close';
         break;
       default:
         throw new Error(`Bad status: ${serverStatus}`);
@@ -163,7 +163,7 @@ export default class ServerMonitor extends Component {
       termClass += ` ${styles['term-stopped']}`;
     }
 
-    let lastSection = "";
+    let lastSection = '';
     if (serverStatus === STATUS_STOPPED) {
       lastSection = <div className={styles.last} />;
     }

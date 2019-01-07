@@ -3,24 +3,24 @@ import Framework from './framework';
 class JavaFramework extends Framework {
 
   get language () {
-    return "java";
+    return 'java';
   }
 
   wrapWithBoilerplate (code) {
     let [pkg, cls] = (() => {
       if (this.caps.platformName) {
         switch (this.caps.platformName.toLowerCase()) {
-          case "ios": return ["ios", "IOSDriver"];
-          case "android": return ["android", "AndroidDriver"];
-          default: return ["unknownPlatform", "UnknownDriver"];
+          case 'ios': return ['ios', 'IOSDriver'];
+          case 'android': return ['android', 'AndroidDriver'];
+          default: return ['unknownPlatform', 'UnknownDriver'];
         }
       } else {
-        return ["unknownPlatform", "UnknownDriver"];
+        return ['unknownPlatform', 'UnknownDriver'];
       }
     })();
     let capStr = this.indent(Object.keys(this.caps).map((k) => {
       return `desiredCapabilities.setCapability(${JSON.stringify(k)}, ${JSON.stringify(this.caps[k])});`;
-    }).join("\n"), 4);
+    }).join('\n'), 4);
     return `import io.appium.java_client.MobileElement;
 import io.appium.java_client.${pkg}.${cls};
 import junit.framework.TestCase;
@@ -60,7 +60,7 @@ ${this.indent(code, 4)}
 
   codeFor_findAndAssign (strategy, locator, localVar, isArray) {
     let suffixMap = {
-      xpath: "XPath",
+      xpath: 'XPath',
       'accessibility id': 'AccessibilityId',
       'id': 'Id',
       'class name': 'ClassName',
@@ -116,6 +116,6 @@ ${this.indent(code, 4)}
   }
 }
 
-JavaFramework.readableName = "Java - JUnit";
+JavaFramework.readableName = 'Java - JUnit';
 
 export default JavaFramework;

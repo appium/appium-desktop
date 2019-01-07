@@ -127,7 +127,7 @@ export default class Session extends Component {
         </Tabs>}
         <div className={SessionStyles.sessionFooter}>
           <div className={SessionStyles.desiredCapsLink}>
-            <a href="#" onClick={(e) => e.preventDefault() || shell.openExternal("https://github.com/appium/appium/blob/master/docs/en/writing-running-appium/caps.md")}>
+            <a href="#" onClick={(e) => e.preventDefault() || shell.openExternal('https://github.com/appium/appium/blob/master/docs/en/writing-running-appium/caps.md')}>
               <Icon type='link' />&nbsp;
               Desired Capabilities Documentation
             </a>
