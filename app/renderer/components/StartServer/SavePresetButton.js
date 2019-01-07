@@ -11,9 +11,9 @@ export default class SavePresetButton extends Component {
     return (
       <div>
         <Button className={styles.startButton}
-          type={presetSaving ? "disabled" : ""}
+          type={presetSaving ? 'disabled' : ''}
           onClick={savePreset}
-        >{presetSaving ? "Saving..." : "Save As Preset..."}</Button>
+        >{presetSaving ? 'Saving...' : 'Save As Preset...'}</Button>
         <input type="submit" hidden={true} />
       </div>
     );

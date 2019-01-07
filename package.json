@@ -170,7 +170,7 @@
     "electron-builder-squirrel-windows": "^20.38.2",
     "electron-devtools-installer": "^2.2.3",
     "eslint": "^5.9.0",
-    "eslint-config-appium": "^3.1.0",
+    "eslint-config-appium": "^4.0.1",
     "eslint-plugin-babel": "^5.2.1",
     "eslint-plugin-import": "^2.8.0",
     "eslint-plugin-jsx-a11y": "^6.1.2",

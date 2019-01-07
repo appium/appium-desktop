@@ -6,18 +6,18 @@ class RobotFramework extends Framework {
 
   get language () {
     //TODO: Make https://highlightjs.org/ use robot syntax
-    return "python";
+    return 'python';
   }
 
   get getCapsVariables () {
     return Object.keys(this.caps).map((k) => {
       return `\$\{${k}\}    ${this.getPythonVal(this.caps[k])}`;
-    }).join("\n");
+    }).join('\n');
   }
 
   getPythonVal (jsonVal) {
     if (typeof jsonVal === 'boolean') {
-      return jsonVal ? "True" : "False";
+      return jsonVal ? 'True' : 'False';
     }
     return jsonVal;
   }
@@ -50,7 +50,7 @@ ${this.indent(code, 4)}
 
   codeFor_findAndAssign (strategy, locator/*, localVar, isArray*/) {
     let suffixMap = {
-      xpath: "xpath",
+      xpath: 'xpath',
       'accessibility id': 'accessibility_id',
       'id': 'id',
       'name': 'name', // TODO: How does Python use name selector
@@ -70,7 +70,7 @@ ${this.indent(code, 4)}
   getApplicationInitialization () {
     let varString = Object.keys(this.caps).map((k) => {
       return `${k}=\$\{${k}\}`;
-    }).join("  ");
+    }).join('  ');
     return `Open Application    \$\{REMOTE_URL\}   ${varString}`;
   }
 
@@ -99,6 +99,6 @@ ${this.indent(code, 4)}
   }
 }
 
-RobotFramework.readableName = "Robot Framework";
+RobotFramework.readableName = 'Robot Framework';
 
 export default RobotFramework;
