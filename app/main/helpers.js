@@ -10,8 +10,8 @@ export function openBrowserWindow (route, opts) {
     minWidth: 1080,
     height: 570,
     minHeight: 570,
-    backgroundColor: "#f2f2f2",
-    frame: "customButtonsOnHover",
+    backgroundColor: '#f2f2f2',
+    frame: 'customButtonsOnHover',
     webPreferences: {
       devTools: true
     }
@@ -22,10 +22,10 @@ export function openBrowserWindow (route, opts) {
     ...opts,
   });
 
-  let htmlPath = path.resolve(__dirname, 'renderer', 'index.html');
+  let htmlPath = path.resolve(__dirname, 'index.html');
 
   // on Windows we'll get backslashes, but we don't want these for a browser URL, so replace
-  htmlPath = htmlPath.replace("\\", "/");
+  htmlPath = htmlPath.replace('\\', '/');
   htmlPath += `#/${route}`;
   win.loadURL(`file://${htmlPath}`);
   win.show();

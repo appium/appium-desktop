@@ -3,9 +3,9 @@ import { SERVER_STOP_REQ, SERVER_STOP_OK, SERVER_STOP_FAIL, SET_SERVER_ARGS,
          START_SESSION_REQUEST,
          LOGS_RECEIVED, LOGS_CLEARED, MONITOR_CLOSED } from '../actions/ServerMonitor';
 
-export const STATUS_RUNNING = "running";
-export const STATUS_STOPPED = "stopped";
-export const STATUS_STOPPING = "stopping";
+export const STATUS_RUNNING = 'running';
+export const STATUS_STOPPED = 'stopped';
+export const STATUS_STOPPING = 'stopping';
 
 // Maximum amount of logs to keep in memory
 const MAX_LOG_LINES = 10000;
@@ -13,7 +13,7 @@ const MAX_LOG_LINES = 10000;
 const initialState = {
   logLines: [],
   serverStatus: STATUS_STOPPED,
-  serverFailMsg: "",
+  serverFailMsg: '',
   serverArgs: {},
 };
 
@@ -26,7 +26,7 @@ export default function serverMonitor (state = initialState, action) {
       return {
         ...state,
         serverStatus: STATUS_STOPPED,
-        serverFailMsg: ""
+        serverFailMsg: ''
       };
     case SERVER_STOP_FAIL:
       return {

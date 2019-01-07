@@ -23,7 +23,7 @@ export default class StartServer extends Component {
       case TAB_PRESETS:
         return <PresetsTab {...this.props} />;
       default:
-        throw new Error("Invalid tab id");
+        throw new Error('Invalid tab id');
     }
   }
 
@@ -35,13 +35,13 @@ export default class StartServer extends Component {
           <img src={AppiumLogo} className={styles.logo} />
           <div className={styles.tabs}>
             <Button.Group className={styles.tabButtons}>
-              <Button type={tabId === TAB_SIMPLE ? "primary" : null }
+              <Button type={tabId === TAB_SIMPLE ? 'primary' : null }
                 onClick={() => switchTab(TAB_SIMPLE)}
               >Simple</Button>
-              <Button type={tabId === TAB_ADVANCED ? "primary" : null }
+              <Button type={tabId === TAB_ADVANCED ? 'primary' : null }
                 onClick={() => switchTab(TAB_ADVANCED)}
               >Advanced</Button>
-              <Button type={tabId === TAB_PRESETS ? "primary" : null }
+              <Button type={tabId === TAB_PRESETS ? 'primary' : null }
                 onClick={() => switchTab(TAB_PRESETS)}
               >Presets</Button>
             </Button.Group>

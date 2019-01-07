@@ -63,7 +63,7 @@ export function stopServer () {
     ipcRenderer.once('appium-stop-ok', () => {
       dispatch(serverLogsReceived([{
         level: 'info',
-        msg: "Appium server stopped successfully"
+        msg: 'Appium server stopped successfully'
       }]));
       setTimeout(() => {
         dispatch(stopServerOK());
@@ -78,7 +78,7 @@ export function stopServer () {
 export function closeMonitor () {
   return (dispatch) => {
     dispatch(monitorClosed());
-    dispatch(push("/"));
+    dispatch(push('/'));
   };
 }
 

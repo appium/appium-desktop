@@ -32,7 +32,7 @@ export default class StartButton extends Component {
           type="primary"
           onClick={this.isEnabled() ? startServer : this.noop}
         >
-          {serverStarting ? "Starting..." : `Start Server v${serverVersion}`}
+          {serverStarting ? 'Starting...' : `Start Server v${serverVersion}`}
         </Button>
         <input type="submit" hidden={true} />
         <Button id='configBtn'

@@ -9,5 +9,5 @@ main.map
 
 Certificates.p12
 .cache/
-
 .idea/
+sentry-version.js

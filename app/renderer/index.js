@@ -3,10 +3,13 @@ import { render } from 'react-dom';
 import Root from './containers/Root';
 import { AppContainer } from 'react-hot-loader';
 import Store from './store/configureStore';
+import { initSentry } from '../shared/sentry';
 
 const { history, configureStore } = Store;
 
 const store = configureStore();
+
+initSentry();
 
 render(
   <AppContainer>

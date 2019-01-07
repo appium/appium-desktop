@@ -1,9 +1,9 @@
 export default class Framework {
 
   constructor (host, port, path, https, caps) {
-    this.host = host || "localhost";
+    this.host = host || 'localhost';
     this.port = port || 4723;
-    this.path = path || "/wd/hub";
+    this.path = path || '/wd/hub';
     this.caps = caps || {};
     this.https = !!https;
     this.scheme = https ? 'https' : 'http';
@@ -18,11 +18,11 @@ export default class Framework {
   }
 
   get name () {
-    throw new Error("Must implement name getter");
+    throw new Error('Must implement name getter');
   }
 
   get language () {
-    throw new Error("Must implement language getter");
+    throw new Error('Must implement language getter');
   }
 
   addAction (action, params) {
@@ -30,23 +30,23 @@ export default class Framework {
   }
 
   wrapWithBoilerplate () {
-    throw new Error("Must implement wrapWithBoilerplate");
+    throw new Error('Must implement wrapWithBoilerplate');
   }
 
   indent (str, spaces) {
-    let lines = str.split("\n");
-    let spaceStr = "";
+    let lines = str.split('\n');
+    let spaceStr = '';
     for (let i = 0; i < spaces; i++) {
-      spaceStr += " ";
+      spaceStr += ' ';
     }
     return lines
       .filter((l) => !!l.trim())
       .map((l) => `${spaceStr}${l}`)
-      .join("\n");
+      .join('\n');
   }
 
   getCodeString (includeBoilerplate = false) {
-    let str = "";
+    let str = '';
     for (let {action, params} of this.actions) {
       let genCodeFn = `codeFor_${action}`;
       if (!this[genCodeFn]) {
@@ -87,7 +87,7 @@ export default class Framework {
   }
 
   codeFor_findAndAssign () {
-    throw new Error("Need to implement codeFor_findAndAssign");
+    throw new Error('Need to implement codeFor_findAndAssign');
   }
 
   codeFor_findElement (strategy, locator) {
@@ -95,7 +95,7 @@ export default class Framework {
     if (!wasNew) {
       // if we've already found this element, don't print out
       // finding it again
-      return "";
+      return '';
     }
 
     return this.codeFor_findAndAssign(strategy, locator, localVar);
@@ -103,10 +103,10 @@ export default class Framework {
   }
 
   codeFor_tap () {
-    throw new Error("Need to implement codeFor_tap");
+    throw new Error('Need to implement codeFor_tap');
   }
 
   codeFor_swipe () {
-    throw new Error("Need to implement codeFor_tap");
+    throw new Error('Need to implement codeFor_tap');
   }
 }
