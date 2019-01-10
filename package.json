@@ -43,7 +43,7 @@
     "package-linux": "npm run build && build --linux",
     "package-all": "npm run build && build -mwl",
     "package-nsis": "cross-env TARGET=nsis npm run build && build --win nsis --publish onTagOrDraft && build --win nsis-web --publish onTagOrDraft",
-    "package-ci": "node ./check-engines package.json && npm run clean && npm run build && npm run test && build --publish onTagOrDraft && npm run test-e2e ",
+    "package-ci": "node ./check-engines package.json && npm run clean && npm run build && npm run test && build --publish onTagOrDraft",
     "postinstall": "node ./check-engines package.json package.json && rimraf node_modules/jimp/browser",
     "postversion": "git pull --tags && git push && git push --tags",
     "pre-commit": "npm run lint && mocha --reporter dot ./test/unit"
