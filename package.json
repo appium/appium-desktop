@@ -108,7 +108,7 @@
   },
   "dependencies": {
     "@babel/polyfill": "^7.0.0",
-    "@sentry/electron": "^0.14.0",
+    "@sentry/electron": "^0.15.0",
     "ansi-to-html": "~0.6.7",
     "antd": "^3.11.2",
     "appium": "^1.10.0",
