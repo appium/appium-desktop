@@ -5,6 +5,7 @@ import HighlighterRects from './HighlighterRects';
 import { Spin, Tooltip } from 'antd';
 import B from 'bluebird';
 import styles from './Inspector.css';
+import { parseCoordinates } from './shared';
 
 /**
  * Shows screenshot of running application and divs that highlight the elements' bounding boxes
@@ -34,12 +35,83 @@ export default class Screenshot extends Component {
     });
   }
 
-  async handleScreenshotClick () {
+  async handleScreenshotClick (e) {
     const {screenshotInteractionMode, applyClientMethod,
-           swipeStart, swipeEnd, setSwipeStart, setSwipeEnd} = this.props;
-    const {x, y} = this.state;
+           swipeStart, swipeEnd, setSwipeStart, setSwipeEnd, source} = this.props;
+    const {x, y, scaleRatio} = this.state;
 
-    if (screenshotInteractionMode === 'tap') {
+    /**
+     * This is way to select overlapped behind views of Screenshot component
+     */
+    if (screenshotInteractionMode === 'select') {
+      let thisSelectedElementKey = null;
+      let shouldSelectNext = false;
+      let newSelect = true;
+      const highlighterXOffset = this.containerEl.getBoundingClientRect().left;
+      const highlighterYOffset = this.containerEl.getBoundingClientRect().top;
+      let isInElement = (element, e) => {
+        if (element == null) {
+          return false;
+        }
+        const {x1, y1, x2, y2} = parseCoordinates(element);
+        let left = x1 / scaleRatio + highlighterXOffset;
+        let top = y1 / scaleRatio + highlighterYOffset;
+        let width = (x2 - x1) / scaleRatio;
+        let height = (y2 - y1) / scaleRatio;
+
+        if (e.clientX > left && e.clientX < left + width
+          && e.clientY > top && e.clientY < top + height) {
+          return true;
+        }
+
+        return false;
+      };
+
+      if (this.props.selectedElement != null) {
+        if (isInElement(this.props.selectedElement, e)) {
+          newSelect = false;
+        }
+      }
+      let recursive = (element, zIndex = 0) => {
+        if (!element) {
+          return;
+        }
+
+        let noChildIsInRect = true;
+        for (let childEl of element.children) {
+          if (recursive(childEl, zIndex + 1)) {
+            noChildIsInRect = false;
+          }
+        }
+
+        if (isInElement(element, e)) {
+          //If this is leaf element or most child element among rects containing click point
+          if (element.children.length === 0 || noChildIsInRect) {
+            if (this.props.selectedElement == null || newSelect) {
+              if (thisSelectedElementKey == null) {
+                thisSelectedElementKey = element.path;
+              }
+            } else {
+              if (this.props.selectedElement.path === element.path) {
+                shouldSelectNext = true;
+              } else if (shouldSelectNext) {
+                thisSelectedElementKey = element.path;
+                shouldSelectNext = false;
+              }
+            }
+          }
+          return true;
+        } else {
+          return false;
+        }
+      };
+      recursive(source);
+      if (shouldSelectNext || thisSelectedElementKey == null) {
+        this.props.unselectElement();
+      } else {
+        this.props.selectElement(thisSelectedElementKey);
+      }
+    } else if (screenshotInteractionMode === 'tap') {
       applyClientMethod({
         methodName: 'tap',
         args: [x, y],
