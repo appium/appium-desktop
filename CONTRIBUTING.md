@@ -140,7 +140,7 @@ Appium Desktop follows the same npm versioning workflow but isn't published to N
 ## Submitting changes to the Appium Desktop code or docs
 
 Fork the project, make a change, and send a pull request! Please have a look at
-our [Style Guide](https://github.com/appium/appium/blob/master/docs/en/contributing-to-appium/style-guide-2.0.md) before
+our [Style Guide](https://github.com/appium/appium/blob/master/docs/en/contributing-to-appium/style-guide.md) before
 getting to work.  Please make sure functional tests pass before
 sending a pull request; for more information on how to run tests, keep reading!
 
