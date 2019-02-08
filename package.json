@@ -82,7 +82,7 @@
       "package.json"
     ],
     "win": {
-      "target": "squirrel",
+      "target": "nsis",
       "icon": "build/icon.ico"
     },
     "nsisWeb": {
@@ -167,7 +167,6 @@
     "electron": "^3.0.13",
     "electron-builder": "^20.38.2",
     "electron-builder-lib": "^20.15.3",
-    "electron-builder-squirrel-windows": "^20.38.2",
     "electron-devtools-installer": "^2.2.3",
     "eslint": "^5.9.0",
     "eslint-config-appium": "^4.0.1",
