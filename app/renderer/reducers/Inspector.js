@@ -12,6 +12,7 @@ import { SET_SOURCE_AND_SCREENSHOT, QUIT_SESSION_REQUESTED, QUIT_SESSION_DONE,
          SET_SWIPE_START, SET_SWIPE_END, CLEAR_SWIPE_ACTION, SET_SEARCHED_FOR_ELEMENT_BOUNDS, CLEAR_SEARCHED_FOR_ELEMENT_BOUNDS,
          PROMPT_KEEP_ALIVE, HIDE_PROMPT_KEEP_ALIVE
 } from '../actions/Inspector';
+import { SCREENSHOT_INTERACTION_MODE } from '../components/Inspector/shared';
 
 const DEFAULT_FRAMEWORK = 'java';
 
@@ -28,7 +29,7 @@ const INITIAL_STATE = {
   locatorTestValue: '',
   isSearchingForElements: false,
   assignedVarCache: {},
-  screenshotInteractionMode: 'select',
+  screenshotInteractionMode: SCREENSHOT_INTERACTION_MODE.SELECT,
   searchedForElementBounds: null,
   showKeepAlivePrompt: false,
 };

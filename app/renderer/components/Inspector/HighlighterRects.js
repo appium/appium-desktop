@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import { debounce } from 'lodash';
 import HighlighterRect from './HighlighterRect';
 import B from 'bluebird';
+import { SCREENSHOT_INTERACTION_MODE } from './shared';
+
+const {TAP, SWIPE, SELECT} = SCREENSHOT_INTERACTION_MODE;
 
 /**
  * Shows screenshot of running application and divs that highlight the elements' bounding boxes
@@ -34,12 +37,12 @@ export default class HighlighterRects extends Component {
            swipeStart, swipeEnd, setSwipeStart, setSwipeEnd} = this.props;
     const {x, y} = this.state;
 
-    if (screenshotInteractionMode === 'tap') {
+    if (screenshotInteractionMode === TAP) {
       applyClientMethod({
-        methodName: 'tap',
+        methodName: TAP,
         args: [x, y],
       });
-    } else if (screenshotInteractionMode === 'swipe') {
+    } else if (screenshotInteractionMode === SWIPE) {
       if (!swipeStart) {
         setSwipeStart(x, y);
       } else if (!swipeEnd) {
@@ -54,7 +57,7 @@ export default class HighlighterRects extends Component {
     const {screenshotInteractionMode} = this.props;
     const {scaleRatio} = this.state;
 
-    if (screenshotInteractionMode !== 'select') {
+    if (screenshotInteractionMode !== SELECT) {
       const offsetX = e.nativeEvent.offsetX;
       const offsetY = e.nativeEvent.offsetY;
       const x = offsetX * scaleRatio;
@@ -133,7 +136,7 @@ export default class HighlighterRects extends Component {
 
     // If we're tapping or swiping, show the 'crosshair' cursor style
     const screenshotStyle = {};
-    if (screenshotInteractionMode === 'tap' || screenshotInteractionMode === 'swipe') {
+    if (screenshotInteractionMode === TAP || screenshotInteractionMode === SWIPE) {
       screenshotStyle.cursor = 'crosshair';
     }
 
