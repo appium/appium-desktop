@@ -34,55 +34,69 @@ export default class Screenshot extends Component {
     });
   }
 
-
-  clickScreenshotElement (source, selectedElement, scaleRatio, x, y, highlighterXOffset, highlighterYOffset) {
-    const {selectElement, unselectElement} = this.props;
+  /**
+   * Find, switch proper element for element-selection
+   * @param {*} x User clicked point X
+   * @param {*} y User clicked point Y
+   */
+  clickScreenshotElement (x, y) {
+    const {selectElement, unselectElement, source, selectedElement} = this.props;
+    const {scaleRatio} = this.state;
+    const {left: highlighterXOffset, top: highlighterYOffset} = this.containerEl.getBoundingClientRect();
     let thisSelectedElementKey = null;
     let shouldSelectNext = false;
     let newSelect = true;
-    let isInElement = (element, x, y) => {
+    let isCoordinatesInElement = (element, x, y) => {
       if (element == null) {
         return false;
       }
       const {x1, y1, x2, y2} = parseCoordinates(element);
-      let left = x1 / scaleRatio + highlighterXOffset;
-      let top = y1 / scaleRatio + highlighterYOffset;
-      let width = (x2 - x1) / scaleRatio;
-      let height = (y2 - y1) / scaleRatio;
-
-      if (x > left && x < left + width && y > top && y < top + height) {
-        return true;
-      }
-
-      return false;
+      const left = x1 / scaleRatio + highlighterXOffset;
+      const top = y1 / scaleRatio + highlighterYOffset;
+      const width = (x2 - x1) / scaleRatio;
+      const height = (y2 - y1) / scaleRatio;
+      return x > left && x < (left + width) && y > top && y < (top + height);
     };
 
-    if (selectedElement != null) {
-      if (isInElement(selectedElement, x, y)) {
-        newSelect = false;
-      }
+    if (selectedElement != null && isCoordinatesInElement(selectedElement, x, y)) {
+      newSelect = false;
     }
-    let recursive = (element, zIndex = 0) => {
+
+    /**
+     * Parsing tree node, find elements corresponding by user click.
+     * Corresponding element by user click is 'Candidate element'.
+     * Candidate element should be normally most child node containing click point.
+     * But candidate element also can be parents node that has child node of not containg click point.
+     * In case that parents node is wider then children.
+     * Consequently, candidate element can be several.
+     *
+     * There is 'Selection Order' among candidate elements.
+     * Whenever user clicks same point, selected node is changed by selection order.
+     *
+     * This function set following two values.
+     * 1. shouldSelectNext - True if it is last of Selection Order. By this value, next candidate node know it's my turn. Also, By this value, next operation is decided to unselection.
+     * 2. thisSelectedElementKey - Element path of candidate element which should be selected at this turn.
+     *
+     * @param {*} element each of screen shot element
+     */
+    let recursive = (element) => {
       if (!element) {
         return false;
       }
-
-      let noChildIsInRect = true;
-      for (let i = element.children.length - 1 ; i >= 0 ; i--) {
-        if (recursive(element.children[i], zIndex + 1)) {
-          noChildIsInRect = false;
+      let noChildElementIsInRect = true;
+      for (let childElement of element.children) {
+        if (recursive(childElement)) {
+          noChildElementIsInRect = false;
         }
       }
 
-      if (isInElement(element, x, y)) {
-        //If this is leaf element or most child element among rects containing click point
-        if (element.children.length === 0 || noChildIsInRect) {
-          if (selectedElement == null || newSelect) {
-            if (thisSelectedElementKey == null) {
-              thisSelectedElementKey = element.path;
-            }
+      if (isCoordinatesInElement(element, x, y)) {
+        //If this is most child element among rects containing click point
+        if (element.children.length === 0 || noChildElementIsInRect) {
+          if ((selectedElement == null || newSelect) && thisSelectedElementKey == null) {
+            thisSelectedElementKey = element.path;
           } else {
-            if (selectedElement.path === element.path) {
+            if (selectedElement != null && selectedElement.path === element.path) {
               shouldSelectNext = true;
             } else if (shouldSelectNext) {
               thisSelectedElementKey = element.path;
@@ -91,9 +105,8 @@ export default class Screenshot extends Component {
           }
         }
         return true;
-      } else {
-        return false;
       }
+      return false;
     };
     recursive(source);
     if (shouldSelectNext || thisSelectedElementKey == null) {
@@ -105,15 +118,13 @@ export default class Screenshot extends Component {
 
   async handleScreenshotClick (e) {
     const {screenshotInteractionMode, applyClientMethod,
-           swipeStart, swipeEnd, setSwipeStart, setSwipeEnd, source, selectedElement} = this.props;
-    const {x, y, scaleRatio} = this.state;
+           swipeStart, swipeEnd, setSwipeStart, setSwipeEnd} = this.props;
+    const {x, y} = this.state;
     /**
      * This is way to select overlapped behind views of Screenshot component
      */
     if (screenshotInteractionMode === 'select') {
-      const highlighterXOffset = this.containerEl.getBoundingClientRect().left;
-      const highlighterYOffset = this.containerEl.getBoundingClientRect().top;
-      this.clickScreenshotElement(source, selectedElement, scaleRatio, e.clientX, e.clientY, highlighterXOffset, highlighterYOffset);
+      this.clickScreenshotElement(e.clientX, e.clientY);
     } else if (screenshotInteractionMode === 'tap') {
       applyClientMethod({
         methodName: 'tap',
