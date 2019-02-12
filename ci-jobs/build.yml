@@ -18,6 +18,7 @@ jobs:
     - script: |
         npm ci
         npm run package-ci
+        npm run test-e2e
       displayName: 'Install dependencies and run packager'
     - task: PublishTestResults@2
       displayName: 'Publish Test Results'
