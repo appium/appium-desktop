@@ -215,5 +215,11 @@
   "engines": {
     "node": ">=10.x",
     "npm": ">=5.x"
+  },
+  "greenkeeper": {
+    "ignore": [
+      "less",
+      "electron-settings"
+    ]
   }
 }
