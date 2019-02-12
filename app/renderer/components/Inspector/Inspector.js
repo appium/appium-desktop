@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
+import { SCREENSHOT_INTERACTION_MODE } from './shared';
 import { Card, Icon, Button, Spin, Tooltip, Modal } from 'antd';
 import Screenshot from './Screenshot';
 import SelectedElement from './SelectedElement';
@@ -8,6 +8,8 @@ import SourceScrollButtons from './SourceScrollButtons';
 import InspectorStyles from './Inspector.css';
 import RecordedActions from './RecordedActions';
 import { clipboard } from 'electron';
+
+const {SELECT, SWIPE, TAP} = SCREENSHOT_INTERACTION_MODE;
 
 const ButtonGroup = Button.Group;
 
@@ -85,18 +87,18 @@ export default class Inspector extends Component {
     let actionControls = <div className={InspectorStyles['action-controls']}>
       <ButtonGroup size="large" value={screenshotInteractionMode}>
         <Tooltip title="Select Elements">
-          <Button icon='select' onClick={() => {this.screenshotInteractionChange('select');}}
-            type={screenshotInteractionMode === 'select' ? 'primary' : 'default'}
+          <Button icon='select' onClick={() => {this.screenshotInteractionChange(SELECT);}}
+            type={screenshotInteractionMode === SELECT ? 'primary' : 'default'}
           />
         </Tooltip>
         <Tooltip title="Swipe By Coordinates">
-          <Button icon='swap-right' onClick={() => {this.screenshotInteractionChange('swipe');}}
-            type={screenshotInteractionMode === 'swipe' ? 'primary' : 'default'}
+          <Button icon='swap-right' onClick={() => {this.screenshotInteractionChange(SWIPE);}}
+            type={screenshotInteractionMode === SWIPE ? 'primary' : 'default'}
           />
         </Tooltip>
         <Tooltip title="Tap By Coordinates">
-          <Button icon='scan' onClick={() => {this.screenshotInteractionChange('tap');}}
-            type={screenshotInteractionMode === 'tap' ? 'primary' : 'default'}
+          <Button icon='scan' onClick={() => {this.screenshotInteractionChange(TAP);}}
+            type={screenshotInteractionMode === TAP ? 'primary' : 'default'}
           />
         </Tooltip>
       </ButtonGroup>
