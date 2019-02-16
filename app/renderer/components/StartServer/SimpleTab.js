@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { Input } from 'antd';
-
+import { withTranslation } from '../../util';
 import { propTypes, updateArg } from './shared';
 import StartButton from './StartButton';
 import styles from './SimpleTab.css';
 
-export default class SimpleTab extends Component {
+class SimpleTab extends Component {
 
   render () {
     const {startServer, serverArgs, serverStarting, serverVersion} = this.props;
@@ -32,3 +32,5 @@ export default class SimpleTab extends Component {
 }
 
 SimpleTab.propTypes = {...propTypes};
+
+export default withTranslation(SimpleTab);

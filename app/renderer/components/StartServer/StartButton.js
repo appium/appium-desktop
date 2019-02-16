@@ -2,10 +2,11 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Icon } from 'antd';
 import { ipcRenderer } from 'electron';
+import { withTranslation } from '../../util';
 
 import styles from './StartButton.css';
 
-export default class StartButton extends Component {
+class StartButton extends Component {
   isEnabled () {
     return !(this.props.serverStarting || this.props.disabledOverride);
   }
@@ -19,7 +20,7 @@ export default class StartButton extends Component {
   }
 
   render () {
-    const {startServer, serverStarting, serverVersion} = this.props;
+    const {startServer, serverStarting, serverVersion, t} = this.props;
     const buttonProps = {};
     if (!this.isEnabled()) {
       buttonProps.disabled = true;
@@ -32,13 +33,13 @@ export default class StartButton extends Component {
           type="primary"
           onClick={this.isEnabled() ? startServer : this.noop}
         >
-          {serverStarting ? 'Starting...' : `Start Server v${serverVersion}`}
+          {serverStarting ? t('Starting…') : t('startServer', {serverVersion})}
         </Button>
         <input type="submit" hidden={true} />
         <Button id='configBtn'
           className={styles.configButton}
           onClick={() => this.openConfig()}>
-          Edit Configurations <Icon type="setting" />
+          {t('Edit Configurations')}<Icon type="setting" />
         </Button>
       </div>
     );
@@ -50,3 +51,5 @@ StartButton.propTypes = {
   startServer: PropTypes.func.isRequired,
   disabledOverride: PropTypes.bool,
 };
+
+export default withTranslation(StartButton);

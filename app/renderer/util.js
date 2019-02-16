@@ -1,4 +1,7 @@
 import XPath from 'xpath';
+import { withTranslation as wt } from 'react-i18next';
+import config from '../configs/app.config';
+import _ from 'lodash';
 
 /**
  * Get an optimal XPath for a DOMNode
@@ -59,4 +62,11 @@ export function getOptimalXPath (doc, domNode, uniqueAttributes = ['id']) {
     // If there's an unexpected exception, abort and don't get an XPath
     return null;
   }
+}
+
+export function withTranslation (componentCls, ...hocs) {
+  return _.flow(
+    ...hocs,
+    wt(config.namespace),
+  )(componentCls);
 }
