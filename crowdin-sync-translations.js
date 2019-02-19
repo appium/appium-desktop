@@ -15,31 +15,58 @@ if (!PROJECT_ID || !PROJECT_KEY) {
 }
 const RESOURCES_ROOT = path.resolve('assets', 'locales');
 const ORIGINAL_LANGUAGE = 'en';
+const USER_AGENT = 'Appium Desktop';
+
+async function exportTranslations () {
+  const options = {
+    url: `https://api.crowdin.com/api/project/${PROJECT_ID}/export?key=${PROJECT_KEY}`,
+    port: 443,
+    method: 'GET',
+    headers: {
+      'User-Agent': USER_AGENT,
+    },
+  };
+  return await new B((resolve, reject) => {
+    request(options)
+      .on('error', reject)
+      .on('response', (res) => {
+        if (res.statusCode >= 400) {
+          return reject(`Cannot export the translated resources in Crowdin. Error code: ${res.statusCode}`);
+        }
+        log.info(`Successfully exported Crowdin translations`);
+      })
+      .on('close', resolve);
+  });
+}
+
+async function downloadTranslations (dstPath) {
+  const options = {
+    url: `https://api.crowdin.com/api/project/${PROJECT_ID}/download/all.zip?key=${PROJECT_KEY}`,
+    port: 443,
+    method: 'GET',
+    headers: {
+      'User-Agent': USER_AGENT,
+    },
+  };
+  return await new B((resolve, reject) => {
+    request(options)
+      .on('error', reject)
+      .on('response', (res) => {
+        if (res.statusCode >= 400) {
+          return reject(`Cannot download the translated resources from Crowdin. Error code: ${res.statusCode}`);
+        }
+        log.info(`Successfully downloaded Crowdin translations`);
+      })
+      .pipe(createWriteStream(dstPath))
+      .on('close', resolve);
+  });
+}
 
 async function main () {
+  await exportTranslations();
   const zipPath = await tempDir.path({prefix: 'translations', suffix: '.zip'});
   try {
-    const options = {
-      url: `https://api.crowdin.com/api/project/${PROJECT_ID}/download/all.zip?key=${PROJECT_KEY}`,
-      port: 443,
-      method: 'GET',
-      headers: {
-        'User-Agent': 'Appium Desktop',
-      },
-    };
-    await new B((resolve, reject) => {
-      request(options)
-        .on('error', reject)
-        .on('response', (res) => {
-          log.debug(`Response code: ${res.statusCode}`);
-          if (res.statusCode >= 400) {
-            return reject(`Error downloading file: ${res.statusCode}`);
-          }
-        })
-        .pipe(createWriteStream(zipPath))
-        .on('close', resolve);
-    });
-
+    await downloadTranslations(zipPath);
     const tmpRoot = await tempDir.openDir();
     try {
       await zip.extractAllTo(zipPath, tmpRoot);
@@ -49,10 +76,14 @@ async function main () {
           continue;
         }
 
+        const dstPath = path.resolve(RESOURCES_ROOT, name);
+        if (await fs.exists(dstPath)) {
+          await fs.rimraf(dstPath);
+        }
         await fs.mv(currentPath, path.resolve(RESOURCES_ROOT, name), {
           mkdirp: true
         });
-        log.info(`Updated resources for the '${name}' language`);
+        log.info(`Successfully updated resources for the '${name}' language`);
       }
     } finally {
       await fs.rimraf(tmpRoot);
