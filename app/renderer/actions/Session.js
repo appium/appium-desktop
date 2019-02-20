@@ -285,9 +285,9 @@ export function newSession (caps, attachSessId = null) {
         port = 443;
         path = '/objectspy/wd/hub';
         username = session.server.pcloudy.username || process.env.PCLOUDY_USERNAME;
-        desiredCapabilities.pCloudy_Username = session.server.pcloudy.username;
+        desiredCapabilities.pCloudy_Username = username;
         accessKey = session.server.pcloudy.accessKey || process.env.PCLOUDY_ACCESS_KEY;
-        desiredCapabilities.pCloudy_ApiKey = session.server.pcloudy.accessKey;
+        desiredCapabilities.pCloudy_ApiKey = accessKey;
         if (!username || !accessKey) {
           notification.error({
             message: 'Error',
