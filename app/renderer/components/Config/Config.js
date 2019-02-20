@@ -9,18 +9,18 @@ const ENV_VARIABLE_NAMES = [
 
 const {app, dialog, getCurrentWindow} = remote;
 
-export default class Config extends Component {
-
+class Config extends Component {
   componentWillMount () {
     this.props.getEnvironmentVariables();
   }
 
   saveAndRestart () {
-    const {environmentVariables} = this.props;
+    const { environmentVariables, t } = this.props;
+
     ipcRenderer.send('appium-save-env', environmentVariables);
     ipcRenderer.once('appium-save-env-done', () => {
-      const message = `Application must be restarted for changes to take effect`;
-      const dialogOptions = {type: 'info', buttons: ['Restart Now', 'Restart Later'], message};
+      const message = t(`Application must be restarted for changes to take effect`);
+      const dialogOptions = {type: 'info', buttons: [t('Restart Now'), t('Restart Later')], message};
       ipcRenderer.removeAllListeners('appium-save-env-done');
       dialog.showMessageBox(dialogOptions, (response) => {
         if (response === 0) {
@@ -36,25 +36,34 @@ export default class Config extends Component {
   }
 
   render () {
-    const {setEnvironmentVariable, environmentVariables, defaultEnvironmentVariables} = this.props;
+    const {
+      setEnvironmentVariable,
+      environmentVariables,
+      defaultEnvironmentVariables,
+      t,
+    } = this.props;
 
-    return <div className={styles.container}>
-      <h3>Environment Variables</h3>
-      {ENV_VARIABLE_NAMES.map((ENV_NAME) => (
-        <Row key={ENV_NAME} className={styles.row} gutter={16}>
+    return (
+      <div className={styles.container}>
+        <h3>{t('Environment Variables')}</h3>
+        {ENV_VARIABLE_NAMES.map((ENV_NAME) => (
+          <Row key={ENV_NAME} className={styles.row} gutter={16}>
+            <Col span={24}>
+              <Input addonBefore={ENV_NAME}
+                placeholder={defaultEnvironmentVariables[ENV_NAME]}
+                onChange={(evt) => setEnvironmentVariable(ENV_NAME, evt.target.value)}
+                value={environmentVariables[ENV_NAME]} />
+            </Col>
+          </Row>
+        ))}
+        <Row>
           <Col span={24}>
-            <Input addonBefore={ENV_NAME}
-              placeholder={defaultEnvironmentVariables[ENV_NAME]}
-              onChange={(evt) => setEnvironmentVariable(ENV_NAME, evt.target.value)}
-              value={environmentVariables[ENV_NAME]} />
+            <Button onClick={() => this.saveAndRestart()}>{t('Save and Restart')}</Button>
           </Col>
         </Row>
-      ))}
-      <Row>
-        <Col span={24}>
-          <Button onClick={() => this.saveAndRestart()}>Save and Restart</Button>
-        </Col>
-      </Row>
-    </div>;
+      </div>
+    );
   }
 }
+
+export default Config;

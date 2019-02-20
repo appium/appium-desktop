@@ -77,7 +77,7 @@ npm run package-e2e-test
 
 This will create builds in the `release/` folder that are specific for e2e testing. This only needs to be run whenever you make changes to the application.
 
-To run the e2e tests call 
+To run the e2e tests call
 
 ```bash
 npm run e2e
@@ -87,8 +87,8 @@ npm run e2e
 
 #### Renderer
 * The renderer uses Chromium and can be debugged using Chrome DevTools the same way a webpage is debugged
-* When you run dev (`npm run dev`) the Chrome DevTools window is opened on startup. 
-* To open it again, after it has been closed, right click on the window and select `Inspect Element` 
+* When you run dev (`npm run dev`) the Chrome DevTools window is opened on startup.
+* To open it again, after it has been closed, right click on the window and select `Inspect Element`
 
 #### Main
 * In Chrome Dev Tools
@@ -159,3 +159,15 @@ requests. If you are submitting a bug report, please follow the [issue template]
 ### Sentry
 
 Appium Desktop has crash logs reported to it using [Sentry](https://sentry.io/appium/appiumdesktop/). This requires permission to access.
+
+### Localization
+
+Appium Desktop uses [i18next](https://www.i18next.com) library to manage its translations. All translatable resources are stored in `assets/locales/en/translation.json` file. The list of supported languages can be found (or altered) in `app/configs/app.config.js` module. Please read through i18next API documentation to get more information on how to manage the localized resources:
+
+- https://www.i18next.com/translation-function/essentials
+- https://www.i18next.com/translation-function/interpolation
+- https://www.i18next.com/translation-function/formatting
+- https://www.i18next.com/translation-function/plurals
+- https://react.i18next.com/legacy-v9/trans-component
+
+Please only edit the resources for the English language since the other languages are managed by the external Translation Management System and should only be changed by automated scripts. Use `npm run crowdin-update` command to update the original translations in the TMS. Use `npm run crowdin-sync` command to synchronize the translated files with the TMS.
