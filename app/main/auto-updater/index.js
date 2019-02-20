@@ -11,6 +11,7 @@ import { checkUpdate } from './update-checker';
 import { getFeedUrl } from './config';
 import _ from 'lodash';
 import env from '../../env';
+import i18n from '../../configs/i18next.config';
 
 const isDev = process.env.NODE_ENV === 'development';
 const runningLocally = isDev || process.env.RUNNING_LOCALLY;
@@ -31,9 +32,9 @@ if (!runningLocally) {
     const update = await checkUpdate(app.getVersion());
     if (update) {
       let {name, notes, pub_date: pubDate} = update;
-      pubDate = moment(pubDate).format('MMM Do YYYY, h:mma');
+      pubDate = moment(pubDate).format(i18n.t('datetimeFormat'));
 
-      let detail = `Release Date: ${pubDate}\n\nRelease Notes: ${notes.replace('*', '\n*')}`;
+      let detail = i18n.t('updateDetails', {pubDate, notes: notes.replace('*', '\n*')});
       if (env.NO_AUTO_UPDATE) {
         detail += `\n\nhttps://www.github.com/appium/appium-desktop/releases/latest`;
       }
@@ -43,8 +44,10 @@ if (!runningLocally) {
       if (!process.env.RUNNING_IN_SPECTRON) {
         dialog.showMessageBox({
           type: 'info',
-          buttons: env.NO_AUTO_UPDATE ? ['Ok'] : ['Install Now', 'Install Later'],
-          message: `Appium Desktop ${name} is available`,
+          buttons: env.NO_AUTO_UPDATE
+            ? [i18n.t('OK')]
+            : [i18n.t('Install Now'), i18n.t('Install Later')],
+          message: i18n.t('appiumIsAvailable', {name}),
           detail,
         }, (response) => {
           if (response === 0) {
@@ -70,9 +73,9 @@ if (!runningLocally) {
   autoUpdater.on('update-available', () => {
     dialog.showMessageBox({
       type: 'info',
-      buttons: ['Ok'],
-      message: 'Update Download Started',
-      detail: 'Update is being downloaded now. You will be notified again when it is complete',
+      buttons: [i18n.t('OK')],
+      message: i18n.t('Update Download Started'),
+      detail: i18n.t('updateIsBeingDownloaded'),
     });
   });
 
@@ -81,9 +84,9 @@ if (!runningLocally) {
   autoUpdater.on('update-not-available', () => {
     dialog.showMessageBox({
       type: 'info',
-      buttons: ['Ok'],
-      message: 'No update available',
-      detail: 'Appium Desktop is up-to-date',
+      buttons: [i18n.t('OK')],
+      message: i18n.t('No update available'),
+      detail: i18n.t('Appium Desktop is up-to-date'),
     });
   });
 
@@ -91,11 +94,9 @@ if (!runningLocally) {
   autoUpdater.on('update-downloaded', (event, releaseNotes, releaseName) => {
     dialog.showMessageBox({
       type: 'info',
-      buttons: ['Restart Now', 'Later'],
-      message: 'Update Downloaded',
-      detail: `Appium Desktop ${releaseName} has been downloaded. ` +
-        `Must restart to apply the updates ` +
-        `(note: it may take several minutes for Appium Desktop to install and restart)`,
+      buttons: [i18n.t('Restart Now'), i18n.t('Later')],
+      message: i18n.t('Update Downloaded'),
+      detail: i18n.t('updateIsDownloaded', {releaseName}),
     }, (response) => {
       // If they say yes, restart now
       if (response === 0) {
@@ -108,8 +109,8 @@ if (!runningLocally) {
   autoUpdater.on('error', (message) => {
     dialog.showMessageBox({
       type: 'error',
-      message: 'Could not download update',
-      detail: `Failed to download update. Reason: ${message}`,
+      message: i18n.t('Could not download update'),
+      detail: i18n.t('updateDownloadFailed', {message}),
     });
   });
 

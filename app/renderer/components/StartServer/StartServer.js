@@ -15,6 +15,8 @@ const TAB_SIMPLE = 0, TAB_ADVANCED = 1, TAB_PRESETS = 2;
 export default class StartServer extends Component {
 
   displayTab () {
+    const {t} = this.props;
+
     switch (this.props.tabId) {
       case TAB_SIMPLE:
         return <SimpleTab {...this.props} />;
@@ -23,12 +25,12 @@ export default class StartServer extends Component {
       case TAB_PRESETS:
         return <PresetsTab {...this.props} />;
       default:
-        throw new Error('Invalid tab id');
+        throw new Error(t('Invalid tab id'));
     }
   }
 
   render () {
-    const {tabId, switchTab} = this.props;
+    const {tabId, switchTab, t} = this.props;
     return (
       <div className={styles.container}>
         <div className={styles.formAndLogo}>
@@ -37,13 +39,13 @@ export default class StartServer extends Component {
             <Button.Group className={styles.tabButtons}>
               <Button type={tabId === TAB_SIMPLE ? 'primary' : null }
                 onClick={() => switchTab(TAB_SIMPLE)}
-              >Simple</Button>
+              >{t('Simple')}</Button>
               <Button type={tabId === TAB_ADVANCED ? 'primary' : null }
                 onClick={() => switchTab(TAB_ADVANCED)}
-              >Advanced</Button>
+              >{t('Advanced')}</Button>
               <Button type={tabId === TAB_PRESETS ? 'primary' : null }
                 onClick={() => switchTab(TAB_PRESETS)}
-              >Presets</Button>
+              >{t('Presets')}</Button>
             </Button.Group>
           </div>
           {this.displayTab()}

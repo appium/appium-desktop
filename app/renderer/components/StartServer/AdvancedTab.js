@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Modal, Input, Checkbox, notification } from 'antd';
 
+import { withTranslation } from '../../util';
 import { propTypes, updateArg } from './shared';
 import StartButton from './StartButton';
 import SavePresetButton from './SavePresetButton';
@@ -16,7 +17,7 @@ import styles from './AdvancedTab.css';
 // isolateSimDevice, tmpDir, traceDir, debugLogSpacing,
 // suppressAdbKillServer, webkitDebugProxyPort, defaultCapabilities
 
-export default class AdvancedTab extends Component {
+class AdvancedTab extends Component {
 
   constructor (props) {
     super(props);
@@ -27,7 +28,7 @@ export default class AdvancedTab extends Component {
   }
 
   buildInput (argName, type, label) {
-    const {serverArgs} = this.props;
+    const {serverArgs, t} = this.props;
 
     if (type === 'text') {
       return (
@@ -56,7 +57,7 @@ export default class AdvancedTab extends Component {
       return '';
     }
 
-    throw new Error(`Invalid type ${type}`);
+    throw new Error(t('invalidType', {type}));
   }
 
   openPresetModal () {
@@ -74,6 +75,7 @@ export default class AdvancedTab extends Component {
   }
 
   savePreset (evt) {
+    const {t} = this.props;
     if (evt) {
       // might get here from Modal binding (no event) or form submit binding
       // (event)
@@ -85,14 +87,14 @@ export default class AdvancedTab extends Component {
     }
     this.props.savePreset(this.state.newPresetName, this.props.serverArgs);
     notification.success({
-      message: 'Saved',
-      description: `Your preset '${this.state.newPresetName}' has been added ` +
-                   `to the list in the Presets tab!`
+      message: t('Saved'),
+      description: t('presetAdded', {presetName: this.state.newPresetName})
     });
     this.setState({modalOpen: false});
   }
 
   modal () {
+    const {t} = this.props;
     const form = (
       <div>
         <form className={styles.input}
@@ -113,11 +115,11 @@ export default class AdvancedTab extends Component {
       <Modal
         visible={this.state.modalOpen}
         className={styles.presetModal}
-        title="Save Server Arguments Preset"
+        title={t('Save Server Arguments Preset')}
         width={340}
-        okText="Save"
+        okText={t('Save')}
         onOk={this.savePreset.bind(this)}
-        cancelText="Cancel"
+        cancelText={t('Cancel')}
         onCancel={this.closePresetModal.bind(this)}
       >
         {form}
@@ -126,42 +128,42 @@ export default class AdvancedTab extends Component {
   }
 
   render () {
-    const {startServer, serverStarting, presetSaving, serverVersion} = this.props;
+    const {startServer, serverStarting, presetSaving, serverVersion, t} = this.props;
 
     return (
       <div className={styles.advancedForm}>
         <form onSubmit={startServer}>
           <div className={styles.inputSection}>
-            <div className={styles.secTitle}>General</div>
+            <div className={styles.secTitle}>{t('General')}</div>
             <div className={styles.secBody}>
-              {this.buildInput('address', 'text', 'Server Address')}
-              {this.buildInput('port', 'text', 'Server Port')}
-              {this.buildInput('log', 'text', 'Logfile Path')}
-              {this.buildInput('loglevel', 'text', 'Log Level')}
-              {this.buildInput('tmpDir', 'text', 'Override Temp Path')}
-              {this.buildInput('nodeconfig', 'text', 'Node Config File Path')}
-              {this.buildInput('localTimezone', 'checkbox', 'Local Timezone')}
-              {this.buildInput('sessionOverride', 'checkbox', 'Allow Session Override')}
-              {this.buildInput('logTimestamp', 'checkbox', 'Log Timestamps')}
-              {this.buildInput('logNoColors', 'checkbox', 'Supress Log Color')}
-              {this.buildInput('enforceStrictCaps', 'checkbox', 'Strict Caps Mode')}
-              {this.buildInput('relaxedSecurityEnabled', 'checkbox', 'Relaxed Security')}
-              {this.buildInput('defaultCapabilities', 'textarea', 'Default Capabilities')}
+              {this.buildInput('address', 'text', t('Server Address'))}
+              {this.buildInput('port', 'text', t('Server Port'))}
+              {this.buildInput('log', 'text', t('Logfile Path'))}
+              {this.buildInput('loglevel', 'text', t('Log Level'))}
+              {this.buildInput('tmpDir', 'text', t('Override Temp Path'))}
+              {this.buildInput('nodeconfig', 'text', t('Node Config File Path'))}
+              {this.buildInput('localTimezone', 'checkbox', t('Local Timezone'))}
+              {this.buildInput('sessionOverride', 'checkbox', t('Allow Session Override'))}
+              {this.buildInput('logTimestamp', 'checkbox', t('Log Timestamps'))}
+              {this.buildInput('logNoColors', 'checkbox', t('Supress Log Color'))}
+              {this.buildInput('enforceStrictCaps', 'checkbox', t('Strict Caps Mode'))}
+              {this.buildInput('relaxedSecurityEnabled', 'checkbox', t('Relaxed Security'))}
+              {this.buildInput('defaultCapabilities', 'textarea', t('Default Capabilities'))}
             </div>
 
             <div className={styles.secTitle}>iOS</div>
             <div className={styles.secBody}>
-              {this.buildInput('wdaLocalPort', 'text', 'WebDriverAgent Port')}
-              {this.buildInput('callbackHost', 'text', 'executeAsync Callback Host')}
-              {this.buildInput('callbackPort', 'text', 'executeAsync Callback Port')}
+              {this.buildInput('wdaLocalPort', 'text', t('WebDriverAgent Port'))}
+              {this.buildInput('callbackHost', 'text', t('executeAsync Callback Host'))}
+              {this.buildInput('callbackPort', 'text', t('executeAsync Callback Port'))}
             </div>
 
             <div className={styles.secTitle}>Android</div>
             <div className={styles.secBody}>
-              {this.buildInput('bootstrapPort', 'text', 'Bootstrap Port')}
-              {this.buildInput('selendroidPort', 'text', 'Selendroid Port')}
-              {this.buildInput('chromeDriverPort', 'text', 'Chromedriver Port')}
-              {this.buildInput('chromedriverExecutable', 'text', 'Chromedriver Binary Path')}
+              {this.buildInput('bootstrapPort', 'text', t('Bootstrap Port'))}
+              {this.buildInput('selendroidPort', 'text', t('Selendroid Port'))}
+              {this.buildInput('chromeDriverPort', 'text', t('Chromedriver Port'))}
+              {this.buildInput('chromedriverExecutable', 'text', t('Chromedriver Binary Path'))}
             </div>
           </div>
           <div className={styles.actions}>
@@ -176,3 +178,5 @@ export default class AdvancedTab extends Component {
 }
 
 AdvancedTab.propTypes = {...propTypes};
+
+export default withTranslation(AdvancedTab);

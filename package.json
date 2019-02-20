@@ -18,6 +18,7 @@
   "keywords": [
     "appium"
   ],
+  "assetsPath": "assets",
   "homepage": "https://github.com/appium/appium-desktop",
   "main": "dist/main.js",
   "scripts": {
@@ -46,7 +47,9 @@
     "package-ci": "node ./check-engines package.json && npm run clean && npm run build && npm run test && build --publish onTagOrDraft",
     "postinstall": "node ./check-engines package.json package.json && rimraf node_modules/jimp/browser",
     "postversion": "git pull --tags && git push && git push --tags",
-    "pre-commit": "npm run lint && mocha --reporter dot ./test/unit"
+    "pre-commit": "npm run lint && mocha --reporter dot ./test/unit",
+    "crowdin-update": "node crowdin-update-resources.js",
+    "crowdin-sync": "node crowdin-sync-translations.js"
   },
   "pre-commit": [
     "pre-commit"
@@ -118,6 +121,8 @@
     "electron-log": "^2.2.17",
     "electron-settings": "^2.2.4",
     "electron-updater": "^4.0.1",
+    "i18next": "^14.1.1",
+    "i18next-node-fs-backend": "^2.1.1",
     "fix-path": "^2.1.0",
     "font-awesome": "4.x",
     "format-json": "1.x",
@@ -127,8 +132,10 @@
     "moment": "^2.20.1",
     "postcss": "^7.0.4",
     "prop-types": "^15.6.2",
-    "react": "^16.6.3",
-    "react-dom": "^16.6.3",
+    "react": "^16.8.1",
+    "react-dom": "^16.8.1",
+    "react-i18next": "^10.0.4",
+    "react-hot-loader": "^4.3.12",
     "react-redux": "^6.0.0",
     "react-router": "^4.3.1",
     "redux": "^4.0.1",
@@ -165,7 +172,7 @@
     "electron-builder": "^20.38.2",
     "electron-builder-lib": "^20.15.3",
     "electron-devtools-installer": "^2.2.3",
-    "eslint": "^5.9.0",
+    "eslint": "^5.13.0",
     "eslint-config-appium": "^4.0.1",
     "eslint-plugin-babel": "^5.2.1",
     "eslint-plugin-import": "^2.8.0",
@@ -183,6 +190,7 @@
     "mocha-multi-reporters": "^1.1.7",
     "node-libs-browser": "^2.1.0",
     "parcel-bundler": "^1.10.3",
+    "parcel-plugin-asset-copier": "^1.0.0",
     "postcss-modules": "^1.4.1",
     "pre-commit": "^1.2.2",
     "react-addons-test-utils": "^15.6.2",
