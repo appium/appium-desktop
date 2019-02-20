@@ -2,9 +2,29 @@
 # Build a general Node.js application with npm.
 # Add steps that analyze code, save build artifacts, deploy, and more:
 # https://docs.microsoft.com/vsts/pipelines/languages/javascript
+variables:
+  PYTHON: 'python2.7'
+
 jobs:
 - template: ci-jobs/build.yml
   parameters:
     pool: 'Hosted MacOS Preview'
     name: 'osx_build'
     xvfb: true
+- job: Windows
+  pool:
+    vmImage: vs2017-win2016
+  steps:
+    - task: NodeTool@0
+      inputs:
+        versionSpec: '11.x'
+    - script: |
+        npm ci
+      name: Install
+    - script: |
+        npm run package-ci
+        npm run test-e2e
+      name: PackageAndTest
+    - script: |
+        npm run package-nsis
+      name: PackageNSIS
