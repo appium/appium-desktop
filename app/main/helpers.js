@@ -1,6 +1,7 @@
 import { BrowserWindow, Menu } from 'electron';
 import settings from '../shared/settings';
 import path from 'path';
+import i18n from '../configs/i18next.config';
 
 const isDev = process.env.NODE_ENV === 'development';
 
@@ -40,7 +41,7 @@ export function openBrowserWindow (route, opts) {
     const {x, y} = props;
 
     Menu.buildFromTemplate([{
-      label: 'Inspect element',
+      label: i18n.t('Inspect element'),
       click () {
         win.inspectElement(x, y);
       }
