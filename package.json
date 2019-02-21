@@ -23,7 +23,7 @@
   "main": "dist/main.js",
   "scripts": {
     "test": "npm run lint && npm run test-unit && npm run test-integration",
-    "test-e2e": "cross-env FORCE_NO_WRONG_FOLDER=true NODE_ENV=test RUNNING_IN_SPECTRON=true mocha --timeout 600000 --reporter mocha-multi-reporters --reporter-options configFile=./test/mochareporters.json ./test/e2e",
+    "test-e2e": "cross-env FORCE_NO_WRONG_FOLDER=true NODE_ENV=test RUNNING_IN_SPECTRON=true mocha --reporter mocha-multi-reporters --reporter-options configFile=./test/mochareporters.json ./test/e2e",
     "test-integration": "cross-env NODE_ENV=test mocha --reporter mocha-multi-reporters --reporter-options configFile=./test/mochareporters.json ./test/integration",
     "test-unit": "cross-env NODE_ENV=test mocha --reporter mocha-multi-reporters --reporter-options configFile=./test/mochareporters.json ./test/unit/",
     "lint": "eslint app/ test/",
@@ -185,7 +185,7 @@
     "jquery": "^3.3.1",
     "jsdom": "^13.0.0",
     "less": "^2.7.3",
-    "mocha": "^5.2.0",
+    "mocha": "^6.0.0",
     "mocha-junit-reporter": "^1.18.0",
     "mocha-multi-reporters": "^1.1.7",
     "node-libs-browser": "^2.1.0",
