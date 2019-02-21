@@ -22,8 +22,9 @@ jobs:
         npm ci
       name: Install
     - script: |
-        npm run package-ci
-        npm run test-e2e
+        # TODO: Add this back when electron builder problem is resolved (Dan Graham)
+        #npm run package-ci
+        #npm run test-e2e
       name: PackageAndTest
     - script: |
         npm run package-nsis

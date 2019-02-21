@@ -10,9 +10,10 @@ install:
 test_script:
   - node --version
   - npm --version
-  - npm run package-ci
-  - npm run test-e2e
-  - npm run package-nsis
+  # TODO: Add this back when electron builder problem is resolved (Dan Graham)
+  #- npm run package-ci
+  #- npm run test-e2e
+  #- npm run package-nsis
 
 build: off
 
