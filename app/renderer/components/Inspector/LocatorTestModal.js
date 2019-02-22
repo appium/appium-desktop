@@ -3,12 +3,20 @@ import ReactDOM from 'react-dom';
 import { Modal } from 'antd';
 import LocatedElements from './LocatedElements';
 import ElementLocator from './ElementLocator';
+import { withTranslation } from '../../util';
 
 
-export default class LocatorTestModal extends Component {
+class LocatorTestModal extends Component {
 
   onSubmit () {
-    const {locatedElements, locatorTestStrategy, locatorTestValue, searchForElement, clearSearchResults, hideLocatorTestModal} = this.props;
+    const {
+      locatedElements,
+      locatorTestStrategy,
+      locatorTestValue,
+      searchForElement,
+      clearSearchResults,
+      hideLocatorTestModal,
+    } = this.props;
     if (locatedElements) {
       hideLocatorTestModal();
       clearSearchResults();
@@ -24,12 +32,17 @@ export default class LocatorTestModal extends Component {
   }
 
   render () {
-    const {isLocatorTestModalVisible, isSearchingForElements, locatedElements} = this.props;
+    const {
+      isLocatorTestModalVisible,
+      isSearchingForElements,
+      locatedElements,
+      t,
+    } = this.props;
 
     return <Modal visible={isLocatorTestModalVisible}
-      okText={locatedElements ? 'Done' : 'Search'}
-      cancelText='Cancel'
-      title='Search for element'
+      okText={locatedElements ? t('Done') : t('Search')}
+      cancelText={t('Cancel')}
+      title={t('Search for element')}
       confirmLoading={isSearchingForElements}
       onOk={this.onSubmit.bind(this)}
       onCancel={this.onCancel.bind(this)}>
@@ -38,3 +51,5 @@ export default class LocatorTestModal extends Component {
     </Modal>;
   }
 }
+
+export default withTranslation(LocatorTestModal);

@@ -9,6 +9,7 @@ import { bindClient, unbindClient, callClientMethod } from './shared';
 import { getOptimalXPath } from '../util';
 import frameworks from '../lib/client-frameworks';
 import settings from '../../shared/settings';
+import i18n from '../../configs/i18next.config.renderer';
 
 export const SET_SESSION_DETAILS = 'SET_SESSION_DETAILS';
 export const SET_SOURCE_AND_SCREENSHOT = 'SET_SOURCE_AND_SCREENSHOT';
@@ -121,7 +122,7 @@ export function bindAppium () {
       if (!killedByUser) {
         notification.error({
           message: 'Error',
-          description: reason || 'Session has been terminated',
+          description: reason || i18n.t('Session has been terminated'),
           duration: 0
         });
       }
@@ -311,7 +312,7 @@ export function getSavedActionFramework () {
 export function setActionFramework (framework) {
   return async (dispatch) => {
     if (!frameworks[framework]) {
-      throw new Error(`Framework '${framework}' not supported`);
+      throw new Error(i18n.t('frameworkNotSupported', {framework}));
     }
     await settings.set(SAVED_FRAMEWORK, framework);
     dispatch({type: SET_ACTION_FRAMEWORK, framework});

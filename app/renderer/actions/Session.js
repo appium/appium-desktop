@@ -5,6 +5,7 @@ import { push } from 'connected-react-router';
 import { notification } from 'antd';
 import { debounce, toPairs } from 'lodash';
 import { setSessionDetails } from './Inspector';
+import i18n from '../../configs/i18next.config.renderer';
 
 export const NEW_SESSION_REQUESTED = 'NEW_SESSION_REQUESTED';
 export const NEW_SESSION_BEGAN = 'NEW_SESSION_BEGAN';
@@ -76,7 +77,7 @@ export function getCapsObject (caps) {
 export function showError (e, methodName, secs = 5) {
   let errMessage;
   if (e['jsonwire-error'] && e['jsonwire-error'].status === 7) {
-    errMessage = `Failed to find element for '${methodName}'. Please refresh page and try again.`;
+    errMessage = i18n.t('findElementFailure', {methodName});
   } else if (e.data) {
     try {
       e.data = JSON.parse(e.data);
@@ -91,10 +92,10 @@ export function showError (e, methodName, secs = 5) {
   } else if (e.code) {
     errMessage = e.code;
   } else {
-    errMessage = 'Could not start session';
+    errMessage = i18n.t('Could not start session');
   }
   if (errMessage === 'ECONNREFUSED') {
-    errMessage = "Could not connect to server; are you sure it's running?";
+    errMessage = i18n.t('couldNotConnect');
   }
 
   notification.error({
@@ -191,7 +192,7 @@ export function newSession (caps, attachSessId = null) {
         if (!username || !accessKey) {
           notification.error({
             message: 'Error',
-            description: 'Sauce username and access key are required!',
+            description: i18n.t('sauceCredentialsRequired'),
             duration: 4
           });
           return;
@@ -220,7 +221,7 @@ export function newSession (caps, attachSessId = null) {
         if (!token) {
           notification.error({
             message: 'Error',
-            description: 'Perfecto SecurityToken is required',
+            description: i18n.t('Perfecto SecurityToken is required'),
             duration: 4
           });
           return;
@@ -238,7 +239,7 @@ export function newSession (caps, attachSessId = null) {
         if (!username || !accessKey) {
           notification.error({
             message: 'Error',
-            description: 'Browserstack username and access key are required!',
+            description: i18n.t('browserstackCredentialsRequired'),
             duration: 4
           });
           return;
@@ -253,7 +254,7 @@ export function newSession (caps, attachSessId = null) {
         if (!accessKey) {
           notification.error({
             message: 'Error',
-            description: 'Bitbar API key required!',
+            description: i18n.t('bitbarCredentialsRequired'),
             duration: 4
           });
           return;
@@ -272,7 +273,7 @@ export function newSession (caps, attachSessId = null) {
         if (!username || !accessKey) {
           notification.error({
             message: 'Error',
-            description: 'KOBITON username and api key are required!',
+            description: i18n.t('kobitonCredentialsRequired'),
             duration: 4
           });
           return;

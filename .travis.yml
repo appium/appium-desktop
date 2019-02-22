@@ -1,6 +1,7 @@
 language: node_js
 sudo: required
-node: 
+dist: trusty
+node:
 os:
 - linux
 node_js:
@@ -21,6 +22,7 @@ script:
 - travis_wait 30 npm run package-ci # This command takes a long time, so increased the time limit to 30 minutes (default is 10 minutes)
 - npm run test-e2e
 after_script:
+- if [[ "$TRAVIS_BRANCH" == "master" && "$TRAVIS_PULL_REQUEST" == "false" ]]; npm run crowdin-update; fi
 - greenkeeper-lockfile-upload
 cache:
   directories:
@@ -32,7 +34,6 @@ install:
 - npm ci
 - export DISPLAY=':99.0'
 - Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
-dist: trusty
 env:
   global:
   - secure: Jz/k1Z1LJGOfBiIC6yUOLCetNgn8IWwU8BBPREBgXhmhRdImpU1FeVY+zEYIdqdUHrIu7d0DwtvDjA0VC+xPjv+w2Vt2AEhEjXiCvqYOM4YjxJgWNbwyjSN4BEGx5QVdbTe8di/lmiy+vDCXyxyuJDjzJNYfNXh2Z3EpfJrQtnNNK41hmT5wZIOqyXctG3wKa9UcgEzFogC61IFSN0RRNPa7Z4MtjBwfdKsXymOSn9v5XF5x7vwVAZFsgmlttPq5TAtHMMtsZeT4AGIBy3HOAWjvhLSFRIL1wCnwulrxIOL1etXYqzM7dM53trpdfa4NWZWgtLUb2AsfMP+7aHlFfCkxLlZ6KWUuUYiJwOUS+mnHKc2ybmDRw+cHmmFaENw+RAvVQ8fIptsnFcCHv7LJXhIu4ZWctfxJEfvPsBMJBdZOBlEabx2xMJilKozTit9pqzdfU/AK+2JrWdj/2sGkUfqoqc/YY+ImFL7NabHq1pwt/0xttnxBVNUNl45pgJPK6Vu9u6iJxa2ucjW3IzEWUi7HCT6JQ6gFD8HNydvFofh0Ot3IPTKsfFtsugZ1PbI/p6H/sV+vy+WpQWYBST5MZyT8mt6hk2OMNVkj9K8eNEW4RA2+6ubX/iHCx0I8vpOw8SA0DPlqKVl7/nUcfTQWep5Eg0wDgNqRMGiy+1NP5nI=

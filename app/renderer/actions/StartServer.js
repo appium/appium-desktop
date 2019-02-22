@@ -3,6 +3,7 @@ import { ipcRenderer } from 'electron';
 import { push } from 'connected-react-router';
 import { serverLogsReceived, clearLogs, setServerArgs } from './ServerMonitor';
 import settings from '../../shared/settings';
+import i18n from '../../configs/i18next.config.renderer';
 
 export const SERVER_START_REQ = 'SERVER_START_REQ';
 export const SERVER_START_OK = 'SERVER_START_OK';
@@ -30,7 +31,7 @@ export function startServer (evt) {
       // don't listen for log lines any more if we failed to start, other-
       // wise we'll start to stack listeners for subsequent attempts
       ipcRenderer.removeAllListeners('appium-log-line');
-      alert(`Error starting Appium server: ${message}`);
+      alert(i18n.t('errorStartingServer', {message}));
       dispatch({type: SERVER_START_ERR});
       removeStartServerListeners();
     });
@@ -82,7 +83,7 @@ export function savePreset (name, args) {
       await settings.set(PRESETS, presets);
     } catch (e) {
       console.error(e);
-      alert(`There was a problem saving preset: ${e.message}`);
+      alert(i18n.t('errorSavingPreset', {message: e.message}));
     }
     dispatch({type: PRESET_SAVE_OK, presets});
   };
@@ -95,7 +96,7 @@ export function getPresets () {
       dispatch({type: GET_PRESETS, presets});
     } catch (e) {
       console.error(e);
-      alert(`Error getting presets: ${e.message}`);
+      alert(i18n.t('errorGettingPreset', {message: e.message}));
     }
   };
 }
@@ -109,7 +110,7 @@ export function deletePreset (name) {
       await settings.set(PRESETS);
     } catch (e) {
       console.error(e);
-      alert(`There was a problem deleting preset: ${e.message}`);
+      alert(i18n.t('errorDeletingPreset', {message: e.message}));
     }
     dispatch({type: PRESET_DELETE_OK, presets});
   };

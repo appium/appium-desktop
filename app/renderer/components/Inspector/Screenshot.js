@@ -5,13 +5,14 @@ import { Spin, Tooltip } from 'antd';
 import B from 'bluebird';
 import styles from './Inspector.css';
 import { SCREENSHOT_INTERACTION_MODE } from './shared';
+import { withTranslation } from '../../util';
 
 const {TAP, SELECT, SWIPE} = SCREENSHOT_INTERACTION_MODE;
 
 /**
  * Shows screenshot of running application and divs that highlight the elements' bounding boxes
  */
-export default class Screenshot extends Component {
+class Screenshot extends Component {
 
   constructor (props) {
     super(props);
@@ -102,8 +103,14 @@ export default class Screenshot extends Component {
   }
 
   render () {
-    const {screenshot, methodCallInProgress, screenshotInteractionMode,
-           swipeStart, swipeEnd} = this.props;
+    const {
+      screenshot,
+      methodCallInProgress,
+      screenshotInteractionMode,
+      swipeStart,
+      swipeEnd,
+      t,
+    } = this.props;
     const {scaleRatio, x, y} = this.state;
 
     // If we're tapping or swiping, show the 'crosshair' cursor style
@@ -115,9 +122,9 @@ export default class Screenshot extends Component {
     let swipeInstructions = null;
     if (screenshotInteractionMode === SWIPE && (!swipeStart || !swipeEnd)) {
       if (!swipeStart) {
-        swipeInstructions = 'Click swipe start point';
+        swipeInstructions = t('Click swipe start point');
       } else if (!swipeEnd) {
-        swipeInstructions = 'Click swipe end point';
+        swipeInstructions = t('Click swipe end point');
       }
     }
 
@@ -158,3 +165,5 @@ export default class Screenshot extends Component {
     </Spin>;
   }
 }
+
+export default withTranslation(Screenshot);
