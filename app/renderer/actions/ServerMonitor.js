@@ -1,5 +1,6 @@
 import { ipcRenderer, shell } from 'electron';
 import { push } from 'connected-react-router';
+import i18n from '../../configs/i18next.config.renderer';
 
 export const SERVER_STOP_REQ = 'SERVER_STOP_REQ';
 export const SERVER_STOP_OK = 'SERVER_STOP_OK';
@@ -53,7 +54,7 @@ export function stopServer () {
     dispatch(stopServerReq());
 
     ipcRenderer.once('appium-stop-error', (event, message) => {
-      alert(`Stop server failed: ${message}`);
+      alert(i18n.t('stopServerFailed', {message}));
       dispatch(stopServerFailed(message));
       removeStopListeners();
     });
@@ -105,7 +106,7 @@ export function getRawLogs () {
     if (logfilePath) {
       shell.openExternal(`file://${logfilePath}`);
     } else {
-      alert('An error has occurred: Logs not available');
+      alert(i18n.t('logsNotAvailableError'));
     }
   };
 }

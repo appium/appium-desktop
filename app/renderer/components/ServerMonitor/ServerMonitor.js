@@ -5,6 +5,7 @@ import { STATUS_RUNNING, STATUS_STOPPING,
          STATUS_STOPPED } from '../../reducers/ServerMonitor';
 import styles from './ServerMonitor.css';
 import AnsiConverter from 'ansi-to-html';
+import { withTranslation } from '../../util';
 
 import AppiumSmallMagenta from '../../images/appium_small_magenta.png';
 
@@ -27,22 +28,22 @@ function leveler (level) {
   }
 }
 
-class StopButton extends Component {
+class StopButtonComponent extends Component {
   render () {
-    const {serverStatus, stopServer, closeMonitor} = this.props;
-    let btn = <Tooltip title="Stop Server"
+    const {serverStatus, stopServer, closeMonitor, t} = this.props;
+    let btn = <Tooltip title={t('Stop Server')}
       placement="bottomLeft">
       <Button icon="pause" className={styles.serverButton}
         onClick={stopServer} />
     </Tooltip>;
     if (serverStatus === STATUS_STOPPED) {
-      btn = <Tooltip title="Close Logs" placement="bottomLeft">
+      btn = <Tooltip title={t('Close Logs')} placement="bottomLeft">
         <Button className={styles.serverButton}
           icon="close"
           onClick={closeMonitor} />
       </Tooltip>;
     } else if (serverStatus === STATUS_STOPPING) {
-      btn = <Tooltip title="Stopping..." visible={true}
+      btn = <Tooltip title={t('Stopping…')} visible={true}
         placement="bottomLeft">
         <Button icon="pause"
           className={styles.serverButton} type="disabled" />
@@ -52,15 +53,17 @@ class StopButton extends Component {
   }
 }
 
-StopButton.propTypes = {
+StopButtonComponent.propTypes = {
   serverStatus: PropTypes.string.isRequired,
 };
 
-class StartSessionButton extends Component {
+const StopButton = withTranslation(StopButtonComponent);
+
+class StartSessionButtonComponent extends Component {
   render () {
-    const {serverStatus, startSession} = this.props;
+    const {serverStatus, startSession, t} = this.props;
     if (serverStatus !== STATUS_STOPPED && serverStatus !== STATUS_STOPPING) {
-      return <Tooltip title="Start Inspector Session">
+      return <Tooltip title={t('Start Inspector Session')}>
         <Button className={styles.serverButton} id='startNewSessionBtn'
           icon="search"
           onClick={startSession} />
@@ -71,20 +74,25 @@ class StartSessionButton extends Component {
   }
 }
 
-StartSessionButton.propTypes = {
+StartSessionButtonComponent.propTypes = {
   serverStatus: PropTypes.string.isRequired,
   startSession: PropTypes.func.isRequired,
 };
 
-class GetRawLogsButton extends Component {
+const StartSessionButton = withTranslation(StartSessionButtonComponent);
+
+class GetRawLogsButtonComponent extends Component {
   render () {
-    return <Tooltip title="Get Raw Logs">
+    const {t, getRawLogs} = this.props;
+    return <Tooltip title={t('Get Raw Logs')}>
       <Button className={styles.serverButton}
         icon="download"
-        onClick={() => this.props.getRawLogs()} />
+        onClick={() => getRawLogs()} />
     </Tooltip>;
   }
 }
+
+const GetRawLogsButton = withTranslation(GetRawLogsButtonComponent);
 
 export default class ServerMonitor extends Component {
 
@@ -122,23 +130,23 @@ export default class ServerMonitor extends Component {
   }
 
   render () {
-    const {logLines, serverStatus, serverArgs} = this.props;
+    const {logLines, serverStatus, serverArgs, t} = this.props;
     let statusIcon, statusMsg;
     switch (serverStatus) {
       case STATUS_RUNNING:
         statusIcon = 'play-circle';
-        statusMsg = 'The server is running';
+        statusMsg = t('The server is running');
         break;
       case STATUS_STOPPED:
         statusIcon = 'pause-circle';
-        statusMsg = 'The server is stopped';
+        statusMsg = t('The server is stopped');
         break;
       case STATUS_STOPPING:
         statusIcon = 'loading';
-        statusMsg = 'The server is waiting for all connections to close';
+        statusMsg = t('The server is waiting for all connections to close');
         break;
       default:
-        throw new Error(`Bad status: ${serverStatus}`);
+        throw new Error(t('badStatus', {serverStatus}));
     }
 
     let logLineSection = logLines.slice(logLines.length - MAX_LOGS_RENDERED).map((line, i) => {

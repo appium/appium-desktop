@@ -15,7 +15,7 @@ const i18nextOptions = {
   interpolation: {
     escapeValue: false
   },
-  lng: settings.getSync('PREFERRED_LANGUAGE', 'en'),
+  lng: settings && settings.getSync('PREFERRED_LANGUAGE', 'en') || 'en',
   fallbackLng: config.fallbackLng,
   whitelist: config.languages,
   react: {
