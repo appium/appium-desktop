@@ -1,8 +1,20 @@
 import React, { Component } from 'react';
 import { Switch, Input, Icon } from 'antd';
 import SessionStyles from './Session.css';
+import {remote} from 'electron';
+const {dialog} = remote;
+
 
 export default class NewSessionForm extends Component {
+
+  getLocalFilePath (success) {
+    dialog.showOpenDialog((filepath) => {
+      if (filepath) {
+        success(filepath);
+      }
+    });
+    this.handleSetType = this.handleSetType.bind(this);
+  }
 
   render () {
     const {cap, onSetCapabilityParam, isEditingDesiredCaps, id} = this.props;
