@@ -1,23 +1,12 @@
 import React, { Component } from 'react';
 import { Button, Input, Modal, Form, Row, Col, Select } from 'antd';
-import { remote } from 'electron';
 import FormattedCaps from './FormattedCaps';
 import CapabilityControl from './CapabilityControl';
 import SessionStyles from './Session.css';
-const {dialog} = remote;
 const {Item: FormItem} = Form;
 const {Option} = Select;
 
 export default class NewSessionForm extends Component {
-
-  getLocalFilePath (success) {
-    dialog.showOpenDialog((filepath) => {
-      if (filepath) {
-        success(filepath);
-      }
-    });
-    this.handleSetType = this.handleSetType.bind(this);
-  }
 
   /**
    * Callback when the type of a dcap is changed
