@@ -89,7 +89,7 @@
   "Session closed due to inactivity": "Session closed due to inactivity",
   "Session has been terminated": "Session has been terminated",
   "frameworkNotSupported": "Framework '{{framework}}' not supported",
-  "stopServerFailed": "`Stop server failed: {{message}}",
+  "stopServerFailed": "Stop server failed: {{message}}",
   "logsNotAvailableError": "An error has occurred: Logs not available",
   "findElementFailure": "Failed to find element for '{{methodName}}'. Please refresh page and try again.",
   "Could not start session": "Could not start session",
