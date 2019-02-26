@@ -63,6 +63,7 @@
       "output": "release"
     },
     "dmg": {
+      "artifactName": "${productName}-mac-${version}.${ext}",
       "contents": [
         {
           "x": 410,
@@ -85,6 +86,7 @@
       "package.json"
     ],
     "win": {
+      "artifactName": "${productName}-windows-${version}.${ext}",
       "target": "nsis",
       "icon": "build/icon.ico"
     },
@@ -95,6 +97,7 @@
       "oneClick": false
     },
     "linux": {
+      "artifactName": "${productName}-linux-${version}.${ext}",
       "target": [
         "AppImage"
       ],
