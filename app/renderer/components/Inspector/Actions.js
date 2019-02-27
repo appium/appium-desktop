@@ -1,20 +1,21 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
-import { Row, Col, Button, Select } from 'antd';
+import { Col, Button, Select, Modal } from 'antd';
 import { actionDefinitions } from './shared';
 
 const Option = { Select };
 
 export default class Action extends Component {
 
-  performAction (/*actionDefinition, e*/) {
-    const { applyClientMethod } = this.props;
-    applyClientMethod({methodName: 'backgroundApp', args: [10]});
+  performAction (action) {
+    const { startEnteringActionArgs } = this.props;
+    startEnteringActionArgs(action);
   }
 
   render () {
-    const { t, selectActionGroup, selectSubActionGroup, selectedActionGroup, selectedSubActionGroup } = this.props;
-
+    const {
+      t, selectActionGroup, selectSubActionGroup, selectedActionGroup, selectedSubActionGroup, pendingAction,
+      cancelPendingAction } = this.props;
     return [
       <Col span={24}>
         <Select style={{width: '100%'}} onChange={(actionGroupName) => selectActionGroup(actionGroupName)} placeholder="Select Action Group">
@@ -26,9 +27,15 @@ export default class Action extends Component {
           { _.keys(actionDefinitions[selectedActionGroup]).map((actionGroup) => <Option key={actionGroup}>{t(actionGroup)}</Option>) }
         </Select>
       </Col>,
-      <Col span={8}>
-        <Button style={{width: '100%'}} onClick={() => this.performAction() }>{t('Background App')}</Button>
-      </Col>
+      selectedSubActionGroup && _.toPairs(actionDefinitions[selectedActionGroup][selectedSubActionGroup]).map(([actionName, action]) => <Col span={8}>
+        <Button style={{width: '100%'}} onClick={() => this.performAction(action) }>{actionName}</Button>
+      </Col>),
+      !!pendingAction && <Modal
+        title="Basic Modal"
+        visible={!!pendingAction}
+        okText={t('Execute Action')}
+        onOk={() => alert("Executin'")}
+        onCancel={() => cancelPendingAction()}>{pendingAction.methodName}</Modal>
     ];
   }
 }

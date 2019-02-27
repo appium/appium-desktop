@@ -12,7 +12,7 @@ import { SET_SOURCE_AND_SCREENSHOT, QUIT_SESSION_REQUESTED, QUIT_SESSION_DONE,
          SET_SWIPE_START, SET_SWIPE_END, CLEAR_SWIPE_ACTION, SET_SEARCHED_FOR_ELEMENT_BOUNDS, CLEAR_SEARCHED_FOR_ELEMENT_BOUNDS,
          PROMPT_KEEP_ALIVE, HIDE_PROMPT_KEEP_ALIVE,
          SELECT_ACTION_GROUP, SELECT_SUB_ACTION_GROUP,
-         SELECT_INTERACTION_MODE
+         SELECT_INTERACTION_MODE, ENTERING_ACTION_ARGS
 } from '../actions/Inspector';
 import { SCREENSHOT_INTERACTION_MODE, INTERACTION_MODE } from '../components/Inspector/shared';
 
@@ -37,6 +37,7 @@ const INITIAL_STATE = {
   selectedActionGroup: null,
   selectedSubActionGroup: null,
   selectedInteractionMode: INTERACTION_MODE.SOURCE,
+  pendingAction: null,
 };
 
 /**
@@ -354,6 +355,12 @@ export default function inspector (state = INITIAL_STATE, action) {
       return {
         ...state,
         selectedInteractionMode: action.interaction,
+      };
+
+    case ENTERING_ACTION_ARGS:
+      return {
+        ...state,
+        pendingAction: action.action,
       };
 
     default:
