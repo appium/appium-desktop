@@ -52,3 +52,21 @@ export const SCREENSHOT_INTERACTION_MODE = {
   SWIPE: 'swipe',
   TAP: 'tap',
 };
+
+export const actionArgTypes = {
+  JSON: 'json',
+  STRING: 'string',
+  NUMBER: 'number',
+  BOOLEAN: 'boolean',
+  ARRAY: 'array',
+};
+
+const { JSON, STRING, NUMBER, BOOLEAN, ARRAY } = actionArgTypes;
+
+export const actionDefinitions = {
+  'Device': {
+    'App': {
+      'Background App': {methodName: 'backgroundApp', args: [{timeout: NUMBER}]}
+    }
+  }
+};
