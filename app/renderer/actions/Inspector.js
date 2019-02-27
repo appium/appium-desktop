@@ -64,6 +64,7 @@ export const SELECT_ACTION_GROUP = 'SELECT_ACTION_GROUP';
 export const SELECT_SUB_ACTION_GROUP = 'SELECT_SUB_ACTION_GROUP';
 
 export const ENTERING_ACTION_ARGS = 'ENTERING_ACTION_ARGS';
+export const SET_ACTION_ARG = 'SET_ACTION_ARG';
 
 
 // Attributes on nodes that we know are unique to the node
@@ -489,5 +490,11 @@ export function startEnteringActionArgs (actionName, action) {
 export function cancelPendingAction () {
   return (dispatch) => {
     dispatch({type: ENTERING_ACTION_ARGS, action: null});
+  };
+}
+
+export function setActionArg (index, value) {
+  return (dispatch) => {
+    dispatch({type: SET_ACTION_ARG, index, value});
   };
 }
