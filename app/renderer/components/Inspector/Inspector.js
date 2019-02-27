@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { SCREENSHOT_INTERACTION_MODE } from './shared';
+import { SCREENSHOT_INTERACTION_MODE, INTERACTION_MODE } from './shared';
 import { Card, Icon, Button, Spin, Tooltip, Modal, Tabs } from 'antd';
 import Screenshot from './Screenshot';
 import SelectedElement from './SelectedElement';
@@ -52,7 +52,9 @@ export default class Inspector extends Component {
   render () {
     const {screenshot, screenshotError, selectedElement = {},
            applyClientMethod, quitSession, isRecording, showRecord, startRecording,
-           pauseRecording, showLocatorTestModal, screenshotInteractionMode,
+           pauseRecording, showLocatorTestModal,
+           screenshotInteractionMode,
+           selectedInteractionMode, selectInteractionMode,
            showKeepAlivePrompt, keepSessionAlive, sourceXML, t} = this.props;
     const {path} = selectedElement;
 
@@ -70,15 +72,15 @@ export default class Inspector extends Component {
         {showRecord &&
           <RecordedActions {...this.props} />
         }
-        <Tabs defaultActiveKey="source" size="small">
-          <TabPane tab="Source" key="source">
+        <Tabs activeKey={selectedInteractionMode} size="small" onChange={(tab) => selectInteractionMode(tab)}>
+          <TabPane tab="Source" key={INTERACTION_MODE.SOURCE}>
             <Card
               title={<span><Icon type="file-text" /> {t('App Source')}</span>}
               className={InspectorStyles['interaction-tab-card']}>
               <Source {...this.props} />
             </Card>
           </TabPane>
-          <TabPane tab="Actions" key="actions">
+          <TabPane tab="Actions" key={INTERACTION_MODE.ACTIONS}>
             <Card
               title={<span><Icon type="thunderbolt" /> {t('Actions')}</span>}
               className={InspectorStyles['interaction-tab-card']}>

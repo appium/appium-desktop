@@ -11,9 +11,10 @@ import { SET_SOURCE_AND_SCREENSHOT, QUIT_SESSION_REQUESTED, QUIT_SESSION_DONE,
          ADD_ASSIGNED_VAR_CACHE, CLEAR_ASSIGNED_VAR_CACHE, SET_SCREENSHOT_INTERACTION_MODE,
          SET_SWIPE_START, SET_SWIPE_END, CLEAR_SWIPE_ACTION, SET_SEARCHED_FOR_ELEMENT_BOUNDS, CLEAR_SEARCHED_FOR_ELEMENT_BOUNDS,
          PROMPT_KEEP_ALIVE, HIDE_PROMPT_KEEP_ALIVE,
-         SELECT_ACTION_GROUP, SELECT_SUB_ACTION_GROUP
+         SELECT_ACTION_GROUP, SELECT_SUB_ACTION_GROUP,
+         SELECT_INTERACTION_MODE
 } from '../actions/Inspector';
-import { SCREENSHOT_INTERACTION_MODE } from '../components/Inspector/shared';
+import { SCREENSHOT_INTERACTION_MODE, INTERACTION_MODE } from '../components/Inspector/shared';
 
 const DEFAULT_FRAMEWORK = 'java';
 
@@ -35,6 +36,7 @@ const INITIAL_STATE = {
   showKeepAlivePrompt: false,
   selectedActionGroup: null,
   selectedSubActionGroup: null,
+  selectedInteractionMode: INTERACTION_MODE.SOURCE,
 };
 
 /**
@@ -346,6 +348,12 @@ export default function inspector (state = INITIAL_STATE, action) {
       return {
         ...state,
         selectedSubActionGroup: action.group,
+      };
+
+    case SELECT_INTERACTION_MODE:
+      return {
+        ...state,
+        selectedInteractionMode: action.interaction,
       };
 
     default:
