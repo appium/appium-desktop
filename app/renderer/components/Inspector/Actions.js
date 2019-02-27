@@ -7,11 +7,18 @@ const { JSON, STRING, NUMBER, BOOLEAN, ARRAY } = actionArgTypes;
 
 const Option = { Select };
 
-export default class Action extends Component {
+export default class Actions extends Component {
 
   startPerformingAction (actionName, action) {
     const { startEnteringActionArgs } = this.props;
     startEnteringActionArgs(actionName, action);
+  }
+
+  executeCommand () {
+    const { pendingAction, cancelPendingAction, applyClientMethod } = this.props;
+    const {args, action} = pendingAction;
+    applyClientMethod({methodName: action.methodName, args});
+    cancelPendingAction();
   }
 
   render () {
@@ -36,19 +43,19 @@ export default class Action extends Component {
         title={pendingAction.actionName}
         visible={!!pendingAction}
         okText={t('Execute Action')}
-        onOk={() => alert("Executin'")}
+        onOk={() => this.executeCommand()}
         onCancel={() => cancelPendingAction()}>
         {
           _.map(pendingAction.action.args, ([argName, argType], index) => <Row key={index}>
             <Col span={24}>
-              {argType === NUMBER && <Input type="number" addonBefore={t(argName)} onChange={(e) => setActionArg(index, e.target.value)}/>}
+              {argType === NUMBER && <Input type="number" addonBefore={t(argName)} onChange={(e) => setActionArg(index, _.toNumber(e.target.value))}/>}
               {argType === BOOLEAN && <Input addonBefore={t(argName)}/>}
               {argType === STRING && <Input addonBefore={t(argName)}/>}
               {argType === JSON && <Input addonBefore={t(argName)}/>}
               {argType === ARRAY && <Input addonBefore={t(argName)}/>}
             </Col>
           </Row>)
-        }  
+        }
       </Modal>
     ];
   }
