@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { SCREENSHOT_INTERACTION_MODE } from './shared';
-import { Card, Icon, Button, Spin, Tooltip, Modal } from 'antd';
+import { Card, Icon, Button, Spin, Tooltip, Modal, Tabs } from 'antd';
 import Screenshot from './Screenshot';
 import SelectedElement from './SelectedElement';
 import Source from './Source';
@@ -10,6 +10,8 @@ import RecordedActions from './RecordedActions';
 import { clipboard } from 'electron';
 
 const {SELECT, SWIPE, TAP} = SCREENSHOT_INTERACTION_MODE;
+
+const { TabPane } = Tabs;
 
 const ButtonGroup = Button.Group;
 
@@ -67,11 +69,18 @@ export default class Inspector extends Component {
         {showRecord &&
           <RecordedActions {...this.props} />
         }
-        <Card
-          title={<span><Icon type="file-text" /> App Source</span>}
-          className={InspectorStyles['source-tree-card']}>
-          <Source {...this.props} />
-        </Card>
+        <Tabs defaultActiveKey="1" size="small">
+          <TabPane tab="Source" key="source">
+            <Card
+              title={<span><Icon type="file-text" /> {t('App Source')}</span>}
+              className={InspectorStyles['source-tree-card']}>
+              <Source {...this.props} />
+            </Card>
+          </TabPane>
+          <TabPane tab="Actions" key="actions">
+            <Card>Actions Placeholder</Card>
+          </TabPane>
+        </Tabs>
         {this.container && <SourceScrollButtons {...this.props} container={this.container} />}
       </div>
       <div id='selectedElementContainer' className={`${InspectorStyles['source-tree-container']} ${InspectorStyles['element-detail-container']}`}>
