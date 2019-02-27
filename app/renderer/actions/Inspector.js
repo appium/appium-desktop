@@ -463,3 +463,9 @@ export function selectActionGroup (group) {
     dispatch({type: SELECT_ACTION_GROUP, group});
   };
 }
+
+export function selectSubActionGroup (group) {
+  return (dispatch) => {
+    dispatch({type: SELECT_SUB_ACTION_GROUP, group});
+  };
+}
