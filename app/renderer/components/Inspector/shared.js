@@ -66,7 +66,9 @@ const { JSON, STRING, NUMBER, BOOLEAN, ARRAY } = actionArgTypes;
 export const actionDefinitions = {
   'Device': {
     'App': {
-      'Background App': {methodName: 'backgroundApp', args: [['timeout', NUMBER]]}
+      'Background App': {methodName: 'backgroundApp', args: [['timeout', NUMBER]]},
+      'Is App Installed': {methodName: 'isAppInstalledOnDevice', args: [['appId', STRING]]},
+      'Close App': {methodName: 'closeApp'},
     }
   }
 };

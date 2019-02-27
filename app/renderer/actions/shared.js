@@ -1,4 +1,7 @@
 import { ipcRenderer } from 'electron';
+import { notification } from 'antd';
+import i18n from '../../configs/i18next.config.renderer';
+import _ from 'lodash';
 import UUID from 'uuid';
 import Promise from 'bluebird';
 
@@ -10,6 +13,16 @@ export function bindClient () {
    */
   ipcRenderer.on('appium-client-command-response', (evt, resp) => {
     // Rename 'id' to 'elementId'
+    const {res} = resp;
+    try {
+      const parsedRes = JSON.parse(res);
+      if (!_.isNull(parsedRes) && !_.isUndefined(parsedRes) && !(_.isObject(parsedRes) && _.isEmpty(parsedRes))) {
+        notification.success({
+          message: `${i18n.t('Command was returned with result')}: '${JSON.stringify(res)}'`,
+          duration: 15,
+        });
+      }
+    } catch (ign) { /* ignore JSON parse exceptions */ }
     resp.elementId = resp.id;
     let promise = clientMethodPromises[resp.uuid];
     if (promise) {
