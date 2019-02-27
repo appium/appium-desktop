@@ -360,7 +360,10 @@ export default function inspector (state = INITIAL_STATE, action) {
     case ENTERING_ACTION_ARGS:
       return {
         ...state,
-        pendingAction: action.action,
+        pendingAction: {
+          actionName: action.actionName,
+          action: action.action,
+        }
       };
 
     default:
