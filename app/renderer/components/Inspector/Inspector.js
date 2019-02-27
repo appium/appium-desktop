@@ -7,6 +7,7 @@ import Source from './Source';
 import SourceScrollButtons from './SourceScrollButtons';
 import InspectorStyles from './Inspector.css';
 import RecordedActions from './RecordedActions';
+import Actions from './Actions';
 import { clipboard } from 'electron';
 
 const {SELECT, SWIPE, TAP} = SCREENSHOT_INTERACTION_MODE;
@@ -65,25 +66,29 @@ export default class Inspector extends Component {
           </Spin>
         }
       </div>
-      <div id='sourceTreeContainer' className={InspectorStyles['source-tree-container']} ref={(div) => this.container = div} >
+      <div id='sourceTreeContainer' className={InspectorStyles['interaction-tab-container']} ref={(div) => this.container = div} >
         {showRecord &&
           <RecordedActions {...this.props} />
         }
-        <Tabs defaultActiveKey="1" size="small">
+        <Tabs defaultActiveKey="source" size="small">
           <TabPane tab="Source" key="source">
             <Card
               title={<span><Icon type="file-text" /> {t('App Source')}</span>}
-              className={InspectorStyles['source-tree-card']}>
+              className={InspectorStyles['interaction-tab-card']}>
               <Source {...this.props} />
             </Card>
           </TabPane>
           <TabPane tab="Actions" key="actions">
-            <Card>Actions Placeholder</Card>
+            <Card
+              title={<span><Icon type="thunderbolt" /> {t('Actions')}</span>}
+              className={InspectorStyles['interaction-tab-card']}>
+              <Actions {...this.props} />
+            </Card>
           </TabPane>
         </Tabs>
         {this.container && <SourceScrollButtons {...this.props} container={this.container} />}
       </div>
-      <div id='selectedElementContainer' className={`${InspectorStyles['source-tree-container']} ${InspectorStyles['element-detail-container']}`}>
+      <div id='selectedElementContainer' className={`${InspectorStyles['interaction-tab-container']} ${InspectorStyles['element-detail-container']}`}>
         <Card
           title={<span><Icon type="tag-o" /> Selected Element</span>}
           className={InspectorStyles['selected-element-card']}>
