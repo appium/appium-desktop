@@ -1,15 +1,17 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
-import { Col, Button, Select, Modal } from 'antd';
-import { actionDefinitions } from './shared';
+import { Row, Col, Button, Select, Modal, Input } from 'antd';
+import { actionDefinitions, actionArgTypes } from './shared';
+
+const { JSON, STRING, NUMBER, BOOLEAN, ARRAY } = actionArgTypes;
 
 const Option = { Select };
 
 export default class Action extends Component {
 
-  performAction (action) {
+  startPerformingAction (actionName, action) {
     const { startEnteringActionArgs } = this.props;
-    startEnteringActionArgs(action);
+    startEnteringActionArgs(actionName, action);
   }
 
   render () {
@@ -28,14 +30,26 @@ export default class Action extends Component {
         </Select>
       </Col>,
       selectedSubActionGroup && _.toPairs(actionDefinitions[selectedActionGroup][selectedSubActionGroup]).map(([actionName, action]) => <Col span={8}>
-        <Button style={{width: '100%'}} onClick={() => this.performAction(action) }>{actionName}</Button>
+        <Button style={{width: '100%'}} onClick={() => this.startPerformingAction(actionName, action) }>{actionName}</Button>
       </Col>),
       !!pendingAction && <Modal
-        title="Basic Modal"
+        title={pendingAction.actionName}
         visible={!!pendingAction}
         okText={t('Execute Action')}
         onOk={() => alert("Executin'")}
-        onCancel={() => cancelPendingAction()}>{pendingAction.methodName}</Modal>
+        onCancel={() => cancelPendingAction()}>
+        {
+          _.map(pendingAction.action.args, ([argName, argType], index) => <Row key={index}>
+            <Col span={24}>
+              {argType === NUMBER && <Input addonBefore={t(argName)}/>}
+              {argType === BOOLEAN && <Input addonBefore={t(argName)}/>}
+              {argType === STRING && <Input addonBefore={t(argName)}/>}
+              {argType === JSON && <Input addonBefore={t(argName)}/>}
+              {argType === ARRAY && <Input addonBefore={t(argName)}/>}
+            </Col>
+          </Row>)
+        }  
+      </Modal>
     ];
   }
 }

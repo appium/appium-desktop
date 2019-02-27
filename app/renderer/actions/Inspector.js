@@ -480,9 +480,9 @@ export function selectInteractionMode (interaction) {
   };
 }
 
-export function startEnteringActionArgs (action) {
+export function startEnteringActionArgs (actionName, action) {
   return (dispatch) => {
-    dispatch({type: ENTERING_ACTION_ARGS, action});
+    dispatch({type: ENTERING_ACTION_ARGS, actionName, action});
   };
 }
 
