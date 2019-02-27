@@ -58,6 +58,8 @@ export const CLEAR_SWIPE_ACTION = 'CLEAR_SWIPE_ACTION';
 export const PROMPT_KEEP_ALIVE = 'PROMPT_KEEP_ALIVE';
 export const HIDE_PROMPT_KEEP_ALIVE = 'HIDE_PROMPT_KEEP_ALIVE';
 
+export const SELECT_INTERACTION_MODE = 'SELECT_INTERACTION_MODE';
+
 export const SELECT_ACTION_GROUP = 'SELECT_ACTION_GROUP';
 export const SELECT_SUB_ACTION_GROUP = 'SELECT_SUB_ACTION_GROUP';
 
@@ -467,5 +469,11 @@ export function selectActionGroup (group) {
 export function selectSubActionGroup (group) {
   return (dispatch) => {
     dispatch({type: SELECT_SUB_ACTION_GROUP, group});
+  };
+}
+
+export function selectInteractionMode (interaction) {
+  return (dispatch) => {
+    dispatch({type: SELECT_INTERACTION_MODE, interaction});
   };
 }
