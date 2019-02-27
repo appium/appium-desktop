@@ -48,9 +48,9 @@ export default class Actions extends Component {
         {
           _.map(pendingAction.action.args, ([argName, argType], index) => <Row key={index}>
             <Col span={24}>
-              {argType === NUMBER && <Input type="number" addonBefore={t(argName)} onChange={(e) => setActionArg(index, _.toNumber(e.target.value))}/>}
-              {argType === BOOLEAN && <Input addonBefore={t(argName)}/>}
-              {argType === STRING && <Input addonBefore={t(argName)}/>}
+              {argType === NUMBER && <Input type="number" value={pendingAction.args[index]} addonBefore={t(argName)} onChange={(e) => setActionArg(index, _.toNumber(e.target.value))} />}
+              {argType === BOOLEAN && <Input addonBefore={t(argName)} />}
+              {argType === STRING && <Input addonBefore={t(argName)} onChange={(e) => setActionArg(index, e.target.value)}/>}
               {argType === JSON && <Input addonBefore={t(argName)}/>}
               {argType === ARRAY && <Input addonBefore={t(argName)}/>}
             </Col>
