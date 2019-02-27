@@ -342,6 +342,12 @@ export default function inspector (state = INITIAL_STATE, action) {
         selectedActionGroup: action.group
       };
 
+    case SELECT_SUB_ACTION_GROUP:
+      return {
+        ...state,
+        selectedSubActionGroup: action.group,
+      };
+
     default:
       return {...state};
   }
