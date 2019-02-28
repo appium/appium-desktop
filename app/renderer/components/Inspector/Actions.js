@@ -10,8 +10,12 @@ const Option = { Select };
 export default class Actions extends Component {
 
   startPerformingAction (actionName, action) {
-    const { startEnteringActionArgs } = this.props;
-    startEnteringActionArgs(actionName, action);
+    const { startEnteringActionArgs, applyClientMethod } = this.props;
+    if (_.isEmpty(action.args)) {
+      applyClientMethod({methodName: action.methodName, args: []});
+    } else {
+      startEnteringActionArgs(actionName, action);
+    }
   }
 
   executeCommand () {
@@ -46,7 +50,7 @@ export default class Actions extends Component {
         onOk={() => this.executeCommand()}
         onCancel={() => cancelPendingAction()}>
         {
-          _.map(pendingAction.action.args, ([argName, argType], index) => <Row key={index}>
+          !_.isEmpty(pendingAction.action.args) && _.map(pendingAction.action.args, ([argName, argType], index) => <Row key={index}>
             <Col span={24}>
               {argType === NUMBER && <Input type="number" value={pendingAction.args[index]} addonBefore={t(argName)} onChange={(e) => setActionArg(index, _.toNumber(e.target.value))} />}
               {argType === BOOLEAN && <Input addonBefore={t(argName)} />}
