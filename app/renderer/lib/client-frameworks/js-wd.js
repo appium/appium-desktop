@@ -117,7 +117,7 @@ main().catch(console.log);
   }
 
   codeFor_getAppStrings (varNameIgnore, varIndexIgnore, language, stringFile) {
-    return `let appStrings = await driver.getAppStrings(${language ? `"${language}, ` : ''}${stringFile ? `"${stringFile}` : ''});`;
+    return `let appStrings = await driver.getAppStrings(${language ? `${language}, ` : ''}${stringFile ? `"${stringFile}` : ''});`;
   }
 
 }

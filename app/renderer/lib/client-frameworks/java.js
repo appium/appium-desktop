@@ -156,7 +156,7 @@ ${this.indent(code, 4)}
   }
 
   codeFor_getAppStrings (varNameIgnore, varIndexIgnore, language, stringFile) {
-    return `Map<String, String> appStrings = driver.getAppStringMap(${language ? `"${language}, ` : ''}${stringFile ? `"${stringFile}` : ''});`;
+    return `Map<String, String> appStrings = driver.getAppStringMap(${language ? `${language}, ` : ''}${stringFile ? `"${stringFile}` : ''});`;
   }
 
 }

@@ -122,7 +122,7 @@ driver.quit`;
   }
 
   codeFor_getAppStrings (varNameIgnore, varIndexIgnore, language, stringFile) {
-    return `driver.app_strings(${language ? `"${language}, ` : ''}${stringFile ? `"${stringFile}` : ''})`;
+    return `driver.app_strings(${language ? `${language}, ` : ''}${stringFile ? `"${stringFile}` : ''})`;
   }
 }
 
