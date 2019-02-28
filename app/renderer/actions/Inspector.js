@@ -211,13 +211,15 @@ export function unselectHoveredElement (path) {
  */
 export function applyClientMethod (params) {
   return async (dispatch, getState) => {
-    let isRecording = params.methodName !== 'quit' &&
+    const isRecording = params.methodName !== 'quit' &&
                       params.methodName !== 'source' &&
                       getState().inspector.isRecording;
     try {
       dispatch({type: METHOD_CALL_REQUESTED});
-      let {source, screenshot, windowSize, result, sourceError, screenshotError, windowSizeError,
-           variableName, variableIndex, strategy, selector} = await callClientMethod(params);
+      const {source, screenshot, windowSize, result, sourceError,
+             screenshotError, windowSizeError, variableName,
+             variableIndex, strategy, selector} = await callClientMethod(params);
+
       if (isRecording) {
         // Add 'findAndAssign' line of code. Don't do it for arrays though. Arrays already have 'find' expression
         if (strategy && selector && !variableIndex && variableIndex !== 0) {
@@ -230,16 +232,19 @@ export function applyClientMethod (params) {
         dispatch({type: RECORD_ACTION, action: params.methodName, params: args });
       }
       dispatch({type: METHOD_CALL_DONE});
-      dispatch({
-        type: SET_SOURCE_AND_SCREENSHOT,
-        source: source && xmlToJSON(source),
-        sourceXML: source,
-        screenshot,
-        windowSize,
-        sourceError,
-        screenshotError,
-        windowSizeError,
-      });
+
+      if (source && screenshot) {
+        dispatch({
+          type: SET_SOURCE_AND_SCREENSHOT,
+          source: source && xmlToJSON(source),
+          sourceXML: source,
+          screenshot,
+          windowSize,
+          sourceError,
+          screenshotError,
+          windowSizeError,
+        });
+      }
       return result;
     } catch (error) {
       let methodName = params.methodName === 'click' ? 'tap' : params.methodName;

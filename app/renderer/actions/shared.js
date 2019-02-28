@@ -15,7 +15,6 @@ export function bindClient () {
     // Rename 'id' to 'elementId'
     let {res} = resp;
 
-
     // Ignore empty objects
     if (_.isObject(res) && _.isEmpty(res)) {
       res = null;
