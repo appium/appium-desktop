@@ -159,6 +159,22 @@ ${this.indent(code, 4)}
     return `Map<String, String> appStrings = driver.getAppStringMap(${language ? `${language}, ` : ''}${stringFile ? `"${stringFile}` : ''});`;
   }
 
+  codeFor_getClipboard () {
+    return `String clipboardText = driver.getClipboardText();`;
+  }
+
+  codeFor_setClipboard (varNameIgnore, varIndexIgnore, clipboardText) {
+    return `driver.setClipboardText("${clipboardText}");`;
+  }
+
+  /*
+
+  codeFor_ REPLACE_ME (varNameIgnore, varIndexIgnore) {
+    return `REPLACE_ME`;
+  }
+
+  */
+
 }
 
 JavaFramework.readableName = 'Java - JUnit';

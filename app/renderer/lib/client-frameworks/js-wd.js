@@ -120,6 +120,14 @@ main().catch(console.log);
     return `let appStrings = await driver.getAppStrings(${language ? `${language}, ` : ''}${stringFile ? `"${stringFile}` : ''});`;
   }
 
+  codeFor_getClipboard () {
+    return `let clipboardText = await driver.getClipboard();`;
+  }
+
+  codeFor_setClipboard (varNameIgnore, varIndexIgnore, clipboardText) {
+    return `await driver.setClipboard('${clipboardText}')`;
+  }
+
 }
 
 JsWdFramework.readableName = 'JS - WD (Promise)';
