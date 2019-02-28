@@ -12,7 +12,7 @@ export default class Actions extends Component {
   startPerformingAction (actionName, action) {
     const { startEnteringActionArgs, applyClientMethod } = this.props;
     if (_.isEmpty(action.args)) {
-      applyClientMethod({methodName: action.methodName, args: []});
+      applyClientMethod({methodName: action.methodName, args: [], skipScreenshotAndSource: !action.refresh});
     } else {
       startEnteringActionArgs(actionName, action);
     }
@@ -21,7 +21,7 @@ export default class Actions extends Component {
   executeCommand () {
     const { pendingAction, cancelPendingAction, applyClientMethod } = this.props;
     const {args, action} = pendingAction;
-    applyClientMethod({methodName: action.methodName, args});
+    applyClientMethod({methodName: action.methodName, args, skipScreenshotAndSource: !action.refresh});
     cancelPendingAction();
   }
 

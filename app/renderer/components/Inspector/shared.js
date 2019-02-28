@@ -66,13 +66,14 @@ const { JSON, STRING, NUMBER, BOOLEAN, ARRAY } = actionArgTypes;
 export const actionDefinitions = {
   'Device': {
     'App': {
-      'Background App': {methodName: 'backgroundApp', args: [['timeout', NUMBER]]},
+      'Background App': {methodName: 'backgroundApp', args: [['timeout', NUMBER]], refresh: true},
       'Is App Installed': {methodName: 'isAppInstalledOnDevice', args: [['appId', STRING]]},
-      'Close App': {methodName: 'closeApp'},
+      'Close App': {methodName: 'closeApp', refresh: true},
     },
     'Android Activity': {
-      'Start Activity': {methodName: 'startActivity', args: [[]]}, // TODO: Hack this to use WD
+      'Start Activity': {methodName: 'startActivity', args: [[]], refresh: true}, // TODO: Hack this to use WD
       'Current Activity': {methodName: 'getCurrentActivity'},
+      'Current Package': {methodName: 'getCurrentPackage'},
     },
   }
 };
