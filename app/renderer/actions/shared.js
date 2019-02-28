@@ -22,7 +22,7 @@ export function bindClient () {
 
     if (!_.isNull(res) && !_.isUndefined(res)) {
       notification.success({
-        message: `${i18n.t('Command was returned with result')}: '${JSON.stringify(res)}'`,
+        message: `${i18n.t('Command was returned with result')}: '${_.truncate(JSON.stringify(res), {length: 2000})}'`,
         duration: 15,
       });
     }

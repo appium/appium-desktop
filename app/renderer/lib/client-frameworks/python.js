@@ -81,6 +81,46 @@ driver.quit()`;
   .perform()
     `;
   }
+
+  codeFor_getCurrentActivity () {
+    return `activity_name = driver.current_activity`;
+  }
+
+  codeFor_getCurrentPackage () {
+    return `package_name = driver.current_package`;
+  }
+
+  codeFor_installAppOnDevice (varNameIgnore, varIndexIgnore, app) {
+    return `driver.install_app('${app}');`;
+  }
+
+  codeFor_isAppInstalledOnDevice (varNameIgnore, varIndexIgnore, app) {
+    return `is_app_installed = driver.isAppInstalled("${app}");`;
+  }
+
+  codeFor_launchApp () {
+    return `driver.launch_app()`;
+  }
+
+  codeFor_backgroundApp (varNameIgnore, varIndexIgnore, timeout) {
+    return `driver.background_app(${timeout})`;
+  }
+
+  codeFor_closeApp () {
+    return `driver.close_app()`;
+  }
+
+  codeFor_resetApp () {
+    return `driver.reset()`;
+  }
+
+  codeFor_removeAppFromDevice (varNameIgnore, varIndexIgnore, app) {
+    return `driver.remove_app('${app}');`;
+  }
+
+  codeFor_getAppStrings (varNameIgnore, varIndexIgnore, language, stringFile) {
+    return `appStrings = driver.app_strings(${language ? `"${language}, ` : ''}${stringFile ? `"${stringFile}` : ''})`;
+  }
 }
 
 PythonFramework.readableName = 'Python';

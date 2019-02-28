@@ -79,6 +79,47 @@ main().catch(console.log);
     `;
   }
 
+  codeFor_getCurrentActivity () {
+    return `let activityName = await driver.getCurrentActivity()`;
+  }
+
+  codeFor_getCurrentPackage () {
+    return `let packageName = await driver.getCurrentPackage()`;
+  }
+
+
+  codeFor_installAppOnDevice (varNameIgnore, varIndexIgnore, app) {
+    return `let isAppInstalled = await driver.installAppOnDevice('${app}');`;
+  }
+
+  codeFor_isAppInstalledOnDevice (varNameIgnore, varIndexIgnore, app) {
+    return `driver.isAppInstalled("${app}");`;
+  }
+
+  codeFor_launchApp () {
+    return `await driver.launchApp();`;
+  }
+
+  codeFor_backgroundApp (varNameIgnore, varIndexIgnore, timeout) {
+    return `await driver.backgroundApp(${timeout});`;
+  }
+
+  codeFor_closeApp () {
+    return `await driver.closeApp();`;
+  }
+
+  codeFor_resetApp () {
+    return `await driver.resetApp();`;
+  }
+
+  codeFor_removeAppFromDevice (varNameIgnore, varIndexIgnore, app) {
+    return `await driver.removeAppFromDevice('${app}');`;
+  }
+
+  codeFor_getAppStrings (varNameIgnore, varIndexIgnore, language, stringFile) {
+    return `let appStrings = await driver.getAppStrings(${language ? `"${language}, ` : ''}${stringFile ? `"${stringFile}` : ''});`;
+  }
+
 }
 
 JsWdFramework.readableName = 'JS - WD (Promise)';
