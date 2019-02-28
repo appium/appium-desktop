@@ -88,6 +88,12 @@ export const actionDefinitions = {
       'Get Clipboard': {methodName: 'getClipboard'},
       'Set Clipboard': {methodName: 'setClipboard', args: [['clipboardText', STRING]]},
     },
+    'Keys': {
+      'Press Key': {methodName: 'pressKeycode', args: [['keyCode', NUMBER], ['metaState', NUMBER], ['flags', NUMBER]]},
+      'Long Press Key': {methodName: 'longPressKeycode', args: [['keyCode', NUMBER], ['metaState', NUMBER], ['flags', NUMBER]]},
+      'Hide Keyboard': {methodName: 'hideDeviceKeyboard'},
+      'Is Keyboard Shown': {methodName: 'isKeyboardShown'},
+    },
   }
 };
 
