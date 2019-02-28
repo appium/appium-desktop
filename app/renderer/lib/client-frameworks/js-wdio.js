@@ -86,6 +86,47 @@ ${this.indent(this.chainifyCode(code), 2)}
   'release'
 ]);`;
   }
+
+  codeFor_getCurrentActivity () {
+    return `let activityName = await driver.currentActivity();`;
+  }
+
+  codeFor_getCurrentPackage () {
+    return `let packageName = await driver.currentPackage();`;
+  }
+
+
+  codeFor_installAppOnDevice (varNameIgnore, varIndexIgnore, app) {
+    return `await driver.installApp('${app}');`;
+  }
+
+  codeFor_isAppInstalledOnDevice (varNameIgnore, varIndexIgnore, app) {
+    return `let isAppInstalled = await driver.isAppInstalled("${app}");`;
+  }
+
+  codeFor_launchApp () {
+    return `await driver.launch();`;
+  }
+
+  codeFor_backgroundApp (varNameIgnore, varIndexIgnore, timeout) {
+    return `await driver.background(${timeout});`;
+  }
+
+  codeFor_closeApp () {
+    return `await driver.close_app();`;
+  }
+
+  codeFor_resetApp () {
+    return `await driver.reset();`;
+  }
+
+  codeFor_removeAppFromDevice (varNameIgnore, varIndexIgnore, app) {
+    return `await driver.removeApp('${app}')`;
+  }
+
+  codeFor_getAppStrings (varNameIgnore, varIndexIgnore, language, stringFile) {
+    return `let appStrings = await driver.getAppStrings(${language ? `"${language}, ` : ''}${stringFile ? `"${stringFile}` : ''});`;
+  }
 }
 
 JsWdIoFramework.readableName = 'JS - Webdriver.io';

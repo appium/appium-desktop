@@ -61,17 +61,26 @@ export const actionArgTypes = {
   ARRAY: 'array',
 };
 
-const { JSON, STRING, NUMBER, BOOLEAN, ARRAY } = actionArgTypes;
+const { STRING, NUMBER, BOOLEAN } = actionArgTypes;
 
 export const actionDefinitions = {
   'Device': {
     'App': {
-      'Background App': {methodName: 'backgroundApp', args: [['timeout', NUMBER]], refresh: true},
+      'Install App': {methodName: 'installAppOnDevice', args: [['appPathOrUrl', STRING]]},
       'Is App Installed': {methodName: 'isAppInstalledOnDevice', args: [['appId', STRING]]},
+      'Launch App': {methodName: 'launchApp', refresh: true},
+      'Background App': {methodName: 'backgroundApp', args: [['timeout', NUMBER]], refresh: true},
       'Close App': {methodName: 'closeApp', refresh: true},
+      'Reset App': {methodName: 'resetApp', refresh: true},
+      'Remove App': {methodName: 'removeAppFromDevice', args: [['bundleId', STRING]]},
+      'Get App Strings': {methodName: 'getAppStrings', args: [['language', STRING], ['stringFile', STRING]], refresh: true},
     },
     'Android Activity': {
-      'Start Activity': {methodName: 'startActivity', args: [[]], refresh: true}, // TODO: Hack this to use WD
+      'Start Activity': {methodName: 'startActivity', args: [
+        ['appPackage', STRING], ['appActivity', STRING], ['appWaitPackage', STRING],
+        ['intentAction', STRING], ['intentCategory', STRING], ['intentFlags', STRING],
+        ['optionalIntentArguments', STRING], ['dontStopAppOnReset', BOOLEAN],
+      ], refresh: true},
       'Current Activity': {methodName: 'getCurrentActivity'},
       'Current Package': {methodName: 'getCurrentPackage'},
     },

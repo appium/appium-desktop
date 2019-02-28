@@ -114,6 +114,51 @@ ${this.indent(code, 4)}
   .perform()
   `;
   }
+
+  codeFor_getCurrentActivity () {
+    return `String activityName = driver.currentActivity()`;
+  }
+
+  codeFor_getCurrentPackage () {
+    return `String packageName = driver.currentPackage()`;
+  }
+
+  codeFor_startActivity () {
+    return `driver.`;
+  }
+
+  codeFor_installAppOnDevice (varNameIgnore, varIndexIgnore, app) {
+    return `driver.installApp("${app}");`;
+  }
+
+  codeFor_isAppInstalledOnDevice (varNameIgnore, varIndexIgnore, app) {
+    return `boolean isAppInstalled = driver.isAppInstalled("${app}");`;
+  }
+
+  codeFor_launchApp () {
+    return `driver.launchApp();`;
+  }
+
+  codeFor_backgroundApp (varNameIgnore, varIndexIgnore, timeout) {
+    return `driver.runAppInBackground(Duration.ofSeconds(${timeout}));`;
+  }
+
+  codeFor_closeApp () {
+    return `driver.closeApp();`;
+  }
+
+  codeFor_resetApp () {
+    return `driver.resetApp();`;
+  }
+
+  codeFor_removeAppFromDevice (varNameIgnore, varIndexIgnore, app) {
+    return `driver.removeApp("${app}");`;
+  }
+
+  codeFor_getAppStrings (varNameIgnore, varIndexIgnore, language, stringFile) {
+    return `Map<String, String> appStrings = driver.getAppStringMap(${language ? `"${language}, ` : ''}${stringFile ? `"${stringFile}` : ''});`;
+  }
+
 }
 
 JavaFramework.readableName = 'Java - JUnit';

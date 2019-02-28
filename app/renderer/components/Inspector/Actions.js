@@ -20,7 +20,15 @@ export default class Actions extends Component {
 
   executeCommand () {
     const { pendingAction, cancelPendingAction, applyClientMethod } = this.props;
-    const {args, action} = pendingAction;
+    let {args, action} = pendingAction;
+
+    // Special case for 'startActivity'
+    if (action.methodName === 'startActivity') {
+      // TODO: Fix this... args aren't getting through
+      args = {appPackage: args[0], appActivity: args[1], appWaitPackage: args[2],
+              intentAction: args[3], intentCategory: args[4], intentFlags: args[5],
+              optionalIntentArguments: args[6], dontStopAppOnReset: args[7]};
+    }
     applyClientMethod({methodName: action.methodName, args, skipScreenshotAndSource: !action.refresh});
     cancelPendingAction();
   }
@@ -57,7 +65,7 @@ export default class Actions extends Component {
         onCancel={() => cancelPendingAction()}>
         {
           !_.isEmpty(pendingAction.action.args) && _.map(pendingAction.action.args, ([argName, argType], index) => <Row key={index} gutter={16}>
-            <Col span={24} style={{padding: '8px 8px 0 0'}}>
+            <Col span={24} style={{padding: '4px 4px 0 0'}}>
               {argType === NUMBER && <Input type="number" value={pendingAction.args[index]} addonBefore={t(argName)} onChange={(e) => setActionArg(index, _.toNumber(e.target.value))} />}
               {argType === BOOLEAN && <Input addonBefore={t(argName)} />}
               {argType === STRING && <Input addonBefore={t(argName)} onChange={(e) => setActionArg(index, e.target.value)}/>}

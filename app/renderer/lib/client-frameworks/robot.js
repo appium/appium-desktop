@@ -97,6 +97,46 @@ ${this.indent(code, 4)}
   codeFor_swipe (varNameIgnore, varIndexIgnore, x1, y1, x2, y2) {
     return `Swipe    ${x1}    ${y1}    ${x2}    ${y2}`;
   }
+
+  codeFor_getCurrentActivity () {
+    return '';
+  }
+
+  codeFor_getCurrentPackage () {
+    return '';
+  }
+
+  codeFor_installAppOnDevice () {
+    return ``;
+  }
+
+  codeFor_isAppInstalledOnDevice () {
+    return ``;
+  }
+
+  codeFor_launchApp () {
+    return ``;
+  }
+
+  codeFor_backgroundApp () {
+    return ``;
+  }
+
+  codeFor_closeApp () {
+    return ``;
+  }
+
+  codeFor_resetApp () {
+    return ``;
+  }
+
+  codeFor_removeAppFromDevice () {
+    return ``;
+  }
+
+  codeFor_getAppStrings () {
+    return ``;
+  }
 }
 
 RobotFramework.readableName = 'Robot Framework';
