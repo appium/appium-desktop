@@ -127,6 +127,14 @@ ${this.indent(this.chainifyCode(code), 2)}
   codeFor_getAppStrings (varNameIgnore, varIndexIgnore, language, stringFile) {
     return `let appStrings = await driver.getAppStrings(${language ? `${language}, ` : ''}${stringFile ? `"${stringFile}` : ''});`;
   }
+
+  codeFor_getClipboard () {
+    return `let clipboardText = await driver.getClipboard();`;
+  }
+
+  codeFor_setClipboard (varNameIgnore, varIndexIgnore, clipboardText) {
+    return `await driver.setClipboard('${clipboardText}')`;
+  }
 }
 
 JsWdIoFramework.readableName = 'JS - Webdriver.io';

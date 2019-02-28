@@ -121,6 +121,14 @@ driver.quit()`;
   codeFor_getAppStrings (varNameIgnore, varIndexIgnore, language, stringFile) {
     return `appStrings = driver.app_strings(${language ? `${language}, ` : ''}${stringFile ? `"${stringFile}` : ''})`;
   }
+
+  codeFor_getClipboard () {
+    return `clipboard_text = driver.get_clipboard_text()`;
+  }
+
+  codeFor_setClipboard (varNameIgnore, varIndexIgnore, clipboardText) {
+    return `driver.set_clipboard_text('${clipboardText}')`;
+  }
 }
 
 PythonFramework.readableName = 'Python';

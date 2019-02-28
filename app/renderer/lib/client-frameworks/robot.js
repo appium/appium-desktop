@@ -137,6 +137,14 @@ ${this.indent(code, 4)}
   codeFor_getAppStrings () {
     return ``;
   }
+
+  codeFor_getClipboard () {
+    return ``;
+  }
+
+  codeFor_setClipboard () {
+    return ``;
+  }
 }
 
 RobotFramework.readableName = 'Robot Framework';

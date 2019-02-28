@@ -124,6 +124,14 @@ driver.quit`;
   codeFor_getAppStrings (varNameIgnore, varIndexIgnore, language, stringFile) {
     return `driver.app_strings(${language ? `${language}, ` : ''}${stringFile ? `"${stringFile}` : ''})`;
   }
+
+  codeFor_getClipboard () {
+    return `clipboard_text = driver.get_clipboard`;
+  }
+
+  codeFor_setClipboard (varNameIgnore, varIndexIgnore, clipboardText) {
+    return `driver.set_clipboard content: '${clipboardText}'`;
+  }
 }
 
 RubyFramework.readableName = 'Ruby';

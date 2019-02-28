@@ -84,6 +84,10 @@ export const actionDefinitions = {
       'Current Activity': {methodName: 'getCurrentActivity'},
       'Current Package': {methodName: 'getCurrentPackage'},
     },
+    'Clipboard': {
+      'Get Clipboard': {methodName: 'getClipboard'},
+      'Set Clipboard': {methodName: 'setClipboard', args: [['clipboardText', STRING]]},
+    },
   }
 };
 
