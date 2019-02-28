@@ -13,16 +13,20 @@ export function bindClient () {
    */
   ipcRenderer.on('appium-client-command-response', (evt, resp) => {
     // Rename 'id' to 'elementId'
-    const {res} = resp;
-    try {
-      const parsedRes = JSON.parse(res);
-      if (!_.isNull(parsedRes) && !_.isUndefined(parsedRes) && !(_.isObject(parsedRes) && _.isEmpty(parsedRes))) {
-        notification.success({
-          message: `${i18n.t('Command was returned with result')}: '${JSON.stringify(res)}'`,
-          duration: 15,
-        });
-      }
-    } catch (ign) { /* ignore JSON parse exceptions */ }
+    let {res} = resp;
+
+
+    // Ignore empty objects
+    if (_.isObject(res) && _.isEmpty(res)) {
+      res = null;
+    }
+
+    if (!_.isNull(res) && !_.isUndefined(res)) {
+      notification.success({
+        message: `${i18n.t('Command was returned with result')}: '${JSON.stringify(res)}'`,
+        duration: 15,
+      });
+    }
     resp.elementId = resp.id;
     let promise = clientMethodPromises[resp.uuid];
     if (promise) {

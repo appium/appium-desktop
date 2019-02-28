@@ -69,7 +69,11 @@ export const actionDefinitions = {
       'Background App': {methodName: 'backgroundApp', args: [['timeout', NUMBER]]},
       'Is App Installed': {methodName: 'isAppInstalledOnDevice', args: [['appId', STRING]]},
       'Close App': {methodName: 'closeApp'},
-    }
+    },
+    'Android Activity': {
+      'Start Activity': {methodName: 'startActivity', args: [[]]}, // TODO: Hack this to use WD
+      'Current Activity': {methodName: 'getCurrentActivity'},
+    },
   }
 };
 
