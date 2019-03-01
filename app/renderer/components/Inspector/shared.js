@@ -65,6 +65,9 @@ const { STRING, NUMBER, BOOLEAN } = actionArgTypes;
 
 export const actionDefinitions = {
   'Device': {
+    'Execute Mobile': {
+      'Execute': {methodName: 'execute', args: [['command', STRING], ['jsonArgument', STRING]]}
+    },
     'App': {
       'Install App': {methodName: 'installAppOnDevice', args: [['appPathOrUrl', STRING]]},
       'Is App Installed': {methodName: 'isAppInstalledOnDevice', args: [['appId', STRING]]},

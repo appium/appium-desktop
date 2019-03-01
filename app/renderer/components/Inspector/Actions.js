@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
-import { Row, Col, Button, Select, Modal, Input } from 'antd';
+import { Row, Col, Button, Select, Modal, Input, } from 'antd';
 import { actionDefinitions, actionArgTypes } from './shared';
 
 const { STRING, NUMBER, BOOLEAN, ARRAY } = actionArgTypes;
@@ -21,6 +21,7 @@ export default class Actions extends Component {
   executeCommand () {
     const { pendingAction, cancelPendingAction, applyClientMethod } = this.props;
     let {args, action} = pendingAction;
+    let {methodName} = action;
 
     // Special case for 'startActivity'
     // TODO: Fix these... args aren't getting through
@@ -35,7 +36,7 @@ export default class Actions extends Component {
       args = {x: args[0], y: args[1], duration: args[2], radius: args[3], rotation: args[4], touchCount: args[5]};
     }
 
-    applyClientMethod({methodName: action.methodName, args, skipScreenshotAndSource: !action.refresh});
+    applyClientMethod({methodName, args, skipScreenshotAndSource: !action.refresh});
     cancelPendingAction();
   }
 
