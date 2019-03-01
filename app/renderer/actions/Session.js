@@ -100,7 +100,7 @@ export function showError (e, methodName, secs = 5) {
   }
 
   notification.error({
-    message: 'Error',
+    message: methodName ? `Call to '${methodName}' failed` : 'Error',
     description: errMessage,
     duration: secs
   });
