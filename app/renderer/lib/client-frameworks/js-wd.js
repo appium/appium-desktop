@@ -128,6 +128,22 @@ main().catch(console.log);
     return `await driver.setClipboard('${clipboardText}')`;
   }
 
+  codeFor_pressKeycode (varNameIgnore, varIndexIgnore, keyCode, metaState, flags) {
+    return `await driver.longPressKeyCode(${keyCode}, ${metaState}, ${flags});`;
+  }
+
+  codeFor_longPressKeycode (varNameIgnore, varIndexIgnore, keyCode, metaState, flags) {
+    return `await driver.longPressKeyCode(${keyCode}, ${metaState}, ${flags});`;
+  }
+
+  codeFor_hideDeviceKeyboard () {
+    return `await driver.hideDeviceKeyboard();`;
+  }
+
+  codeFor_isKeyboardShown () {
+    return `await driver.isKeyboardShown();`;
+  }
+
 }
 
 JsWdFramework.readableName = 'JS - WD (Promise)';

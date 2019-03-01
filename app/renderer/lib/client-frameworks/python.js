@@ -129,6 +129,22 @@ driver.quit()`;
   codeFor_setClipboard (varNameIgnore, varIndexIgnore, clipboardText) {
     return `driver.set_clipboard_text('${clipboardText}')`;
   }
+
+  codeFor_pressKeycode (varNameIgnore, varIndexIgnore, keyCode, metaState, flags) {
+    return `driver.press_keycode(${keyCode}, ${metaState}, ${flags});`;
+  }
+
+  codeFor_longPressKeycode (varNameIgnore, varIndexIgnore, keyCode, metaState, flags) {
+    return `driver.long_press_keycode(${keyCode}, ${metaState}, ${flags});`;
+  }
+
+  codeFor_hideDeviceKeyboard () {
+    return `driver.hide_keyboard()`;
+  }
+
+  codeFor_isKeyboardShown () {
+    return `# isKeyboardShown not supported`;
+  }
 }
 
 PythonFramework.readableName = 'Python';

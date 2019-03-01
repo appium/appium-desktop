@@ -135,6 +135,22 @@ ${this.indent(this.chainifyCode(code), 2)}
   codeFor_setClipboard (varNameIgnore, varIndexIgnore, clipboardText) {
     return `await driver.setClipboard('${clipboardText}')`;
   }
+
+  codeFor_pressKeycode (varNameIgnore, varIndexIgnore, keyCode, metaState, flags) {
+    return `await driver.longPressKeyCode(${keyCode}, ${metaState}, ${flags});`;
+  }
+
+  codeFor_longPressKeycode (varNameIgnore, varIndexIgnore, keyCode, metaState, flags) {
+    return `await driver.longPressKeyCode(${keyCode}, ${metaState}, ${flags});`;
+  }
+
+  codeFor_hideDeviceKeyboard () {
+    return `await driver.hideDeviceKeyboard();`;
+  }
+
+  codeFor_isKeyboardShown () {
+    return `//isKeyboardShown not supported`;
+  }
 }
 
 JsWdIoFramework.readableName = 'JS - Webdriver.io';
