@@ -93,6 +93,15 @@ export const actionDefinitions = {
       'Pull File': {methodName: 'pullFile', args: [['pathToPullFrom', STRING]]},
       'Pull Folder': {methodName: 'pullFolder', args: [['folderToPullFrom', STRING]]},
     },
+    'Interaction': {
+      'Shake': {methodName: 'shake'},
+      'Lock': {methodName: 'lock'},
+      'Unlock': {methodName: 'unlock'},
+      'Is Device Locked': {methodName: 'isLocked'},
+      'Rotate Device': {methodName: 'rotateDevice', args: [
+        ['x', NUMBER], ['y', NUMBER], ['duration', NUMBER], ['radius', NUMBER], ['rotatation', NUMBER], ['touchCount', NUMBER]
+      ]},
+    },
     'Keys': {
       'Press Key': {methodName: 'pressKeycode', args: [['keyCode', NUMBER], ['metaState', NUMBER], ['flags', NUMBER]], refresh: true},
       'Long Press Key': {methodName: 'longPressKeycode', args: [['keyCode', NUMBER], ['metaState', NUMBER], ['flags', NUMBER]], refresh: true},
