@@ -183,6 +183,18 @@ ${this.indent(code, 4)}
     return `boolean isKeyboardShown = driver.isKeyboardShown();`;
   }
 
+  codeFor_pushFileToDevice (varNameIgnore, varIndexIgnore, pathToInstallTo, fileContentString) {
+    return `driver.pushFile("${pathToInstallTo}", ${fileContentString})`;
+  }
+
+  codeFor_pullFile (varNameIgnore, varIndexIgnore, pathToPullFrom) {
+    return `byte[] fileBase64 = driver.pullFile("${pathToPullFrom}");`;
+  }
+
+  codeFor_pullFolder (varNameIgnore, varIndexIgnore, folderToPullFrom) {
+    return `byte[] fileBase64 = driver.pullFolder("${folderToPullFrom}");`;
+  }
+
   /*
 
   codeFor_ REPLACE_ME (varNameIgnore, varIndexIgnore) {

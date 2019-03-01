@@ -151,6 +151,18 @@ ${this.indent(this.chainifyCode(code), 2)}
   codeFor_isKeyboardShown () {
     return `//isKeyboardShown not supported`;
   }
+
+  codeFor_pushFileToDevice (varNameIgnore, varIndexIgnore, pathToInstallTo, fileContentString) {
+    return `await driver.pushFile('${pathToInstallTo}', '${fileContentString}');`;
+  }
+
+  codeFor_pullFile (varNameIgnore, varIndexIgnore, pathToPullFrom) {
+    return `let data = await driver.pullFile('${pathToPullFrom}');`;
+  }
+
+  codeFor_pullFolder (varNameIgnore, varIndexIgnore, folderToPullFrom) {
+    return `let data = await driver.pullFolder('${folderToPullFrom}');`;
+  }
 }
 
 JsWdIoFramework.readableName = 'JS - Webdriver.io';

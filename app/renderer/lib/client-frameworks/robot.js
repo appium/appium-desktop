@@ -161,6 +161,18 @@ ${this.indent(code, 4)}
   codeFor_isKeyboardShown () {
     return `REPLACE_ME`;
   }
+
+  codeFor_pushFileToDevice () {
+    return `REPLACE_ME`;
+  }
+
+  codeFor_pullFile () {
+    return `REPLACE_ME`;
+  }
+
+  codeFor_pullFolder () {
+    return `REPLACE_ME`;
+  }
 }
 
 RobotFramework.readableName = 'Robot Framework';

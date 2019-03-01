@@ -148,6 +148,18 @@ driver.quit`;
   codeFor_isKeyboardShown () {
     return `is_keyboard_shown = driver.is_keyboard_shown`;
   }
+
+  codeFor_pushFileToDevice (varNameIgnore, varIndexIgnore, pathToInstallTo, fileContentString) {
+    return `driver.push_file('${pathToInstallTo}', '${fileContentString}')`;
+  }
+
+  codeFor_pullFile (varNameIgnore, varIndexIgnore, pathToPullFrom) {
+    return `driver.pull_file('${pathToPullFrom}')`;
+  }
+
+  codeFor_pullFolder (varNameIgnore, varIndexIgnore, folderToPullFrom) {
+    return `driver.pull_folder('${folderToPullFrom}')`;
+  }
 }
 
 RubyFramework.readableName = 'Ruby';
