@@ -156,6 +156,38 @@ main().catch(console.log);
     return `let fileBase64 = await driver.pullFolder('${folderToPullFrom}');`;
   }
 
+  codeFor_toggleAirplaneMode () {
+    return `await driver.toggleAirplaneMode();`;
+  }
+
+  codeFor_toggleData () {
+    return `await driver.toggleData();`;
+  }
+
+  codeFor_toggleWiFi () {
+    return `await driver.toggleWiFi();`;
+  }
+
+  codeFor_toggleLocationServices () {
+    return `await driver.toggleLocationServices();`;
+  }
+
+  codeFor_sendSMS (varNameIgnore, varIndexIgnore, phoneNumber, text) {
+    return `await driver.sendSms('${phoneNumber}', '${text}');`;
+  }
+
+  codeFor_gsmCall (varNameIgnore, varIndexIgnore, phoneNumber, action) {
+    return `await driver.gsmCall('${phoneNumber}', '${action}');`;
+  }
+
+  codeFor_gsmSignal (varNameIgnore, varIndexIgnore, signalStrength) {
+    return `await driver.gsmSignal(${signalStrength});`;
+  }
+
+  codeFor_gsmVoice (varNameIgnore, varIndexIgnore, state) {
+    return `await driver.gsmVoice('${state}');`;
+  }
+
 }
 
 JsWdFramework.readableName = 'JS - WD (Promise)';
