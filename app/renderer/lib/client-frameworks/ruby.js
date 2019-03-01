@@ -160,6 +160,38 @@ driver.quit`;
   codeFor_pullFolder (varNameIgnore, varIndexIgnore, folderToPullFrom) {
     return `driver.pull_folder('${folderToPullFrom}')`;
   }
+
+  codeFor_toggleAirplaneMode () {
+    return `driver.toggle_flight_mode`;
+  }
+
+  codeFor_toggleData () {
+    return `driver.toggle_data`;
+  }
+
+  codeFor_toggleWiFi () {
+    return `driver.toggle_wifi`;
+  }
+
+  codeFor_toggleLocationServices () {
+    return `driver.toggle_location_services`;
+  }
+
+  codeFor_sendSMS (varNameIgnore, varIndexIgnore, phoneNumber, text) {
+    return `driver.send_sms(phone_number: '${phoneNumber}', message: '${text}')`;
+  }
+
+  codeFor_gsmCall (varNameIgnore, varIndexIgnore, phoneNumber, action) {
+    return `driver.gsm_call(phone_number: '${phoneNumber}', action: :${action})`;
+  }
+
+  codeFor_gsmSignal (varNameIgnore, varIndexIgnore, signalStrength) {
+    return `driver.gsm_signal :${signalStrength}`;
+  }
+
+  codeFor_gsmVoice (varNameIgnore, varIndexIgnore, state) {
+    return `driver.gsm_voice :${state}`;
+  }
 }
 
 RubyFramework.readableName = 'Ruby';

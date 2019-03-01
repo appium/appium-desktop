@@ -157,6 +157,38 @@ driver.quit()`;
   codeFor_pullFolder (varNameIgnore, varIndexIgnore, folderToPullFrom) {
     return `file_base64 = self.driver.pull_folder('${folderToPullFrom}');`;
   }
+
+  codeFor_toggleAirplaneMode () {
+    return `# Not supported: toggleAirplaneMode`;
+  }
+
+  codeFor_toggleData () {
+    return `# Not supported: toggleData`;
+  }
+
+  codeFor_toggleWiFi () {
+    return `# Not supported: toggleWifi`;
+  }
+
+  codeFor_toggleLocationServices () {
+    return `driver.toggle_location_services();`;
+  }
+
+  codeFor_sendSMS () {
+    return `# Not supported: sendSMS`;
+  }
+
+  codeFor_gsmCall () {
+    return `# Not supported: gsmCall`;
+  }
+
+  codeFor_gsmSignal () {
+    return `# Not supported: gsmSignal`;
+  }
+
+  codeFor_gsmVoice () {
+    return `# Not supported: gsmVoice`;
+  }
 }
 
 PythonFramework.readableName = 'Python';

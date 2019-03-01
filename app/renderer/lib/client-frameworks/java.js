@@ -195,9 +195,41 @@ ${this.indent(code, 4)}
     return `byte[] fileBase64 = driver.pullFolder("${folderToPullFrom}");`;
   }
 
+  codeFor_toggleAirplaneMode () {
+    return `driver.toggleAirplaneMode();`;
+  }
+
+  codeFor_toggleData () {
+    return `driver.toggleData();`;
+  }
+
+  codeFor_toggleWiFi () {
+    return `driver.toggleWifi();`;
+  }
+
+  codeFor_toggleLocationServices () {
+    return `driver.toggleLocationServices();`;
+  }
+
+  codeFor_sendSMS (varNameIgnore, varIndexIgnore, phoneNumber, text) {
+    return `driver.sendSMS("${phoneNumber}", "${text}");`;
+  }
+
+  codeFor_gsmCall (varNameIgnore, varIndexIgnore, phoneNumber, action) {
+    return `driver.makeGsmCall("${phoneNumber}", "${action}");`;
+  }
+
+  codeFor_gsmSignal (varNameIgnore, varIndexIgnore, signalStrength) {
+    return `driver.setGsmSignalStrength("${signalStrength}");`;
+  }
+
+  codeFor_gsmVoice (varNameIgnore, varIndexIgnore, state) {
+    return `driver.setGsmVoice("${state}");`;
+  }
+
   /*
 
-  codeFor_ REPLACE_ME (varNameIgnore, varIndexIgnore) {
+  codeFor_REPLACE_ME (varNameIgnore, varIndexIgnore) {
     return `REPLACE_ME`;
   }
 

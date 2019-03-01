@@ -163,6 +163,38 @@ ${this.indent(this.chainifyCode(code), 2)}
   codeFor_pullFolder (varNameIgnore, varIndexIgnore, folderToPullFrom) {
     return `let data = await driver.pullFolder('${folderToPullFrom}');`;
   }
+
+  codeFor_toggleAirplaneMode () {
+    return `await driver.toggleAirplaneMode();`;
+  }
+
+  codeFor_toggleData () {
+    return `await driver.toggleData();`;
+  }
+
+  codeFor_toggleWiFi () {
+    return `await driver.toggleWiFi();`;
+  }
+
+  codeFor_toggleLocationServices () {
+    return `await driver.toggleLocationServices();`;
+  }
+
+  codeFor_sendSMS () {
+    return `// Not supported: sendSms;`;
+  }
+
+  codeFor_gsmCall () {
+    return `// Not supported: gsmCall`;
+  }
+
+  codeFor_gsmSignal () {
+    return `// Not supported: gsmSignal`;
+  }
+
+  codeFor_gsmVoice () {
+    return `// Not supported: gsmVoice`;
+  }
 }
 
 JsWdIoFramework.readableName = 'JS - Webdriver.io';

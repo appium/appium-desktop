@@ -173,6 +173,38 @@ ${this.indent(code, 4)}
   codeFor_pullFolder () {
     return `REPLACE_ME`;
   }
+
+  codeFor_toggleAirplaneMode () {
+    return `REPLACE_ME`;
+  }
+
+  codeFor_toggleData () {
+    return `REPLACE_ME`;
+  }
+
+  codeFor_toggleWiFi () {
+    return `REPLACE_ME`;
+  }
+
+  codeFor_toggleLocationServices () {
+    return `REPLACE_ME`;
+  }
+
+  codeFor_sendSMS () {
+    return `REPLACE_ME`;
+  }
+
+  codeFor_gsmCall () {
+    return `REPLACE_ME`;
+  }
+
+  codeFor_gsmSignal () {
+    return `REPLACE_ME`;
+  }
+
+  codeFor_gsmVoice () {
+    return `REPLACE_ME`;
+  }
 }
 
 RobotFramework.readableName = 'Robot Framework';
