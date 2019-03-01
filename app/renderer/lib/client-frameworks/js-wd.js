@@ -144,6 +144,18 @@ main().catch(console.log);
     return `await driver.isKeyboardShown();`;
   }
 
+  codeFor_pushFileToDevice (varNameIgnore, varIndexIgnore, pathToInstallTo, fileContentString) {
+    return `await driver.pushFileToDevice('${pathToInstallTo}', '${fileContentString}');`;
+  }
+
+  codeFor_pullFile (varNameIgnore, varIndexIgnore, pathToPullFrom) {
+    return `let fileBase64 = await driver.pullFile('${pathToPullFrom}');`;
+  }
+
+  codeFor_pullFolder (varNameIgnore, varIndexIgnore, folderToPullFrom) {
+    return `let fileBase64 = await driver.pullFolder('${folderToPullFrom}');`;
+  }
+
 }
 
 JsWdFramework.readableName = 'JS - WD (Promise)';

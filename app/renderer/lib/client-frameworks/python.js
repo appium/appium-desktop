@@ -145,6 +145,18 @@ driver.quit()`;
   codeFor_isKeyboardShown () {
     return `# isKeyboardShown not supported`;
   }
+
+  codeFor_pushFileToDevice (varNameIgnore, varIndexIgnore, pathToInstallTo, fileContentString) {
+    return `driver.push_file('${pathToInstallTo}', '${fileContentString}');`;
+  }
+
+  codeFor_pullFile (varNameIgnore, varIndexIgnore, pathToPullFrom) {
+    return `file_base64 = self.driver.pull_file('${pathToPullFrom}');`;
+  }
+
+  codeFor_pullFolder (varNameIgnore, varIndexIgnore, folderToPullFrom) {
+    return `file_base64 = self.driver.pull_folder('${folderToPullFrom}');`;
+  }
 }
 
 PythonFramework.readableName = 'Python';

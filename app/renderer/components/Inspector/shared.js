@@ -88,6 +88,11 @@ export const actionDefinitions = {
       'Get Clipboard': {methodName: 'getClipboard'},
       'Set Clipboard': {methodName: 'setClipboard', args: [['clipboardText', STRING]]},
     },
+    'File': {
+      'Push File': {methodName: 'pushFileToDevice', args: [['pathToInstallTo', STRING], ['fileContentString', STRING]]},
+      'Pull File': {methodName: 'pullFile', args: [['pathToPullFrom', STRING]]},
+      'Pull Folder': {methodName: 'pullFolder', args: [['folderToPullFrom', STRING]]},
+    },
     'Keys': {
       'Press Key': {methodName: 'pressKeycode', args: [['keyCode', NUMBER], ['metaState', NUMBER], ['flags', NUMBER]], refresh: true},
       'Long Press Key': {methodName: 'longPressKeycode', args: [['keyCode', NUMBER], ['metaState', NUMBER], ['flags', NUMBER]], refresh: true},
