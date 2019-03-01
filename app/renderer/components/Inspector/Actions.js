@@ -3,7 +3,7 @@ import _ from 'lodash';
 import { Row, Col, Button, Select, Modal, Input } from 'antd';
 import { actionDefinitions, actionArgTypes } from './shared';
 
-const { JSON, STRING, NUMBER, BOOLEAN, ARRAY } = actionArgTypes;
+const { STRING, NUMBER, BOOLEAN, ARRAY } = actionArgTypes;
 
 const Option = { Select };
 
@@ -23,12 +23,18 @@ export default class Actions extends Component {
     let {args, action} = pendingAction;
 
     // Special case for 'startActivity'
+    // TODO: Fix these... args aren't getting through
     if (action.methodName === 'startActivity') {
-      // TODO: Fix this... args aren't getting through
       args = {appPackage: args[0], appActivity: args[1], appWaitPackage: args[2],
               intentAction: args[3], intentCategory: args[4], intentFlags: args[5],
               optionalIntentArguments: args[6], dontStopAppOnReset: args[7]};
     }
+
+    // Special case for 'rotateDevice'
+    if (action.methodName === 'rotateDevice') {
+      args = {x: args[0], y: args[1], duration: args[2], radius: args[3], rotation: args[4], touchCount: args[5]};
+    }
+
     applyClientMethod({methodName: action.methodName, args, skipScreenshotAndSource: !action.refresh});
     cancelPendingAction();
   }
