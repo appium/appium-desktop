@@ -145,6 +145,22 @@ ${this.indent(code, 4)}
   codeFor_setClipboard () {
     return ``;
   }
+
+  codeFor_pressKeycode () {
+    return `REPLACE_ME`;
+  }
+
+  codeFor_longPressKeycode () {
+    return `REPLACE_ME`;
+  }
+
+  codeFor_hideDeviceKeyboard () {
+    return `REPLACE_ME`;
+  }
+
+  codeFor_isKeyboardShown () {
+    return `REPLACE_ME`;
+  }
 }
 
 RobotFramework.readableName = 'Robot Framework';

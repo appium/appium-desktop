@@ -167,6 +167,22 @@ ${this.indent(code, 4)}
     return `driver.setClipboardText("${clipboardText}");`;
   }
 
+  codeFor_pressKeycode (varNameIgnore, varIndexIgnore, keyCode, metaState, flags) {
+    return `driver.pressKeyCode(${keyCode}, ${metaState}, ${flags});`;
+  }
+
+  codeFor_longPressKeycode (varNameIgnore, varIndexIgnore, keyCode, metaState, flags) {
+    return `driver.longPressKeyCode(${keyCode}, ${metaState}, ${flags});`;
+  }
+
+  codeFor_hideDeviceKeyboard () {
+    return `driver.hideKeyboard();`;
+  }
+
+  codeFor_isKeyboardShown () {
+    return `boolean isKeyboardShown = driver.isKeyboardShown();`;
+  }
+
   /*
 
   codeFor_ REPLACE_ME (varNameIgnore, varIndexIgnore) {

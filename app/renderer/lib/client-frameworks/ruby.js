@@ -132,6 +132,22 @@ driver.quit`;
   codeFor_setClipboard (varNameIgnore, varIndexIgnore, clipboardText) {
     return `driver.set_clipboard content: '${clipboardText}'`;
   }
+
+  codeFor_pressKeycode (varNameIgnore, varIndexIgnore, keyCode, metaState, flags) {
+    return `driver.press_keycode(${keyCode}, ${metaState}, ${flags})`;
+  }
+
+  codeFor_longPressKeycode (varNameIgnore, varIndexIgnore, keyCode, metaState, flags) {
+    return `driver.long_press_keycode(${keyCode}, ${metaState}, ${flags})`;
+  }
+
+  codeFor_hideDeviceKeyboard () {
+    return `driver.hide_keyboard`;
+  }
+
+  codeFor_isKeyboardShown () {
+    return `is_keyboard_shown = driver.is_keyboard_shown`;
+  }
 }
 
 RubyFramework.readableName = 'Ruby';
