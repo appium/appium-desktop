@@ -99,6 +99,16 @@ export const actionDefinitions = {
       'Hide Keyboard': {methodName: 'hideDeviceKeyboard', refresh: true},
       'Is Keyboard Shown': {methodName: 'isKeyboardShown'},
     },
+    'Network': {
+      'Toggle Airplane Mode': {methodName: 'toggleAirplaneMode'},
+      'Toggle Data': {methodName: 'toggleData'},
+      'Toggle WiFi': {methodName: 'toggleWiFi'},
+      'Toggle Location Services': {methodName: 'toggleLocationServices'},
+      'Send SMS': {methodName: 'sendSMS', args: [['phoneNumber', STRING], ['text', STRING]]},
+      'GSM Call': {methodName: 'gsmCall', args: [['phoneNumber', STRING], ['action', STRING]]},
+      'GSM Signal': {methodName: 'gsmSignal', args: [['signalStrengh', NUMBER]]},
+      'GSM Voice': {methodName: 'gsmVoice', args: [['state', STRING]]},
+    },
   }
 };
 
