@@ -189,6 +189,26 @@ driver.quit()`;
   codeFor_gsmVoice () {
     return `# Not supported: gsmVoice`;
   }
+
+  codeFor_shake () {
+    return `driver.shake();`;
+  }
+
+  codeFor_lock (varNameIgnore, varIndexIgnore, seconds) {
+    return `driver.lock(${seconds});`;
+  }
+
+  codeFor_unlock () {
+    return `driver.unlock();`;
+  }
+
+  codeFor_isLocked () {
+    return `# Not supported: is device locked`;
+  }
+
+  codeFor_rotateDevice () {
+    return `# Not supported: rotate device`;
+  }
 }
 
 PythonFramework.readableName = 'Python';

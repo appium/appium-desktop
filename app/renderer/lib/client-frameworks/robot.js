@@ -205,6 +205,26 @@ ${this.indent(code, 4)}
   codeFor_gsmVoice () {
     return `REPLACE_ME`;
   }
+
+  codeFor_shake () {
+    return `REPLACE_ME`;
+  }
+
+  codeFor_lock () {
+    return `REPLACE_ME`;
+  }
+
+  codeFor_unlock () {
+    return `REPLACE_ME`;
+  }
+
+  codeFor_isLocked () {
+    return `REPLACE_ME`;
+  }
+
+  codeFor_rotateDevice () {
+    return `REPLACE_ME`;
+  }
 }
 
 RobotFramework.readableName = 'Robot Framework';

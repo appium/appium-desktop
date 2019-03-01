@@ -11,7 +11,7 @@ export function bindClient () {
   /**
    * When we hear back from the main process, resolve the promise
    */
-  ipcRenderer.removeListener('appium-client-command-response');
+  ipcRenderer.removeAllListeners('appium-client-command-response');
   ipcRenderer.on('appium-client-command-response', (evt, resp) => {
     // Rename 'id' to 'elementId'
     let {res} = resp;
