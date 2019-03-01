@@ -227,9 +227,29 @@ ${this.indent(code, 4)}
     return `driver.setGsmVoice("${state}");`;
   }
 
+  codeFor_shake () {
+    return `driver.shake();`;
+  }
+
+  codeFor_lock (varNameIgnore, varIndexIgnore, seconds) {
+    return `driver.lockDevice(${seconds});`;
+  }
+
+  codeFor_unlock () {
+    return `driver.unlockDevice()`;
+  }
+
+  codeFor_isLocked () {
+    return `boolean isLocked = driver.isDeviceLocked();`;
+  }
+
+  codeFor_rotateDevice (varNameIgnore, varIndexIgnore, x, y, radius, rotation, touchCount, duration) {
+    return `driver.rotate(new DeviceRotation(${x}, ${y}, ${radius}, ${rotation}, ${touchCount}, ${duration}));`;
+  }
+
   /*
 
-  codeFor_REPLACE_ME (varNameIgnore, varIndexIgnore) {
+  codeFor_ REPLACE_ME (varNameIgnore, varIndexIgnore) {
     return `REPLACE_ME`;
   }
 

@@ -95,11 +95,11 @@ export const actionDefinitions = {
     },
     'Interaction': {
       'Shake': {methodName: 'shake'},
-      'Lock': {methodName: 'lock'},
+      'Lock': {methodName: 'lock', args: [['seconds', NUMBER]]},
       'Unlock': {methodName: 'unlock'},
       'Is Device Locked': {methodName: 'isLocked'},
       'Rotate Device': {methodName: 'rotateDevice', args: [
-        ['x', NUMBER], ['y', NUMBER], ['duration', NUMBER], ['radius', NUMBER], ['rotatation', NUMBER], ['touchCount', NUMBER]
+        ['x', NUMBER], ['y', NUMBER], ['radius', NUMBER], ['rotatation', NUMBER], ['touchCount', NUMBER], ['duration', NUMBER]
       ]},
     },
     'Keys': {

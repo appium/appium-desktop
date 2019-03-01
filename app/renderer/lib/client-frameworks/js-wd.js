@@ -188,6 +188,26 @@ main().catch(console.log);
     return `await driver.gsmVoice('${state}');`;
   }
 
+  codeFor_shake () {
+    return `await driver.shake();`;
+  }
+
+  codeFor_lock (varNameIgnore, varIndexIgnore, seconds) {
+    return `await driver.lock(${seconds})`;
+  }
+
+  codeFor_unlock () {
+    return `await driver.unlock()`;
+  }
+
+  codeFor_isLocked () {
+    return `let isLocked = await driver.isLocked();`;
+  }
+
+  codeFor_rotateDevice (varNameIgnore, varIndexIgnore, x, y, radius, rotation, touchCount, duration) {
+    return `driver.rotateDevice({x: ${x}, y: ${y}, duration: ${duration}, radius: ${radius}, rotation: ${rotation}, touchCount: ${touchCount}});`;
+  }
+
 }
 
 JsWdFramework.readableName = 'JS - WD (Promise)';

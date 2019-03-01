@@ -192,6 +192,26 @@ driver.quit`;
   codeFor_gsmVoice (varNameIgnore, varIndexIgnore, state) {
     return `driver.gsm_voice :${state}`;
   }
+
+  codeFor_shake () {
+    return `driver.shake`;
+  }
+
+  codeFor_lock (varNameIgnore, varIndexIgnore, seconds) {
+    return `driver.lock(${seconds})`;
+  }
+
+  codeFor_unlock () {
+    return `driver.unlock`;
+  }
+
+  codeFor_isLocked () {
+    return `is_device_locked = driver.device_locked?`;
+  }
+
+  codeFor_rotateDevice () {
+    return `# Not supported: rotateDevice`;
+  }
 }
 
 RubyFramework.readableName = 'Ruby';
