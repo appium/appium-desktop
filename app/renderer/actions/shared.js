@@ -39,10 +39,11 @@ export function bindClient () {
    * If we hear back with an error, reject the promise
    */
   ipcRenderer.on('appium-client-command-response-error', (evt, resp) => {
-    const {e, uuid} = resp;
+    let {e, uuid} = resp;
+    e = JSON.parse(e);
     let promise = clientMethodPromises[uuid];
     if (promise) {
-      promise.reject(new Error(e));
+      promise.reject(e);
       delete clientMethodPromises[uuid];
     }
   });
