@@ -54,14 +54,11 @@ export const SCREENSHOT_INTERACTION_MODE = {
 };
 
 export const actionArgTypes = {
-  JSON: 'json',
   STRING: 'string',
   NUMBER: 'number',
-  BOOLEAN: 'boolean',
-  ARRAY: 'array',
 };
 
-const { STRING, NUMBER, BOOLEAN } = actionArgTypes;
+const { STRING, NUMBER } = actionArgTypes;
 
 export const actionDefinitions = {
   'Device': {
@@ -82,7 +79,7 @@ export const actionDefinitions = {
       'Start Activity': {methodName: 'startActivity', args: [
         ['appPackage', STRING], ['appActivity', STRING], ['appWaitPackage', STRING],
         ['intentAction', STRING], ['intentCategory', STRING], ['intentFlags', STRING],
-        ['optionalIntentArguments', STRING], ['dontStopAppOnReset', BOOLEAN],
+        ['optionalIntentArguments', STRING], ['dontStopAppOnReset', STRING],
       ], refresh: true},
       'Current Activity': {methodName: 'getCurrentActivity'},
       'Current Package': {methodName: 'getCurrentPackage'},

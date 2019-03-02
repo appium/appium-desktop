@@ -3,7 +3,7 @@ import _ from 'lodash';
 import { Row, Col, Button, Select, Modal, Input, } from 'antd';
 import { actionDefinitions, actionArgTypes } from './shared';
 
-const { STRING, NUMBER, BOOLEAN, ARRAY } = actionArgTypes;
+const { STRING, NUMBER } = actionArgTypes;
 
 const Option = { Select };
 
@@ -74,10 +74,7 @@ export default class Actions extends Component {
           !_.isEmpty(pendingAction.action.args) && _.map(pendingAction.action.args, ([argName, argType], index) => <Row key={index} gutter={16}>
             <Col span={24} style={{padding: '4px 4px 0 0'}}>
               {argType === NUMBER && <Input type="number" value={pendingAction.args[index]} addonBefore={t(argName)} onChange={(e) => setActionArg(index, _.toNumber(e.target.value))} />}
-              {argType === BOOLEAN && <Input addonBefore={t(argName)} />}
               {argType === STRING && <Input addonBefore={t(argName)} onChange={(e) => setActionArg(index, e.target.value)}/>}
-              {argType === JSON && <Input addonBefore={t(argName)}/>}
-              {argType === ARRAY && <Input addonBefore={t(argName)}/>}
             </Col>
           </Row>)
         }
