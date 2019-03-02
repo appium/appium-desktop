@@ -89,9 +89,6 @@ export default function inspector (state = INITIAL_STATE, action) {
         ...state,
         selectedElement: findElementByPath(action.path, state.source),
         selectedElementPath: action.path,
-        selectedElementId: null,
-        selectedElementVariableName: null,
-        selectedElementVariableType: null,
         elementInteractionsNotAvailable: false,
       };
 
