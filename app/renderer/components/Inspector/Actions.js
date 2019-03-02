@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
-import { Row, Col, Button, Select, Modal, Input, } from 'antd';
+import { Row, Col, Button, Select, Modal, Input, notification, } from 'antd';
 import { actionDefinitions, actionArgTypes } from './shared';
 
 const { STRING, NUMBER } = actionArgTypes;
@@ -19,7 +19,7 @@ export default class Actions extends Component {
   }
 
   executeCommand () {
-    const { pendingAction, cancelPendingAction, applyClientMethod } = this.props;
+    const { pendingAction, cancelPendingAction, applyClientMethod, t } = this.props;
     let {args, action} = pendingAction;
     let {methodName} = action;
 
@@ -34,6 +34,20 @@ export default class Actions extends Component {
     // Special case for 'rotateDevice'
     if (action.methodName === 'rotateDevice') {
       args = {x: args[0], y: args[1], duration: args[2], radius: args[3], rotation: args[4], touchCount: args[5]};
+    }
+
+    // Special case for 'execute'
+    if (action.methodName === 'execute') {
+      if (!_.isEmpty(args[1])) {
+        try {
+          args[1] = JSON.parse(args[1]);
+        } catch (e) {
+          notification.error({
+            message: `${t('Invalid JSON')}: args[1]}`,
+            duration: 5,
+          });
+        }
+      }
     }
 
     applyClientMethod({methodName, args, skipScreenshotAndSource: !action.refresh});
