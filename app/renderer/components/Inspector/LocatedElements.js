@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
+import { clipboard } from 'electron';
 import { Input, Row, Col, Button } from 'antd';
 import InspectorStyles from './Inspector.css';
 import { withTranslation } from '../../util';
@@ -48,6 +48,14 @@ class LocatedElements extends Component {
           {locatedElements.length === 0 && <option disabled>Could not find any elements</option>}
         </select>
         {locatedElements.length > 0 && <div className={InspectorStyles['locator-test-interactions-container']}>
+          <div>
+            <Button size='small'
+              disabled={!locatorTestElement}
+              onClick={() => clipboard.writeText(locatorTestElement)}
+            >
+              {t('Copy ID')}
+            </Button>
+          </div>
           <div>
             <Button size='small'
               disabled={!locatorTestElement}
