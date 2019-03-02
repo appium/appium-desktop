@@ -262,6 +262,7 @@ function connectClientMethodListener () {
       elementId, // Optional. Element being operated on
       args = [], // Optional. Arguments passed to method
       skipScreenshotAndSource = false, // Optional. Do we want the updated source and screenshot?
+      ignoreResult = false, // Optional. Do we want to send the result back to the renderer?
     } = data;
 
     let renderer = evt.sender;
@@ -297,6 +298,10 @@ function connectClientMethodListener () {
             console.log(`Fetching an element with selector '${selector}' and strategy ${strategy}`);
             res = await methodHandler.fetchElement(strategy, selector);
           }
+        }
+
+        if (ignoreResult) {
+          res = {};
         }
 
         renderer.send('appium-client-command-response', {
