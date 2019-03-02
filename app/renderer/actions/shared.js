@@ -14,7 +14,7 @@ export function bindClient () {
   ipcRenderer.removeAllListeners('appium-client-command-response');
   ipcRenderer.on('appium-client-command-response', (evt, resp) => {
     // Rename 'id' to 'elementId'
-    let {res} = resp;
+    let {res, methodName} = resp;
 
     // Ignore empty objects
     if (_.isObject(res) && _.isEmpty(res)) {
@@ -23,7 +23,7 @@ export function bindClient () {
 
     if (!_.isNull(res) && !_.isUndefined(res)) {
       notification.success({
-        message: `'${evt.methodName}' ${i18n.t('failed')}`,
+        message: `'${methodName}' ${i18n.t('result')}`,
         description: `${i18n.t('Command was returned with result')}: '${_.truncate(JSON.stringify(res), {length: 2000})}'`,
         duration: 15,
       });
