@@ -273,6 +273,7 @@ function connectClientMethodListener () {
         // when we've quit the session, there's no source/screenshot to send
         // back
         renderer.send('appium-client-command-response', {
+          methodName,
           source: null,
           screenshot: null,
           windowSize: null,
@@ -301,6 +302,7 @@ function connectClientMethodListener () {
 
         renderer.send('appium-client-command-response', {
           ...res,
+          methodName,
           uuid,
         });
       }
