@@ -65,6 +65,15 @@ export const actionDefinitions = {
     'Execute Mobile': {
       'Execute': {methodName: 'execute', args: [['command', STRING], ['jsonArgument', STRING]]}
     },
+    'Android Activity': {
+      'Start Activity': {methodName: 'startActivity', args: [
+        ['appPackage', STRING], ['appActivity', STRING], ['appWaitPackage', STRING],
+        ['intentAction', STRING], ['intentCategory', STRING], ['intentFlags', STRING],
+        ['optionalIntentArguments', STRING], ['dontStopAppOnReset', STRING],
+      ], refresh: true},
+      'Current Activity': {methodName: 'getCurrentActivity'},
+      'Current Package': {methodName: 'getCurrentPackage'},
+    },
     'App': {
       'Install App': {methodName: 'installAppOnDevice', args: [['appPathOrUrl', STRING]]},
       'Is App Installed': {methodName: 'isAppInstalledOnDevice', args: [['appId', STRING]]},
@@ -74,15 +83,6 @@ export const actionDefinitions = {
       'Reset App': {methodName: 'resetApp', refresh: true},
       'Remove App': {methodName: 'removeAppFromDevice', args: [['bundleId', STRING]]},
       'Get App Strings': {methodName: 'getAppStrings', args: [['language', STRING], ['stringFile', STRING]], refresh: true},
-    },
-    'Android Activity': {
-      'Start Activity': {methodName: 'startActivity', args: [
-        ['appPackage', STRING], ['appActivity', STRING], ['appWaitPackage', STRING],
-        ['intentAction', STRING], ['intentCategory', STRING], ['intentFlags', STRING],
-        ['optionalIntentArguments', STRING], ['dontStopAppOnReset', STRING],
-      ], refresh: true},
-      'Current Activity': {methodName: 'getCurrentActivity'},
-      'Current Package': {methodName: 'getCurrentPackage'},
     },
     'Clipboard': {
       'Get Clipboard': {methodName: 'getClipboard'},
@@ -95,12 +95,12 @@ export const actionDefinitions = {
     },
     'Interaction': {
       'Shake': {methodName: 'shake'},
-      'Lock': {methodName: 'lock', args: [['seconds', NUMBER]]},
-      'Unlock': {methodName: 'unlock'},
+      'Lock': {methodName: 'lock', args: [['seconds', NUMBER]], refresh: true},
+      'Unlock': {methodName: 'unlock', refresh: true},
       'Is Device Locked': {methodName: 'isLocked'},
       'Rotate Device': {methodName: 'rotateDevice', args: [
         ['x', NUMBER], ['y', NUMBER], ['radius', NUMBER], ['rotatation', NUMBER], ['touchCount', NUMBER], ['duration', NUMBER]
-      ]},
+      ], refresh: true},
     },
     'Keys': {
       'Press Key': {methodName: 'pressKeycode', args: [['keyCode', NUMBER], ['metaState', NUMBER], ['flags', NUMBER]], refresh: true},
@@ -117,6 +117,19 @@ export const actionDefinitions = {
       'GSM Call': {methodName: 'gsmCall', args: [['phoneNumber', STRING], ['action', STRING]]},
       'GSM Signal': {methodName: 'gsmSignal', args: [['signalStrengh', NUMBER]]},
       'GSM Voice': {methodName: 'gsmVoice', args: [['state', STRING]]},
+    },
+    'Performance Data': {
+      'Get Data': {methodName: 'getPerformanceData', args: [['packageName', STRING], ['dataType', STRING], ['dataReadTimeout', NUMBER]]},
+      'Get Data Types': {methodName: 'getSupportedPerformanceDataTypes'},
+    },
+    'iOS Simulator': {
+      'Perform Touch Id': {methodName: 'performTouchId', args: [['match', STRING]], refresh: true},
+      'Toggle Touch Id Enrollment': {methodName: 'toggleTouchIdEnrollment', args: [['enroll', STRING]]},
+    },
+    'System': {
+      'Open Notifications': {methodName: 'openNotifications', refresh: true},
+      'Get System Time': {methodName: 'getDeviceTime'},
+      'Fingerprint (Android)': {methodName: 'fingerprint', args: [['fingerPrintId', NUMBER]], refresh: true}
     },
   }
 };

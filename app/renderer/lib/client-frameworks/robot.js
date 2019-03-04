@@ -147,83 +147,113 @@ ${this.indent(code, 4)}
   }
 
   codeFor_pressKeycode () {
-    return `REPLACE_ME`;
+    return ``;
   }
 
   codeFor_longPressKeycode () {
-    return `REPLACE_ME`;
+    return ``;
   }
 
   codeFor_hideDeviceKeyboard () {
-    return `REPLACE_ME`;
+    return ``;
   }
 
   codeFor_isKeyboardShown () {
-    return `REPLACE_ME`;
+    return ``;
   }
 
   codeFor_pushFileToDevice () {
-    return `REPLACE_ME`;
+    return ``;
   }
 
   codeFor_pullFile () {
-    return `REPLACE_ME`;
+    return ``;
   }
 
   codeFor_pullFolder () {
-    return `REPLACE_ME`;
+    return ``;
   }
 
   codeFor_toggleAirplaneMode () {
-    return `REPLACE_ME`;
+    return ``;
   }
 
   codeFor_toggleData () {
-    return `REPLACE_ME`;
+    return ``;
   }
 
   codeFor_toggleWiFi () {
-    return `REPLACE_ME`;
+    return ``;
   }
 
   codeFor_toggleLocationServices () {
-    return `REPLACE_ME`;
+    return ``;
   }
 
   codeFor_sendSMS () {
-    return `REPLACE_ME`;
+    return ``;
   }
 
   codeFor_gsmCall () {
-    return `REPLACE_ME`;
+    return ``;
   }
 
   codeFor_gsmSignal () {
-    return `REPLACE_ME`;
+    return ``;
   }
 
   codeFor_gsmVoice () {
-    return `REPLACE_ME`;
+    return ``;
   }
 
   codeFor_shake () {
-    return `REPLACE_ME`;
+    return ``;
   }
 
   codeFor_lock () {
-    return `REPLACE_ME`;
+    return ``;
   }
 
   codeFor_unlock () {
-    return `REPLACE_ME`;
+    return ``;
   }
 
   codeFor_isLocked () {
-    return `REPLACE_ME`;
+    return ``;
   }
 
   codeFor_rotateDevice () {
-    return `REPLACE_ME`;
+    return ``;
+  }
+
+
+
+  codeFor_getPerformanceData () {
+    return ``;
+  }
+
+  codeFor_getSupportedPerformanceDataTypes () {
+    return ``;
+  }
+
+  codeFor_performTouchId () {
+    return ``;
+  }
+
+  codeFor_toggleTouchIdEnrollment () {
+    return ``;
+  }
+
+  codeFor_openNotifications () {
+    return ``;
+  }
+
+  codeFor_getDeviceTime () {
+    return ``;
+  }
+
+  codeFor_fingerprint () {
+    return ``;
   }
 }
 

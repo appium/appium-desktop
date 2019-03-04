@@ -215,6 +215,34 @@ ${this.indent(this.chainifyCode(code), 2)}
   codeFor_rotateDevice (varNameIgnore, varIndexIgnore, x, y, radius, rotation, touchCount, duration) {
     return `driver.rotate(${x}, ${y}, ${radius}, ${rotation}, ${touchCount}, ${duration});`;
   }
+
+  codeFor_getPerformanceData () {
+    return `// Not supported: getPerformanceData`;
+  }
+
+  codeFor_getSupportedPerformanceDataTypes () {
+    return `// Not supported: getSupportedPerformanceDataTypes`;
+  }
+
+  codeFor_performTouchId (varNameIgnore, varIndexIgnore, match) {
+    return `await driver.touchId(${match});`;
+  }
+
+  codeFor_toggleTouchIdEnrollment (varNameIgnore, varIndexIgnore, enroll) {
+    return `await driver.toggleTouchIdEnrollment(${enroll});`;
+  }
+
+  codeFor_openNotifications () {
+    return `await driver.openNotifications();`;
+  }
+
+  codeFor_getDeviceTime () {
+    return `let time = await driver.getDeviceTime();`;
+  }
+
+  codeFor_fingerprint (varNameIgnore, varIndexIgnore, fingerprintId) {
+    return `await driver.fingerprint(${fingerprintId});`;
+  }
 }
 
 JsWdIoFramework.readableName = 'JS - Webdriver.io';

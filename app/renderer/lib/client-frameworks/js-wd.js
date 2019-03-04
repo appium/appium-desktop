@@ -208,6 +208,34 @@ main().catch(console.log);
     return `driver.rotateDevice({x: ${x}, y: ${y}, duration: ${duration}, radius: ${radius}, rotation: ${rotation}, touchCount: ${touchCount}});`;
   }
 
+  codeFor_getPerformanceData (varNameIgnore, varIndexIgnore, packageName, dataType, dataReadTimeout) {
+    return `let performanceData = await driver.getPerformanceData('${packageName}', '${dataType}', ${dataReadTimeout});`;
+  }
+
+  codeFor_getSupportedPerformanceDataTypes () {
+    return `let supportedPerformanceDataTypes = await driver.getSupportedPerformanceDataTypes();`;
+  }
+
+  codeFor_performTouchId (varNameIgnore, varIndexIgnore, match) {
+    return `await driver.touchId(${match});`;
+  }
+
+  codeFor_toggleTouchIdEnrollment (varNameIgnore, varIndexIgnore, enroll) {
+    return `await driver.toggleTouchIdEnrollment(${enroll});`;
+  }
+
+  codeFor_openNotifications () {
+    return `await driver.openNotifications();`;
+  }
+
+  codeFor_getDeviceTime () {
+    return `let time = await driver.getDeviceTime();`;
+  }
+
+  codeFor_fingerprint (varNameIgnore, varIndexIgnore, fingerprintId) {
+    return `await driver.fingerprint(${fingerprintId});`;
+  }
+
 }
 
 JsWdFramework.readableName = 'JS - WD (Promise)';
