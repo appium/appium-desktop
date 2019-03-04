@@ -1,4 +1,5 @@
 import Framework from './framework';
+import _ from 'lodash';
 
 class RubyFramework extends Framework {
 
@@ -239,6 +240,62 @@ driver.quit`;
 
   codeFor_fingerprint (varNameIgnore, varIndexIgnore, fingerprintId) {
     return `driver.finger_print ${fingerprintId}`;
+  }
+
+  codeFor_sessionCapabilities () {
+    return `session_capabilities = driver.session_capabilities`;
+  }
+
+  codeFor_setPageLoadTimeout (varNameIgnore, varIndexIgnore, ms) {
+    return `driver.timeout('pageLoad', ${ms})`;
+  }
+
+  codeFor_setAsyncScriptTimeout (varNameIgnore, varIndexIgnore, ms) {
+    return `driver.timeout('script', ${ms})`;
+  }
+
+  codeFor_setImplicitWaitTimeout (varNameIgnore, varIndexIgnore, ms) {
+    return `driver.timeout('implicit', ${ms})`;
+  }
+
+  codeFor_getOrientation () {
+    return `orientation = driver.orientation`;
+  }
+
+  codeFor_setOrientation (varNameIgnore, varIndexIgnore, orientation) {
+    return `driver.rotation = :${orientation}`;
+  }
+
+  codeFor_getGeoLocation () {
+    return `geo_location = driver.location`;
+  }
+
+  codeFor_setGeoLocation (varNameIgnore, varIndexIgnore, latitude, longitude, altitude) {
+    return `driver.set_location(${latitude}, ${longitude}, ${altitude})`;
+  }
+
+  codeFor_logTypes () {
+    return `log_types = driver.logs.available_types`;
+  }
+
+  codeFor_log (varNameIgnore, varIndexIgnore, logType) {
+    return `driver.logs.get '${logType}'`;
+  }
+
+  codeFor_updateSettings (varNameIgnore, varIndexIgnore, settingsJson) {
+    try {
+      let settings = '';
+      for (let [settingName, settingValue] of _.toPairs(JSON.parse(settingsJson))) {
+        settings += `driver.update_settings(${settingName}: '${settingValue}')\n`;
+      }
+      return settings;
+    } catch (e) {
+      return `// Could not parse: ${settingsJson}`;
+    }
+  }
+
+  codeFor_settings () {
+    return `settings = driver.get_settings`;
   }
 }
 

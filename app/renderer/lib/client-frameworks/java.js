@@ -1,4 +1,5 @@
 import Framework from './framework';
+import _ from 'lodash';
 
 class JavaFramework extends Framework {
 
@@ -275,9 +276,65 @@ ${this.indent(code, 4)}
     return `driver.fingerPrint(${fingerprintId});`;
   }
 
+  codeFor_sessionCapabilities () {
+    return `Map<String, Object> caps = driver.getSessionDetails();`;
+  }
+
+  codeFor_setPageLoadTimeout (varNameIgnore, varIndexIgnore, ms) {
+    return `driver.manage().timeouts().pageLoadTimeout(${ms / 1000}, TimeUnit.SECONDS);`;
+  }
+
+  codeFor_setAsyncScriptTimeout (varNameIgnore, varIndexIgnore, ms) {
+    return `driver.manage().timeouts().setScriptTimeout(${ms / 1000}, TimeUnit.SECONDS);`;
+  }
+
+  codeFor_setImplicitWaitTimeout (varNameIgnore, varIndexIgnore, ms) {
+    return `driver.manage().timeouts().implicitlyWait(${ms / 1000}, TimeUnit.SECONDS);`;
+  }
+
+  codeFor_getOrientation () {
+    return `ScreenOrientation orientation = driver.getOrientation();`;
+  }
+
+  codeFor_setOrientation (varNameIgnore, varIndexIgnore, orientation) {
+    return `driver.rotate("${orientation}");`;
+  }
+
+  codeFor_getGeoLocation () {
+    return `Location location = driver.location();`;
+  }
+
+  codeFor_setGeoLocation (varNameIgnore, varIndexIgnore, latitude, longitude, altitude) {
+    return `driver.setLocation(new Location(${latitude}, ${longitude}, ${altitude}));`;
+  }
+
+  codeFor_logTypes () {
+    return `Set<String> logTypes = driver.manage().logs().getAvailableLogTypes();`;
+  }
+
+  codeFor_log (varNameIgnore, varIndexIgnore, logType) {
+    return `LogEntries logEntries = driver.manage().logs().get("${logType}");`;
+  }
+
+  codeFor_updateSettings (varNameIgnore, varIndexIgnore, settingsJson) {
+    try {
+      let settings = '';
+      for (let [settingName, settingValue] of _.toPairs(JSON.parse(settingsJson))) {
+        settings += `driver.setSetting("${settingName}", "${settingValue}");\n`;
+      }
+      return settings;
+    } catch (e) {
+      return `// Could not parse: ${settingsJson}`;
+    }
+  }
+
+  codeFor_settings () {
+    return `Map<String, Object> settings = driver.getSettings();`;
+  }
+
   /*
 
-  codeFor_REPLACE_ME (varNameIgnore, varIndexIgnore) {
+  codeFor_ REPLACE_ME (varNameIgnore, varIndexIgnore) {
     return `REPLACE_ME`;
   }
 
