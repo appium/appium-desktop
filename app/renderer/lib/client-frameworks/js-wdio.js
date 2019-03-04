@@ -243,6 +243,58 @@ ${this.indent(this.chainifyCode(code), 2)}
   codeFor_fingerprint (varNameIgnore, varIndexIgnore, fingerprintId) {
     return `await driver.fingerprint(${fingerprintId});`;
   }
+
+  codeFor_sessionCapabilities () {
+    return `let caps = await driver.session('c8db88a0-47a6-47a1-802d-164d746c06aa');`;
+  }
+
+  codeFor_setPageLoadTimeout (varNameIgnore, varIndexIgnore, ms) {
+    return `await driver.timeouts('page load', ${ms})`;
+  }
+
+  codeFor_setAsyncScriptTimeout (varNameIgnore, varIndexIgnore, ms) {
+    return `await driver.timeouts('script', ${ms})`;
+  }
+
+  codeFor_setImplicitWaitTimeout (varNameIgnore, varIndexIgnore, ms) {
+    return `await driver.timeouts('implicit', ${ms})`;
+  }
+
+  codeFor_setCommandTimeout (varNameIgnore, varIndexIgnore, ms) {
+    return `await driver.timeouts('command', ${ms})`;
+  }
+
+  codeFor_getOrientation () {
+    return `let orientation = await driver.orientation();`;
+  }
+
+  codeFor_setOrientation (varNameIgnore, varIndexIgnore, orientation) {
+    return `driver.orientation("${orientation}");`;
+  }
+
+  codeFor_getGeoLocation () {
+    return `let location = await driver.location();`;
+  }
+
+  codeFor_setGeoLocation (varNameIgnore, varIndexIgnore, latitude, longitude, altitude) {
+    return `await driver.location({latitude: ${latitude}, longitude: ${longitude}, altitude: ${altitude}});`;
+  }
+
+  codeFor_logTypes () {
+    return `let logTypes = await driver.log();`;
+  }
+
+  codeFor_log (varNameIgnore, varIndexIgnore, logType) {
+    return `let logs = await driver.log('${logType}');`;
+  }
+
+  codeFor_updateSettings (varNameIgnore, varIndexIgnore, settingsJson) {
+    return `await driver.settings(${settingsJson});`;
+  }
+
+  codeFor_settings () {
+    return `let settings = await driver.settings();`;
+  }
 }
 
 JsWdIoFramework.readableName = 'JS - Webdriver.io';

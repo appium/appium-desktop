@@ -237,6 +237,54 @@ driver.quit()`;
   codeFor_fingerprint (varNameIgnore, varIndexIgnore, fingerprintId) {
     return `driver.finger_print(${fingerprintId})`;
   }
+
+  codeFor_sessionCapabilities () {
+    return `desired_caps = self.driver.desired_capabilities()`;
+  }
+
+  codeFor_setPageLoadTimeout (varNameIgnore, varIndexIgnore, ms) {
+    return `driver.set_page_load_timeout(${ms})`;
+  }
+
+  codeFor_setAsyncScriptTimeout (varNameIgnore, varIndexIgnore, ms) {
+    return `driver.timeouts('script', ${ms})`;
+  }
+
+  codeFor_setImplicitWaitTimeout (varNameIgnore, varIndexIgnore, ms) {
+    return `driver.timeouts('implicit', ${ms})`;
+  }
+
+  codeFor_getOrientation () {
+    return `orientation = self.driver.orientation()`;
+  }
+
+  codeFor_setOrientation (varNameIgnore, varIndexIgnore, orientation) {
+    return `driver.orientation = "${orientation}"`;
+  }
+
+  codeFor_getGeoLocation () {
+    return `location = self.driver.location()`;
+  }
+
+  codeFor_setGeoLocation (varNameIgnore, varIndexIgnore, latitude, longitude, altitude) {
+    return `driver.set_location(${latitude}, ${longitude}, ${altitude})`;
+  }
+
+  codeFor_logTypes () {
+    return `log_types = driver.log_types();`;
+  }
+
+  codeFor_log (varNameIgnore, varIndexIgnore, logType) {
+    return `logs = driver.get_log('${logType}');`;
+  }
+
+  codeFor_updateSettings (varNameIgnore, varIndexIgnore, settingsJson) {
+    return `driver.update_settings(${settingsJson}))`;
+  }
+
+  codeFor_settings () {
+    return `settings = driver.get_settings`;
+  }
 }
 
 PythonFramework.readableName = 'Python';

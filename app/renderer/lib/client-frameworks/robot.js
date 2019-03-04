@@ -226,8 +226,6 @@ ${this.indent(code, 4)}
     return ``;
   }
 
-
-
   codeFor_getPerformanceData () {
     return ``;
   }
@@ -253,6 +251,58 @@ ${this.indent(code, 4)}
   }
 
   codeFor_fingerprint () {
+    return ``;
+  }
+
+  codeFor_sessionCapabilities () {
+    return ``;
+  }
+
+  codeFor_setPageLoadTimeout () {
+    return ``;
+  }
+
+  codeFor_setAsyncScriptTimeout () {
+    return ``;
+  }
+
+  codeFor_setImplicitWaitTimeout () {
+    return ``;
+  }
+
+  codeFor_setCommandTimeout () {
+    return ``;
+  }
+
+  codeFor_getOrientation () {
+    return ``;
+  }
+
+  codeFor_setOrientation () {
+    return ``;
+  }
+
+  codeFor_getGeoLocation () {
+    return ``;
+  }
+
+  codeFor_setGeoLocation () {
+    return ``;
+  }
+
+  codeFor_logTypes () {
+    return ``;
+  }
+
+  codeFor_log () {
+    return ``;
+  }
+
+  codeFor_updateSettings () {
+    return ``;
+  }
+
+  codeFor_settings () {
     return ``;
   }
 }

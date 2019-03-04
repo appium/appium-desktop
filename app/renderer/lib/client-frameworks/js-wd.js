@@ -236,6 +236,54 @@ main().catch(console.log);
     return `await driver.fingerprint(${fingerprintId});`;
   }
 
+  codeFor_sessionCapabilities () {
+    return `let caps = await driver.sessionCapabilities();`;
+  }
+
+  codeFor_setPageLoadTimeout (varNameIgnore, varIndexIgnore, ms) {
+    return `await setPageLoadTimeout(${ms})`;
+  }
+
+  codeFor_setAsyncScriptTimeout (varNameIgnore, varIndexIgnore, ms) {
+    return `await setAsyncScriptTimeout(${ms})`;
+  }
+
+  codeFor_setImplicitWaitTimeout (varNameIgnore, varIndexIgnore, ms) {
+    return `await setImplicitWaitTimeout(${ms})`;
+  }
+
+  codeFor_getOrientation () {
+    return `let orientation = await driver.getOrientation();`;
+  }
+
+  codeFor_setOrientation (varNameIgnore, varIndexIgnore, orientation) {
+    return `await driver.setOrientation('${orientation}');`;
+  }
+
+  codeFor_getGeoLocation () {
+    return `let location = await driver.getGeoLocation();`;
+  }
+
+  codeFor_setGeoLocation (varNameIgnore, varIndexIgnore, latitude, longitude, altitude) {
+    return `await driver.setGeoLocation(${latitude}, ${longitude}, ${altitude});`;
+  }
+
+  codeFor_logTypes () {
+    return `let logTypes = await driver.logTypes();`;
+  }
+
+  codeFor_log (varNameIgnore, varIndexIgnore, logType) {
+    return `let logs = await driver.log('${logType}');`;
+  }
+
+  codeFor_updateSettings (varNameIgnore, varIndexIgnore, settingsJson) {
+    return `await driver.updateSettings(${settingsJson});`;
+  }
+
+  codeFor_settings () {
+    return `let settings = await driver.settings();`;
+  }
+
 }
 
 JsWdFramework.readableName = 'JS - WD (Promise)';

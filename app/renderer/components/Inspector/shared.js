@@ -131,7 +131,33 @@ export const actionDefinitions = {
       'Get System Time': {methodName: 'getDeviceTime'},
       'Fingerprint (Android)': {methodName: 'fingerprint', args: [['fingerPrintId', NUMBER]], refresh: true}
     },
-  }
+  },
+  'Session': {
+    'Session Capabilities': {
+      'Get Session Capabilities': {methodName: 'sessionCapabilities'}
+    },
+    'Timeouts': {
+      'Set Pageload Timeout': {methodName: 'setPageLoadTimeout', args: [['timeout', NUMBER]]},
+      'Set Script Timeout': {methodName: 'setAsyncScriptTimeout', args: [['timeout', NUMBER]]},
+      'Set Implicit Timeout': {methodName: 'setImplicitWaitTimeout', args: [['timeout', NUMBER]]},
+    },
+    'Orientation': {
+      'Get Orientation': {methodName: 'getOrientation'},
+      'Set Orientation': {methodName: 'setOrientation', args: [['orientation', STRING]], refresh: true},
+    },
+    'Geolocation': {
+      'Get Geolocation': {methodName: 'getGeoLocation'},
+      'Set Geolocation': {methodName: 'setGeoLocation', args: [['latitude', NUMBER], ['longitude', NUMBER], ['altitude', NUMBER]]},
+    },
+    'Logs': {
+      'Get Log Types': {methodName: 'logTypes'},
+      'Get Logs': {methodName: 'log', args: [['logType', STRING]]},
+    },
+    'Settings': {
+      'Update Settings': {methodName: 'updateSettings', args: [['settingsJson', STRING]]},
+      'Get Device Settings': {methodName: 'settings'},
+    },
+  },
 };
 
 export const INTERACTION_MODE = {
