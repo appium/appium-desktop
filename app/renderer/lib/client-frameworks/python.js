@@ -209,6 +209,34 @@ driver.quit()`;
   codeFor_rotateDevice () {
     return `# Not supported: rotate device`;
   }
+
+  codeFor_getPerformanceData () {
+    return `# Not supported: getPerformanceData`;
+  }
+
+  codeFor_getSupportedPerformanceDataTypes () {
+    return `# Not supported: getSupportedPerformanceDataTypes`;
+  }
+
+  codeFor_performTouchId (varNameIgnore, varIndexIgnore, match) {
+    return `driver.touch_id(${match})`;
+  }
+
+  codeFor_toggleTouchIdEnrollment (varNameIgnore, varIndexIgnore, enroll) {
+    return `driver.toggle_touch_id_enrollment(${enroll})`;
+  }
+
+  codeFor_openNotifications () {
+    return `driver.open_notifications();`;
+  }
+
+  codeFor_getDeviceTime () {
+    return `time = self.driver.device_time()`;
+  }
+
+  codeFor_fingerprint (varNameIgnore, varIndexIgnore, fingerprintId) {
+    return `driver.finger_print(${fingerprintId})`;
+  }
 }
 
 PythonFramework.readableName = 'Python';

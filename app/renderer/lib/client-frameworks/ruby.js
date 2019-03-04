@@ -212,6 +212,34 @@ driver.quit`;
   codeFor_rotateDevice () {
     return `# Not supported: rotateDevice`;
   }
+
+  codeFor_getPerformanceData (varNameIgnore, varIndexIgnore, packageName, dataType, dataReadTimeout) {
+    return `performance_data = driver.get_performance_data package_name: '${packageName}', data_type: '${dataType}', data_read_timeout: ${dataReadTimeout}`;
+  }
+
+  codeFor_getSupportedPerformanceDataTypes () {
+    return `performance_data = driver.get_performance_data_types`;
+  }
+
+  codeFor_performTouchId (varNameIgnore, varIndexIgnore, match) {
+    return `driver.touch_id ${match}`;
+  }
+
+  codeFor_toggleTouchIdEnrollment (varNameIgnore, varIndexIgnore, enroll) {
+    return `driver.toggle_touch_id_enrollment ${enroll}`;
+  }
+
+  codeFor_openNotifications () {
+    return `driver.open_notifications`;
+  }
+
+  codeFor_getDeviceTime () {
+    return `device_time = driver.device_time`;
+  }
+
+  codeFor_fingerprint (varNameIgnore, varIndexIgnore, fingerprintId) {
+    return `driver.finger_print ${fingerprintId}`;
+  }
 }
 
 RubyFramework.readableName = 'Ruby';

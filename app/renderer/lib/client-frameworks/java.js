@@ -247,9 +247,37 @@ ${this.indent(code, 4)}
     return `driver.rotate(new DeviceRotation(${x}, ${y}, ${radius}, ${rotation}, ${touchCount}, ${duration}));`;
   }
 
+  codeFor_getPerformanceData (varNameIgnore, varIndexIgnore, packageName, dataType, dataReadTimeout) {
+    return `List<List<Object>> performanceData = driver.getPerformanceData("${packageName}", "${dataType}", ${dataReadTimeout});`;
+  }
+
+  codeFor_getSupportedPerformanceDataTypes () {
+    return `List<String> performanceTypes = driver.getSupportedPerformanceDataTypes();`;
+  }
+
+  codeFor_performTouchId (varNameIgnore, varIndexIgnore, match) {
+    return `driver.performTouchID(${match});`;
+  }
+
+  codeFor_toggleTouchIdEnrollment (varNameIgnore, varIndexIgnore, enroll) {
+    return `driver.toggleTouchIDEnrollment(${enroll});`;
+  }
+
+  codeFor_openNotifications () {
+    return `driver.openNotifications();`;
+  }
+
+  codeFor_getDeviceTime () {
+    return `String time = driver.getDeviceTime();`;
+  }
+
+  codeFor_fingerprint (varNameIgnore, varIndexIgnore, fingerprintId) {
+    return `driver.fingerPrint(${fingerprintId});`;
+  }
+
   /*
 
-  codeFor_ REPLACE_ME (varNameIgnore, varIndexIgnore) {
+  codeFor_REPLACE_ME (varNameIgnore, varIndexIgnore) {
     return `REPLACE_ME`;
   }
 
