@@ -71,7 +71,7 @@
     "General": "Общие",
     "invalidType": "Неверный тип {{type}}",
     "presetAdded": "Ваша конфигурация '{{presetName}}' была добавлена в список на вкладке Предустановки!",
-    "datetimeFormat": "MMM Do YYYY, h:mma",
+    "datetimeFormat": "Do MMM YYYY, h:mma",
     "updateDetails": "Дата Релиза: {{pubDate}}\n\nОписание: {{notes}}",
     "appiumIsAvailable": "Appium Desktop {{name}} доступен",
     "updateIsBeingDownloaded": "Обновление загружается. Вас уведомят, когда оно будет завершено",
