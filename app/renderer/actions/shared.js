@@ -21,10 +21,12 @@ export function bindClient () {
       res = null;
     }
 
+    const truncatedResult = _.truncate(JSON.stringify(res), {length: 2000});
+
     if (!_.isNull(res) && !_.isUndefined(res)) {
       notification.success({
-        message: `'${methodName}' ${i18n.t('result')}`,
-        description: `${i18n.t('Command was returned with result')}: '${_.truncate(JSON.stringify(res), {length: 2000})}'`,
+        message: i18n.t('methodCallResult', {methodName}),
+        description: i18n.t('commandWasReturnedWithResult', {result: truncatedResult}),
         duration: 15,
       });
     }

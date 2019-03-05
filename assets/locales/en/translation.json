@@ -296,5 +296,10 @@
   "Get Logs": "Get Logs",
   "Settings": "Settings",
   "Update Settings": "Update Settings",
-  "Get Device Settings": "Get Device Settings"
+  "Get Device Settings": "Get Device Settings",
+  "Error": "Error",
+  "callToMethodFailed": "Call to '{{methodName}}' failed",
+  "methodCallResult": "'{{methodName}}' result",
+  "commandWasReturnedWithResult": "Command was returned with result: {{result}}",
+  "Invalid JSON": "Invalid JSON: {{json}}"
 }
