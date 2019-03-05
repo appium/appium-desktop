@@ -43,7 +43,7 @@ export default class Actions extends Component {
           args[1] = JSON.parse(args[1]);
         } catch (e) {
           notification.error({
-            message: `${t('Invalid JSON')}: args[1]}`,
+            message: t('invalidJson', {json: args[1]}),
             duration: 5,
           });
         }
