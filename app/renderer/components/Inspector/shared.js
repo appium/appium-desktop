@@ -60,6 +60,7 @@ export const actionArgTypes = {
 
 const { STRING, NUMBER } = actionArgTypes;
 
+// Note: When adding or removing actionDefinitions, update `en/translation.json`
 export const actionDefinitions = {
   'Device': {
     'Execute Mobile': {

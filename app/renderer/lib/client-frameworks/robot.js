@@ -98,6 +98,7 @@ ${this.indent(code, 4)}
     return `Swipe    ${x1}    ${y1}    ${x2}    ${y2}`;
   }
 
+  // TODO: Add these robot framework commands
   codeFor_getCurrentActivity () {
     return '';
   }

@@ -75,7 +75,7 @@ export default class Actions extends Component {
       </Row>,
       selectedSubActionGroup && _.toPairs(actionDefinitions[selectedActionGroup][selectedSubActionGroup]).map(([actionName, action]) => <Col span={8}>
         <div style={{padding: '16px'}}>
-          <Button style={{width: '100%'}} onClick={() => this.startPerformingAction(actionName, action) }>{actionName}</Button>
+          <Button style={{width: '100%'}} onClick={() => this.startPerformingAction(actionName, action) }>{t(actionName)}</Button>
         </div>
       </Col>),
       !!pendingAction && <Modal
