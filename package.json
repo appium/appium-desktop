@@ -185,6 +185,7 @@
     "eslint-plugin-mocha": "^5.2.0",
     "eslint-plugin-promise": "^4.0.1",
     "eslint-plugin-react": "^7.11.1",
+    "eslint-plugin-shopify": "^26.3.0",
     "express": "^4.16.2",
     "greenkeeper-lockfile": "^1.15.1",
     "jquery": "^3.3.1",
