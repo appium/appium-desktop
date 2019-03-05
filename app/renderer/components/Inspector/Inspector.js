@@ -73,7 +73,7 @@ export default class Inspector extends Component {
           <RecordedActions {...this.props} />
         }
         <Tabs activeKey={selectedInteractionMode} size="small" onChange={(tab) => selectInteractionMode(tab)}>
-          <TabPane tab="Source" key={INTERACTION_MODE.SOURCE}>
+          <TabPane tab={t('Source')} key={INTERACTION_MODE.SOURCE}>
             <Col span={12}>
               <Card
                 title={<span><Icon type="file-text" /> {t('App Source')}</span>}
@@ -84,7 +84,7 @@ export default class Inspector extends Component {
             <Col span={12}>
               <div id='selectedElementContainer' className={`${InspectorStyles['interaction-tab-container']} ${InspectorStyles['element-detail-container']}`}>
                 <Card
-                  title={<span><Icon type="tag-o" /> Selected Element</span>}
+                  title={<span><Icon type="tag-o" /> {t('selectedElement')}</span>}
                   className={InspectorStyles['selected-element-card']}>
                   {path && <SelectedElement {...this.props}/>}
                   {!path && <i>{t('selectElementInSource')}</i>}
@@ -92,7 +92,7 @@ export default class Inspector extends Component {
               </div>
             </Col>
           </TabPane>
-          <TabPane tab="Actions" key={INTERACTION_MODE.ACTIONS}>
+          <TabPane tab={t('Actions')} key={INTERACTION_MODE.ACTIONS}>
             <Card
               title={<span><Icon type="thunderbolt" /> {t('Actions')}</span>}
               className={InspectorStyles['interaction-tab-card']}>

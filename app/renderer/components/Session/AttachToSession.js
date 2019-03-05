@@ -14,13 +14,17 @@ function formatCaps (caps) {
 
 export default class AttachToSession extends Component {
 
+  getSessionInfo (session) {
+    return `${session.id} -- ${formatCaps(session.capabilities)}`;
+  }
+
   render () {
-    let {attachSessId, setAttachSessId, runningAppiumSessions, getRunningSessions} = this.props;
+    let {attachSessId, setAttachSessId, runningAppiumSessions, getRunningSessions, t} = this.props;
     attachSessId = attachSessId || '';
     return (<Form>
       <FormItem>
         <Card>
-          <p className={SessionCSS.localDesc}>If you have an already-running session of the above server type, you can attach an inspector to it directly.<br/>Select the Session ID in the dropdown below.</p>
+          <p className={SessionCSS.localDesc}>{t('connectToExistingSessionInstructions')}<br/>{t('selectSessionIDInDropdown')}</p>
         </Card>
       </FormItem>
       <FormItem>
@@ -29,11 +33,11 @@ export default class AttachToSession extends Component {
             <Select showSearch
               mode='combobox'
               notFoundContent='None found'
-              placeholder='Enter your session ID here'
+              placeholder={t('enterYourSessionId')}
               value={attachSessId}
               onChange={(value) => setAttachSessId(value)}>
               {runningAppiumSessions.map((session) => <Select.Option key={session.id} value={session.id}>
-                <div>{session.id} -- {formatCaps(session.capabilities)}</div>
+                <div>{this.getSessionInfo(session)}</div>
               </Select.Option>)}
             </Select>
           </Col>

@@ -9,7 +9,7 @@ export default class AdvancedServerParams extends Component {
 
 
   render () {
-    const {server, setServerParam} = this.props;
+    const {server, setServerParam, t} = this.props;
 
     return <Row gutter={8}>
       <Col>
@@ -18,17 +18,18 @@ export default class AdvancedServerParams extends Component {
             <Panel header="Advanced Settings">
               <Col span={6}>
                 <FormItem>
-                  <Checkbox checked={!!server.advanced.allowUnauthorized} onChange={(e) => setServerParam('allowUnauthorized', e.target.checked, 'advanced')}>Allow Unauthorized Certificates</Checkbox>
+                  <Checkbox checked={!!server.advanced.allowUnauthorized} onChange={(e) => setServerParam('allowUnauthorized', e.target.checked, 'advanced')}>{t('allowUnauthorizedCerts')}</Checkbox>
                 </FormItem>
               </Col>
               <Col span={4}>
                 <FormItem>
-                  <Checkbox checked={!!server.advanced.useProxy} onChange={(e) => setServerParam('useProxy', e.target.checked, 'advanced')}>Use Proxy</Checkbox>
+                  <Checkbox checked={!!server.advanced.useProxy} onChange={(e) => setServerParam('useProxy', e.target.checked, 'advanced')}>{t('Use Proxy')}</Checkbox>
                 </FormItem>
               </Col>
               <Col span={6}>
                 <FormItem>
-                  <Input disabled={!server.advanced.useProxy} onChange={(e) => setServerParam('proxy', e.target.value, 'advanced')} placeholder="Proxy URL" value={server.advanced.proxy} />
+                  <Input disabled={!server.advanced.useProxy} onChange={(e) => setServerParam('proxy', e.target.value, 'advanced')}
+                    placeholder={t('Proxy URL')} value={server.advanced.proxy} />
                 </FormItem>
               </Col>
             </Panel>
