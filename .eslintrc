@@ -4,6 +4,7 @@
   "plugins": [
     "import",
     "react",
+    "react-native",
     "shopify"
   ],
   "env": {
@@ -17,6 +18,7 @@
     "require-await": 2,
     "shopify/jsx-no-hardcoded-content": [2, {
       "checkProps": ["tab", "placeholder", "addonBefore", "addonAfter", "title"]
-    }]
+    }],
+    "react-native/no-inline-styles": 2
   }
 }

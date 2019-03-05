@@ -80,7 +80,8 @@ class Source extends Component {
 
     return <div id='sourceContainer' className={InspectorStyles['tree-container']}>
       {source &&
-        <Tree onExpand={setExpandedPaths}
+        <Tree
+          onExpand={setExpandedPaths}
           autoExpandParent={false}
           expandedKeys={expandedPaths}
           onSelect={(selectedPaths) => this.handleSelectElement(selectedPaths[0])}
