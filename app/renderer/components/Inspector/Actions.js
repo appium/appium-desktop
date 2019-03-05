@@ -61,14 +61,14 @@ export default class Actions extends Component {
     return [
       <Row gutter={16} style={{marginBottom: '8px'}}>
         <Col span={24}>
-          <Select style={{width: '100%'}} onChange={(actionGroupName) => selectActionGroup(actionGroupName)} placeholder="Select Action Group">
+          <Select style={{width: '100%'}} onChange={(actionGroupName) => selectActionGroup(actionGroupName)} placeholder={t('Select Action Group')}>
             { _.keys(actionDefinitions).map((actionGroup) => <Option key={actionGroup}>{t(actionGroup)}</Option>) }
           </Select>
         </Col>
       </Row>,
       selectedActionGroup && <Row>
         <Col span={24}>
-          <Select style={{width: '100%'}} onChange={(actionGroupName) => selectSubActionGroup(actionGroupName)} placeholder="Select Sub Group">
+          <Select style={{width: '100%'}} onChange={(actionGroupName) => selectSubActionGroup(actionGroupName)} placeholder={t('Select Sub Group')}>
             { _.keys(actionDefinitions[selectedActionGroup]).map((actionGroup) => <Option key={actionGroup}>{t(actionGroup)}</Option>) }
           </Select>
         </Col>
