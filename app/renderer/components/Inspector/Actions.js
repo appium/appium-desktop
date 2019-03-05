@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import _ from 'lodash';
 import { Row, Col, Button, Select, Modal, Input, notification, } from 'antd';
 import { actionDefinitions, actionArgTypes } from './shared';
+import InspectorStyles from './Inspector.css';
 
 const { STRING, NUMBER } = actionArgTypes;
 
@@ -58,27 +59,27 @@ export default class Actions extends Component {
     const {
       t, selectActionGroup, selectSubActionGroup, selectedActionGroup, selectedSubActionGroup, pendingAction,
       cancelPendingAction, setActionArg } = this.props;
-    return [
-      <Row gutter={16} style={{marginBottom: '8px'}}>
+    return <div className={InspectorStyles['actions-container']}>
+      <Row gutter={16} className={InspectorStyles['arg-row']}>
         <Col span={24}>
-          <Select style={{width: '100%'}} onChange={(actionGroupName) => selectActionGroup(actionGroupName)} placeholder={t('Select Action Group')}>
+          <Select onChange={(actionGroupName) => selectActionGroup(actionGroupName)} placeholder={t('Select Action Group')}>
             { _.keys(actionDefinitions).map((actionGroup) => <Option key={actionGroup}>{t(actionGroup)}</Option>) }
           </Select>
         </Col>
-      </Row>,
-      selectedActionGroup && <Row>
+      </Row>
+      {selectedActionGroup && <Row>
         <Col span={24}>
-          <Select style={{width: '100%'}} onChange={(actionGroupName) => selectSubActionGroup(actionGroupName)} placeholder={t('Select Sub Group')}>
+          <Select onChange={(actionGroupName) => selectSubActionGroup(actionGroupName)} placeholder={t('Select Sub Group')}>
             { _.keys(actionDefinitions[selectedActionGroup]).map((actionGroup) => <Option key={actionGroup}>{t(actionGroup)}</Option>) }
           </Select>
         </Col>
-      </Row>,
-      selectedSubActionGroup && _.toPairs(actionDefinitions[selectedActionGroup][selectedSubActionGroup]).map(([actionName, action]) => <Col span={8}>
-        <div style={{padding: '16px'}}>
-          <Button style={{width: '100%'}} onClick={() => this.startPerformingAction(actionName, action) }>{t(actionName)}</Button>
+      </Row>}
+      {selectedSubActionGroup && _.toPairs(actionDefinitions[selectedActionGroup][selectedSubActionGroup]).map(([actionName, action]) => <Col span={8}>
+        <div className={InspectorStyles['btn-container']}>
+          <Button onClick={() => this.startPerformingAction(actionName, action) }>{t(actionName)}</Button>
         </div>
-      </Col>),
-      !!pendingAction && <Modal
+      </Col>)}
+      {!!pendingAction && <Modal
         title={pendingAction.actionName}
         okText={t('Execute Action')}
         visible={!!pendingAction}
@@ -86,13 +87,13 @@ export default class Actions extends Component {
         onCancel={() => cancelPendingAction()}>
         {
           !_.isEmpty(pendingAction.action.args) && _.map(pendingAction.action.args, ([argName, argType], index) => <Row key={index} gutter={16}>
-            <Col span={24} style={{padding: '4px 4px 0 0'}}>
+            <Col span={24} className={InspectorStyles['arg-container']}>
               {argType === NUMBER && <Input type="number" value={pendingAction.args[index]} addonBefore={t(argName)} onChange={(e) => setActionArg(index, _.toNumber(e.target.value))} />}
               {argType === STRING && <Input addonBefore={t(argName)} onChange={(e) => setActionArg(index, e.target.value)}/>}
             </Col>
           </Row>)
         }
-      </Modal>
-    ];
+      </Modal>}
+    </div>;
   }
 }

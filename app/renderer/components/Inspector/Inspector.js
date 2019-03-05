@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import { SCREENSHOT_INTERACTION_MODE, INTERACTION_MODE } from './shared';
-import { Card, Icon, Button, Spin, Tooltip, Modal, Tabs, Col } from 'antd';
+import { Card, Icon, Button, Spin, Tooltip, Modal, Tabs } from 'antd';
 import Screenshot from './Screenshot';
 import SelectedElement from './SelectedElement';
 import Source from './Source';
-import SourceScrollButtons from './SourceScrollButtons';
 import InspectorStyles from './Inspector.css';
 import RecordedActions from './RecordedActions';
 import Actions from './Actions';
@@ -68,21 +67,20 @@ export default class Inspector extends Component {
           </Spin>
         }
       </div>
-      <div id='sourceTreeContainer' className={InspectorStyles['interaction-tab-container']} ref={(div) => this.container = div} >
+      <div id='sourceTreeContainer' className={InspectorStyles['interaction-tab-container']} >
         {showRecord &&
           <RecordedActions {...this.props} />
         }
         <Tabs activeKey={selectedInteractionMode} size="small" onChange={(tab) => selectInteractionMode(tab)}>
           <TabPane tab={t('Source')} key={INTERACTION_MODE.SOURCE}>
-            <Col span={12}>
-              <Card
-                title={<span><Icon type="file-text" /> {t('App Source')}</span>}
-                className={InspectorStyles['interaction-tab-card']}>
-                <Source {...this.props} />
-              </Card>
-            </Col>
-            <Col span={12}>
-              <div id='selectedElementContainer' className={`${InspectorStyles['interaction-tab-container']} ${InspectorStyles['element-detail-container']}`}>
+            <div className='action-row'>
+              <div className='col'>
+                <Card
+                  title={<span><Icon type="file-text" /> {t('App Source')}</span>}>
+                  <Source {...this.props} />
+                </Card>
+              </div>
+              <div id='selectedElementContainer' className='action-col' className={`${InspectorStyles['interaction-tab-container']} ${InspectorStyles['element-detail-container']}`}>
                 <Card
                   title={<span><Icon type="tag-o" /> {t('selectedElement')}</span>}
                   className={InspectorStyles['selected-element-card']}>
@@ -90,7 +88,7 @@ export default class Inspector extends Component {
                   {!path && <i>{t('selectElementInSource')}</i>}
                 </Card>
               </div>
-            </Col>
+            </div>
           </TabPane>
           <TabPane tab={t('Actions')} key={INTERACTION_MODE.ACTIONS}>
             <Card
@@ -100,7 +98,6 @@ export default class Inspector extends Component {
             </Card>
           </TabPane>
         </Tabs>
-        {this.container && <SourceScrollButtons {...this.props} container={this.container} />}
       </div>
     </div>;
 

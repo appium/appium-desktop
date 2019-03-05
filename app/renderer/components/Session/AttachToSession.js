@@ -15,7 +15,7 @@ function formatCaps (caps) {
 export default class AttachToSession extends Component {
 
   getSessionInfo (session) {
-    return `${session.id} -- ${formatCaps(session.capabilities)}`;
+    return `${session.id} — ${formatCaps(session.capabilities)}`;
   }
 
   render () {

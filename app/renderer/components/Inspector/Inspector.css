@@ -66,6 +66,19 @@
     flex-flow: column;
 }
 
+.inspector-main .interaction-tab-container :global(.action-row) {
+    display: flex;
+}
+
+.inspector-main .interaction-tab-container :global(.action-col) {
+    flex: '1 1 0';
+    width: 0;
+}
+
+.inspector-main .interaction-tab-container :global(.ant-tree) {
+    overflow: auto;
+}
+
 .inspector-main .interaction-tab-container .scroll-buttons {
     position: absolute;
     bottom: 0;
@@ -283,4 +296,23 @@
  .action-controls {
     margin-right: 20px;
  }
+
+ .actions-container .btn-container {
+    padding: 16px;
+ }
+
+ .actions-container .arg-row {
+     margin-bottom: 8px;
+ }
+
+.arg-container {
+    padding: 4px 4px 0 0
+ }
+
+ .actions-container :global(.ant-select) {
+    width: 100%;
+ }
  
+ .actions-container :global(.ant-btn) {
+    width: 100%;
+ }
