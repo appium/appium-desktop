@@ -3,6 +3,7 @@ import _ from 'lodash';
 import { getLocators } from './shared';
 import styles from './Inspector.css';
 import { Button, Row, Col, Input, Modal, Table, Alert } from 'antd';
+import { withTranslation } from '../../util';
 
 const ButtonGroup = Button.Group;
 
@@ -10,7 +11,7 @@ const ButtonGroup = Button.Group;
  * Shows details of the currently selected element and shows methods that can
  * be called on the elements (tap, sendKeys)
  */
-export default class SelectedElement extends Component {
+class SelectedElement extends Component {
 
   constructor (props) {
     super(props);
@@ -24,18 +25,29 @@ export default class SelectedElement extends Component {
   }
 
   render () {
-    const {applyClientMethod, setFieldValue, sendKeys, selectedElement, sendKeysModalVisible, showSendKeysModal,
-           hideSendKeysModal, selectedElementId: elementId, sourceXML, elementInteractionsNotAvailable} = this.props;
+    const {
+      applyClientMethod,
+      setFieldValue,
+      sendKeys,
+      selectedElement,
+      sendKeysModalVisible,
+      showSendKeysModal,
+      hideSendKeysModal,
+      selectedElementId: elementId,
+      sourceXML,
+      elementInteractionsNotAvailable,
+      t,
+    } = this.props;
     const {attributes, xpath} = selectedElement;
 
     // Get the columns for the attributes table
     let attributeColumns = [{
-      title: 'Attribute',
+      title: t('Attribute'),
       dataIndex: 'name',
       key: 'name',
       width: 100
     }, {
-      title: 'Value',
+      title: t('Value'),
       dataIndex: 'value',
       key: 'value'
     }];
@@ -50,12 +62,12 @@ export default class SelectedElement extends Component {
 
     // Get the columns for the strategies table
     let findColumns = [{
-      title: 'Find By',
+      title: t('Find By'),
       dataIndex: 'find',
       key: 'find',
       width: 100
     }, {
-      title: 'Selector',
+      title: t('Selector'),
       dataIndex: 'selector',
       key: 'selector'
     }];
@@ -85,24 +97,49 @@ export default class SelectedElement extends Component {
     return <div>
       {elementInteractionsNotAvailable && <Row type="flex" gutter={10}>
         <Col>
-          <Alert type="info" message="Interactions are not available for this element" showIcon />
+          <Alert type="info" message={t('Interactions are not available for this element')} showIcon />
         </Col>
       </Row>}
       <Row justify="center" type="flex" align="middle" gutter={10} className={styles.elementActions}>
         <Col>
           <ButtonGroup size="small">
-            <Button disabled={!elementId} icon={!elementInteractionsNotAvailable && !elementId && 'loading'} id='btnTapElement' onClick={() => applyClientMethod({methodName: 'click', elementId})}>Tap</Button>
-            <Button disabled={!elementId} id='btnSendKeysToElement' onClick={() => showSendKeysModal()}>Send Keys</Button>
-            <Button disabled={!elementId} id='btnClearElement' onClick={() => applyClientMethod({methodName: 'clear', elementId})}>Clear</Button>
+            <Button
+              disabled={!elementId}
+              icon={!elementInteractionsNotAvailable && !elementId && 'loading'}
+              id='btnTapElement'
+              onClick={() => applyClientMethod({methodName: 'click', elementId})}
+            >
+              {t('Tap')}
+            </Button>
+            <Button
+              disabled={!elementId}
+              id='btnSendKeysToElement'
+              onClick={() => showSendKeysModal()}
+            >
+              {t('Send Keys')}
+            </Button>
+            <Button
+              disabled={!elementId}
+              id='btnClearElement'
+              onClick={() => applyClientMethod({methodName: 'clear', elementId})}
+            >
+              {t('Clear')}
+            </Button>
           </ButtonGroup>
         </Col>
       </Row>
-      {findDataSource.length > 0 && <Table columns={findColumns} dataSource={findDataSource} size="small" pagination={false} />}
+      {findDataSource.length > 0 &&
+        <Table
+          columns={findColumns}
+          dataSource={findDataSource}
+          size="small"
+          pagination={false}
+        />}
       <br />
       {showXpathWarning &&
         <div>
           <Alert
-            message="Using XPath locators is not recommended and can lead to fragile tests. Ask your development team to provide unique accessibility locators instead!"
+            message={t('usingXPathNotRecommended')}
             type="warning"
             showIcon
           />
@@ -114,14 +151,21 @@ export default class SelectedElement extends Component {
         <Table columns={attributeColumns} dataSource={dataSource} size="small" pagination={false} />
       </Row>
       }
-      <Modal title='Send Keys'
+      <Modal title={t('Send Keys')}
         visible={sendKeysModalVisible}
-        okText='Send Keys'
-        cancelText='Cancel'
+        okText={t('Send Keys')}
+        cancelText={t('Cancel')}
         onCancel={hideSendKeysModal}
-        onOk={this.handleSendKeys}>
-        <Input placeholder='Enter keys' value={sendKeys} onChange={(e) => setFieldValue('sendKeys', e.target.value)} />
+        onOk={this.handleSendKeys}
+      >
+        <Input
+          placeholder={t('Enter keys')}
+          value={sendKeys}
+          onChange={(e) => setFieldValue('sendKeys', e.target.value)}
+        />
       </Modal>
     </div>;
   }
 }
+
+export default withTranslation(SelectedElement);

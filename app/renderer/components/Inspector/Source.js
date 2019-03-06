@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Tree } from 'antd';
 import LocatorTestModal from './LocatorTestModal';
 import InspectorStyles from './Inspector.css';
+import { withTranslation } from '../../util';
 
 const {TreeNode} = Tree;
 const IMPORTANT_ATTRS = [
@@ -15,7 +16,7 @@ const IMPORTANT_ATTRS = [
 /**
  * Shows the 'source' of the app as a Tree
  */
-export default class Source extends Component {
+class Source extends Component {
 
   getFormattedTag (el) {
     const {tagName, attributes} = el;
@@ -51,7 +52,14 @@ export default class Source extends Component {
   }
 
   render () {
-    const {source, sourceError, setExpandedPaths, expandedPaths, selectedElement = {}} = this.props;
+    const {
+      source,
+      sourceError,
+      setExpandedPaths,
+      expandedPaths,
+      selectedElement = {},
+      t,
+    } = this.props;
     const {path} = selectedElement;
 
     // Recursives through the source and renders a TreeNode for an element
@@ -77,12 +85,14 @@ export default class Source extends Component {
         </Tree>
       }
       {!source && !sourceError &&
-        <i>Gathering initial app source...</i>
+        <i>{t('Gathering initial app source…')}</i>
       }
       {
-        sourceError && `Could not obtain source: ${JSON.stringify(sourceError)}`
+        sourceError && t('couldNotObtainSource', {errorMsg: JSON.stringify(sourceError)})
       }
       <LocatorTestModal {...this.props} />
     </div>;
   }
 }
+
+export default withTranslation(Source);

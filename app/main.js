@@ -1,14 +1,14 @@
-import { app, BrowserWindow, Menu } from 'electron';
+import i18n from './configs/i18next.config';
+import { app, BrowserWindow, Menu, webContents } from 'electron';
 import { initializeIpc } from './main/appium';
 import { setSavedEnv } from './main/helpers';
-import menuTemplates from './main/menus';
+import rebuildMenus from './main/menus';
 import shellEnv from 'shell-env';
 import fixPath from 'fix-path';
 import { initSentry } from './shared/sentry';
 import { promptUser } from './main/sentry-permission-prompt';
+import settings from './shared/settings';
 
-let menu;
-let template;
 let mainWindow = null;
 const isDev = process.env.NODE_ENV === 'development';
 
@@ -81,25 +81,26 @@ app.on('ready', async () => {
     const {x, y} = props;
 
     Menu.buildFromTemplate([{
-      label: 'Inspect element',
+      label: i18n.t('Inspect element'),
       click () {
         mainWindow.inspectElement(x, y);
       }
     }]).popup(mainWindow);
   });
 
-  promptUser();
+  i18n.on('languageChanged', async (languageCode) => {
+    rebuildMenus();
+    await settings.set('PREFERRED_LANGUAGE', languageCode);
+    webContents.getAllWebContents().forEach((wc) => {
+      wc.send('appium-language-changed', {
+        language: languageCode,
+      });
+    });
+  });
 
-  if (process.platform === 'darwin') {
-    template = await menuTemplates.mac(mainWindow);
-    menu = Menu.buildFromTemplate(template);
-    Menu.setApplicationMenu(menu);
-  } else {
-    template = await menuTemplates.other(mainWindow);
-    menu = Menu.buildFromTemplate(template);
-    mainWindow.setMenu(menu);
-  }
+  rebuildMenus(mainWindow);
+
+  promptUser();
 
   initializeIpc(mainWindow);
 });
-

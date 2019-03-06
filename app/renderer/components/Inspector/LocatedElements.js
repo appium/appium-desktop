@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { Input, Row, Col, Button } from 'antd';
 import InspectorStyles from './Inspector.css';
+import { withTranslation } from '../../util';
 
-export default class LocatedElements extends Component {
+class LocatedElements extends Component {
 
   onSubmit () {
     const {locatedElements, locatorTestStrategy, locatorTestValue, searchForElement, clearSearchResults, hideLocatorTestModal} = this.props;
@@ -22,7 +23,14 @@ export default class LocatedElements extends Component {
   }
 
   render () {
-    const {locatedElements, applyClientMethod, setLocatorTestElement, locatorTestElement, clearSearchResults} = this.props;
+    const {
+      locatedElements,
+      applyClientMethod,
+      setLocatorTestElement,
+      locatorTestElement,
+      clearSearchResults,
+      t,
+    } = this.props;
 
     return <Row>
       <p className={InspectorStyles['back-link-container']}>
@@ -43,23 +51,32 @@ export default class LocatedElements extends Component {
           <div>
             <Button size='small'
               disabled={!locatorTestElement}
-              onClick={() => applyClientMethod({methodName: 'click', elementId: locatorTestElement})}>Tap Element
+              onClick={() => applyClientMethod({methodName: 'click', elementId: locatorTestElement})}
+            >
+              {t('Tap Element')}
             </Button>
           </div>
           <div>
             <Button size='small'
               disabled={!locatorTestElement}
-              onClick={() => applyClientMethod({methodName: 'clear', elementId: locatorTestElement})}>Clear
+              onClick={() => applyClientMethod({methodName: 'clear', elementId: locatorTestElement})}
+            >
+              {t('Clear')}
             </Button>
           </div>
           <div className={InspectorStyles['send-keys-container']}>
-            <Input size='small' placeholder='Enter keys' onChange={(e) => this.setState({...this.state, sendKeys: e.target.value})}/>
+            <Input size='small' placeholder={t('Enter keys')} onChange={(e) => this.setState({...this.state, sendKeys: e.target.value})}/>
             <Button size='small'
               disabled={!locatorTestElement}
-              onClick={() => applyClientMethod({methodName: 'sendKeys', elementId: locatorTestElement, args: [this.state.sendKeys || '']})}>Send Keys</Button>
+              onClick={() => applyClientMethod({methodName: 'sendKeys', elementId: locatorTestElement, args: [this.state.sendKeys || '']})}
+            >
+              {t('Send Keys')}
+            </Button>
           </div>
         </div>}
       </Col>
     </Row>;
   }
 }
+
+export default withTranslation(LocatedElements);

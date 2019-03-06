@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
+import { SCREENSHOT_INTERACTION_MODE } from './shared';
 import { Card, Icon, Button, Spin, Tooltip, Modal } from 'antd';
 import Screenshot from './Screenshot';
 import SelectedElement from './SelectedElement';
@@ -8,6 +8,8 @@ import SourceScrollButtons from './SourceScrollButtons';
 import InspectorStyles from './Inspector.css';
 import RecordedActions from './RecordedActions';
 import { clipboard } from 'electron';
+
+const {SELECT, SWIPE, TAP} = SCREENSHOT_INTERACTION_MODE;
 
 const ButtonGroup = Button.Group;
 
@@ -48,13 +50,13 @@ export default class Inspector extends Component {
     const {screenshot, screenshotError, selectedElement = {},
            applyClientMethod, quitSession, isRecording, showRecord, startRecording,
            pauseRecording, showLocatorTestModal, screenshotInteractionMode,
-           showKeepAlivePrompt, keepSessionAlive, sourceXML} = this.props;
+           showKeepAlivePrompt, keepSessionAlive, sourceXML, t} = this.props;
     const {path} = selectedElement;
 
     let main = <div className={InspectorStyles['inspector-main']}>
       <div id='screenshotContainer' className={InspectorStyles['screenshot-container']}>
         {screenshot && <Screenshot {...this.props} />}
-        {screenshotError && `Could not obtain screenshot: ${screenshotError}`}
+        {screenshotError && t('couldNotObtainScreenshot', {screenshotError})}
         {!screenshot && !screenshotError &&
           <Spin size="large" spinning={true}>
             <div className={InspectorStyles.screenshotBox} />
@@ -77,26 +79,26 @@ export default class Inspector extends Component {
           title={<span><Icon type="tag-o" /> Selected Element</span>}
           className={InspectorStyles['selected-element-card']}>
           {path && <SelectedElement {...this.props}/>}
-          {!path && <i>Select an element in the source to begin.</i>}
+          {!path && <i>{t('selectElementInSource')}</i>}
         </Card>
       </div>
     </div>;
 
     let actionControls = <div className={InspectorStyles['action-controls']}>
       <ButtonGroup size="large" value={screenshotInteractionMode}>
-        <Tooltip title="Select Elements">
-          <Button icon='select' onClick={() => {this.screenshotInteractionChange('select');}}
-            type={screenshotInteractionMode === 'select' ? 'primary' : 'default'}
+        <Tooltip title={t('Select Elements')}>
+          <Button icon='select' onClick={() => {this.screenshotInteractionChange(SELECT);}}
+            type={screenshotInteractionMode === SELECT ? 'primary' : 'default'}
           />
         </Tooltip>
-        <Tooltip title="Swipe By Coordinates">
-          <Button icon='swap-right' onClick={() => {this.screenshotInteractionChange('swipe');}}
-            type={screenshotInteractionMode === 'swipe' ? 'primary' : 'default'}
+        <Tooltip title={t('Swipe By Coordinates')}>
+          <Button icon='swap-right' onClick={() => {this.screenshotInteractionChange(SWIPE);}}
+            type={screenshotInteractionMode === SWIPE ? 'primary' : 'default'}
           />
         </Tooltip>
-        <Tooltip title="Tap By Coordinates">
-          <Button icon='scan' onClick={() => {this.screenshotInteractionChange('tap');}}
-            type={screenshotInteractionMode === 'tap' ? 'primary' : 'default'}
+        <Tooltip title={t('Tap By Coordinates')}>
+          <Button icon='scan' onClick={() => {this.screenshotInteractionChange(TAP);}}
+            type={screenshotInteractionMode === TAP ? 'primary' : 'default'}
           />
         </Tooltip>
       </ButtonGroup>
@@ -105,29 +107,29 @@ export default class Inspector extends Component {
     let controls = <div className={InspectorStyles['inspector-toolbar']}>
       {actionControls}
       <ButtonGroup size="large">
-        <Tooltip title="Back">
+        <Tooltip title={t('Back')}>
           <Button id='btnGoBack' icon='arrow-left' onClick={() => applyClientMethod({methodName: 'back'})}/>
         </Tooltip>
-        <Tooltip title="Refresh Source & Screenshot">
+        <Tooltip title={t('refreshSource')}>
           <Button id='btnReload' icon='reload' onClick={() => applyClientMethod({methodName: 'source'})}/>
         </Tooltip>
         {!isRecording &&
-         <Tooltip title="Start Recording">
-           <Button id='btnStartRecording' icon="eye-o" onClick={startRecording}/>
-         </Tooltip>
+          <Tooltip title={t('Start Recording')}>
+            <Button id='btnStartRecording' icon="eye-o" onClick={startRecording}/>
+          </Tooltip>
         }
         {isRecording &&
-         <Tooltip title="Pause Recording">
-           <Button id='btnPause' icon="pause" type="danger" onClick={pauseRecording}/>
-         </Tooltip>
+          <Tooltip title={t('Pause Recording')}>
+            <Button id='btnPause' icon="pause" type="danger" onClick={pauseRecording}/>
+          </Tooltip>
         }
-        <Tooltip title="Search for element">
+        <Tooltip title={t('Search for element')}>
           <Button id='searchForElement' icon="search" onClick={showLocatorTestModal}/>
         </Tooltip>
-        <Tooltip title="Copy XML Source to Clipboard">
+        <Tooltip title={t('Copy XML Source to Clipboard')}>
           <Button id='btnSourceXML' icon="copy" onClick={() => clipboard.writeText(sourceXML)}/>
         </Tooltip>
-        <Tooltip title="Quit Session & Close Inspector">
+        <Tooltip title={t('quitSessionAndClose')}>
           <Button id='btnClose' icon='close' onClick={() => quitSession()}/>
         </Tooltip>
       </ButtonGroup>
@@ -137,14 +139,14 @@ export default class Inspector extends Component {
       {controls}
       {main}
       <Modal
-        title="Session Inactive"
+        title={t('Session Inactive')}
         visible={showKeepAlivePrompt}
         onOk={() => keepSessionAlive()}
         onCancel={() => quitSession()}
-        okText="Keep Session Running"
-        cancelText="Quit Session"
+        okText={t('Keep Session Running')}
+        cancelText={t('Quit Session')}
       >
-        <p>Your session is about to expire</p>
+        <p>{t('Your session is about to expire')}</p>
       </Modal>
     </div>;
   }

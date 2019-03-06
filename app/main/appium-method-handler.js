@@ -2,6 +2,7 @@ import Bluebird from 'bluebird';
 import wd from 'wd';
 import log from 'electron-log';
 import _ from 'lodash';
+import { SCREENSHOT_INTERACTION_MODE } from '../renderer/components/Inspector/shared';
 
 const isDevelopment = process.env.NODE_ENV === 'development';
 
@@ -122,11 +123,11 @@ export default class AppiumMethodHandler {
       res = await cachedEl.el[methodName].apply(cachedEl.el, args);
     } else {
       // Specially handle the tap and swipe method
-      if (methodName === 'tap') {
+      if (methodName === SCREENSHOT_INTERACTION_MODE.TAP) {
         res = await (new wd.TouchAction(this.driver))
           .tap({x: args[0], y: args[1]})
           .perform();
-      } else if (methodName === 'swipe') {
+      } else if (methodName === SCREENSHOT_INTERACTION_MODE.SWIPE) {
         const [startX, startY, endX, endY] = args;
         res = await (new wd.TouchAction(this.driver))
           .press({x: startX, y: startY})

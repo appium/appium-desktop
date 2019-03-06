@@ -1,6 +1,6 @@
 {
   "name": "appium-desktop",
-  "version": "1.10.0",
+  "version": "1.11.1",
   "description": "Graphical interface for the Appium server, and an app inspector",
   "repository": {
     "type": "git",
@@ -18,11 +18,12 @@
   "keywords": [
     "appium"
   ],
+  "assetsPath": "assets",
   "homepage": "https://github.com/appium/appium-desktop",
   "main": "dist/main.js",
   "scripts": {
     "test": "npm run lint && npm run test-unit && npm run test-integration",
-    "test-e2e": "cross-env FORCE_NO_WRONG_FOLDER=true NODE_ENV=test RUNNING_IN_SPECTRON=true mocha --timeout 600000 --reporter mocha-multi-reporters --reporter-options configFile=./test/mochareporters.json ./test/e2e",
+    "test-e2e": "cross-env FORCE_NO_WRONG_FOLDER=true NODE_ENV=test RUNNING_IN_SPECTRON=true mocha --reporter mocha-multi-reporters --reporter-options configFile=./test/mochareporters.json ./test/e2e",
     "test-integration": "cross-env NODE_ENV=test mocha --reporter mocha-multi-reporters --reporter-options configFile=./test/mochareporters.json ./test/integration",
     "test-unit": "cross-env NODE_ENV=test mocha --reporter mocha-multi-reporters --reporter-options configFile=./test/mochareporters.json ./test/unit/",
     "lint": "eslint app/ test/",
@@ -47,7 +48,9 @@
     "postinstall": "node ./check-engines package.json package.json && rimraf node_modules/jimp/browser && node ./sentry-set-version",
     "postversion": "git pull --tags && git push && git push --tags",
     "pre-commit": "npm run lint && mocha --reporter dot ./test/unit",
-    "sentry-release": "node ./sentry-release-script"
+    "sentry-release": "node ./sentry-release-script",
+    "crowdin-update": "node crowdin-update-resources.js",
+    "crowdin-sync": "node crowdin-sync-translations.js"
   },
   "pre-commit": [
     "pre-commit"
@@ -60,6 +63,7 @@
       "output": "release"
     },
     "dmg": {
+      "artifactName": "${productName}-mac-${version}.${ext}",
       "contents": [
         {
           "x": 410,
@@ -82,7 +86,8 @@
       "package.json"
     ],
     "win": {
-      "target": "squirrel",
+      "artifactName": "${productName}-windows-${version}.${ext}",
+      "target": "nsis",
       "icon": "build/icon.ico"
     },
     "nsisWeb": {
@@ -92,6 +97,7 @@
       "oneClick": false
     },
     "linux": {
+      "artifactName": "${productName}-linux-${version}.${ext}",
       "target": [
         "AppImage"
       ],
@@ -111,7 +117,7 @@
     "@sentry/electron": "^0.15.0",
     "ansi-to-html": "~0.6.7",
     "antd": "^3.11.2",
-    "appium": "^1.10.0",
+    "appium": "^1.11.1",
     "appium-support": "^2.25.0",
     "bluebird": "^3.5.1",
     "connected-react-router": "^6.0.0",
@@ -120,6 +126,8 @@
     "electron-log": "^2.2.17",
     "electron-settings": "^2.2.4",
     "electron-updater": "^4.0.1",
+    "i18next": "^14.1.1",
+    "i18next-node-fs-backend": "^2.1.1",
     "fix-path": "^2.1.0",
     "font-awesome": "4.x",
     "format-json": "1.x",
@@ -129,8 +137,9 @@
     "moment": "^2.20.1",
     "postcss": "^7.0.4",
     "prop-types": "^15.6.2",
-    "react": "^16.6.3",
-    "react-dom": "^16.6.3",
+    "react": "^16.8.1",
+    "react-dom": "^16.8.1",
+    "react-i18next": "^10.0.4",
     "react-hot-loader": "^4.3.12",
     "react-redux": "^6.0.0",
     "react-router": "^4.3.1",
@@ -167,9 +176,8 @@
     "electron": "^3.0.13",
     "electron-builder": "^20.38.2",
     "electron-builder-lib": "^20.15.3",
-    "electron-builder-squirrel-windows": "^20.38.2",
     "electron-devtools-installer": "^2.2.3",
-    "eslint": "^5.9.0",
+    "eslint": "^5.13.0",
     "eslint-config-appium": "^4.0.1",
     "eslint-plugin-babel": "^5.2.1",
     "eslint-plugin-import": "^2.8.0",
@@ -182,11 +190,12 @@
     "jquery": "^3.3.1",
     "jsdom": "^13.0.0",
     "less": "^2.7.3",
-    "mocha": "^5.2.0",
+    "mocha": "^6.0.0",
     "mocha-junit-reporter": "^1.18.0",
     "mocha-multi-reporters": "^1.1.7",
     "node-libs-browser": "^2.1.0",
     "parcel-bundler": "^1.10.3",
+    "parcel-plugin-asset-copier": "^1.0.0",
     "postcss-modules": "^1.4.1",
     "pre-commit": "^1.2.2",
     "react-addons-test-utils": "^15.6.2",

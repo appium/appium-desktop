@@ -2,6 +2,7 @@ import _ from 'lodash';
 import moment from 'moment';
 import React, { Component } from 'react';
 import { notification, Table } from 'antd';
+import { withTranslation } from '../../util';
 
 import { propTypes } from './shared';
 import StartButton from './StartButton';
@@ -9,7 +10,7 @@ import DeletePresetButton from './DeletePresetButton';
 import advancedStyles from './AdvancedTab.css';
 import styles from './PresetsTab.css';
 
-export default class PresetsTab extends Component {
+class PresetsTab extends Component {
 
   constructor (props) {
     super(props);
@@ -29,10 +30,11 @@ export default class PresetsTab extends Component {
   }
 
   emptyPresetList () {
+    const {t} = this.props;
     return (
       <div className={styles.noPresetsContainer}>
         <div className={styles.noPresetsMessage}>
-          You don't yet have any presets. Create some on the Advanced tab.
+          {t('noPresets')}
         </div>
       </div>
     );
@@ -63,19 +65,21 @@ export default class PresetsTab extends Component {
   }
 
   deletePreset (evt) {
+    const {t} = this.props;
+
     evt.preventDefault();
-    if (window.confirm(`Are you sure you want to delete ${this.state.selectedPreset}?`)) {
+    if (window.confirm(t('deleteSelectedPresetConfirmation', {presetName: this.state.selectedPreset}))) {
       this.props.deletePreset(this.state.selectedPreset);
       this.setState({selectedPreset: null});
       notification.success({
-        message: 'Deleted',
-        description: 'Preset successfully trashed'
+        message: t('Deleted'),
+        description: t('Preset successfully trashed')
       });
     }
   }
 
   presetList () {
-    const {presets} = this.props;
+    const {presets, t} = this.props;
     return (
       <ul className={styles.presetsList}>
         {_.toPairs(presets).map((p) =>
@@ -86,7 +90,7 @@ export default class PresetsTab extends Component {
           >
             <li className={`${styles.preset} ${p[0] === this.state.selectedPreset ? styles.presetItemActive : ''}`}>
               <div className={styles.presetItemTitle}>{p[0]}</div>
-              <div className={styles.presetItemDesc}>{`Saved ${moment(p[1]._modified).fromNow()}`}</div>
+              <div className={styles.presetItemDesc}>{t('savedTimestamp', {when: moment(p[1]._modified).fromNow()})}</div>
             </li>
           </a>
         )}
@@ -95,14 +99,15 @@ export default class PresetsTab extends Component {
   }
 
   presetDetail () {
+    const {t} = this.props;
     const preset = this.selectedPresetData();
     if (preset) {
       const columns = [{
-        title: 'Server Argument',
+        title: t('Server Argument'),
         dataIndex: 'arg',
         width: 200
       }, {
-        title: 'Value',
+        title: t('Value'),
         dataIndex: 'val',
       }];
       let data = [];
@@ -137,7 +142,7 @@ export default class PresetsTab extends Component {
           <div className={advancedStyles.actions}>
             <StartButton {...{serverStarting, startServer, serverVersion, disabledOverride: !this.presetIsSelected()}} />
             {this.presetIsSelected() &&
-             <DeletePresetButton {...{presetDeleting, deletePreset: this.deletePreset.bind(this)}} />
+              <DeletePresetButton {...{presetDeleting, deletePreset: this.deletePreset.bind(this)}} />
             }
           </div>
         </form>
@@ -147,3 +152,5 @@ export default class PresetsTab extends Component {
 }
 
 PresetsTab.propTypes = {...propTypes};
+
+export default withTranslation(PresetsTab);

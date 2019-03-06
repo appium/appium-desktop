@@ -46,3 +46,9 @@ export function getLocators (attributes, sourceXML) {
   }
   return res;
 }
+
+export const SCREENSHOT_INTERACTION_MODE = {
+  SELECT: 'select',
+  SWIPE: 'swipe',
+  TAP: 'tap',
+};

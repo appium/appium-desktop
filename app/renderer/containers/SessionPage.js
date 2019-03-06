@@ -1,5 +1,6 @@
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import { withTranslation } from '../util';
 import * as SessionActions from '../actions/Session';
 import Session from '../components/Session/Session';
 
@@ -11,4 +12,4 @@ function mapDispatchToProps (dispatch) {
   return bindActionCreators(SessionActions, dispatch);
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Session);
+export default withTranslation(Session, connect(mapStateToProps, mapDispatchToProps));

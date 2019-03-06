@@ -1,15 +1,18 @@
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
 import { debounce } from 'lodash';
 import HighlighterRects from './HighlighterRects';
 import { Spin, Tooltip } from 'antd';
 import B from 'bluebird';
 import styles from './Inspector.css';
-import { parseCoordinates } from './shared';
+import { parseCoordinates, SCREENSHOT_INTERACTION_MODE } from './shared';
+import { withTranslation } from '../../util';
+
+const {TAP, SELECT, SWIPE} = SCREENSHOT_INTERACTION_MODE;
+
 /**
  * Shows screenshot of running application and divs that highlight the elements' bounding boxes
  */
-export default class Screenshot extends Component {
+class Screenshot extends Component {
 
   constructor (props) {
     super(props);
@@ -123,14 +126,14 @@ export default class Screenshot extends Component {
     /**
      * This is way to select overlapped behind views of Screenshot component
      */
-    if (screenshotInteractionMode === 'select') {
+    if (screenshotInteractionMode === SELECT) {
       this.clickScreenshotElement(e.clientX, e.clientY);
-    } else if (screenshotInteractionMode === 'tap') {
+    } else if (screenshotInteractionMode === TAP) {
       applyClientMethod({
         methodName: 'tap',
         args: [x, y],
       });
-    } else if (screenshotInteractionMode === 'swipe') {
+    } else if (screenshotInteractionMode === SWIPE) {
       if (!swipeStart) {
         setSwipeStart(x, y);
       } else if (!swipeEnd) {
@@ -145,7 +148,7 @@ export default class Screenshot extends Component {
     const {screenshotInteractionMode} = this.props;
     const {scaleRatio} = this.state;
 
-    if (screenshotInteractionMode !== 'select') {
+    if (screenshotInteractionMode !== SELECT) {
       const offsetX = e.nativeEvent.offsetX;
       const offsetY = e.nativeEvent.offsetY;
       const x = offsetX * scaleRatio;
@@ -186,22 +189,28 @@ export default class Screenshot extends Component {
   }
 
   render () {
-    const {screenshot, methodCallInProgress, screenshotInteractionMode,
-           swipeStart, swipeEnd} = this.props;
+    const {
+      screenshot,
+      methodCallInProgress,
+      screenshotInteractionMode,
+      swipeStart,
+      swipeEnd,
+      t,
+    } = this.props;
     const {scaleRatio, x, y} = this.state;
 
     // If we're tapping or swiping, show the 'crosshair' cursor style
     const screenshotStyle = {};
-    if (screenshotInteractionMode === 'tap' || screenshotInteractionMode === 'swipe') {
+    if ([TAP, SWIPE].includes(screenshotInteractionMode)) {
       screenshotStyle.cursor = 'crosshair';
     }
 
     let swipeInstructions = null;
-    if (screenshotInteractionMode === 'swipe' && (!swipeStart || !swipeEnd)) {
+    if (screenshotInteractionMode === SWIPE && (!swipeStart || !swipeEnd)) {
       if (!swipeStart) {
-        swipeInstructions = 'Click swipe start point';
+        swipeInstructions = t('Click swipe start point');
       } else if (!swipeEnd) {
-        swipeInstructions = 'Click swipe end point';
+        swipeInstructions = t('Click swipe end point');
       }
     }
 
@@ -222,8 +231,8 @@ export default class Screenshot extends Component {
           </div>}
           {swipeInstructions && <Tooltip visible={true} placement="top" title={swipeInstructions}>{screenImg}</Tooltip>}
           {!swipeInstructions && screenImg}
-          {screenshotInteractionMode === 'select' && this.containerEl && <HighlighterRects {...this.props} containerEl={this.containerEl} />}
-          {screenshotInteractionMode === 'swipe' &&
+          {screenshotInteractionMode === SELECT && this.containerEl && <HighlighterRects {...this.props} containerEl={this.containerEl} />}
+          {screenshotInteractionMode === SWIPE &&
             <svg className={styles.swipeSvg}>
               {swipeStart && !swipeEnd && <circle
                 cx={swipeStart.x / scaleRatio}
@@ -242,3 +251,5 @@ export default class Screenshot extends Component {
     </Spin>;
   }
 }
+
+export default withTranslation(Screenshot);

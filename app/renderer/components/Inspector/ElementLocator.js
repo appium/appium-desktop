@@ -2,10 +2,11 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { Input, Select, Row, Col } from 'antd';
 import InspectorStyles from './Inspector.css';
+import { withTranslation } from '../../util';
 
 const { Option } = Select;
 
-export default class ElementLocator extends Component {
+class ElementLocator extends Component {
 
   onSubmit () {
     const {locatedElements, locatorTestStrategy, locatorTestValue, searchForElement, clearSearchResults, hideLocatorTestModal} = this.props;
@@ -24,7 +25,13 @@ export default class ElementLocator extends Component {
   }
 
   render () {
-    const {setLocatorTestValue, locatorTestValue, setLocatorTestStrategy, locatorTestStrategy} = this.props;
+    const {
+      setLocatorTestValue,
+      locatorTestValue,
+      setLocatorTestStrategy,
+      locatorTestStrategy,
+      t,
+    } = this.props;
 
     const locatorStrategies = [
       ['id', 'Id'],
@@ -40,7 +47,7 @@ export default class ElementLocator extends Component {
     return <div>
       <Row>
         <Col>
-            Locator Strategy:
+          {t('locatorStrategy')}
           <Select className={InspectorStyles['locator-strategy-selector']}
             onChange={(value) => setLocatorTestStrategy(value)}
             value={locatorTestStrategy}>
@@ -50,7 +57,7 @@ export default class ElementLocator extends Component {
           </Select>
         </Col>
       </Row> <Row>
-          Selector:
+        {t('selector')}
         <Col>
           <Input onChange={(e) => setLocatorTestValue(e.target.value)} value={locatorTestValue} />
         </Col>
@@ -58,3 +65,5 @@ export default class ElementLocator extends Component {
     </div>;
   }
 }
+
+export default withTranslation(ElementLocator);
