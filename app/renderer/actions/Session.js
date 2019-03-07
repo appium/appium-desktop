@@ -57,7 +57,8 @@ export const ServerTypes = {
   browserstack: 'browserstack',
   bitbar: 'bitbar',
   kobiton: 'kobiton',
-  perfecto: 'perfecto'
+  perfecto: 'perfecto',
+  pcloudy: 'pcloudy'
 };
 
 const JSON_TYPES = ['object', 'number', 'boolean'];
@@ -274,6 +275,24 @@ export function newSession (caps, attachSessId = null) {
           notification.error({
             message: 'Error',
             description: i18n.t('kobitonCredentialsRequired'),
+            duration: 4
+          });
+          return;
+        }
+        https = true;
+        break;
+      case ServerTypes.pcloudy:
+        host = session.server.pcloudy.hostname;
+        port = 443;
+        path = '/objectspy/wd/hub';
+        username = session.server.pcloudy.username || process.env.PCLOUDY_USERNAME;
+        desiredCapabilities.pCloudy_Username = username;
+        accessKey = session.server.pcloudy.accessKey || process.env.PCLOUDY_ACCESS_KEY;
+        desiredCapabilities.pCloudy_ApiKey = accessKey;
+        if (!username || !accessKey) {
+          notification.error({
+            message: 'Error',
+            description: 'PCLOUDY username and api key are required!',
             duration: 4
           });
           return;

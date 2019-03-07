@@ -19,5 +19,8 @@ export default {
   },
   perfecto: {
     label: 'Perfecto'
+  },
+  pcloudy: {
+    label: 'Pcloudy'
   }
 };

@@ -156,4 +156,4 @@
     "Tap": "Нажать",
     "Gathering initial app source…": "Сбор первичной структуры приложения…",
     "couldNotObtainSource": "Не удалось получить исходный код: {{errorMsg}}"
-  }
+}

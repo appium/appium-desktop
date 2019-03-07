@@ -13,6 +13,7 @@ import ServerTabBrowserstack from './ServerTabBrowserstack';
 import ServerTabBitbar from './ServerTabBitbar';
 import ServerTabKobiton from './ServerTabKobiton';
 import ServerTabPerfecto from './ServerTabPerfecto';
+import ServerTabPcloudy from './ServerTabPcloudy';
 import { Tabs, Button, Spin, Icon } from 'antd';
 import { ServerTypes } from '../../actions/Session';
 import AdvancedServerParams from './AdvancedServerParams';
@@ -27,6 +28,7 @@ import BrowserStackLogo from '../../images/browserstack_logo.svg';
 import BitBarLogo from '../../images/bitbar_logo.svg';
 import KobitonLogo from '../../images/kobiton_logo.svg';
 import PerfectoLogo from '../../images/perfecto_logo.png';
+import PcloudyLogo from '../../images/pcloudy_logo.svg';
 
 const {TabPane} = Tabs;
 
@@ -79,6 +81,7 @@ export default class Session extends Component {
     const bitbarTabHead = <span className={SessionStyles.tabText}><img src={BitBarLogo} /></span>;
     const kobitonTabHead = <span className={SessionStyles.tabText}><img src={KobitonLogo} /></span>;
     const perfectoTabHead = <span className={SessionStyles.tabText}><img src={PerfectoLogo} /></span>;
+    const pcloudyTabHead = <span className={SessionStyles.tabText}><img src={PcloudyLogo} /></span>;
 
     return <Spin spinning={!!sessionLoading}>
       <div className={SessionStyles.sessionContainer}>
@@ -110,6 +113,9 @@ export default class Session extends Component {
             </TabPane> }
             { visibleProviders.perfecto && <TabPane tab={perfectoTabHead} key={ServerTypes.perfecto}>
               <ServerTabPerfecto {...this.props} />
+            </TabPane> }
+            { visibleProviders.pcloudy && <TabPane tab={pcloudyTabHead} key={ServerTypes.pcloudy}>
+              <ServerTabPcloudy {...this.props} />
             </TabPane> }
           </Tabs>
           <AdvancedServerParams {...this.props} />

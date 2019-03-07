@@ -12,7 +12,7 @@ export async function promptUser () {
     dialog.showMessageBox({
       type: 'info',
       buttons: ['Yes', 'No'],
-      message: `Can Appium Desktop collect crash log data from you to help immprove the product?`,
+      message: `Can Appium Desktop collect crash log data from you to help improve the product?`,
     }, async (response) => {
       await settings.set(SENTRY_PERMISSION_ALLOWED, response === 0 ? true : false);
       await settings.set(SENTRY_USER_ANSWERED_PROMPT, true);
