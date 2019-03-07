@@ -152,7 +152,7 @@ export default class Inspector extends Component {
 
     return [
       <div style={{position: 'fixed', width: '100%'}}>{controls}</div>,
-      <div style={{display: 'grid', gridTemplateColumns: '30% auto', gridTemplateRows: '100vh', paddingTop: '52px', position: 'fixed', width: '100%'}}>
+      <div style={{display: 'grid', gridTemplateColumns: '33% auto', gridTemplateRows: '90vh', paddingTop: '52px', position: 'fixed', width: '100%'}}>
         {main}
         <Modal
           title={t('Session Inactive')}
