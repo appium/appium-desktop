@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
+import { clipboard } from 'electron';
 import { Input, Row, Col, Button } from 'antd';
 import InspectorStyles from './Inspector.css';
 import { withTranslation } from '../../util';
@@ -34,9 +34,9 @@ class LocatedElements extends Component {
 
     return <Row>
       <p className={InspectorStyles['back-link-container']}>
-        <a onClick={(e) => e.preventDefault() || clearSearchResults()}>&lt;&lt; Back</a>
+        <a onClick={(e) => e.preventDefault() || clearSearchResults()}>{t('back')}</a>
       </p>
-      Elements (<span>{locatedElements.length}</span>):
+      {t('elementsCount', {elementCount: locatedElements.length})}
       <Col>
         <select className={InspectorStyles['locator-search-results']}
           multiple='true'
@@ -45,9 +45,17 @@ class LocatedElements extends Component {
           {locatedElements.map((elementId) => (
             <option key={elementId} value={elementId}>{elementId}</option>
           ))}
-          {locatedElements.length === 0 && <option disabled>Could not find any elements</option>}
+          {locatedElements.length === 0 && <option disabled>{t('couldNotFindAnyElements')}</option>}
         </select>
         {locatedElements.length > 0 && <div className={InspectorStyles['locator-test-interactions-container']}>
+          <div>
+            <Button size='small'
+              disabled={!locatorTestElement}
+              onClick={() => clipboard.writeText(locatorTestElement)}
+            >
+              {t('Copy ID')}
+            </Button>
+          </div>
           <div>
             <Button size='small'
               disabled={!locatorTestElement}

@@ -6,14 +6,17 @@ const FormItem = Form.Item;
 export default class ServerTabBitbar extends Component {
 
   render () {
+    const { server, setServerParam, t } = this.props;
 
-    const { server, setServerParam } = this.props;
+    const bitbarApiKeyPlaceholder = process.env.BITBAR_API_KEY ?
+      t('usingDataFoundIn', {environmentVariable: 'BITBAR_API_KEY'}) : t('yourApiKey');
 
     return <Form>
       <Row gutter={8}>
         <Col span={12}>
           <FormItem>
-            <Input id='bitbarApiKey' type='password' placeholder={process.env.BITBAR_API_KEY ? 'Using data found in $BITBAR_API_KEY' : 'your-api-key'} addonBefore="Bitbar API Key" value={server.bitbar.apiKey} onChange={(e) => setServerParam('apiKey', e.target.value)} />
+            <Input id='bitbarApiKey' type='password' placeholder={bitbarApiKeyPlaceholder} addonBefore={t('Bitbar API Key')}
+              value={server.bitbar.apiKey} onChange={(e) => setServerParam('apiKey', e.target.value)} />
           </FormItem>
         </Col>
       </Row>

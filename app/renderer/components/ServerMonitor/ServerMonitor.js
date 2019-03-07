@@ -157,6 +157,7 @@ export default class ServerMonitor extends Component {
           <Icon type={icn} theme="filled" />
           {
             serverArgs.logTimestamp &&
+            // eslint-disable-next-line shopify/jsx-no-hardcoded-content
             <span className={styles.timestamp}>
               [{line.timestamp}]
             </span>

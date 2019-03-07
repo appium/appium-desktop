@@ -89,7 +89,7 @@ class RecordedActions extends Component {
 
     const highlightedCode = this.code(false);
 
-    return <Card title={<span><Icon type="code-o"/>{t('Recorder')}</span>}
+    return <Card title={<span><Icon type="code-o"/> {t('Recorder')}</span>}
       className={InspectorStyles['recorded-actions']}
       extra={this.actionBar()}
     >

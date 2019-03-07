@@ -8,25 +8,31 @@ export default class ServerTabPcloudy extends Component {
 
   render () {
 
-    const {server, setServerParam} = this.props;
+    const {server, setServerParam, t} = this.props;
+
+    const pcloudyUsernamePlaceholder = 'username@pcloudy.com';
+    const pcloudyHostPlaceholder = 'cloud.pcloudy.com';
+    const pcloudyAccessKeyExample = 'kjdgtdwn65fdasd78uy6y';
 
     return <Form>
       <Row gutter={8}>
         <Col span={12}>
           <FormItem>
-            <Input className={SessionStyles.customServerInputLeft} id='PcloudyServerHost' placeholder='cloud.pcloudy.com' addonBefore="Pcloudy Host" value={server.pcloudy.hostname} onChange={(e) => setServerParam('hostname', e.target.value)} />
+            <Input className={SessionStyles.customServerInputLeft} id='PcloudyServerHost' placeholder={pcloudyHostPlaceholder} addonBefore={t('Pcloudy Host')}
+              value={server.pcloudy.hostname} onChange={(e) => setServerParam('hostname', e.target.value)} />
           </FormItem>
         </Col>
       </Row>
       <Row gutter={8}>
         <Col span={12}>
           <FormItem>
-            <Input id='username' type='text' placeholder='username@pcloudy.com' addonBefore="Pcloudy User Name" value={server.pcloudy.username} onChange={(e) => setServerParam('username', e.target.value)} />
+            <Input id='username' type='text' placeholder={pcloudyUsernamePlaceholder} addonBefore={t('Pcloudy User Name')} value={server.pcloudy.username} onChange={(e) => setServerParam('username', e.target.value)} />
           </FormItem>
         </Col>
         <Col span={12}>
           <FormItem>
-            <Input id='accessKey' type='password' placeholder='kjdgtdwn65fdasd78uy6y' addonBefore="Pcloudy API Key" value={server.pcloudy.accessKey} onChange={(e) => setServerParam('accessKey', e.target.value)} />
+            <Input id='accessKey' type='password' placeholder={pcloudyAccessKeyExample} addonBefore={t('Pcloudy API Key')}
+              value={server.pcloudy.accessKey} onChange={(e) => setServerParam('accessKey', e.target.value)} />
           </FormItem>
         </Col>
       </Row>
