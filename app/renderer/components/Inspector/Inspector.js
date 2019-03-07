@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { SCREENSHOT_INTERACTION_MODE, INTERACTION_MODE } from './shared';
-import { Card, Icon, Button, Spin, Tooltip, Modal, Tabs } from 'antd';
+import { Card, Icon, Button, Spin, Tooltip, Modal, Tabs, Row, Col } from 'antd';
 import Screenshot from './Screenshot';
 import SelectedElement from './SelectedElement';
 import Source from './Source';
@@ -73,21 +73,21 @@ export default class Inspector extends Component {
         }
         <Tabs activeKey={selectedInteractionMode} size="small" onChange={(tab) => selectInteractionMode(tab)}>
           <TabPane tab={t('Source')} key={INTERACTION_MODE.SOURCE}>
-            <div>
-              <div>
+            <Row style={{height: '100%'}}>
+              <Col span={12}>
                 <Card
                   title={<span><Icon type="file-text" /> {t('App Source')}</span>}>
                   <Source {...this.props} />
                 </Card>
-              </div>
-              <div id='selectedElementContainer'>
+              </Col>
+              <Col span={12} id='selectedElementContainer'>
                 <Card
                   title={<span><Icon type="tag-o" /> {t('selectedElement')}</span>}>
                   {path && <SelectedElement {...this.props}/>}
                   {!path && <i>{t('selectElementInSource')}</i>}
                 </Card>
-              </div>
-            </div>
+              </Col>
+            </Row>
           </TabPane>
           <TabPane tab={t('Actions')} key={INTERACTION_MODE.ACTIONS}>
             <Card
@@ -119,7 +119,7 @@ export default class Inspector extends Component {
       </ButtonGroup>
     </div>;
 
-    let controls = <div>
+    let controls = <div className={InspectorStyles['inspector-toolbar']}>
       {actionControls}
       <ButtonGroup size="large">
         <Tooltip title={t('Back')}>
@@ -150,18 +150,20 @@ export default class Inspector extends Component {
       </ButtonGroup>
     </div>;
 
-    return <div style={{display: 'grid', gridTemplateColumns: '30% auto', gridTemplateRows: '8em auto'}}>
-      <div style={{gridColumn: "1 / 3"}}>{controls}</div>
-      {main}
-      <Modal
-        title={t('Session Inactive')}
-        visible={showKeepAlivePrompt}
-        onOk={() => keepSessionAlive()}
-        onCancel={() => quitSession()}
-        okText={t('Keep Session Running')}
-        cancelText={t('Quit Session')}>
-        <p>{t('Your session is about to expire')}</p>
-      </Modal>
-    </div>;
+    return [
+      <div style={{position: 'fixed', width: '100%'}}>{controls}</div>,
+      <div style={{display: 'grid', gridTemplateColumns: '30% auto', gridTemplateRows: '100vh', paddingTop: '52px', position: 'fixed', width: '100%'}}>
+        {main}
+        <Modal
+          title={t('Session Inactive')}
+          visible={showKeepAlivePrompt}
+          onOk={() => keepSessionAlive()}
+          onCancel={() => quitSession()}
+          okText={t('Keep Session Running')}
+          cancelText={t('Quit Session')}>
+          <p>{t('Your session is about to expire')}</p>
+        </Modal>
+      </div>
+    ];
   }
 }
