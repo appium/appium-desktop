@@ -128,7 +128,7 @@ class Screenshot extends Component {
       }
     }
 
-    const screenImg = <img src={`data:image/gif;base64,${screenshot}`} id="screenshot" />;
+    const screenImg = <img src={`data:image/gif;base64,${screenshot}`} id="screenshot" style={{maxWidth: '100%', maxHeight: '100%'}} />;
 
     // Show the screenshot and highlighter rects. Show loading indicator if a method call is in progress.
     return <Spin size='large' spinning={!!methodCallInProgress}>

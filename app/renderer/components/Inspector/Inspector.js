@@ -57,33 +57,32 @@ export default class Inspector extends Component {
            showKeepAlivePrompt, keepSessionAlive, sourceXML, t} = this.props;
     const {path} = selectedElement;
 
-    let main = <div className={InspectorStyles['inspector-main']}>
-      <div id='screenshotContainer' className={InspectorStyles['screenshot-container']}>
+    let main = [
+      <div id='screenshotContainer' key='screenshotContainer'>
         {screenshot && <Screenshot {...this.props} />}
         {screenshotError && t('couldNotObtainScreenshot', {screenshotError})}
         {!screenshot && !screenshotError &&
           <Spin size="large" spinning={true}>
-            <div className={InspectorStyles.screenshotBox} />
+            <div/>
           </Spin>
         }
-      </div>
-      <div id='sourceTreeContainer' className={InspectorStyles['interaction-tab-container']} >
+      </div>,
+      <div id='sourceTreeContainer' key='sourceTreeContainer'>
         {showRecord &&
           <RecordedActions {...this.props} />
         }
         <Tabs activeKey={selectedInteractionMode} size="small" onChange={(tab) => selectInteractionMode(tab)}>
           <TabPane tab={t('Source')} key={INTERACTION_MODE.SOURCE}>
-            <div className='action-row'>
-              <div className='col'>
+            <div>
+              <div>
                 <Card
                   title={<span><Icon type="file-text" /> {t('App Source')}</span>}>
                   <Source {...this.props} />
                 </Card>
               </div>
-              <div id='selectedElementContainer' className='action-col' className={`${InspectorStyles['interaction-tab-container']} ${InspectorStyles['element-detail-container']}`}>
+              <div id='selectedElementContainer'>
                 <Card
-                  title={<span><Icon type="tag-o" /> {t('selectedElement')}</span>}
-                  className={InspectorStyles['selected-element-card']}>
+                  title={<span><Icon type="tag-o" /> {t('selectedElement')}</span>}>
                   {path && <SelectedElement {...this.props}/>}
                   {!path && <i>{t('selectElementInSource')}</i>}
                 </Card>
@@ -92,16 +91,15 @@ export default class Inspector extends Component {
           </TabPane>
           <TabPane tab={t('Actions')} key={INTERACTION_MODE.ACTIONS}>
             <Card
-              title={<span><Icon type="thunderbolt" /> {t('Actions')}</span>}
-              className={InspectorStyles['interaction-tab-card']}>
+              title={<span><Icon type="thunderbolt" /> {t('Actions')}</span>}>
               <Actions {...this.props} />
             </Card>
           </TabPane>
         </Tabs>
       </div>
-    </div>;
+    ];
 
-    let actionControls = <div className={InspectorStyles['action-controls']}>
+    let actionControls = <div>
       <ButtonGroup size="large" value={screenshotInteractionMode}>
         <Tooltip title={t('Select Elements')}>
           <Button icon='select' onClick={() => {this.screenshotInteractionChange(SELECT);}}
@@ -121,7 +119,7 @@ export default class Inspector extends Component {
       </ButtonGroup>
     </div>;
 
-    let controls = <div className={InspectorStyles['inspector-toolbar']}>
+    let controls = <div>
       {actionControls}
       <ButtonGroup size="large">
         <Tooltip title={t('Back')}>
@@ -152,8 +150,8 @@ export default class Inspector extends Component {
       </ButtonGroup>
     </div>;
 
-    return <div className={InspectorStyles['inspector-container']}>
-      {controls}
+    return <div style={{display: 'grid', gridTemplateColumns: '30% auto', gridTemplateRows: '8em auto'}}>
+      <div style={{gridColumn: "1 / 3"}}>{controls}</div>
       {main}
       <Modal
         title={t('Session Inactive')}
@@ -161,8 +159,7 @@ export default class Inspector extends Component {
         onOk={() => keepSessionAlive()}
         onCancel={() => quitSession()}
         okText={t('Keep Session Running')}
-        cancelText={t('Quit Session')}
-      >
+        cancelText={t('Quit Session')}>
         <p>{t('Your session is about to expire')}</p>
       </Modal>
     </div>;
