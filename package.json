@@ -43,7 +43,7 @@
     "package-win": "npm run build && build --win --x64",
     "package-linux": "npm run build && build --linux",
     "package-all": "npm run build && build -mwl",
-    "package-ci": "node ./check-engines package.json && npm run clean && npm run build && npm run test &&  && npm run test-e2e",
+    "package-ci": "node ./check-engines package.json && npm run clean && npm run build && npm run test && npm run test-e2e",
     "postinstall": "node ./check-engines package.json package.json && rimraf node_modules/jimp/browser",
     "postversion": "git pull --tags && git push && git push --tags",
     "pre-commit": "npm run lint && mocha --reporter dot ./test/unit",
