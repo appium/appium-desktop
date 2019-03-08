@@ -26,4 +26,4 @@ jobs:
       displayName: Build application bundles
     - task: PublishBuildArtifacts@1
       inputs:
-        pathtoPublish: release/ 
+        pathtoPublish: release/
