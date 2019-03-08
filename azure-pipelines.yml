@@ -17,7 +17,7 @@ jobs:
     name: 'linux_build'
 - job: GreenkeeperLockfile
   displayName: Update Greenkeeper lockfile
-  pool: 'Hosted Ubuntu 1604'
+  pool: 'Hosted MacOS Preview'
   steps:
     - script: sudo npm install -g greenkeeper-lockfile
       displayName: Install Greenkeeper lockfile
