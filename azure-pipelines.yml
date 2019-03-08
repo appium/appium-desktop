@@ -21,7 +21,7 @@ jobs:
   steps:
     - script: sudo npm install -g greenkeeper-lockfile
       displayName: Install Greenkeeper lockfile
-    - script: npm install
+    - script: sudo npm install
       displayName: NPM Install
     - script: greenkeeper-lockfile-update
       displayName: Update Greenkeeper lockfile
