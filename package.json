@@ -47,6 +47,7 @@
     "postinstall": "node ./check-engines package.json package.json && rimraf node_modules/jimp/browser",
     "postversion": "git pull --tags && git push && git push --tags",
     "pre-commit": "npm run lint && mocha --reporter dot ./test/unit",
+    "prepublish": "node ./sentry-set-version",
     "sentry-release": "node ./sentry-release-script",
     "crowdin-update": "node crowdin-update-resources.js",
     "crowdin-sync": "node crowdin-sync-translations.js"
