@@ -26,7 +26,7 @@ if (platform === 'linux') {
 }
 
 before(async function () {
-  this.timeout(process.env.TRAVIS || process.env.APPVEYOR ? 10 * 60 * 1000 : 60 * 1000);
+  this.timeout(process.env.E2E_TIMEOUT || 60 * 1000);
   log.info(`Running Appium from: ${appPath}`);
   log.info(`Checking that "${appPath}" exists`);
   const applicationExists = await fs.exists(appPath);
