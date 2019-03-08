@@ -9,5 +9,5 @@ jobs:
     name: 'osx_build'
 - template: ci-jobs/build.yml
   parameters:
-    pool: 'Hosted Windows Container'
+    pool: 'Hosted Windows 2019 with VS2019'
     name: 'windows_build'

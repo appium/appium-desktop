@@ -9,16 +9,18 @@ parameters:
 jobs:
   - job: ${{parameters.name}}
     pool: ${{parameters.pool}}
+    variables:
+      PYTHON_ENV: 'python'
     steps:
     - task: NodeTool@0
       inputs:
-        versionSpec: '10.x'
+        versionSpec: '11.x'
     - ${{ if eq(parameters.xvfb, 'true') }}:
       - script: "Xvfb :99 -screen 0 1600x900x24 &"
-    - script: |
-        npm ci
-        npm run package-ci
-      displayName: 'Install dependencies and run packager'
+    - script: npm ci
+      displayName: 'Install dependencies'
+    - script: npm run package-ci
+      displayName: 'Run packager'
     - task: PublishTestResults@2
       displayName: 'Publish Test Results'
       inputs:
