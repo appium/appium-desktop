@@ -6,11 +6,14 @@ parameters:
   name: ''
   pool: ''
   xvfb: false
+  script: 'npm run package-ci'
+  target: ''
 jobs:
   - job: ${{parameters.name}}
     pool: ${{parameters.pool}}
     variables:
       PYTHON_ENV: 'python'
+      TARGET: ${{ parameters.target }}
     steps:
     - task: NodeTool@0
       inputs:
@@ -19,7 +22,7 @@ jobs:
       - script: "Xvfb :99 -screen 0 1600x900x24 &"
     - script: npm ci
       displayName: 'Install dependencies'
-    - script: npm run package-ci
+    - script: ${{ parameters.script }}
       displayName: 'Run packager'
     - task: PublishTestResults@2
       displayName: 'Publish Test Results'
