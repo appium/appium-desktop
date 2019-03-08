@@ -19,6 +19,9 @@ jobs:
   displayName: Update Greenkeeper lockfile
   pool: 'Hosted MacOS Preview'
   steps:
+    - task: NodeTool@0
+      inputs:
+        versionSpec: '11.x'
     - script: sudo npm install -g greenkeeper-lockfile
       displayName: Install Greenkeeper lockfile
     - script: sudo npm install
