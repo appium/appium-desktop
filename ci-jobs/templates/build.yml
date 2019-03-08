@@ -26,7 +26,7 @@ jobs:
       displayName: Build project
     - script: npm test
       displayName: NPM test
-    - script: npx build --publish never
+    - script: npx build --publish never --dir
       displayName: Build application bundles
     - script: npm run test-e2e
       displayName: Run end-to-end tests
