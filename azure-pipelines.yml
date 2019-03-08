@@ -22,9 +22,9 @@ jobs:
     - task: NodeTool@0
       inputs:
         versionSpec: '11.x'
-    - script: sudo npm install -g greenkeeper-lockfile
+    - script: npm install -g greenkeeper-lockfile
       displayName: Install Greenkeeper lockfile
-    - script: sudo npm install
+    - script: npm install
       displayName: NPM Install
     - script: greenkeeper-lockfile-update
       displayName: Update Greenkeeper lockfile
