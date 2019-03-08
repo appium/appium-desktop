@@ -19,7 +19,7 @@ jobs:
   displayName: Update Greenkeeper lockfile
   pool: 'Hosted Ubuntu 1604'
   steps:
-    - script: npm install -g greenkeeper-lockfile
+    - script: sudo npm install -g greenkeeper-lockfile
       displayName: Install Greenkeeper lockfile
     - script: npm install
       displayName: NPM Install
