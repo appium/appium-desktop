@@ -29,3 +29,6 @@ jobs:
       inputs:
         testResultsFiles: '**junit*.xml'
         testRunTitle: TestRun ${{ parameters.name }} $(node_version)
+    - task: PublishBuildArtifacts@1
+      inputs:
+        pathtoPublish: release/      
