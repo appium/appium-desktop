@@ -15,18 +15,3 @@ jobs:
   parameters:
     pool: 'Hosted Ubuntu 1604'
     name: 'linux_build'
-- job: GreenkeeperLockfile
-  displayName: Update Greenkeeper lockfile
-  pool: 'Hosted MacOS Preview'
-  steps:
-    - task: NodeTool@0
-      inputs:
-        versionSpec: '11.x'
-    - script: npm install -g greenkeeper-lockfile
-      displayName: Install Greenkeeper lockfile
-    - script: npm install
-      displayName: NPM Install
-    - script: greenkeeper-lockfile-update
-      displayName: Update Greenkeeper lockfile
-    - script: greenkeeper-lockfile-upload
-      displayName: Upload updated Greenkeeper lockfile
