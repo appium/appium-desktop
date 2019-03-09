@@ -140,8 +140,8 @@ class Screenshot extends Component {
           onMouseOut={this.handleMouseOut.bind(this)}
           className={styles.screenshotBox}>
           {x !== null && <div className={styles.coordinatesContainer}>
-            <p>X: {x}</p>
-            <p>Y: {y}</p>
+            <p>{t('xCoordinate', {x})}</p>
+            <p>{t('yCoordinate', {y})}</p>
           </div>}
           {swipeInstructions && <Tooltip visible={true} placement="top" title={swipeInstructions}>{screenImg}</Tooltip>}
           {!swipeInstructions && screenImg}

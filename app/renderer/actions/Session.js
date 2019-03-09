@@ -57,7 +57,8 @@ export const ServerTypes = {
   browserstack: 'browserstack',
   bitbar: 'bitbar',
   kobiton: 'kobiton',
-  perfecto: 'perfecto'
+  perfecto: 'perfecto',
+  pcloudy: 'pcloudy'
 };
 
 const JSON_TYPES = ['object', 'number', 'boolean'];
@@ -99,7 +100,7 @@ export function showError (e, methodName, secs = 5) {
   }
 
   notification.error({
-    message: 'Error',
+    message: methodName ? i18n.t('callToMethodFailed', {methodName}) : i18n.t('Error'),
     description: errMessage,
     duration: secs
   });
@@ -191,7 +192,7 @@ export function newSession (caps, attachSessId = null) {
         accessKey = session.server.sauce.accessKey || process.env.SAUCE_ACCESS_KEY;
         if (!username || !accessKey) {
           notification.error({
-            message: 'Error',
+            message: i18n.t('Error'),
             description: i18n.t('sauceCredentialsRequired'),
             duration: 4
           });
@@ -220,7 +221,7 @@ export function newSession (caps, attachSessId = null) {
         path = '/nexperience/perfectomobile/wd/hub';
         if (!token) {
           notification.error({
-            message: 'Error',
+            message: i18n.t('Error'),
             description: i18n.t('Perfecto SecurityToken is required'),
             duration: 4
           });
@@ -238,7 +239,7 @@ export function newSession (caps, attachSessId = null) {
         accessKey = session.server.browserstack.accessKey || process.env.BROWSERSTACK_ACCESS_KEY;
         if (!username || !accessKey) {
           notification.error({
-            message: 'Error',
+            message: i18n.t('Error'),
             description: i18n.t('browserstackCredentialsRequired'),
             duration: 4
           });
@@ -253,7 +254,7 @@ export function newSession (caps, attachSessId = null) {
         accessKey = session.server.bitbar.apiKey || process.env.BITBAR_API_KEY;
         if (!accessKey) {
           notification.error({
-            message: 'Error',
+            message: i18n.t('Error'),
             description: i18n.t('bitbarCredentialsRequired'),
             duration: 4
           });
@@ -272,8 +273,26 @@ export function newSession (caps, attachSessId = null) {
         accessKey = session.server.kobiton.accessKey || process.env.KOBITON_ACCESS_KEY;
         if (!username || !accessKey) {
           notification.error({
-            message: 'Error',
+            message: i18n.t('Error'),
             description: i18n.t('kobitonCredentialsRequired'),
+            duration: 4
+          });
+          return;
+        }
+        https = true;
+        break;
+      case ServerTypes.pcloudy:
+        host = session.server.pcloudy.hostname;
+        port = 443;
+        path = '/objectspy/wd/hub';
+        username = session.server.pcloudy.username || process.env.PCLOUDY_USERNAME;
+        desiredCapabilities.pCloudy_Username = username;
+        accessKey = session.server.pcloudy.accessKey || process.env.PCLOUDY_ACCESS_KEY;
+        desiredCapabilities.pCloudy_ApiKey = accessKey;
+        if (!username || !accessKey) {
+          notification.error({
+            message: 'Error',
+            description: 'PCLOUDY username and api key are required!',
             duration: 4
           });
           return;

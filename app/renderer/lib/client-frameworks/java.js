@@ -1,4 +1,5 @@
 import Framework from './framework';
+import _ from 'lodash';
 
 class JavaFramework extends Framework {
 
@@ -114,6 +115,231 @@ ${this.indent(code, 4)}
   .perform()
   `;
   }
+
+  codeFor_getCurrentActivity () {
+    return `String activityName = driver.currentActivity()`;
+  }
+
+  codeFor_getCurrentPackage () {
+    return `String packageName = driver.currentPackage()`;
+  }
+
+  codeFor_startActivity () {
+    return `driver.`;
+  }
+
+  codeFor_installAppOnDevice (varNameIgnore, varIndexIgnore, app) {
+    return `driver.installApp("${app}");`;
+  }
+
+  codeFor_isAppInstalledOnDevice (varNameIgnore, varIndexIgnore, app) {
+    return `boolean isAppInstalled = driver.isAppInstalled("${app}");`;
+  }
+
+  codeFor_launchApp () {
+    return `driver.launchApp();`;
+  }
+
+  codeFor_backgroundApp (varNameIgnore, varIndexIgnore, timeout) {
+    return `driver.runAppInBackground(Duration.ofSeconds(${timeout}));`;
+  }
+
+  codeFor_closeApp () {
+    return `driver.closeApp();`;
+  }
+
+  codeFor_resetApp () {
+    return `driver.resetApp();`;
+  }
+
+  codeFor_removeAppFromDevice (varNameIgnore, varIndexIgnore, app) {
+    return `driver.removeApp("${app}");`;
+  }
+
+  codeFor_getAppStrings (varNameIgnore, varIndexIgnore, language, stringFile) {
+    return `Map<String, String> appStrings = driver.getAppStringMap(${language ? `${language}, ` : ''}${stringFile ? `"${stringFile}` : ''});`;
+  }
+
+  codeFor_getClipboard () {
+    return `String clipboardText = driver.getClipboardText();`;
+  }
+
+  codeFor_setClipboard (varNameIgnore, varIndexIgnore, clipboardText) {
+    return `driver.setClipboardText("${clipboardText}");`;
+  }
+
+  codeFor_pressKeycode (varNameIgnore, varIndexIgnore, keyCode, metaState, flags) {
+    return `driver.pressKeyCode(${keyCode}, ${metaState}, ${flags});`;
+  }
+
+  codeFor_longPressKeycode (varNameIgnore, varIndexIgnore, keyCode, metaState, flags) {
+    return `driver.longPressKeyCode(${keyCode}, ${metaState}, ${flags});`;
+  }
+
+  codeFor_hideDeviceKeyboard () {
+    return `driver.hideKeyboard();`;
+  }
+
+  codeFor_isKeyboardShown () {
+    return `boolean isKeyboardShown = driver.isKeyboardShown();`;
+  }
+
+  codeFor_pushFileToDevice (varNameIgnore, varIndexIgnore, pathToInstallTo, fileContentString) {
+    return `driver.pushFile("${pathToInstallTo}", ${fileContentString})`;
+  }
+
+  codeFor_pullFile (varNameIgnore, varIndexIgnore, pathToPullFrom) {
+    return `byte[] fileBase64 = driver.pullFile("${pathToPullFrom}");`;
+  }
+
+  codeFor_pullFolder (varNameIgnore, varIndexIgnore, folderToPullFrom) {
+    return `byte[] fileBase64 = driver.pullFolder("${folderToPullFrom}");`;
+  }
+
+  codeFor_toggleAirplaneMode () {
+    return `driver.toggleAirplaneMode();`;
+  }
+
+  codeFor_toggleData () {
+    return `driver.toggleData();`;
+  }
+
+  codeFor_toggleWiFi () {
+    return `driver.toggleWifi();`;
+  }
+
+  codeFor_toggleLocationServices () {
+    return `driver.toggleLocationServices();`;
+  }
+
+  codeFor_sendSMS (varNameIgnore, varIndexIgnore, phoneNumber, text) {
+    return `driver.sendSMS("${phoneNumber}", "${text}");`;
+  }
+
+  codeFor_gsmCall (varNameIgnore, varIndexIgnore, phoneNumber, action) {
+    return `driver.makeGsmCall("${phoneNumber}", "${action}");`;
+  }
+
+  codeFor_gsmSignal (varNameIgnore, varIndexIgnore, signalStrength) {
+    return `driver.setGsmSignalStrength("${signalStrength}");`;
+  }
+
+  codeFor_gsmVoice (varNameIgnore, varIndexIgnore, state) {
+    return `driver.setGsmVoice("${state}");`;
+  }
+
+  codeFor_shake () {
+    return `driver.shake();`;
+  }
+
+  codeFor_lock (varNameIgnore, varIndexIgnore, seconds) {
+    return `driver.lockDevice(${seconds});`;
+  }
+
+  codeFor_unlock () {
+    return `driver.unlockDevice()`;
+  }
+
+  codeFor_isLocked () {
+    return `boolean isLocked = driver.isDeviceLocked();`;
+  }
+
+  codeFor_rotateDevice (varNameIgnore, varIndexIgnore, x, y, radius, rotation, touchCount, duration) {
+    return `driver.rotate(new DeviceRotation(${x}, ${y}, ${radius}, ${rotation}, ${touchCount}, ${duration}));`;
+  }
+
+  codeFor_getPerformanceData (varNameIgnore, varIndexIgnore, packageName, dataType, dataReadTimeout) {
+    return `List<List<Object>> performanceData = driver.getPerformanceData("${packageName}", "${dataType}", ${dataReadTimeout});`;
+  }
+
+  codeFor_getSupportedPerformanceDataTypes () {
+    return `List<String> performanceTypes = driver.getSupportedPerformanceDataTypes();`;
+  }
+
+  codeFor_performTouchId (varNameIgnore, varIndexIgnore, match) {
+    return `driver.performTouchID(${match});`;
+  }
+
+  codeFor_toggleTouchIdEnrollment (varNameIgnore, varIndexIgnore, enroll) {
+    return `driver.toggleTouchIDEnrollment(${enroll});`;
+  }
+
+  codeFor_openNotifications () {
+    return `driver.openNotifications();`;
+  }
+
+  codeFor_getDeviceTime () {
+    return `String time = driver.getDeviceTime();`;
+  }
+
+  codeFor_fingerprint (varNameIgnore, varIndexIgnore, fingerprintId) {
+    return `driver.fingerPrint(${fingerprintId});`;
+  }
+
+  codeFor_sessionCapabilities () {
+    return `Map<String, Object> caps = driver.getSessionDetails();`;
+  }
+
+  codeFor_setPageLoadTimeout (varNameIgnore, varIndexIgnore, ms) {
+    return `driver.manage().timeouts().pageLoadTimeout(${ms / 1000}, TimeUnit.SECONDS);`;
+  }
+
+  codeFor_setAsyncScriptTimeout (varNameIgnore, varIndexIgnore, ms) {
+    return `driver.manage().timeouts().setScriptTimeout(${ms / 1000}, TimeUnit.SECONDS);`;
+  }
+
+  codeFor_setImplicitWaitTimeout (varNameIgnore, varIndexIgnore, ms) {
+    return `driver.manage().timeouts().implicitlyWait(${ms / 1000}, TimeUnit.SECONDS);`;
+  }
+
+  codeFor_getOrientation () {
+    return `ScreenOrientation orientation = driver.getOrientation();`;
+  }
+
+  codeFor_setOrientation (varNameIgnore, varIndexIgnore, orientation) {
+    return `driver.rotate("${orientation}");`;
+  }
+
+  codeFor_getGeoLocation () {
+    return `Location location = driver.location();`;
+  }
+
+  codeFor_setGeoLocation (varNameIgnore, varIndexIgnore, latitude, longitude, altitude) {
+    return `driver.setLocation(new Location(${latitude}, ${longitude}, ${altitude}));`;
+  }
+
+  codeFor_logTypes () {
+    return `Set<String> logTypes = driver.manage().logs().getAvailableLogTypes();`;
+  }
+
+  codeFor_log (varNameIgnore, varIndexIgnore, logType) {
+    return `LogEntries logEntries = driver.manage().logs().get("${logType}");`;
+  }
+
+  codeFor_updateSettings (varNameIgnore, varIndexIgnore, settingsJson) {
+    try {
+      let settings = '';
+      for (let [settingName, settingValue] of _.toPairs(JSON.parse(settingsJson))) {
+        settings += `driver.setSetting("${settingName}", "${settingValue}");\n`;
+      }
+      return settings;
+    } catch (e) {
+      return `// Could not parse: ${settingsJson}`;
+    }
+  }
+
+  codeFor_settings () {
+    return `Map<String, Object> settings = driver.getSettings();`;
+  }
+
+  /*
+
+  codeFor_ REPLACE_ME (varNameIgnore, varIndexIgnore) {
+    return `REPLACE_ME`;
+  }
+
+  */
+
 }
 
 JavaFramework.readableName = 'Java - JUnit';

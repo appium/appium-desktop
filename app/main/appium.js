@@ -262,6 +262,7 @@ function connectClientMethodListener () {
       elementId, // Optional. Element being operated on
       args = [], // Optional. Arguments passed to method
       skipScreenshotAndSource = false, // Optional. Do we want the updated source and screenshot?
+      ignoreResult = false, // Optional. Do we want to send the result back to the renderer?
     } = data;
 
     let renderer = evt.sender;
@@ -299,8 +300,13 @@ function connectClientMethodListener () {
           }
         }
 
+        if (ignoreResult) {
+          res = {};
+        }
+
         renderer.send('appium-client-command-response', {
           ...res,
+          methodName,
           uuid,
         });
       }
@@ -312,7 +318,7 @@ function connectClientMethodListener () {
         renderer.send('appium-session-done', e);
       }
       console.log('Caught an exception: ', e);
-      renderer.send('appium-client-command-response-error', {e: e.message, uuid});
+      renderer.send('appium-client-command-response-error', {e: JSON.stringify(e), uuid});
     }
   });
 }

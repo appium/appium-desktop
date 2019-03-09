@@ -86,6 +86,215 @@ ${this.indent(this.chainifyCode(code), 2)}
   'release'
 ]);`;
   }
+
+  codeFor_getCurrentActivity () {
+    return `let activityName = await driver.currentActivity();`;
+  }
+
+  codeFor_getCurrentPackage () {
+    return `let packageName = await driver.currentPackage();`;
+  }
+
+
+  codeFor_installAppOnDevice (varNameIgnore, varIndexIgnore, app) {
+    return `await driver.installApp('${app}');`;
+  }
+
+  codeFor_isAppInstalledOnDevice (varNameIgnore, varIndexIgnore, app) {
+    return `let isAppInstalled = await driver.isAppInstalled("${app}");`;
+  }
+
+  codeFor_launchApp () {
+    return `await driver.launch();`;
+  }
+
+  codeFor_backgroundApp (varNameIgnore, varIndexIgnore, timeout) {
+    return `await driver.background(${timeout});`;
+  }
+
+  codeFor_closeApp () {
+    return `await driver.close_app();`;
+  }
+
+  codeFor_resetApp () {
+    return `await driver.reset();`;
+  }
+
+  codeFor_removeAppFromDevice (varNameIgnore, varIndexIgnore, app) {
+    return `await driver.removeApp('${app}')`;
+  }
+
+  codeFor_getAppStrings (varNameIgnore, varIndexIgnore, language, stringFile) {
+    return `let appStrings = await driver.getAppStrings(${language ? `${language}, ` : ''}${stringFile ? `"${stringFile}` : ''});`;
+  }
+
+  codeFor_getClipboard () {
+    return `let clipboardText = await driver.getClipboard();`;
+  }
+
+  codeFor_setClipboard (varNameIgnore, varIndexIgnore, clipboardText) {
+    return `await driver.setClipboard('${clipboardText}')`;
+  }
+
+  codeFor_pressKeycode (varNameIgnore, varIndexIgnore, keyCode, metaState, flags) {
+    return `await driver.longPressKeyCode(${keyCode}, ${metaState}, ${flags});`;
+  }
+
+  codeFor_longPressKeycode (varNameIgnore, varIndexIgnore, keyCode, metaState, flags) {
+    return `await driver.longPressKeyCode(${keyCode}, ${metaState}, ${flags});`;
+  }
+
+  codeFor_hideDeviceKeyboard () {
+    return `await driver.hideDeviceKeyboard();`;
+  }
+
+  codeFor_isKeyboardShown () {
+    return `//isKeyboardShown not supported`;
+  }
+
+  codeFor_pushFileToDevice (varNameIgnore, varIndexIgnore, pathToInstallTo, fileContentString) {
+    return `await driver.pushFile('${pathToInstallTo}', '${fileContentString}');`;
+  }
+
+  codeFor_pullFile (varNameIgnore, varIndexIgnore, pathToPullFrom) {
+    return `let data = await driver.pullFile('${pathToPullFrom}');`;
+  }
+
+  codeFor_pullFolder (varNameIgnore, varIndexIgnore, folderToPullFrom) {
+    return `let data = await driver.pullFolder('${folderToPullFrom}');`;
+  }
+
+  codeFor_toggleAirplaneMode () {
+    return `await driver.toggleAirplaneMode();`;
+  }
+
+  codeFor_toggleData () {
+    return `await driver.toggleData();`;
+  }
+
+  codeFor_toggleWiFi () {
+    return `await driver.toggleWiFi();`;
+  }
+
+  codeFor_toggleLocationServices () {
+    return `await driver.toggleLocationServices();`;
+  }
+
+  codeFor_sendSMS () {
+    return `// Not supported: sendSms;`;
+  }
+
+  codeFor_gsmCall () {
+    return `// Not supported: gsmCall`;
+  }
+
+  codeFor_gsmSignal () {
+    return `// Not supported: gsmSignal`;
+  }
+
+  codeFor_gsmVoice () {
+    return `// Not supported: gsmVoice`;
+  }
+
+  codeFor_shake () {
+    return `await driver.shake();`;
+  }
+
+  codeFor_lock (varNameIgnore, varIndexIgnore, seconds) {
+    return `await driver.lock(${seconds});`;
+  }
+
+  codeFor_unlock () {
+    return `await driver.unlock();`;
+  }
+
+  codeFor_isLocked () {
+    return `let isLocked = await driver.isLocked();`;
+  }
+
+  codeFor_rotateDevice (varNameIgnore, varIndexIgnore, x, y, radius, rotation, touchCount, duration) {
+    return `driver.rotate(${x}, ${y}, ${radius}, ${rotation}, ${touchCount}, ${duration});`;
+  }
+
+  codeFor_getPerformanceData () {
+    return `// Not supported: getPerformanceData`;
+  }
+
+  codeFor_getSupportedPerformanceDataTypes () {
+    return `// Not supported: getSupportedPerformanceDataTypes`;
+  }
+
+  codeFor_performTouchId (varNameIgnore, varIndexIgnore, match) {
+    return `await driver.touchId(${match});`;
+  }
+
+  codeFor_toggleTouchIdEnrollment (varNameIgnore, varIndexIgnore, enroll) {
+    return `await driver.toggleTouchIdEnrollment(${enroll});`;
+  }
+
+  codeFor_openNotifications () {
+    return `await driver.openNotifications();`;
+  }
+
+  codeFor_getDeviceTime () {
+    return `let time = await driver.getDeviceTime();`;
+  }
+
+  codeFor_fingerprint (varNameIgnore, varIndexIgnore, fingerprintId) {
+    return `await driver.fingerprint(${fingerprintId});`;
+  }
+
+  codeFor_sessionCapabilities () {
+    return `let caps = await driver.session('c8db88a0-47a6-47a1-802d-164d746c06aa');`;
+  }
+
+  codeFor_setPageLoadTimeout (varNameIgnore, varIndexIgnore, ms) {
+    return `await driver.timeouts('page load', ${ms})`;
+  }
+
+  codeFor_setAsyncScriptTimeout (varNameIgnore, varIndexIgnore, ms) {
+    return `await driver.timeouts('script', ${ms})`;
+  }
+
+  codeFor_setImplicitWaitTimeout (varNameIgnore, varIndexIgnore, ms) {
+    return `await driver.timeouts('implicit', ${ms})`;
+  }
+
+  codeFor_setCommandTimeout (varNameIgnore, varIndexIgnore, ms) {
+    return `await driver.timeouts('command', ${ms})`;
+  }
+
+  codeFor_getOrientation () {
+    return `let orientation = await driver.orientation();`;
+  }
+
+  codeFor_setOrientation (varNameIgnore, varIndexIgnore, orientation) {
+    return `driver.orientation("${orientation}");`;
+  }
+
+  codeFor_getGeoLocation () {
+    return `let location = await driver.location();`;
+  }
+
+  codeFor_setGeoLocation (varNameIgnore, varIndexIgnore, latitude, longitude, altitude) {
+    return `await driver.location({latitude: ${latitude}, longitude: ${longitude}, altitude: ${altitude}});`;
+  }
+
+  codeFor_logTypes () {
+    return `let logTypes = await driver.log();`;
+  }
+
+  codeFor_log (varNameIgnore, varIndexIgnore, logType) {
+    return `let logs = await driver.log('${logType}');`;
+  }
+
+  codeFor_updateSettings (varNameIgnore, varIndexIgnore, settingsJson) {
+    return `await driver.settings(${settingsJson});`;
+  }
+
+  codeFor_settings () {
+    return `let settings = await driver.settings();`;
+  }
 }
 
 JsWdIoFramework.readableName = 'JS - Webdriver.io';

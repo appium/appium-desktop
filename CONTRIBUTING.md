@@ -128,14 +128,11 @@ This will build the apps with the latest version of electron and put the various
 npm version <VERSION_TYPE>
 ```
 
-This will increment the version and push a new tag. This will trigger AppVeyor and Travis CI to run a CI
+This will increment the version and push a new tag. This will trigger Azure Pipelines to run a CI
 build process and then publish the assets (.dmg, .exe, .AppImage) to GitHub releases which will contain a
 draft of the new release.
 
 Appium Desktop follows the same npm versioning workflow but isn't published to NPM.
-
-* [Travis CI dashboard](https://travis-ci.org/appium/appium-desktop/)
-* [AppVeyor dashboard](https://ci.appveyor.com/project/appium/appium-desktop)
 
 ## Submitting changes to the Appium Desktop code or docs
 

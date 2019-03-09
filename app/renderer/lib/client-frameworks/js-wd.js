@@ -79,6 +79,211 @@ main().catch(console.log);
     `;
   }
 
+  codeFor_getCurrentActivity () {
+    return `let activityName = await driver.getCurrentActivity()`;
+  }
+
+  codeFor_getCurrentPackage () {
+    return `let packageName = await driver.getCurrentPackage()`;
+  }
+
+
+  codeFor_installAppOnDevice (varNameIgnore, varIndexIgnore, app) {
+    return `let isAppInstalled = await driver.installAppOnDevice('${app}');`;
+  }
+
+  codeFor_isAppInstalledOnDevice (varNameIgnore, varIndexIgnore, app) {
+    return `driver.isAppInstalled("${app}");`;
+  }
+
+  codeFor_launchApp () {
+    return `await driver.launchApp();`;
+  }
+
+  codeFor_backgroundApp (varNameIgnore, varIndexIgnore, timeout) {
+    return `await driver.backgroundApp(${timeout});`;
+  }
+
+  codeFor_closeApp () {
+    return `await driver.closeApp();`;
+  }
+
+  codeFor_resetApp () {
+    return `await driver.resetApp();`;
+  }
+
+  codeFor_removeAppFromDevice (varNameIgnore, varIndexIgnore, app) {
+    return `await driver.removeAppFromDevice('${app}');`;
+  }
+
+  codeFor_getAppStrings (varNameIgnore, varIndexIgnore, language, stringFile) {
+    return `let appStrings = await driver.getAppStrings(${language ? `${language}, ` : ''}${stringFile ? `"${stringFile}` : ''});`;
+  }
+
+  codeFor_getClipboard () {
+    return `let clipboardText = await driver.getClipboard();`;
+  }
+
+  codeFor_setClipboard (varNameIgnore, varIndexIgnore, clipboardText) {
+    return `await driver.setClipboard('${clipboardText}')`;
+  }
+
+  codeFor_pressKeycode (varNameIgnore, varIndexIgnore, keyCode, metaState, flags) {
+    return `await driver.longPressKeyCode(${keyCode}, ${metaState}, ${flags});`;
+  }
+
+  codeFor_longPressKeycode (varNameIgnore, varIndexIgnore, keyCode, metaState, flags) {
+    return `await driver.longPressKeyCode(${keyCode}, ${metaState}, ${flags});`;
+  }
+
+  codeFor_hideDeviceKeyboard () {
+    return `await driver.hideDeviceKeyboard();`;
+  }
+
+  codeFor_isKeyboardShown () {
+    return `await driver.isKeyboardShown();`;
+  }
+
+  codeFor_pushFileToDevice (varNameIgnore, varIndexIgnore, pathToInstallTo, fileContentString) {
+    return `await driver.pushFileToDevice('${pathToInstallTo}', '${fileContentString}');`;
+  }
+
+  codeFor_pullFile (varNameIgnore, varIndexIgnore, pathToPullFrom) {
+    return `let fileBase64 = await driver.pullFile('${pathToPullFrom}');`;
+  }
+
+  codeFor_pullFolder (varNameIgnore, varIndexIgnore, folderToPullFrom) {
+    return `let fileBase64 = await driver.pullFolder('${folderToPullFrom}');`;
+  }
+
+  codeFor_toggleAirplaneMode () {
+    return `await driver.toggleAirplaneMode();`;
+  }
+
+  codeFor_toggleData () {
+    return `await driver.toggleData();`;
+  }
+
+  codeFor_toggleWiFi () {
+    return `await driver.toggleWiFi();`;
+  }
+
+  codeFor_toggleLocationServices () {
+    return `await driver.toggleLocationServices();`;
+  }
+
+  codeFor_sendSMS (varNameIgnore, varIndexIgnore, phoneNumber, text) {
+    return `await driver.sendSms('${phoneNumber}', '${text}');`;
+  }
+
+  codeFor_gsmCall (varNameIgnore, varIndexIgnore, phoneNumber, action) {
+    return `await driver.gsmCall('${phoneNumber}', '${action}');`;
+  }
+
+  codeFor_gsmSignal (varNameIgnore, varIndexIgnore, signalStrength) {
+    return `await driver.gsmSignal(${signalStrength});`;
+  }
+
+  codeFor_gsmVoice (varNameIgnore, varIndexIgnore, state) {
+    return `await driver.gsmVoice('${state}');`;
+  }
+
+  codeFor_shake () {
+    return `await driver.shake();`;
+  }
+
+  codeFor_lock (varNameIgnore, varIndexIgnore, seconds) {
+    return `await driver.lock(${seconds})`;
+  }
+
+  codeFor_unlock () {
+    return `await driver.unlock()`;
+  }
+
+  codeFor_isLocked () {
+    return `let isLocked = await driver.isLocked();`;
+  }
+
+  codeFor_rotateDevice (varNameIgnore, varIndexIgnore, x, y, radius, rotation, touchCount, duration) {
+    return `driver.rotateDevice({x: ${x}, y: ${y}, duration: ${duration}, radius: ${radius}, rotation: ${rotation}, touchCount: ${touchCount}});`;
+  }
+
+  codeFor_getPerformanceData (varNameIgnore, varIndexIgnore, packageName, dataType, dataReadTimeout) {
+    return `let performanceData = await driver.getPerformanceData('${packageName}', '${dataType}', ${dataReadTimeout});`;
+  }
+
+  codeFor_getSupportedPerformanceDataTypes () {
+    return `let supportedPerformanceDataTypes = await driver.getSupportedPerformanceDataTypes();`;
+  }
+
+  codeFor_performTouchId (varNameIgnore, varIndexIgnore, match) {
+    return `await driver.touchId(${match});`;
+  }
+
+  codeFor_toggleTouchIdEnrollment (varNameIgnore, varIndexIgnore, enroll) {
+    return `await driver.toggleTouchIdEnrollment(${enroll});`;
+  }
+
+  codeFor_openNotifications () {
+    return `await driver.openNotifications();`;
+  }
+
+  codeFor_getDeviceTime () {
+    return `let time = await driver.getDeviceTime();`;
+  }
+
+  codeFor_fingerprint (varNameIgnore, varIndexIgnore, fingerprintId) {
+    return `await driver.fingerprint(${fingerprintId});`;
+  }
+
+  codeFor_sessionCapabilities () {
+    return `let caps = await driver.sessionCapabilities();`;
+  }
+
+  codeFor_setPageLoadTimeout (varNameIgnore, varIndexIgnore, ms) {
+    return `await setPageLoadTimeout(${ms})`;
+  }
+
+  codeFor_setAsyncScriptTimeout (varNameIgnore, varIndexIgnore, ms) {
+    return `await setAsyncScriptTimeout(${ms})`;
+  }
+
+  codeFor_setImplicitWaitTimeout (varNameIgnore, varIndexIgnore, ms) {
+    return `await setImplicitWaitTimeout(${ms})`;
+  }
+
+  codeFor_getOrientation () {
+    return `let orientation = await driver.getOrientation();`;
+  }
+
+  codeFor_setOrientation (varNameIgnore, varIndexIgnore, orientation) {
+    return `await driver.setOrientation('${orientation}');`;
+  }
+
+  codeFor_getGeoLocation () {
+    return `let location = await driver.getGeoLocation();`;
+  }
+
+  codeFor_setGeoLocation (varNameIgnore, varIndexIgnore, latitude, longitude, altitude) {
+    return `await driver.setGeoLocation(${latitude}, ${longitude}, ${altitude});`;
+  }
+
+  codeFor_logTypes () {
+    return `let logTypes = await driver.logTypes();`;
+  }
+
+  codeFor_log (varNameIgnore, varIndexIgnore, logType) {
+    return `let logs = await driver.log('${logType}');`;
+  }
+
+  codeFor_updateSettings (varNameIgnore, varIndexIgnore, settingsJson) {
+    return `await driver.updateSettings(${settingsJson});`;
+  }
+
+  codeFor_settings () {
+    return `let settings = await driver.settings();`;
+  }
+
 }
 
 JsWdFramework.readableName = 'JS - WD (Promise)';

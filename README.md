@@ -1,4 +1,4 @@
-# Appium Desktop [![Travis Build Status](https://travis-ci.org/appium/appium-desktop.svg?branch=master)](https://travis-ci.org/appium/appium-desktop) [![Build Status](https://dev.azure.com/AppiumCI/Appium%20Desktop/_apis/build/status/appium.appium-desktop)](https://dev.azure.com/AppiumCI/Appium%20Desktop/_build/latest?definitionId=1) [![Build status](https://ci.appveyor.com/api/projects/status/jndqx84vqj2hw64v?svg=true)](https://ci.appveyor.com/project/dpgraham/appium-desktop-2ur5j) [![Crowdin](https://d322cqt584bo4o.cloudfront.net/appium-desktop/localized.svg)](https://crowdin.com/project/appium-desktop)
+# Appium Desktop [![Build Status](https://dev.azure.com/AppiumCI/Appium%20Desktop/_apis/build/status/appium.appium-desktop)](https://dev.azure.com/AppiumCI/Appium%20Desktop/_build/latest?definitionId=1)[![Crowdin](https://d322cqt584bo4o.cloudfront.net/appium-desktop/localized.svg)](https://crowdin.com/project/appium-desktop)
 
 [![Greenkeeper badge](https://badges.greenkeeper.io/dpgraham/appium-desktop.svg)](https://greenkeeper.io/)
 ![Action screenshot](docs/images/screen-inspector-and-logs.png)
@@ -118,6 +118,7 @@ These are the options for launching a session against a non-local Appium server:
 | Bitbar           | Launch a session on the [Bitbar](https://bitbar.com) cloud. [Documentation](http://docs.bitbar.com/)                       |
 | Kobiton           | Launch a session on the [Kobiton](https://kobiton.com) cloud. [Documentation](https://docs.kobiton.com/)                       |
 | Perfecto         | Launch a session on the [Perfecto](https://www.perfecto.io) cloud. [Documentation](https://developers.perfectomobile.com/display/PD/Appium) |
+| Pcloudy         | Launch a session on the [Pcloudy](https://www.pcloudy.com) cloud. [Documentation](https://www.pcloudy.com/mobile-application-testing-documentation) |
 
 It should be straightforward to get set up with any of these options. Simply
 enter your details in the input fields provided.

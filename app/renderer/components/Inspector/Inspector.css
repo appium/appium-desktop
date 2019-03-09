@@ -55,7 +55,7 @@
     overflow: hidden;
 }
 
-.inspector-main .source-tree-container {
+.inspector-main .interaction-tab-container {
     position: relative;
     flex-grow: 3;
     flex-basis: 550px;
@@ -66,7 +66,20 @@
     flex-flow: column;
 }
 
-.inspector-main .source-tree-container .scroll-buttons {
+.inspector-main .interaction-tab-container :global(.action-row) {
+    display: flex;
+}
+
+.inspector-main .interaction-tab-container :global(.action-col) {
+    flex: '1 1 0';
+    width: 0;
+}
+
+.inspector-main .interaction-tab-container :global(.ant-tree) {
+    overflow: auto;
+}
+
+.inspector-main .interaction-tab-container .scroll-buttons {
     position: absolute;
     bottom: 0;
     left: 0;
@@ -75,11 +88,11 @@
     padding-bottom: 1em;
 }
 
-.inspector-main .source-tree-container .scroll-buttons :global(button) {
+.inspector-main .interaction-tab-container .scroll-buttons :global(button) {
     margin: 1em;
 }
 
-.inspector-main .source-tree-container .scroll-buttons .scroll-right {
+.inspector-main .interaction-tab-container .scroll-buttons .scroll-right {
     float: right;
 }
 
@@ -103,12 +116,12 @@
 }
 
 .inspector-main .recorded-actions :global(.ant-card-body),
-.inspector-main .source-tree-card :global(.ant-card-body) {
+.inspector-main .interaction-tab-card :global(.ant-card-body) {
     overflow: scroll;
     height: 100%;
 }
 
-.inspector-main .source-tree-card {
+.inspector-main .interaction-tab-card {
     flex: 2;
 }
 
@@ -117,7 +130,7 @@
     width: 14px;
 }
 
-.inspector-main .source-tree-container .source-tree-card {
+.inspector-main .interaction-tab-container .interaction-tab-card {
     height: 100%;
     padding-bottom: 3em;
 }
@@ -283,4 +296,23 @@
  .action-controls {
     margin-right: 20px;
  }
+
+ .actions-container .btn-container {
+    padding: 16px;
+ }
+
+ .actions-container .arg-row {
+     margin-bottom: 8px;
+ }
+
+.arg-container {
+    padding: 4px 4px 0 0
+ }
+
+ .actions-container :global(.ant-select) {
+    width: 100%;
+ }
  
+ .actions-container :global(.ant-btn) {
+    width: 100%;
+ }

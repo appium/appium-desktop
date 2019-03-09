@@ -102,7 +102,7 @@ class AdvancedTab extends Component {
           <Input autoFocus
             ref="presetName"
             name={'presetName'}
-            addonBefore="Preset name"
+            addonBefore={t('Preset name')}
             onChange={this.updatePresetName.bind(this)}
             size="large"
           />
@@ -151,14 +151,14 @@ class AdvancedTab extends Component {
               {this.buildInput('defaultCapabilities', 'textarea', t('Default Capabilities'))}
             </div>
 
-            <div className={styles.secTitle}>iOS</div>
+            <div className={styles.secTitle}>{t('iOS')}</div>
             <div className={styles.secBody}>
               {this.buildInput('wdaLocalPort', 'text', t('WebDriverAgent Port'))}
               {this.buildInput('callbackHost', 'text', t('executeAsync Callback Host'))}
               {this.buildInput('callbackPort', 'text', t('executeAsync Callback Port'))}
             </div>
 
-            <div className={styles.secTitle}>Android</div>
+            <div className={styles.secTitle}>{t('Android')}</div>
             <div className={styles.secBody}>
               {this.buildInput('bootstrapPort', 'text', t('Bootstrap Port'))}
               {this.buildInput('selendroidPort', 'text', t('Selendroid Port'))}
