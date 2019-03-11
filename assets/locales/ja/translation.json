@@ -281,7 +281,7 @@
   "System": "システム",
   "Open Notifications": "通知を開く",
   "Get System Time": "システムの時刻を取得する",
-  "Fingerprint (Android)": "フィンガープリント(Android)",
+  "Fingerprint (Android)": "指紋認証(Android)",
   "Session": "セッション",
   "Session Capabilities": "セッションのCapabilities",
   "Get Session Capabilities": "セッションのCapabilitiesを取得する",
