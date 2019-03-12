@@ -4,6 +4,9 @@
 # https://docs.microsoft.com/vsts/pipelines/languages/javascript
 jobs:
 - job: crowdin
+  variables:
+    CROWDIN_PROJECT_ID: $(CROWDIN_PROJECT_ID)
+    CROWDIN_PROJECT_KEY: $(CROWDIN_PROJECT_KEY)
   steps:
     - task: NodeTool@0
       inputs:
