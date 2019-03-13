@@ -47,7 +47,8 @@ export default class NewSessionForm extends Component {
   }
 
   render () {
-    const {setCapabilityParam, caps, addCapability, removeCapability, saveSession, hideSaveAsModal, saveAsText, showSaveAsModal, setSaveAsText, isEditingDesiredCaps} = this.props;
+    const {setCapabilityParam, caps, addCapability, removeCapability, saveSession, hideSaveAsModal,
+           saveAsText, showSaveAsModal, setSaveAsText, isEditingDesiredCaps, t} = this.props;
 
     return <div>
       <Row type="flex" align="top" justify="start" className={SessionStyles.capsFormRow}>
@@ -57,23 +58,25 @@ export default class NewSessionForm extends Component {
               return <Row gutter={8} key={index}>
                 <Col span={7}>
                   <FormItem>
-                    <Input disabled={isEditingDesiredCaps} id={`desiredCapabilityName_${index}`} placeholder='Name' value={cap.name} onChange={(e) => setCapabilityParam(index, 'name', e.target.value)}/>
+                    <Input disabled={isEditingDesiredCaps} id={`desiredCapabilityName_${index}`} placeholder={t('Name')}
+                      value={cap.name} onChange={(e) => setCapabilityParam(index, 'name', e.target.value)}/>
                   </FormItem>
                 </Col>
                 <Col span={8}>
                   <FormItem>
                     <Select disabled={isEditingDesiredCaps} onChange={(val) => this.handleSetType(index, val)} defaultValue={cap.type}>
-                      <Option value='text'>text</Option>
-                      <Option value='boolean'>boolean</Option>
-                      <Option value='number'>number</Option>
-                      <Option value='object'>JSON object</Option>
-                      <Option value='file'>filepath</Option>
+                      <Option value='text'>{t('text')}</Option>
+                      <Option value='boolean'>{t('boolean')}</Option>
+                      <Option value='number'>{t('number')}</Option>
+                      <Option value='object'>{t('JSON object')}</Option>
+                      <Option value='file'>{t('filepath')}</Option>
                     </Select>
                   </FormItem>
                 </Col>
                 <Col span={7}>
                   <FormItem>
-                    <CapabilityControl cap={cap} onSetCapabilityParam={(value) => setCapabilityParam(index, 'value', value)} id={`desiredCapabilityValue_${index}`} />
+                    <CapabilityControl {...this.props} cap={cap} id={`desiredCapabilityValue_${index}`}
+                      onSetCapabilityParam={(value) => setCapabilityParam(index, 'value', value)} />
                   </FormItem>
                 </Col>
                 <Col span={2}>
@@ -97,12 +100,12 @@ export default class NewSessionForm extends Component {
         <Col order={2} span={12} className={SessionStyles.capsFormattedCol}>
           <FormattedCaps {...this.props} />
           <Modal visible={showSaveAsModal}
-            title='Save Capability Set As...'
+            title={t('Save Capability Set As')}
             okText='Save'
             cancelText='Cancel'
             onCancel={hideSaveAsModal}
             onOk={() => saveSession(caps, {name: saveAsText})}>
-            <Input onChange={(e) => setSaveAsText(e.target.value)} addonBefore='Name' value={saveAsText}/>
+            <Input onChange={(e) => setSaveAsText(e.target.value)} addonBefore={t('Name')} value={saveAsText}/>
           </Modal>
         </Col>
       </Row>

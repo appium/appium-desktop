@@ -59,6 +59,7 @@ class SelectedElement extends Component {
       value,
       name: key,
     }));
+    dataSource.unshift({key: 'elementId', value: elementId, name: 'elementId'});
 
     // Get the columns for the strategies table
     let findColumns = [{

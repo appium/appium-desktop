@@ -7,20 +7,20 @@ export default class ServerTabTestingbot extends Component {
 
   render () {
 
-    const {server, setServerParam} = this.props;
+    const {server, setServerParam, t} = this.props;
 
     return <Form>
       <Row gutter={8}>
         <Col span={12}>
           <FormItem>
-            <Input id='testingbotKey' placeholder={process.env.TB_KEY ? 'Using data found in $TB_KEY' : 'your-username'} addonBefore="TestingBot Key" value={server.testingbot.key} onChange={(e) => setServerParam('key', e.target.value)} />
+            <Input id='testingbotKey' placeholder={process.env.TB_KEY ? 'Using data found in $TB_KEY' : 'your-username'} addonBefore={t('TestingBot Key')} value={server.testingbot.key} onChange={(e) => setServerParam('key', e.target.value)} />
           </FormItem>
         </Col>
       </Row>
       <Row gutter={8}>
         <Col span={12}>
           <FormItem>
-            <Input id='testingbotSecret' type='password' placeholder={process.env.TB_SECRET ? 'Using data found in $TB_SECRET' : 'Your TB Secret'} addonBefore="TestingBot Secret" value={server.testingbot.secret} onChange={(e) => setServerParam('secret', e.target.value)} />
+            <Input id='testingbotSecret' type='password' placeholder={process.env.TB_SECRET ? 'Using data found in $TB_SECRET' : 'Your TB Secret'} addonBefore={t('TestingBot Secret')} value={server.testingbot.secret} onChange={(e) => setServerParam('secret', e.target.value)} />
           </FormItem>
         </Col>
       </Row>

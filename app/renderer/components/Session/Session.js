@@ -71,7 +71,7 @@ export default class Session extends Component {
     const {newSessionBegan, savedSessions, tabKey, switchTabs,
            changeServerType, serverType, server,
            requestSaveAsModal, newSession, caps, capsUUID, saveSession, isCapsDirty,
-           sessionLoading, attachSessId} = this.props;
+           sessionLoading, attachSessId, t} = this.props;
     const { visibleProviders } = this.state || {};
 
     const isAttaching = tabKey === 'attach';
@@ -90,10 +90,10 @@ export default class Session extends Component {
       <div className={SessionStyles.sessionContainer}>
         <div id='serverTypeTabs' className={SessionStyles.serverTab}>
           <Tabs activeKey={serverType} onChange={changeServerType} className={SessionStyles.serverTabs}>
-            <TabPane disabled={!server.local.port} tab='Automatic Server' key={ServerTypes.local}>
+            <TabPane disabled={!server.local.port} tab={t('Automatic Server')} key={ServerTypes.local}>
               <ServerTabAutomatic {...this.props} />
             </TabPane>
-            <TabPane tab='Custom Server' key={ServerTypes.remote}>
+            <TabPane tab={t('Custom Server')} key={ServerTypes.remote}>
               <ServerTabCustom {...this.props} />
             </TabPane>
             { visibleProviders.saucelabs && <TabPane tab={sauceTabHead} key={ServerTypes.sauce}>
@@ -129,17 +129,17 @@ export default class Session extends Component {
 
 
         {newSessionBegan && <div key={2}>
-          <p>Session In Progress</p>
+          <p>{t('sessionInProgress')}</p>
         </div>}
 
         {!newSessionBegan && <Tabs activeKey={tabKey} onChange={switchTabs} className={SessionStyles.scrollingTabCont}>
-          <TabPane tab='Desired Capabilities' key='new' className={SessionStyles.scrollingTab}>
+          <TabPane tab={t('Desired Capabilities')} key='new' className={SessionStyles.scrollingTab}>
             <NewSessionForm {...this.props} />
           </TabPane>
-          <TabPane tab={`Saved Capability Sets (${savedSessions.length})`} key='saved' className={SessionStyles.scrollingTab} disabled={savedSessions.length === 0}>
+          <TabPane tab={t('Saved Capability Sets', {savedSessionsCount: savedSessions.length})} key='saved' className={SessionStyles.scrollingTab} disabled={savedSessions.length === 0}>
             <SavedSessions {...this.props} />
           </TabPane>
-          <TabPane tab='Attach to Session...' key='attach' className={SessionStyles.scrollingTab}>
+          <TabPane tab={t('Attach to Session')} key='attach' className={SessionStyles.scrollingTab}>
             <AttachToSession {...this.props} />
           </TabPane>
         </Tabs>}
@@ -147,17 +147,17 @@ export default class Session extends Component {
           <div className={SessionStyles.desiredCapsLink}>
             <a href="#" onClick={(e) => e.preventDefault() || shell.openExternal('https://github.com/appium/appium/blob/master/docs/en/writing-running-appium/caps.md')}>
               <Icon type='link' />&nbsp;
-              Desired Capabilities Documentation
+              {t('desiredCapabilitiesDocumentation')}
             </a>
           </div>
-          { (!isAttaching && capsUUID) && <Button onClick={() => saveSession(caps, {uuid: capsUUID})} disabled={!isCapsDirty}>Save</Button> }
-          {!isAttaching && <Button onClick={requestSaveAsModal}>Save As...</Button>}
+          { (!isAttaching && capsUUID) && <Button onClick={() => saveSession(caps, {uuid: capsUUID})} disabled={!isCapsDirty}>{t('Save')}</Button> }
+          {!isAttaching && <Button onClick={requestSaveAsModal}>{t('saveAs')}</Button>}
           {!isAttaching && <Button type="primary" id='btnStartSession'
-            onClick={() => newSession(caps)} className={SessionStyles['start-session-button']}>Start Session</Button>
+            onClick={() => newSession(caps)} className={SessionStyles['start-session-button']}>{t('startSession')}</Button>
           }
           {isAttaching &&
             <Button type="primary" disabled={!attachSessId} onClick={() => newSession(null, attachSessId)}>
-              Attach to Session
+              {t('attachToSession')}
             </Button>
           }
         </div>

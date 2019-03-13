@@ -1,6 +1,6 @@
 const config = {
   platform: process.platform,
-  languages: ['en', 'de'],
+  languages: ['en', 'de', 'ru', 'ja'],
   fallbackLng: 'en',
   namespace: 'translation',
 };

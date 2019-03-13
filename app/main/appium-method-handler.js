@@ -113,6 +113,9 @@ export default class AppiumMethodHandler {
     this._lastActiveMoment = +(new Date());
     let cachedEl;
     let res = {};
+    if (!_.isArray(args)) {
+      args = [args];
+    }
 
     if (elementId) {
       // Give the cached element a variable name (el1, el2, el3,...) the first time it's used

@@ -192,6 +192,11 @@ function macMenuHelp () {
       click () {
         shell.openExternal('https://github.com/appium/appium-desktop/issues');
       }
+    }, {
+      label: i18n.t('Add Or Improve Translations'),
+      click () {
+        shell.openExternal('https://crowdin.com/project/appium-desktop');
+      }
     }]
   };
 }

@@ -58,6 +58,15 @@ export const CLEAR_SWIPE_ACTION = 'CLEAR_SWIPE_ACTION';
 export const PROMPT_KEEP_ALIVE = 'PROMPT_KEEP_ALIVE';
 export const HIDE_PROMPT_KEEP_ALIVE = 'HIDE_PROMPT_KEEP_ALIVE';
 
+export const SELECT_INTERACTION_MODE = 'SELECT_INTERACTION_MODE';
+
+export const SELECT_ACTION_GROUP = 'SELECT_ACTION_GROUP';
+export const SELECT_SUB_ACTION_GROUP = 'SELECT_SUB_ACTION_GROUP';
+
+export const ENTERING_ACTION_ARGS = 'ENTERING_ACTION_ARGS';
+export const REMOVE_ACTION = 'REMOVE_ACTION';
+export const SET_ACTION_ARG = 'SET_ACTION_ARG';
+
 
 // Attributes on nodes that we know are unique to the node
 const uniqueAttributes = [
@@ -202,13 +211,15 @@ export function unselectHoveredElement (path) {
  */
 export function applyClientMethod (params) {
   return async (dispatch, getState) => {
-    let isRecording = params.methodName !== 'quit' &&
+    const isRecording = params.methodName !== 'quit' &&
                       params.methodName !== 'source' &&
                       getState().inspector.isRecording;
     try {
       dispatch({type: METHOD_CALL_REQUESTED});
-      let {source, screenshot, windowSize, result, sourceError, screenshotError, windowSizeError,
-           variableName, variableIndex, strategy, selector} = await callClientMethod(params);
+      const {source, screenshot, windowSize, result, sourceError,
+             screenshotError, windowSizeError, variableName,
+             variableIndex, strategy, selector} = await callClientMethod(params);
+
       if (isRecording) {
         // Add 'findAndAssign' line of code. Don't do it for arrays though. Arrays already have 'find' expression
         if (strategy && selector && !variableIndex && variableIndex !== 0) {
@@ -221,16 +232,19 @@ export function applyClientMethod (params) {
         dispatch({type: RECORD_ACTION, action: params.methodName, params: args });
       }
       dispatch({type: METHOD_CALL_DONE});
-      dispatch({
-        type: SET_SOURCE_AND_SCREENSHOT,
-        source: source && xmlToJSON(source),
-        sourceXML: source,
-        screenshot,
-        windowSize,
-        sourceError,
-        screenshotError,
-        windowSizeError,
-      });
+
+      if (source && screenshot) {
+        dispatch({
+          type: SET_SOURCE_AND_SCREENSHOT,
+          source: source && xmlToJSON(source),
+          sourceXML: source,
+          screenshot,
+          windowSize,
+          sourceError,
+          screenshotError,
+          windowSizeError,
+        });
+      }
       return result;
     } catch (error) {
       let methodName = params.methodName === 'click' ? 'tap' : params.methodName;
@@ -403,8 +417,8 @@ export function setLocatorTestElement (elementId) {
     if (elementId) {
       try {
         const [location, size] = await (B.all([
-          callClientMethod({methodName: 'getLocation', args: [elementId], skipScreenshotAndSource: true, skipRecord: true}),
-          callClientMethod({methodName: 'getSize', args: [elementId], skipScreenshotAndSource: true, skipRecord: true}),
+          callClientMethod({methodName: 'getLocation', args: [elementId], skipScreenshotAndSource: true, skipRecord: true, ignoreResult: true}),
+          callClientMethod({methodName: 'getSize', args: [elementId], skipScreenshotAndSource: true, skipRecord: true, ignoreResult: true}),
         ]));
         dispatch({type: SET_SEARCHED_FOR_ELEMENT_BOUNDS, location: location.res, size: size.res});
       } catch (ign) { }
@@ -452,5 +466,41 @@ export function keepSessionAlive () {
   return (dispatch) => {
     dispatch({type: HIDE_PROMPT_KEEP_ALIVE});
     ipcRenderer.send('appium-keep-session-alive');
+  };
+}
+
+export function selectActionGroup (group) {
+  return (dispatch) => {
+    dispatch({type: SELECT_ACTION_GROUP, group});
+  };
+}
+
+export function selectSubActionGroup (group) {
+  return (dispatch) => {
+    dispatch({type: SELECT_SUB_ACTION_GROUP, group});
+  };
+}
+
+export function selectInteractionMode (interaction) {
+  return (dispatch) => {
+    dispatch({type: SELECT_INTERACTION_MODE, interaction});
+  };
+}
+
+export function startEnteringActionArgs (actionName, action) {
+  return (dispatch) => {
+    dispatch({type: ENTERING_ACTION_ARGS, actionName, action});
+  };
+}
+
+export function cancelPendingAction () {
+  return (dispatch) => {
+    dispatch({type: REMOVE_ACTION});
+  };
+}
+
+export function setActionArg (index, value) {
+  return (dispatch) => {
+    dispatch({type: SET_ACTION_ARG, index, value});
   };
 }
