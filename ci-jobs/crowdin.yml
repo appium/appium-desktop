@@ -4,9 +4,6 @@
 # https://docs.microsoft.com/vsts/pipelines/languages/javascript
 jobs:
 - job: crowdin
-  variables:
-    CROWDIN_PROJECT_ID: $(CROWDIN_PROJECT_ID)
-    CROWDIN_PROJECT_KEY: $(CROWDIN_PROJECT_KEY)
   steps:
     - task: NodeTool@0
       inputs:
@@ -14,3 +11,5 @@ jobs:
     - script: npm install
       displayName: NPM install
     - script: npm run crowdin-update
+      env:
+        CROWDIN_PROJECT_KEY: $(CROWDIN_PROJECT_KEY)
