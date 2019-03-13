@@ -95,6 +95,7 @@
   "Could not start session": "Не удалось запустить сессию",
   "couldNotConnect": "Не удалось подключиться к серверу; вы уверены, что он запущен?",
   "sauceCredentialsRequired": "Требуется имя пользователя и ключ доступа к Sauce!",
+  "testingbotCredentialsRequired": "TestingBot key and secret are required!",
   "Perfecto SecurityToken is required": "Требуется SecurityToken Perfecto",
   "browserstackCredentialsRequired": "Требуется имя пользователя и ключ доступа Browserstack!",
   "bitbarCredentialsRequired": "Требуется ключ API Bitbar!",

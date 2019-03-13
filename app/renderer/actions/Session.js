@@ -58,7 +58,8 @@ export const ServerTypes = {
   bitbar: 'bitbar',
   kobiton: 'kobiton',
   perfecto: 'perfecto',
-  pcloudy: 'pcloudy'
+  pcloudy: 'pcloudy',
+  testingbot: 'testingbot'
 };
 
 const JSON_TYPES = ['object', 'number', 'boolean'];
@@ -293,6 +294,22 @@ export function newSession (caps, attachSessId = null) {
           notification.error({
             message: 'Error',
             description: 'PCLOUDY username and api key are required!',
+            duration: 4
+          });
+          return;
+        }
+        https = true;
+        break;
+      case ServerTypes.testingbot:
+        host = process.env.TB_HOST || 'hub.testingbot.com';
+        port = 443;
+        username = session.server.testingbot.key || process.env.TB_KEY;
+        accessKey = session.server.testingbot.secret || process.env.TB_SECRET;
+        desiredCapabilities['tb.source'] = 'appiumdesktop';
+        if (!username || !accessKey) {
+          notification.error({
+            message: 'Error',
+            description: i18n.t('testingbotCredentialsRequired'),
             duration: 4
           });
           return;

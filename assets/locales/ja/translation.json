@@ -95,6 +95,7 @@
   "Could not start session": "セッションを開始できませんでした。",
   "couldNotConnect": "Could not connect to server; are you sure it's running?",
   "sauceCredentialsRequired": "Sauce Labs のユーザー名とアクセス キーが必要です。",
+  "testingbotCredentialsRequired": "TestingBot key and secret are required!",
   "Perfecto SecurityToken is required": "Perfecto の SecurityToken が必要です",
   "browserstackCredentialsRequired": "Browserstack username and access key are required!",
   "bitbarCredentialsRequired": "BitbarのAPIキーが必要です",
