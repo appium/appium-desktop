@@ -308,5 +308,7 @@
   "callToMethodFailed": "Call to '{{methodName}}' failed",
   "methodCallResult": "'{{methodName}}' result",
   "commandWasReturnedWithResult": "Command was returned with result: {{result}}",
-  "Invalid JSON": "Invalid JSON: {{json}}"
+  "Invalid JSON": "Invalid JSON: {{json}}",
+  "TestingBot Key": "TestingBot Key",
+  "TestingBot Secret": "TestingBot Secret"
 }

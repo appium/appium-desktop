@@ -98,7 +98,6 @@
   "sauceCredentialsRequired": "Sauceのユーザー名とアクセス キーが必要です",
   "Perfecto SecurityToken is required": "PerfectoのSecurityTokenが必要です",
   "browserstackCredentialsRequired": "Browserstackのユーザ名とアクセスキーが必要です",
-  "testingbotCredentialsRequired": "TestingBot key and secret are required!",
   "bitbarCredentialsRequired": "BitbarのAPIキーが必要です",
   "kobitonCredentialsRequired": "Kobitonのユーザ名とアクセスキーが必要です",
   "errorStartingServer": "Appiumサーバの起動に失敗しました: {{message}}",

@@ -98,7 +98,6 @@
     "sauceCredentialsRequired": "Имя пользователя и ключ доступа Sauce являются обязательными!",
     "Perfecto SecurityToken is required": "Perfecto SecurityToken является обязательным",
     "browserstackCredentialsRequired": "Имя пользователя и ключ доступа Browserstack являются обязательными!",
-    "testingbotCredentialsRequired": "TestingBot key and secret are required!",
     "bitbarCredentialsRequired": "Ключ Bitbar API является обязательным",
     "kobitonCredentialsRequired": "Имя пользователя и API ключ KOBITON являются обязательными!",
     "errorStartingServer": "Ошибка запуска Appium сервера: {{message}}",
