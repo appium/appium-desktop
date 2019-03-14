@@ -11,3 +11,5 @@ jobs:
     - script: npm install
       displayName: NPM install
     - script: npm run crowdin-update
+      env:
+        CROWDIN_PROJECT_KEY: $(CROWDIN_PROJECT_KEY)
