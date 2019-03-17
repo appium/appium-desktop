@@ -15,7 +15,7 @@ jobs:
   parameters:
     target: NSIS
     pool: 'Hosted Windows 2019 with VS2019'
-    name: 'windows_package'
+    name: 'windows_package_nsis'
 - template: templates/package.yml
   parameters:
     pool: 'Hosted Ubuntu 1604'
