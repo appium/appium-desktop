@@ -27,6 +27,3 @@ jobs:
       displayName: Build project
     - script: npx build --publish onTagOrDraft
       displayName: Build application bundles
-    - task: PublishBuildArtifacts@1
-      inputs:
-        pathtoPublish: release/
