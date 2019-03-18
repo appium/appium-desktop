@@ -66,6 +66,14 @@
     flex-flow: column;
 }
 
+.inspector-main .interaction-tab-container :global(.ant-tabs) {
+    height: 100%;
+}
+
+.inspector-main .interaction-tab-container :global(.ant-tabs-content) {
+    height: 100%;
+}
+
 .inspector-main .interaction-tab-container :global(.action-row) {
     display: flex;
 }
