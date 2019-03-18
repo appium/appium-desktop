@@ -1,5 +1,6 @@
 import { shell } from 'electron';
 import React, { Component } from 'react';
+import _ from 'lodash';
 import NewSessionForm from './NewSessionForm';
 import SavedSessions from './SavedSessions';
 import AttachToSession from './AttachToSession';
@@ -8,6 +9,7 @@ import ServerTabCustom from './ServerTabCustom';
 import { Tabs, Button, Spin, Icon } from 'antd';
 import AdvancedServerParams from './AdvancedServerParams';
 import SessionStyles from './Session.css';
+import CloudProviders from './CloudProviders';
 import CloudProviderSelector from './CloudProviderSelector';
 
 const {TabPane} = Tabs;
@@ -44,6 +46,7 @@ export default class Session extends Component {
     const {newSessionBegan, savedSessions, tabKey, switchTabs,
            serverType, server,
            requestSaveAsModal, newSession, caps, capsUUID, saveSession,
+           visibleProviders,
            isCapsDirty, sessionLoading, attachSessId, t} = this.props;
 
     const isAttaching = tabKey === 'attach';
@@ -63,6 +66,13 @@ export default class Session extends Component {
                 /*..._(CloudProviders).map((value, key) => (
                   <TabPane tab={<div>{[value.tabhead(), <Icon style={{color: 'red', marginLeft: '10px'}} onClick={(e) => alert('clickz') & e.preventDefault()} type='close'>x</Icon>]}</div>} key={key}>{value.tab(this.props)}</TabPane>
                 )),*/
+                ..._(visibleProviders).map((providerName) => {
+                  const provider = CloudProviders[providerName];
+
+                  return <TabPane tab={
+                    <div>{[provider.tabhead(), <Icon style={{color: 'red', marginLeft: '10px'}} onClick={(e) => alert('clickz') & e.preventDefault()} type='close'>x</Icon>]}
+                  </div>} key={providerName}>{provider.tab(this.props)}</TabPane>;
+                }),
                 <TabPane tab='Add Cloud Provider +' key='addCloudProvider'></TabPane>
               ]}
             </Tabs>
