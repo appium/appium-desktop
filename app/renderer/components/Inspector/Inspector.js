@@ -67,7 +67,7 @@ export default class Inspector extends Component {
           </Spin>
         }
       </div>
-      <div id='sourceTreeContainer' style={{height: '100%'}} className={InspectorStyles['interaction-tab-container']} >
+      <div id='sourceTreeContainer' className={InspectorStyles['interaction-tab-container']} >
         {showRecord &&
           <RecordedActions {...this.props} />
         }
@@ -75,15 +75,14 @@ export default class Inspector extends Component {
           size="small"
           onChange={(tab) => selectInteractionMode(tab)}>
           <TabPane tab={t('Source')} key={INTERACTION_MODE.SOURCE}>
-            <div className='action-row' style={{minHeight: '100%', maxHeight: '100%'}}>
-              <div className='col' style={{minWidth: '50%', maxWidth: '50%'}}>
+            <div className='action-row' style={{height: '100%'}}>
+              <div style={{minWidth: '50%', maxWidth: '50%'}}>
                 <Card style={{height: '100%'}}
                   title={<span><Icon type="file-text" /> {t('App Source')}</span>}>
                   <Source {...this.props} />
                 </Card>
               </div>
               <div id='selectedElementContainer'
-                className='action-col'
                 className={`${InspectorStyles['interaction-tab-container']} ${InspectorStyles['element-detail-container']}`}
                 style={{minWidth: '50%', maxWidth: '50%'}}>
                 <Card style={{height: '100%'}}

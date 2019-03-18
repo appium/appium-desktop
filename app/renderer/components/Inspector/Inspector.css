@@ -64,6 +64,7 @@
     padding-left: 1em;
     display: flex;
     flex-flow: column;
+    height: 100%;
 }
 
 .inspector-main :global(.ant-card-head) {
@@ -130,11 +131,9 @@
 
 .inspector-main .recorded-actions {
     margin-bottom: 12px;
-}
-
-.inspector-main .recorded-actions {
+    max-height: 40%;
+    min-height: 30%;
     flex: 1;
-    min-height: 150px;
 }
 
 .inspector-main .recorded-actions :global(.ant-btn-group) {
