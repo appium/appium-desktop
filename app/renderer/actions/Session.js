@@ -3,9 +3,10 @@ import settings from '../../shared/settings';
 import { v4 as UUID } from 'uuid';
 import { push } from 'connected-react-router';
 import { notification } from 'antd';
-import { debounce, toPairs } from 'lodash';
+import _, { debounce, toPairs } from 'lodash';
 import { setSessionDetails } from './Inspector';
 import i18n from '../../configs/i18next.config.renderer';
+import CloudProviders from '../components/Session/CloudProviders';
 
 export const NEW_SESSION_REQUESTED = 'NEW_SESSION_REQUESTED';
 export const NEW_SESSION_BEGAN = 'NEW_SESSION_BEGAN';
@@ -48,19 +49,12 @@ export const SAVE_RAW_DESIRED_CAPS = 'SAVE_RAW_DESIRED_CAPS';
 export const SET_RAW_DESIRED_CAPS = 'SET_RAW_DESIRED_CAPS';
 export const SHOW_DESIRED_CAPS_JSON_ERROR = 'SHOW_DESIRED_CAPS_JSON_ERROR';
 
-export const ServerTypes = {
-  local: 'local',
-  remote: 'remote',
-  sauce: 'sauce',
-  testobject: 'testobject',
-  headspin: 'headspin',
-  browserstack: 'browserstack',
-  bitbar: 'bitbar',
-  kobiton: 'kobiton',
-  perfecto: 'perfecto',
-  pcloudy: 'pcloudy',
-  testingbot: 'testingbot'
-};
+const serverTypes = {};
+for (const key of _.keys(CloudProviders)) {
+  serverTypes[key] = key;
+}
+
+export const SERVER_TYPES = serverTypes;
 
 const JSON_TYPES = ['object', 'number', 'boolean'];
 

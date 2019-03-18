@@ -12,27 +12,26 @@ import { NEW_SESSION_REQUESTED, NEW_SESSION_BEGAN, NEW_SESSION_DONE,
          ENABLE_DESIRED_CAPS_EDITOR, ABORT_DESIRED_CAPS_EDITOR, SAVE_RAW_DESIRED_CAPS, SET_RAW_DESIRED_CAPS, SHOW_DESIRED_CAPS_JSON_ERROR,
          ServerTypes } from '../actions/Session';
 
+//const visibleServers = []; // Pull this from "electron-settings"
+const server = {
+  local: {},
+  remote: {},
+  advanced: {},
+};
+
+for (const serverName of _.keys(ServerTypes)) {
+  server[serverName] = {};
+}
+
+server.testobject.dataCenter = 'US';
+
 // Make sure there's always at least one cap
 const INITIAL_STATE = {
   savedSessions: [],
   tabKey: 'new',
   serverType: ServerTypes.local,
-  server: {
-    local: {},
-    remote: {},
-    sauce: {},
-    testobject: {
-      dataCenter: 'US',
-    },
-    headspin: {},
-    browserstack: {},
-    advanced: {},
-    bitbar: {},
-    kobiton: {},
-    perfecto: {},
-    pcloudy: {},
-    testingbot: {},
-  },
+  server,
+  //visibleServers,
   attachSessId: null,
 
   // Make sure there's always at least one cap
@@ -194,7 +193,6 @@ export default function session (state = INITIAL_STATE, action) {
           perfecto: action.server.perfecto || {},
           pcloudy: action.server.pcloudy || {},
           testingbot: action.server.testingbot || {},
-
         },
         serverType: action.serverType || ServerTypes.local,
       };
