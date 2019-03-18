@@ -3,20 +3,20 @@
 # Add steps that analyze code, save build artifacts, deploy, and more:
 # https://docs.microsoft.com/vsts/pipelines/languages/javascript
 jobs:
-- template: ci-jobs/templates/package.yml
+- template: templates/package.yml
   parameters:
     pool: 'Hosted MacOS Preview'
     name: 'osx_package'
-- template: ci-jobs/templates/package.yml
+- template: templates/package.yml
   parameters:
     pool: 'Hosted Windows 2019 with VS2019'
     name: 'windows_package'
-- template: ci-jobs/templates/package.yml
+- template: templates/package.yml
   parameters:
     target: NSIS
     pool: 'Hosted Windows 2019 with VS2019'
-    name: 'windows_package'
-- template: ci-jobs/templates/package.yml
+    name: 'windows_package_nsis'
+- template: templates/package.yml
   parameters:
     pool: 'Hosted Ubuntu 1604'
     name: 'linux_package'
