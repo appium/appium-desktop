@@ -1,16 +1,14 @@
 import { shell } from 'electron';
 import React, { Component } from 'react';
-import _ from 'lodash';
 import NewSessionForm from './NewSessionForm';
 import SavedSessions from './SavedSessions';
 import AttachToSession from './AttachToSession';
 import ServerTabAutomatic from './ServerTabAutomatic';
 import ServerTabCustom from './ServerTabCustom';
-import { Tabs, Button, Spin, Icon, Modal } from 'antd';
-import { ServerTypes } from '../../actions/Session';
+import { Tabs, Button, Spin, Icon } from 'antd';
 import AdvancedServerParams from './AdvancedServerParams';
 import SessionStyles from './Session.css';
-import CloudProviders from './CloudProviders';
+import CloudProviderSelector from './CloudProviderSelector';
 
 const {TabPane} = Tabs;
 
@@ -46,8 +44,7 @@ export default class Session extends Component {
     const {newSessionBegan, savedSessions, tabKey, switchTabs,
            serverType, server,
            requestSaveAsModal, newSession, caps, capsUUID, saveSession,
-           isCapsDirty, isAddingCloudProvider, stopAddCloudProvider,
-           sessionLoading, attachSessId, t} = this.props;
+           isCapsDirty, sessionLoading, attachSessId, t} = this.props;
 
     const isAttaching = tabKey === 'attach';
 
@@ -57,15 +54,15 @@ export default class Session extends Component {
           <div id='serverTypeTabs' className={SessionStyles.serverTab}>
             <Tabs activeKey={serverType} onChange={(tab) => this.handleSelectServerTab(tab)} className={SessionStyles.serverTabs}>
               {[
-                <TabPane disabled={!server.local.port} tab={t('Automatic Server')} key={ServerTypes.local}>
+                <TabPane disabled={!server.local.port} tab={t('Automatic Server')} key="local">
                   <ServerTabAutomatic {...this.props} />
                 </TabPane>,
-                <TabPane tab={t('Custom Server')} key={ServerTypes.remote}>
+                <TabPane tab={t('Custom Server')} key="remote">
                   <ServerTabCustom {...this.props} />
                 </TabPane>,
-                ..._(CloudProviders).map((value, key) => (
-                  <TabPane tab={value.tabhead()} key={key}>{value.tab(this.props)}</TabPane>
-                )),
+                /*..._(CloudProviders).map((value, key) => (
+                  <TabPane tab={<div>{[value.tabhead(), <Icon style={{color: 'red', marginLeft: '10px'}} onClick={(e) => alert('clickz') & e.preventDefault()} type='close'>x</Icon>]}</div>} key={key}>{value.tab(this.props)}</TabPane>
+                )),*/
                 <TabPane tab='Add Cloud Provider +' key='addCloudProvider'></TabPane>
               ]}
             </Tabs>
@@ -108,7 +105,7 @@ export default class Session extends Component {
           </div>
         </div>
       </Spin>,
-      <Modal key="modal" visible={isAddingCloudProvider} onCancel={stopAddCloudProvider}>Add cloud provider</Modal>
+      <CloudProviderSelector {...this.props} />
     ];
   }
 }
