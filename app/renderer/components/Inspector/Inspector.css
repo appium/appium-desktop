@@ -89,8 +89,12 @@
     height: 100%;
 }
 .inspector-main .interaction-tab-container :global(.action-col) {
-    flex: '1 1 0';
-    width: 0;
+    min-width: 50%;
+    max-width: 50%;
+}
+
+.inspector-main .interaction-tab-container :global(.ant-card) {
+    height: 100%;
 }
 
 .inspector-main .interaction-tab-container :global(.ant-tree) {

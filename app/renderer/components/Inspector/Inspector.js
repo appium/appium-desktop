@@ -76,17 +76,14 @@ export default class Inspector extends Component {
           onChange={(tab) => selectInteractionMode(tab)}>
           <TabPane tab={t('Source')} key={INTERACTION_MODE.SOURCE}>
             <div className='action-row'>
-              <div style={{minWidth: '50%', maxWidth: '50%'}}>
-                <Card style={{height: '100%'}}
-                  title={<span><Icon type="file-text" /> {t('App Source')}</span>}>
+              <div className='action-col'>
+                <Card title={<span><Icon type="file-text" /> {t('App Source')}</span>}>
                   <Source {...this.props} />
                 </Card>
               </div>
               <div id='selectedElementContainer'
-                className={`${InspectorStyles['interaction-tab-container']} ${InspectorStyles['element-detail-container']}`}
-                style={{minWidth: '50%', maxWidth: '50%'}}>
-                <Card style={{height: '100%'}}
-                  title={<span><Icon type="tag-o" /> {t('selectedElement')}</span>}
+                className={`${InspectorStyles['interaction-tab-container']} ${InspectorStyles['element-detail-container']} action-col`}>
+                <Card title={<span><Icon type="tag-o" /> {t('selectedElement')}</span>}
                   className={InspectorStyles['selected-element-card']}>
                   {path && <SelectedElement {...this.props}/>}
                   {!path && <i>{t('selectElementInSource')}</i>}
