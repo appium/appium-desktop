@@ -86,8 +86,8 @@
 
 .inspector-main .interaction-tab-container :global(.action-row) {
     display: flex;
+    height: 100%;
 }
-
 .inspector-main .interaction-tab-container :global(.action-col) {
     flex: '1 1 0';
     width: 0;
