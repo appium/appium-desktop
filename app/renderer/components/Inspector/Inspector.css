@@ -96,6 +96,15 @@
     overflow: auto;
 }
 
+.inspector-main .tree-container {
+    height: 100%;
+}
+
+.inspector-main .tree-container :global(ul) {
+    height: 100%;
+    overflow: auto;
+}
+
 .inspector-main .interaction-tab-container .scroll-buttons {
     position: absolute;
     bottom: 0;
