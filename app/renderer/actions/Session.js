@@ -49,12 +49,14 @@ export const SAVE_RAW_DESIRED_CAPS = 'SAVE_RAW_DESIRED_CAPS';
 export const SET_RAW_DESIRED_CAPS = 'SET_RAW_DESIRED_CAPS';
 export const SHOW_DESIRED_CAPS_JSON_ERROR = 'SHOW_DESIRED_CAPS_JSON_ERROR';
 
+export const IS_ADDING_CLOUD_PROVIDER = 'IS_ADDING_CLOUD_PROVIDER';
+
 const serverTypes = {};
 for (const key of _.keys(CloudProviders)) {
   serverTypes[key] = key;
 }
 
-export const SERVER_TYPES = serverTypes;
+export const ServerTypes = serverTypes;
 
 const JSON_TYPES = ['object', 'number', 'boolean'];
 
@@ -629,4 +631,16 @@ function removeNewSessionListeners () {
 function removeRunningSessionsListeners () {
   ipcRenderer.removeAllListeners('appium-client-get-sessions-fail');
   ipcRenderer.removeAllListeners('appium-client-get-sessions-response');
+}
+
+export function addCloudProvider () {
+  return (dispatch) => {
+    dispatch({type: IS_ADDING_CLOUD_PROVIDER, isAddingProvider: true});
+  };
+}
+
+export function stopAddCloudProvider () {
+  return (dispatch) => {
+    dispatch({type: IS_ADDING_CLOUD_PROVIDER, isAddingProvider: false});
+  };
 }

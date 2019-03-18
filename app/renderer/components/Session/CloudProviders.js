@@ -26,64 +26,46 @@ export default {
   sauce: {
     tabhead: () => <span className={SessionStyles.tabText}><img src={SauceLogo} /></span>,
     tab: props => <ServerTabSauce {...props} />,
+    logo: SauceLogo,
   },
   testobject: {
     tabhead: () => <span className={SessionStyles.tabText}><img src={TestObjectLogo} /></span>,
     tab: props => <ServerTabTestobject {...props} />,
+    logo: TestObjectLogo,
   },
   headspin: {
     tabhead: () => <span className={SessionStyles.tabText}><img src={HeadSpinLogo} /></span>,
     tab: props => <ServerTabHeadspin {...props} />,
+    logo: HeadSpinLogo,
   },
   browserstack: {
     tabhead: () => <span className={SessionStyles.tabText}><img src={BrowserStackLogo} /></span>,
     tab: props => <ServerTabBrowserstack {...props} />,
+    logo: BrowserStackLogo,
   },
   bitbar: {
     tabhead: () => <span className={SessionStyles.tabText}><img src={BitBarLogo} /></span>,
     tab: props => <ServerTabBitbar {...props} />,
+    logo: BitBarLogo,
   },
   kobiton: {
     tabhead: () => <span className={SessionStyles.tabText}><img src={KobitonLogo} /></span>,
     tab: props => <ServerTabKobiton {...props} />,
+    logo: KobitonLogo,
   },
   perfecto: {
     tabhead: () => <span className={SessionStyles.tabText}><img src={PerfectoLogo} /></span>,
     tab: props => <ServerTabPerfecto {...props} />,
+    logo: PerfectoLogo,
   },
   pcloudy: {
     tabhead: () => <span className={SessionStyles.tabText}><img src={PcloudyLogo} /></span>,
     tab: props => <ServerTabPcloudy {...props} />,
+    logo: PcloudyLogo,
   },
   testingbot: {
     tabhead: () => <span className={SessionStyles.tabText}><img src={TestingBotLogo} /></span>,
     tab: props => <ServerTabTestingbot {...props} />},
+    logo: TestingBotLogo,
+  }
 };
-
-/*
-
-<TabPane tab={sauceTabHead} key={ServerTypes.sauce}>
-  <ServerTabSauce {...props} />
-</TabPane>
-<TabPane tab={testObjectTabHead} key={ServerTypes.testobject}>
-  <ServerTabTestobject {...props} />
-</TabPane>
-<TabPane tab={headspinTabHead} key={ServerTypes.headspin}>
-  <ServerTabHeadspin {...props} />
-</TabPane>
-<TabPane tab={browserstackTabHead} key={ServerTypes.browserstack}>
-  <ServerTabBrowserstack {...props} />
-</TabPane>
-<TabPane tab={bitbarTabHead} key={ServerTypes.bitbar}>
-  <ServerTabBitbar {...props} />
-</TabPane>
-<TabPane tab={kobitonTabHead} key={ServerTypes.kobiton}>
-  <ServerTabKobiton {...props} />
-</TabPane>
-<TabPane tab={perfectoTabHead} key={ServerTypes.perfecto}>
-  <ServerTabPerfecto {...props} />
-</TabPane>
-<TabPane tab={pcloudyTabHead} key={ServerTypes.pcloudy}>
-  <ServerTabPcloudy {...props} />
-</TabPane>
-*/

@@ -10,7 +10,9 @@ import { NEW_SESSION_REQUESTED, NEW_SESSION_BEGAN, NEW_SESSION_DONE,
          CHANGE_SERVER_TYPE, SET_SERVER_PARAM, SET_SERVER, SET_ATTACH_SESS_ID,
          GET_SESSIONS_REQUESTED, GET_SESSIONS_DONE,
          ENABLE_DESIRED_CAPS_EDITOR, ABORT_DESIRED_CAPS_EDITOR, SAVE_RAW_DESIRED_CAPS, SET_RAW_DESIRED_CAPS, SHOW_DESIRED_CAPS_JSON_ERROR,
+         IS_ADDING_CLOUD_PROVIDER,
          ServerTypes } from '../actions/Session';
+
 
 //const visibleServers = []; // Pull this from "electron-settings"
 const server = {
@@ -45,6 +47,7 @@ const INITIAL_STATE = {
   isEditingDesiredCaps: false,
   isValidCapsJson: true,
   isValidatingCapsJson: false,
+  isAddingCloudProvider: false,
 };
 
 let nextState;
@@ -273,6 +276,12 @@ export default function session (state = INITIAL_STATE, action) {
         rawDesiredCaps: action.rawDesiredCaps,
         isValidCapsJson: action.isValidCapsJson,
         invalidCapsJsonReason: action.invalidCapsJsonReason,
+      };
+
+    case IS_ADDING_CLOUD_PROVIDER:
+      return {
+        ...state,
+        isAddingCloudProvider: action.isAddingProvider,
       };
 
     default:

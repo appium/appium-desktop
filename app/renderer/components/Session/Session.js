@@ -6,7 +6,7 @@ import SavedSessions from './SavedSessions';
 import AttachToSession from './AttachToSession';
 import ServerTabAutomatic from './ServerTabAutomatic';
 import ServerTabCustom from './ServerTabCustom';
-import { Tabs, Button, Spin, Icon } from 'antd';
+import { Tabs, Button, Spin, Icon, Modal } from 'antd';
 import { ServerTypes } from '../../actions/Session';
 import AdvancedServerParams from './AdvancedServerParams';
 import SessionStyles from './Session.css';
@@ -34,77 +34,81 @@ export default class Session extends Component {
   }
 
   handleSelectServerTab (tab) {
+    const {changeServerType, addCloudProvider} = this.props;
     if (tab === 'addCloudProvider') {
-      alert('Add cloud provider!');
+      addCloudProvider();
       return;
     }
-    const {changeServerType} = this.props;
     changeServerType(tab);
   }
 
   render () {
     const {newSessionBegan, savedSessions, tabKey, switchTabs,
            serverType, server,
-           requestSaveAsModal, newSession, caps, capsUUID, saveSession, isCapsDirty,
+           requestSaveAsModal, newSession, caps, capsUUID, saveSession,
+           isCapsDirty, isAddingCloudProvider, stopAddCloudProvider,
            sessionLoading, attachSessId, t} = this.props;
 
     const isAttaching = tabKey === 'attach';
 
-    return <Spin spinning={!!sessionLoading}>
-      <div className={SessionStyles.sessionContainer}>
-        <div id='serverTypeTabs' className={SessionStyles.serverTab}>
-          <Tabs activeKey={serverType} onChange={(tab) => this.handleSelectServerTab(tab)} className={SessionStyles.serverTabs}>
-            {[
-              <TabPane disabled={!server.local.port} tab={t('Automatic Server')} key={ServerTypes.local}>
-                <ServerTabAutomatic {...this.props} />
-              </TabPane>,
-              <TabPane tab={t('Custom Server')} key={ServerTypes.remote}>
-                <ServerTabCustom {...this.props} />
-              </TabPane>,
-              ..._(CloudProviders).map((value, key) => (
-                <TabPane tab={value.tabhead()} key={key}>{value.tab(this.props)}</TabPane>
-              )),
-              <TabPane tab='Add Cloud Provider +' key='addCloudProvider'></TabPane>
-            ]}
-          </Tabs>
-          <AdvancedServerParams {...this.props} />
-        </div>
-
-
-        {newSessionBegan && <div key={2}>
-          <p>{t('sessionInProgress')}</p>
-        </div>}
-
-        {!newSessionBegan && <Tabs activeKey={tabKey} onChange={switchTabs} className={SessionStyles.scrollingTabCont}>
-          <TabPane tab={t('Desired Capabilities')} key='new' className={SessionStyles.scrollingTab}>
-            <NewSessionForm {...this.props} />
-          </TabPane>
-          <TabPane tab={t('Saved Capability Sets', {savedSessionsCount: savedSessions.length})} key='saved' className={SessionStyles.scrollingTab} disabled={savedSessions.length === 0}>
-            <SavedSessions {...this.props} />
-          </TabPane>
-          <TabPane tab={t('Attach to Session')} key='attach' className={SessionStyles.scrollingTab}>
-            <AttachToSession {...this.props} />
-          </TabPane>
-        </Tabs>}
-        <div className={SessionStyles.sessionFooter}>
-          <div className={SessionStyles.desiredCapsLink}>
-            <a href="#" onClick={(e) => e.preventDefault() || shell.openExternal('https://github.com/appium/appium/blob/master/docs/en/writing-running-appium/caps.md')}>
-              <Icon type='link' />&nbsp;
-              {t('desiredCapabilitiesDocumentation')}
-            </a>
+    return [
+      <Spin spinning={!!sessionLoading} key="main">
+        <div className={SessionStyles.sessionContainer}>
+          <div id='serverTypeTabs' className={SessionStyles.serverTab}>
+            <Tabs activeKey={serverType} onChange={(tab) => this.handleSelectServerTab(tab)} className={SessionStyles.serverTabs}>
+              {[
+                <TabPane disabled={!server.local.port} tab={t('Automatic Server')} key={ServerTypes.local}>
+                  <ServerTabAutomatic {...this.props} />
+                </TabPane>,
+                <TabPane tab={t('Custom Server')} key={ServerTypes.remote}>
+                  <ServerTabCustom {...this.props} />
+                </TabPane>,
+                ..._(CloudProviders).map((value, key) => (
+                  <TabPane tab={value.tabhead()} key={key}>{value.tab(this.props)}</TabPane>
+                )),
+                <TabPane tab='Add Cloud Provider +' key='addCloudProvider'></TabPane>
+              ]}
+            </Tabs>
+            <AdvancedServerParams {...this.props} />
           </div>
-          { (!isAttaching && capsUUID) && <Button onClick={() => saveSession(caps, {uuid: capsUUID})} disabled={!isCapsDirty}>{t('Save')}</Button> }
-          {!isAttaching && <Button onClick={requestSaveAsModal}>{t('saveAs')}</Button>}
-          {!isAttaching && <Button type="primary" id='btnStartSession'
-            onClick={() => newSession(caps)} className={SessionStyles['start-session-button']}>{t('startSession')}</Button>
-          }
-          {isAttaching &&
-            <Button type="primary" disabled={!attachSessId} onClick={() => newSession(null, attachSessId)}>
-              {t('attachToSession')}
-            </Button>
-          }
+
+
+          {newSessionBegan && <div key={2}>
+            <p>{t('sessionInProgress')}</p>
+          </div>}
+
+          {!newSessionBegan && <Tabs activeKey={tabKey} onChange={switchTabs} className={SessionStyles.scrollingTabCont}>
+            <TabPane tab={t('Desired Capabilities')} key='new' className={SessionStyles.scrollingTab}>
+              <NewSessionForm {...this.props} />
+            </TabPane>
+            <TabPane tab={t('Saved Capability Sets', {savedSessionsCount: savedSessions.length})} key='saved' className={SessionStyles.scrollingTab} disabled={savedSessions.length === 0}>
+              <SavedSessions {...this.props} />
+            </TabPane>
+            <TabPane tab={t('Attach to Session')} key='attach' className={SessionStyles.scrollingTab}>
+              <AttachToSession {...this.props} />
+            </TabPane>
+          </Tabs>}
+          <div className={SessionStyles.sessionFooter}>
+            <div className={SessionStyles.desiredCapsLink}>
+              <a href="#" onClick={(e) => e.preventDefault() || shell.openExternal('https://github.com/appium/appium/blob/master/docs/en/writing-running-appium/caps.md')}>
+                <Icon type='link' />&nbsp;
+                {t('desiredCapabilitiesDocumentation')}
+              </a>
+            </div>
+            { (!isAttaching && capsUUID) && <Button onClick={() => saveSession(caps, {uuid: capsUUID})} disabled={!isCapsDirty}>{t('Save')}</Button> }
+            {!isAttaching && <Button onClick={requestSaveAsModal}>{t('saveAs')}</Button>}
+            {!isAttaching && <Button type="primary" id='btnStartSession'
+              onClick={() => newSession(caps)} className={SessionStyles['start-session-button']}>{t('startSession')}</Button>
+            }
+            {isAttaching &&
+              <Button type="primary" disabled={!attachSessId} onClick={() => newSession(null, attachSessId)}>
+                {t('attachToSession')}
+              </Button>
+            }
+          </div>
         </div>
-      </div>
-    </Spin>;
+      </Spin>,
+      <Modal key="modal" visible={isAddingCloudProvider} onCancel={stopAddCloudProvider}>Add cloud provider</Modal>
+    ];
   }
 }
