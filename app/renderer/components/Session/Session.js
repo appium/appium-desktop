@@ -67,6 +67,15 @@ export default class Session extends Component {
     });
   }
 
+  handleSelectServerTab (tab) {
+    if (tab === 'addCloudProvider') {
+      alert('Add cloud provider!');
+      return;
+    }
+    const {changeServerType} = this.props;
+    changeServerType(tab);
+  }
+
   render () {
     const {newSessionBegan, savedSessions, tabKey, switchTabs,
            changeServerType, serverType, server,
@@ -89,40 +98,41 @@ export default class Session extends Component {
     return <Spin spinning={!!sessionLoading}>
       <div className={SessionStyles.sessionContainer}>
         <div id='serverTypeTabs' className={SessionStyles.serverTab}>
-          <Tabs activeKey={serverType} onChange={changeServerType} className={SessionStyles.serverTabs}>
+          <Tabs activeKey={serverType} onChange={(tab) => this.handleSelectServerTab(tab)} className={SessionStyles.serverTabs}>
             <TabPane disabled={!server.local.port} tab={t('Automatic Server')} key={ServerTypes.local}>
               <ServerTabAutomatic {...this.props} />
             </TabPane>
             <TabPane tab={t('Custom Server')} key={ServerTypes.remote}>
               <ServerTabCustom {...this.props} />
             </TabPane>
-            { visibleProviders.saucelabs && <TabPane tab={sauceTabHead} key={ServerTypes.sauce}>
+            <TabPane tab={sauceTabHead} key={ServerTypes.sauce}>
               <ServerTabSauce {...this.props} />
-            </TabPane> }
-            { visibleProviders.testobject && <TabPane tab={testObjectTabHead} key={ServerTypes.testobject}>
+            </TabPane>
+            <TabPane tab={testObjectTabHead} key={ServerTypes.testobject}>
               <ServerTabTestobject {...this.props} />
-            </TabPane> }
-            { visibleProviders.headspin && <TabPane tab={headspinTabHead} key={ServerTypes.headspin}>
+            </TabPane>
+            <TabPane tab={headspinTabHead} key={ServerTypes.headspin}>
               <ServerTabHeadspin {...this.props} />
-            </TabPane> }
-            { visibleProviders.browserstack && <TabPane tab={browserstackTabHead} key={ServerTypes.browserstack}>
+            </TabPane>
+            <TabPane tab={browserstackTabHead} key={ServerTypes.browserstack}>
               <ServerTabBrowserstack {...this.props} />
-            </TabPane> }
-            { visibleProviders.bitbar && <TabPane tab={bitbarTabHead} key={ServerTypes.bitbar}>
+            </TabPane>
+            <TabPane tab={bitbarTabHead} key={ServerTypes.bitbar}>
               <ServerTabBitbar {...this.props} />
-            </TabPane> }
-            { visibleProviders.kobiton && <TabPane tab={kobitonTabHead} key={ServerTypes.kobiton}>
+            </TabPane>
+            <TabPane tab={kobitonTabHead} key={ServerTypes.kobiton}>
               <ServerTabKobiton {...this.props} />
-            </TabPane> }
-            { visibleProviders.perfecto && <TabPane tab={perfectoTabHead} key={ServerTypes.perfecto}>
+            </TabPane>
+            <TabPane tab={perfectoTabHead} key={ServerTypes.perfecto}>
               <ServerTabPerfecto {...this.props} />
-            </TabPane> }
-            { visibleProviders.pcloudy && <TabPane tab={pcloudyTabHead} key={ServerTypes.pcloudy}>
+            </TabPane>
+            <TabPane tab={pcloudyTabHead} key={ServerTypes.pcloudy}>
               <ServerTabPcloudy {...this.props} />
-            </TabPane> }
-            { visibleProviders.testingbot && <TabPane tab={testingbotTabHead} key={ServerTypes.testingbot}>
+            </TabPane>
+            <TabPane tab={testingbotTabHead} key={ServerTypes.testingbot}>
               <ServerTabTestingbot {...this.props} />
-            </TabPane> }
+            </TabPane>
+            <TabPane tab='Add Cloud Provider +' key='addCloudProvider'></TabPane>
           </Tabs>
           <AdvancedServerParams {...this.props} />
         </div>
