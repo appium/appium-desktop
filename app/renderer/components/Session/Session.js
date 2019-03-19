@@ -71,6 +71,9 @@ export default class Session extends Component {
                 </TabPane>,
                 ..._(visibleProviders).map((providerName) => {
                   const provider = CloudProviders[providerName];
+                  if (!provider) {
+                    return true;
+                  }
                   const icon = providerName !== serverType ? <Icon style={{color: 'red', marginLeft: '10px'}}
                     onClick={(e) => this.removeCloudProvider(providerName) & e.stopPropagation()}
                     type='close'>x</Icon> : null;

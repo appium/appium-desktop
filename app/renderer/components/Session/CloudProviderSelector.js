@@ -51,7 +51,7 @@ export default class CloudProviderSelector extends Component {
 
   render () {
     const {t, isAddingCloudProvider, stopAddCloudProvider} = this.props;
-    const providersGrid = _.chunk(_.keys(CloudProviders), 2);
+    const providersGrid = _.chunk(_.keys(CloudProviders), 2); // Converts list of providers into list of pairs of providers
 
     return <Modal key="modal" style={{minWidth: '600px'}} visible={isAddingCloudProvider} onCancel={stopAddCloudProvider} title={t('Select Cloud Provider')}>
       {[
@@ -60,12 +60,12 @@ export default class CloudProviderSelector extends Component {
             [
               ..._(row).map((providerName) => {
                 const provider = CloudProviders[providerName];
-                return <Col span={12} key={providerName}>
-                  <Button onClick={() => this.selectCloudProvider(key)} style={{width: '100%', padding: '4px'}}><img style={{maxHeight: '100%'}} src={provider.logo} /></Button>
+                return provider && <Col span={12} key={providerName}>
+                  <Button onClick={() => this.selectCloudProvider(providerName)} style={{width: '100%', padding: '4px'}}><img style={{maxHeight: '100%'}} src={provider.logo} /></Button>
                 </Col>;
               })
             ]
-          }</Row>;
+          }</Row>
         ))
       ]}
     </Modal>;
