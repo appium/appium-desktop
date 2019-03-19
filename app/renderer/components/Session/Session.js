@@ -24,11 +24,12 @@ export default class Session extends Component {
   }
 
   componentWillMount () {
-    const {setLocalServerParams, getSavedSessions, setSavedServerParams, getRunningSessions} = this.props;
+    const {setLocalServerParams, getSavedSessions, setSavedServerParams, setVisibleProviders, getRunningSessions} = this.props;
     (async () => {
       await getSavedSessions();
       await setSavedServerParams();
       await setLocalServerParams();
+      await setVisibleProviders();
       getRunningSessions();
     })();
   }

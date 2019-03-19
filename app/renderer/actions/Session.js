@@ -36,6 +36,7 @@ export const SAVED_SESSIONS = 'SAVED_SESSIONS';
 export const SESSION_SERVER_PARAMS = 'SESSION_SERVER_PARAMS';
 export const SESSION_SERVER_TYPE = 'SESSION_SERVER_TYPE';
 export const SERVER_ARGS = 'SERVER_ARGS';
+export const VISIBLE_PROVIDERS = 'VISIBLE_PROVIDERS';
 
 export const SET_ATTACH_SESS_ID = 'SET_ATTACH_SESS_ID';
 
@@ -366,7 +367,6 @@ export function newSession (caps, attachSessId = null) {
 
     // Save the current server settings
     await settings.set(SESSION_SERVER_PARAMS, session.server);
-    await settings.set(SESSION_SERVER_TYPE, session.serverType);
   };
 }
 
@@ -491,8 +491,9 @@ export function changeServerType (serverType) {
  */
 export function setServerParam (name, value, serverType) {
   const debounceGetRunningSessions = debounce(getRunningSessions(), 5000);
-  return (dispatch, getState) => {
+  return async (dispatch, getState) => {
     serverType = serverType || getState().session.serverType;
+    await settings.set(SESSION_SERVER_TYPE, serverType);
     dispatch({type: SET_SERVER_PARAM, serverType, name, value});
     debounceGetRunningSessions(dispatch, getState);
   };
@@ -648,17 +649,26 @@ export function stopAddCloudProvider () {
 }
 
 export function addVisibleProvider (provider) {
-  return (dispatch, getState) => {
+  return async (dispatch, getState) => {
     let currentProviders = getState().session.visibleProviders;
-    // TODO: Update this in settings
-    dispatch({type: SET_PROVIDERS, providers: _.union(currentProviders, [provider])});
+    const providers = _.union(currentProviders, [provider]);
+    await settings.set(VISIBLE_PROVIDERS, providers);
+    dispatch({type: SET_PROVIDERS, providers});
   };
 }
 
 export function removeVisibleProvider (provider) {
-  return (dispatch, getState) => {
+  return async (dispatch, getState) => {
     let currentProviders = getState().session.visibleProviders;
-    // TODO: Update this in settings
-    dispatch({type: SET_PROVIDERS, providers: _.without(currentProviders, provider)});
+    const providers = _.without(currentProviders, provider);
+    await settings.set(VISIBLE_PROVIDERS, providers);
+    dispatch({type: SET_PROVIDERS, providers});
+  };
+}
+
+export function setVisibleProviders () {
+  return async (dispatch) => {
+    const providers = await settings.get(VISIBLE_PROVIDERS);
+    dispatch({type: SET_PROVIDERS, providers});
   };
 }

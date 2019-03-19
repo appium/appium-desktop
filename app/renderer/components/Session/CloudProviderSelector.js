@@ -51,8 +51,29 @@ export default class CloudProviderSelector extends Component {
 
   render () {
     const {t, isAddingCloudProvider, stopAddCloudProvider} = this.props;
+    const providersGrid = _.chunk(_.keys(CloudProviders), 2);
 
-    return <Modal key="modal" width="2000" visible={isAddingCloudProvider} onCancel={stopAddCloudProvider} title="Select Cloud Provider">
+    return <Modal key="modal" style={{minWidth: '600px'}} visible={isAddingCloudProvider} onCancel={stopAddCloudProvider} title={t('Select Cloud Provider')}>
+      {[
+        ..._.map(providersGrid, (row, key) => (
+          <Row gutter={16} style={{marginBottom: '16px'}} key={key}>{
+            [
+              ..._(row).map((providerName) => {
+                const provider = CloudProviders[providerName];
+                return <Col span={12} key={providerName}>
+                  <Button onClick={() => this.selectCloudProvider(key)} style={{width: '100%', padding: '4px'}}><img style={{maxHeight: '100%'}} src={provider.logo} /></Button>
+                </Col>;
+              })
+            ]
+          }</Row>;
+        ))
+      ]}
+    </Modal>;
+  }
+}
+
+/*
+
       {[
         ..._(CloudProviders).map((provider, key) => (
           <Row gutter={16} style={{marginBottom: '16px'}} key={key}>
@@ -62,6 +83,4 @@ export default class CloudProviderSelector extends Component {
           </Row>
         ))
       ]}
-    </Modal>;
-  }
-}
+*/
