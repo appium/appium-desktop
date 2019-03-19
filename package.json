@@ -117,7 +117,7 @@
     "ansi-to-html": "~0.6.7",
     "antd": "^3.11.2",
     "appium": "^1.11.1",
-    "appium-support": "^2.25.0",
+    "appium-support": "^2.26.0",
     "bluebird": "^3.5.1",
     "connected-react-router": "^6.0.0",
     "css-modules-require-hook": "^4.2.3",
