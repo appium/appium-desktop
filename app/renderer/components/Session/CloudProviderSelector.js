@@ -43,8 +43,8 @@ export default class CloudProviderSelector extends Component {
   }
 
   selectCloudProvider (providerName) {
-    const {stopAddCloudProvider, addProvider, changeServerType} = this.props;
-    addProvider(providerName);
+    const {stopAddCloudProvider, addVisibleProvider, changeServerType} = this.props;
+    addVisibleProvider(providerName);
     stopAddCloudProvider();
     changeServerType(providerName);
   }

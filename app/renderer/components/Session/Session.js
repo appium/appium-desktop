@@ -42,6 +42,11 @@ export default class Session extends Component {
     changeServerType(tab);
   }
 
+  removeCloudProvider (providerName) {
+    const {removeVisibleProvider} = this.props;
+    removeVisibleProvider(providerName);
+  }
+
   render () {
     const {newSessionBegan, savedSessions, tabKey, switchTabs,
            serverType, server,
@@ -63,15 +68,20 @@ export default class Session extends Component {
                 <TabPane tab={t('Custom Server')} key="remote">
                   <ServerTabCustom {...this.props} />
                 </TabPane>,
-                /*..._(CloudProviders).map((value, key) => (
-                  <TabPane tab={<div>{[value.tabhead(), <Icon style={{color: 'red', marginLeft: '10px'}} onClick={(e) => alert('clickz') & e.preventDefault()} type='close'>x</Icon>]}</div>} key={key}>{value.tab(this.props)}</TabPane>
-                )),*/
                 ..._(visibleProviders).map((providerName) => {
                   const provider = CloudProviders[providerName];
+                  const icon = providerName !== serverType ? <Icon style={{color: 'red', marginLeft: '10px'}}
+                    onClick={(e) => this.removeCloudProvider(providerName) & e.stopPropagation()}
+                    type='close'>x</Icon> : null;
 
-                  return <TabPane tab={
-                    <div>{[provider.tabhead(), <Icon style={{color: 'red', marginLeft: '10px'}} onClick={(e) => alert('clickz') & e.preventDefault()} type='close'>x</Icon>]}
-                  </div>} key={providerName}>{provider.tab(this.props)}</TabPane>;
+                  const tab = [
+                    provider.tabhead(),
+                    icon,
+                  ];
+
+                  return <TabPane key={providerName} tab={<div>{tab}</div>}>
+                    {provider.tab(this.props)}
+                  </TabPane>;
                 }),
                 <TabPane tab='Add Cloud Provider +' key='addCloudProvider'></TabPane>
               ]}

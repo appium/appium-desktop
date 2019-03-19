@@ -647,7 +647,7 @@ export function stopAddCloudProvider () {
   };
 }
 
-export function addProvider (provider) {
+export function addVisibleProvider (provider) {
   return (dispatch, getState) => {
     let currentProviders = getState().session.visibleProviders;
     // TODO: Update this in settings
