@@ -22,5 +22,8 @@ export default {
   },
   pcloudy: {
     label: 'Pcloudy'
+  },
+  testingbot: {
+    label: 'TestingBot'
   }
 };
