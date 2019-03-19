@@ -12,6 +12,20 @@
     flex-flow: column;
 }
 
+.sessionContainer :global(.anticon) {
+  color: red;
+  margin-left: 10px;
+}
+
+.sessionContainer :global(.anticon:hover) {
+  background-color: #F08080;
+  color: white;
+}
+
+.sessionContainer :global(.addCloudProviderTab) {
+  font-style: italic;
+}
+
 .cloudProviderModal {
   min-width: 600px;
   max-width: 100%;
