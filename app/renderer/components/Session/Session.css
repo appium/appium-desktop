@@ -12,7 +12,7 @@
     flex-flow: column;
 }
 
-.sessionContainer :global(.anticon) {
+.sessionContainer :global(.ant-tabs-tab .anticon.anticon-close-square) {
   color: red;
   margin-left: 10px;
 }

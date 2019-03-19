@@ -65,7 +65,7 @@ export default {
   },
   testingbot: {
     tabhead: () => <span className={SessionStyles.tabText}><img src={TestingBotLogo} /></span>,
-    tab: props => <ServerTabTestingbot {...props} />},
+    tab: props => <ServerTabTestingbot {...props} />,
     logo: TestingBotLogo,
-  }
+  },
 };
