@@ -1,18 +1,8 @@
-import { shell } from 'electron';
 import React, { Component } from 'react';
 import _ from 'lodash';
-import NewSessionForm from './NewSessionForm';
-import SavedSessions from './SavedSessions';
-import AttachToSession from './AttachToSession';
-import ServerTabAutomatic from './ServerTabAutomatic';
-import ServerTabCustom from './ServerTabCustom';
-import { Tabs, Button, Spin, Icon, Modal, Row, Col } from 'antd';
-import { ServerTypes } from '../../actions/Session';
-import AdvancedServerParams from './AdvancedServerParams';
-import SessionStyles from './Session.css';
+import { Modal, Row, Col, Button } from 'antd';
 import CloudProviders from './CloudProviders';
-
-const {TabPane} = Tabs;
+import SessionStyles from './Session.css';
 
 export default class CloudProviderSelector extends Component {
 
@@ -53,15 +43,15 @@ export default class CloudProviderSelector extends Component {
     const {t, isAddingCloudProvider, stopAddCloudProvider} = this.props;
     const providersGrid = _.chunk(_.keys(CloudProviders), 2); // Converts list of providers into list of pairs of providers
 
-    return <Modal key="modal" style={{minWidth: '600px'}} visible={isAddingCloudProvider} onCancel={stopAddCloudProvider} title={t('Select Cloud Provider')}>
+    return <Modal key="modal" className={SessionStyles.cloudProviderModal} visible={isAddingCloudProvider} onCancel={stopAddCloudProvider} title={t('Select Cloud Provider')}>
       {[
         ..._.map(providersGrid, (row, key) => (
-          <Row gutter={16} style={{marginBottom: '16px'}} key={key}>{
+          <Row gutter={16} key={key}>{
             [
               ..._(row).map((providerName) => {
                 const provider = CloudProviders[providerName];
                 return provider && <Col span={12} key={providerName}>
-                  <Button onClick={() => this.selectCloudProvider(providerName)} style={{width: '100%', padding: '4px'}}><img style={{maxHeight: '100%'}} src={provider.logo} /></Button>
+                  <Button onClick={() => this.selectCloudProvider(providerName)}><img src={provider.logo} /></Button>
                 </Col>;
               })
             ]
@@ -71,16 +61,3 @@ export default class CloudProviderSelector extends Component {
     </Modal>;
   }
 }
-
-/*
-
-      {[
-        ..._(CloudProviders).map((provider, key) => (
-          <Row gutter={16} style={{marginBottom: '16px'}} key={key}>
-            <Col span={24} key={key}>
-              <Button onClick={() => this.selectCloudProvider(key)} style={{width: '100%'}}><img style={{maxHeight: '100%'}} src={provider.logo} /></Button>
-            </Col>
-          </Row>
-        ))
-      ]}
-*/

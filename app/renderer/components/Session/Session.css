@@ -12,6 +12,24 @@
     flex-flow: column;
 }
 
+.cloudProviderModal {
+  min-width: 600px;
+  max-width: 100%;
+}
+
+.cloudProviderModal :global(.ant-row) {
+  margin-bottom: 16px;
+}
+
+.cloudProviderModal :global(.ant-modal-body button) {
+  width: 100%;
+  padding: 4px;
+}
+
+.cloudProviderModal :global(.ant-modal-body button img) {
+  height: 100%;
+}
+
 .serverTabs :global(.ant-row > div) {
   height: 56px;
 }
