@@ -1,0 +1,5 @@
+jobs:
+  - job: Crowdin
+    steps:
+    - script: git config user.name
+      displayName: Echo Username
