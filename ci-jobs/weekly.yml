@@ -4,7 +4,7 @@ jobs:
       vmImage: "macOS 10.13"
     steps:
     - script: |
-        git remote set-url origin https://triager:$GITHUB_TOKEN@github.com/appium/appium-desktop
+        git remote set-url triager https://triager:$GITHUB_TOKEN@github.com/appium/appium-desktop
         git checkout -b crowdin-sync-$(date +%s)
         git status
       env:
@@ -21,7 +21,7 @@ jobs:
         CROWDIN_PROJECT_KEY: $(CROWDIN_PROJECT_KEY)
     - script: |
         git commit -a -n -m 'Update translations'
-        git push -u origin crowdin-sync-$(date +%s)
+        git push -u triager crowdin-sync-$(date +%s)
         git status
       displayName: Commit Translation Changes
     - script: brew install hub
