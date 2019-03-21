@@ -10,7 +10,7 @@ jobs:
     - task: NodeTool@0
       inputs:
         versionSpec: '11.x'
-    - script: npm install
+    - script: npm install request bluebird asyncbox 
       displayName: Install dependencies
     - script: npm run crowdin-sync
       displayName: Crowdin Sync
@@ -18,6 +18,7 @@ jobs:
         CROWDIN_PROJECT_KEY: $(CROWDIN_PROJECT_KEY)
     - script: |
         git commit -a -n -m 'Update translations'
+        git push -u origin crowdin-sync-$(date +%s)
         git status
       displayName: Commit Translation Changes
     - script: brew install hub
