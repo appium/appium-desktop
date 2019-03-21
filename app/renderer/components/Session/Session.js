@@ -14,14 +14,9 @@ import CloudProviderSelector from './CloudProviderSelector';
 
 const {TabPane} = Tabs;
 
-export default class Session extends Component {
+const ADD_CLOUD_PROVIDER = 'addCloudProvider';
 
-  constructor (props) {
-    super(props);
-    this.state = {
-      visibleProviders: {}
-    };
-  }
+export default class Session extends Component {
 
   componentWillMount () {
     const {setLocalServerParams, getSavedSessions, setSavedServerParams, setVisibleProviders, getRunningSessions} = this.props;
@@ -36,7 +31,7 @@ export default class Session extends Component {
 
   handleSelectServerTab (tab) {
     const {changeServerType, addCloudProvider} = this.props;
-    if (tab === 'addCloudProvider') {
+    if (tab === ADD_CLOUD_PROVIDER) {
       addCloudProvider();
       return;
     }
@@ -88,7 +83,7 @@ export default class Session extends Component {
                     {provider.tab(this.props)}
                   </TabPane>;
                 }),
-                <TabPane tab={<span className='addCloudProviderTab'>{ t('Add Cloud Provider') }</span>} key='addCloudProvider'></TabPane>
+                <TabPane tab={<span className='addCloudProviderTab'>{ t('Add Cloud Provider') }</span>} key={ADD_CLOUD_PROVIDER}></TabPane>
               ]}
             </Tabs>
             <AdvancedServerParams {...this.props} />

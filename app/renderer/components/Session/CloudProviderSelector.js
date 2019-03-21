@@ -1,17 +1,10 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
-import { Modal, Row, Col, Button } from 'antd';
+import { Modal, Row, Col, Button, Checkbox } from 'antd';
 import CloudProviders from './CloudProviders';
 import SessionStyles from './Session.css';
 
 export default class CloudProviderSelector extends Component {
-
-  constructor (props) {
-    super(props);
-    this.state = {
-      visibleProviders: {}
-    };
-  }
 
   componentWillMount () {
     const {setLocalServerParams, getSavedSessions, setSavedServerParams, getRunningSessions} = this.props;
@@ -51,7 +44,7 @@ export default class CloudProviderSelector extends Component {
               ..._(row).map((providerName) => {
                 const provider = CloudProviders[providerName];
                 return provider && <Col span={12} key={providerName}>
-                  <Button onClick={() => this.selectCloudProvider(providerName)}><img src={provider.logo} /></Button>
+                  <Checkbox><img src={provider.logo} /></Checkbox>
                 </Col>;
               })
             ]
