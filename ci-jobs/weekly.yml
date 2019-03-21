@@ -1,5 +1,7 @@
 jobs:
-  - job: Crowdin
+  - job: Crowdin Sync
     steps:
-    - script: git config user.name
-      displayName: Echo Username
+    - script: |
+        git checkout -b crowdin-sync
+        git status
+      displayName: Create Crowdin Sync branch
