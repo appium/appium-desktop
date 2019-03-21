@@ -58,6 +58,8 @@ const serverTypes = {};
 for (const key of _.keys(CloudProviders)) {
   serverTypes[key] = key;
 }
+serverTypes.local = 'local';
+serverTypes.remote = 'remote';
 
 export const ServerTypes = serverTypes;
 

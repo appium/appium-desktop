@@ -30,6 +30,7 @@
     "build-main": "cross-env NODE_ENV=production parcel build --target node --public-url . --out-dir ./dist --out-file main.js ./app/main.js",
     "build-renderer": "cross-env NODE_ENV=production parcel build --no-content-hash --out-dir ./dist --target electron --public-url . ./app/renderer/index.html",
     "build": "npm run build-main && npm run build-renderer",
+    "watch": "concurrently \"npm run watch-main\" \"npm run watch-renderer\"",
     "start": "cross-env RUNNING_LOCALLY=true FORCE_NO_WRONG_FOLDER=true electron ./",
     "clean": "rimraf dist/",
     "watch-main": "cross-env NODE_ENV=development parcel --target node --out-dir ./dist --out-file main.js ./app/main.js",

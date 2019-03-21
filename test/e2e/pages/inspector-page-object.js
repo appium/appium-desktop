@@ -20,8 +20,8 @@ export default class InspectorPage extends BasePage {
     await this.client.setValue(this.customServerHost, host);
   }
 
-  async setCustomServerPort (host) {
-    await this.client.setValue(this.customServerPort, host);
+  async setCustomServerPort (port) {
+    await this.client.setValue(this.customServerPort, port);
   }
 
   async addDCaps (dcaps) {

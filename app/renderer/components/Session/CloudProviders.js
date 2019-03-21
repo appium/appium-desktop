@@ -22,7 +22,7 @@ import PerfectoLogo from '../../images/perfecto_logo.png';
 import PcloudyLogo from '../../images/pcloudy_logo.svg';
 import TestingBotLogo from '../../images/testingbot_logo.svg';
 
-export default {
+const CloudProviders = {
   sauce: {
     tabhead: () => <span className={SessionStyles.tabText}><img src={SauceLogo} /></span>,
     tab: props => <ServerTabSauce {...props} />,
@@ -69,3 +69,5 @@ export default {
     logo: TestingBotLogo,
   },
 };
+
+export default CloudProviders;
