@@ -111,7 +111,7 @@
     "electron": "./node_modules/.bin/electron"
   },
   "dependencies": {
-    "@babel/polyfill": "^7.0.0",
+    "@babel/polyfill": "^7.4.0",
     "ansi-to-html": "~0.6.7",
     "antd": "^3.11.2",
     "appium": "^1.11.1",
@@ -155,9 +155,9 @@
   },
   "devDependencies": {
     "7zip": "0.0.6",
-    "@babel/core": "^7.2.0",
-    "@babel/plugin-transform-runtime": "^7.2.0",
-    "@babel/register": "^7.0.0",
+    "@babel/core": "^7.4.0",
+    "@babel/plugin-transform-runtime": "^7.4.0",
+    "@babel/register": "^7.4.0",
     "appium-fake-driver": "^0.6.2",
     "asar": "^1.0.0",
     "asyncbox": "^2.3.2",
