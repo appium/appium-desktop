@@ -4,7 +4,7 @@ jobs:
       vmImage: "macOS 10.13"
     steps:
     - script: |
-        git remote set-url triager https://triager:$GITHUB_TOKEN@github.com/appium/appium-desktop
+        git remote add triager https://triager:$GITHUB_TOKEN@github.com/appium/appium-desktop
         git checkout -b crowdin-sync-$(date +%s)
         git status
       env:
