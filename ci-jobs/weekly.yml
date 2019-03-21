@@ -1,7 +1,7 @@
 jobs:
   - job: CrowdinSync
     pool:
-      vmImage: "Hosted MacOS Preview"
+      vmImage: "macOS 10.13"
     steps:
     - script: |
         git checkout -b crowdin-sync-$(date +%s)
