@@ -105,7 +105,7 @@
     height: 100%;
 }
 
-.inspector-main .tree-container :global(ul) {
+.inspector-main .tree-container :global(ul.ant-tree) {
     height: 100%;
     overflow: auto;
 }
