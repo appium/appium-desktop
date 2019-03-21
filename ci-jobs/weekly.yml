@@ -4,8 +4,11 @@ jobs:
       vmImage: "macOS 10.13"
     steps:
     - script: |
+        git remote set-url origin https://triager:$GITHUB_TOKEN@github.com/appium/appium
         git checkout -b crowdin-sync-$(date +%s)
         git status
+      env:
+        GITHUB_TOKEN: $(GITHUB_TOKEN)
       displayName: Create Crowdin Sync branch
     - task: NodeTool@0
       inputs:
