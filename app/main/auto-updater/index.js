@@ -18,7 +18,7 @@ const runningLocally = isDev || process.env.RUNNING_LOCALLY;
 
 let checkNewUpdates = _.noop;
 
-if (!runningLocally && !process.env.SKIP_AUTO_UPDATE) {
+if (!runningLocally && !process.env.RUNNING_IN_SPECTRON) {
 
   autoUpdater.setFeedURL(getFeedUrl(app.getVersion()));
 
