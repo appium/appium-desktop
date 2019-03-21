@@ -2,6 +2,17 @@ jobs:
   - job: CrowdinSync
     steps:
     - script: |
-        git checkout -b crowdin-sync
+        git checkout -b crowdin-sync-$(date +%s)
         git status
       displayName: Create Crowdin Sync branch
+    - task: NodeTool@0
+      inputs:
+        versionSpec: '11.x'
+    - script: npm install
+      displayName: Install dependencies
+    - script: npm run crowdin-sync
+      displayName: Crowdin Sync
+    - script: |
+        git commit -a -n -m 'Update translations'
+        git status
+      displayName: Commit Translation Changes
