@@ -1,5 +1,7 @@
 jobs:
   - job: CrowdinSync
+    pool:
+      vmImage: "Hosted MacOS Preview"
     steps:
     - script: |
         git checkout -b crowdin-sync-$(date +%s)
