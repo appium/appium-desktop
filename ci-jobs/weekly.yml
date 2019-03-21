@@ -1,5 +1,5 @@
 jobs:
-  - job: Crowdin Sync
+  - job: CrowdinSync
     steps:
     - script: |
         git checkout -b crowdin-sync
