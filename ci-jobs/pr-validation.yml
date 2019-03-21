@@ -1,14 +1,14 @@
 # Runs on pull requests
 jobs:
-- template: templates/build.yml
+- template: templates/pr-validation.yml
   parameters:
     pool: 'Hosted MacOS Preview'
     name: 'osx_build'
-- template: templates/build.yml
+- template: templates/pr-validation.yml
   parameters:
     pool: 'Hosted Windows 2019 with VS2019'
     name: 'windows_build'
-- template: templates/build.yml
+- template: templates/pr-validation.yml
   parameters:
     pool: 'Hosted Ubuntu 1604'
     name: 'linux_build'
