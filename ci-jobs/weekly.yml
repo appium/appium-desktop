@@ -2,12 +2,10 @@ jobs:
   - job: CrowdinSync
     pool:
       vmImage: "macOS 10.13"
-    variables:
-      TIMESTAMP: $(date +%s)
     steps:
     - script: |
         git remote add triager https://triager:$GITHUB_TOKEN@github.com/appium/appium-desktop
-        git checkout -b crowdin-sync-$(TIMESTAMP)
+        git checkout -b crowdin-sync-$(Build.BuildNumber)
         git status
       env:
         GITHUB_TOKEN: $(GITHUB_TOKEN)
@@ -23,7 +21,7 @@ jobs:
         CROWDIN_PROJECT_KEY: $(CROWDIN_PROJECT_KEY)
     - script: |
         git commit -a -n -m 'Update translations'
-        git push -u triager crowdin-sync-$(TIMESTAMP)
+        git push -u triager crowdin-sync-$(Build.BuildNumber)
         git status
       displayName: Commit Translation Changes
     - script: brew install hub
