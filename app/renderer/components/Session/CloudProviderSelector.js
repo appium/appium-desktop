@@ -25,11 +25,22 @@ export default class CloudProviderSelector extends Component {
     }
   }
 
+  handleCloseModal () {
+    const {stopAddCloudProvider} = this.props;
+    stopAddCloudProvider();
+  }
+
   render () {
     const {t, isAddingCloudProvider, stopAddCloudProvider, visibleProviders} = this.props;
     const providersGrid = _.chunk(_.keys(CloudProviders), 2); // Converts list of providers into list of pairs of providers
+    const footer = [<Button key="back" type="primary" onClick={stopAddCloudProvider}>{t('Done')}</Button>];
 
-    return <Modal key="modal" className={SessionStyles.cloudProviderModal} visible={isAddingCloudProvider} onCancel={stopAddCloudProvider} title={t('Select Cloud Providers')}>
+    return <Modal key="modal"
+      className={SessionStyles.cloudProviderModal}
+      visible={isAddingCloudProvider}
+      onCancel={stopAddCloudProvider}
+      footer={footer} 
+      title={t('Select Cloud Providers')}>
       {[
         ..._.map(providersGrid, (row, key) => {
           return <Row gutter={16} key={key}>{

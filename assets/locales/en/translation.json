@@ -311,6 +311,5 @@
   "Invalid JSON": "Invalid JSON: {{json}}",
   "TestingBot Key": "TestingBot Key",
   "TestingBot Secret": "TestingBot Secret",
-  "Select Cloud Provider": "Select Cloud Provider",
-  "Add Cloud Provider": "Add Cloud Provider +"
+  "Select Cloud Providers": "Select Cloud Providers"
 }
