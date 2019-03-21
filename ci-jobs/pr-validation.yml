@@ -14,3 +14,4 @@ jobs:
     pool: 'Hosted Ubuntu 1604'
     name: 'linux_build'
     xvfb: true
+    e2e: true
