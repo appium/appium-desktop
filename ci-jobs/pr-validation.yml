@@ -8,6 +8,7 @@ jobs:
   parameters:
     pool: 'Hosted Windows 2019 with VS2019'
     name: 'windows_build'
+    e2e: true
 - template: templates/pr-validation.yml
   parameters:
     pool: 'Hosted Ubuntu 1604'

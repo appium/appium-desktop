@@ -26,8 +26,9 @@ jobs:
       displayName: Build project
     - script: npm test
       displayName: NPM test
-    - script: npm run test-e2e
-      displayName: Run end-to-end tests
+    - ${{ if eq(parameters.e2e, 'true') }}:
+      - script: npm run test-e2e
+        displayName: Run end-to-end tests
     - task: PublishTestResults@2
       displayName: 'Publish Test Results'
       inputs:
