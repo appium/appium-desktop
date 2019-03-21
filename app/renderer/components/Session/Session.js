@@ -69,21 +69,12 @@ export default class Session extends Component {
                   if (!provider) {
                     return true;
                   }
-                  const icon = providerName !== serverType ?
-                    <Icon onClick={(e) => this.removeCloudProvider(providerName) & e.stopPropagation()}
-                      type='close-square'>
-                    </Icon> : null;
 
-                  const tab = [
-                    provider.tabhead(),
-                    icon,
-                  ];
-
-                  return <TabPane key={providerName} tab={<div>{tab}</div>}>
+                  return <TabPane key={providerName} tab={<div>{provider.tabhead()}</div>}>
                     {provider.tab(this.props)}
                   </TabPane>;
                 }),
-                <TabPane tab={<span className='addCloudProviderTab'>{ t('Add Cloud Provider') }</span>} key={ADD_CLOUD_PROVIDER}></TabPane>
+                <TabPane tab={<span className='addCloudProviderTab'>{ t('Select Cloud Providers') }</span>} key={ADD_CLOUD_PROVIDER}></TabPane>
               ]}
             </Tabs>
             <AdvancedServerParams {...this.props} />
