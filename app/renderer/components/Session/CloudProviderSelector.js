@@ -39,7 +39,7 @@ export default class CloudProviderSelector extends Component {
       className={SessionStyles.cloudProviderModal}
       visible={isAddingCloudProvider}
       onCancel={stopAddCloudProvider}
-      footer={footer} 
+      footer={footer}
       title={t('Select Cloud Providers')}>
       {[
         ..._.map(providersGrid, (row, key) => {

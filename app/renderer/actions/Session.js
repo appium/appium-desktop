@@ -3,7 +3,7 @@ import settings from '../../shared/settings';
 import { v4 as UUID } from 'uuid';
 import { push } from 'connected-react-router';
 import { notification } from 'antd';
-import _, { debounce, toPairs } from 'lodash';
+import { debounce, toPairs, union, without, keys } from 'lodash';
 import { setSessionDetails } from './Inspector';
 import i18n from '../../configs/i18next.config.renderer';
 import CloudProviders from '../components/Session/CloudProviders';
@@ -55,7 +55,7 @@ export const IS_ADDING_CLOUD_PROVIDER = 'IS_ADDING_CLOUD_PROVIDER';
 export const SET_PROVIDERS = 'SET_PROVIDERS';
 
 const serverTypes = {};
-for (const key of _.keys(CloudProviders)) {
+for (const key of keys(CloudProviders)) {
   serverTypes[key] = key;
 }
 serverTypes.local = 'local';
@@ -653,7 +653,7 @@ export function stopAddCloudProvider () {
 export function addVisibleProvider (provider) {
   return async (dispatch, getState) => {
     let currentProviders = getState().session.visibleProviders;
-    const providers = _.union(currentProviders, [provider]);
+    const providers = union(currentProviders, [provider]);
     await settings.set(VISIBLE_PROVIDERS, providers);
     dispatch({type: SET_PROVIDERS, providers});
   };
@@ -662,7 +662,7 @@ export function addVisibleProvider (provider) {
 export function removeVisibleProvider (provider) {
   return async (dispatch, getState) => {
     let currentProviders = getState().session.visibleProviders;
-    const providers = _.without(currentProviders, provider);
+    const providers = without(currentProviders, provider);
     await settings.set(VISIBLE_PROVIDERS, providers);
     dispatch({type: SET_PROVIDERS, providers});
   };
