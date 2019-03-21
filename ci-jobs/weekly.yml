@@ -12,6 +12,8 @@ jobs:
       displayName: Install dependencies
     - script: npm run crowdin-sync
       displayName: Crowdin Sync
+      env:
+        CROWDIN_PROJECT_KEY: $(CROWDIN_PROJECT_KEY)
     - script: |
         git commit -a -n -m 'Update translations'
         git status
