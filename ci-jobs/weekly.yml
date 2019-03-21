@@ -22,3 +22,5 @@ jobs:
       displayName: Install Hub
     - script: hub pull-request -m 'Update Crowdin translations'
       displayName: Make Pull Request to Update Translations
+      env:
+        GITHUB_TOKEN: $(GITHUB_TOKEN)
