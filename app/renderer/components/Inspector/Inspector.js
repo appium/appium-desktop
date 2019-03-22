@@ -71,18 +71,19 @@ export default class Inspector extends Component {
         {showRecord &&
           <RecordedActions {...this.props} />
         }
-        <Tabs activeKey={selectedInteractionMode} size="small" onChange={(tab) => selectInteractionMode(tab)}>
+        <Tabs activeKey={selectedInteractionMode}
+          size="small"
+          onChange={(tab) => selectInteractionMode(tab)}>
           <TabPane tab={t('Source')} key={INTERACTION_MODE.SOURCE}>
             <div className='action-row'>
-              <div className='col'>
-                <Card
-                  title={<span><Icon type="file-text" /> {t('App Source')}</span>}>
+              <div className='action-col'>
+                <Card title={<span><Icon type="file-text" /> {t('App Source')}</span>}>
                   <Source {...this.props} />
                 </Card>
               </div>
-              <div id='selectedElementContainer' className='action-col' className={`${InspectorStyles['interaction-tab-container']} ${InspectorStyles['element-detail-container']}`}>
-                <Card
-                  title={<span><Icon type="tag-o" /> {t('selectedElement')}</span>}
+              <div id='selectedElementContainer'
+                className={`${InspectorStyles['interaction-tab-container']} ${InspectorStyles['element-detail-container']} action-col`}>
+                <Card title={<span><Icon type="tag-o" /> {t('selectedElement')}</span>}
                   className={InspectorStyles['selected-element-card']}>
                   {path && <SelectedElement {...this.props}/>}
                   {!path && <i>{t('selectElementInSource')}</i>}
