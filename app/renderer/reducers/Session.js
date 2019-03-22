@@ -31,6 +31,7 @@ const INITIAL_STATE = {
     kobiton: {},
     perfecto: {},
     pcloudy: {},
+    testingbot: {},
   },
   attachSessId: null,
 
@@ -192,6 +193,7 @@ export default function session (state = INITIAL_STATE, action) {
           kobiton: action.server.kobiton || {},
           perfecto: action.server.perfecto || {},
           pcloudy: action.server.pcloudy || {},
+          testingbot: action.server.testingbot || {},
 
         },
         serverType: action.serverType || ServerTypes.local,

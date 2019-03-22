@@ -385,7 +385,7 @@ function connectServerErrorBackdoor () {
   });
 }
 
-function initializeIpc (win) {
+export function initializeIpc (win) {
   // listen for 'start-server' from the renderer
   connectStartServer(win);
   // listen for 'stop-server' from the renderer
@@ -407,5 +407,3 @@ function initializeIpc (win) {
 
   setTimeout(checkNewUpdates, 10000);
 }
-
-export { initializeIpc };
