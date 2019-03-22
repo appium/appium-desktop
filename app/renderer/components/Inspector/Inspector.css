@@ -64,18 +64,49 @@
     padding-left: 1em;
     display: flex;
     flex-flow: column;
+    height: 100%;
+}
+
+.inspector-main :global(.ant-card-head) {
+    max-height: 48px;
+}
+
+.inspector-main :global(.ant-card-body) {
+    height: calc(100% - 48px);
+    padding-bottom: 48px;
+}
+
+.inspector-main .interaction-tab-container :global(.ant-tabs) {
+    height: 100%;
+}
+
+.inspector-main .interaction-tab-container :global(.ant-tabs-content) {
+    height: 100%;
 }
 
 .inspector-main .interaction-tab-container :global(.action-row) {
     display: flex;
+    height: 100%;
+}
+.inspector-main .interaction-tab-container :global(.action-col) {
+    min-width: 50%;
+    max-width: 50%;
 }
 
-.inspector-main .interaction-tab-container :global(.action-col) {
-    flex: '1 1 0';
-    width: 0;
+.inspector-main .interaction-tab-container :global(.ant-card) {
+    height: 100%;
 }
 
 .inspector-main .interaction-tab-container :global(.ant-tree) {
+    overflow: auto;
+}
+
+.inspector-main .tree-container {
+    height: 100%;
+}
+
+.inspector-main .tree-container :global(ul.ant-tree) {
+    height: 100%;
     overflow: auto;
 }
 
@@ -104,11 +135,9 @@
 
 .inspector-main .recorded-actions {
     margin-bottom: 12px;
-}
-
-.inspector-main .recorded-actions {
+    max-height: 40%;
+    min-height: 30%;
     flex: 1;
-    min-height: 150px;
 }
 
 .inspector-main .recorded-actions :global(.ant-btn-group) {
@@ -118,7 +147,6 @@
 .inspector-main .recorded-actions :global(.ant-card-body),
 .inspector-main .interaction-tab-card :global(.ant-card-body) {
     overflow: scroll;
-    height: 100%;
 }
 
 .inspector-main .interaction-tab-card {
