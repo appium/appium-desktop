@@ -46,15 +46,19 @@
     "package-all": "npm run build && build -mwl",
     "postinstall": "node ./check-engines package.json package.json && rimraf node_modules/jimp/browser",
     "postversion": "git pull --tags && git push && git push --tags",
-    "pre-commit": "npm run lint && mocha --reporter dot ./test/unit",
+    "pre-commit": "npm run lint",
+    "pre-push": "npm run lint && mocha --reporter dot ./test/unit ./test/integration",
     "prepublish": "node ./sentry-set-version",
     "sentry-release": "node ./sentry-release-script",
     "crowdin-update": "node crowdin-update-resources.js",
     "crowdin-sync": "node crowdin-sync-translations.js"
   },
-  "pre-commit": [
-    "pre-commit"
-  ],
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run pre-commit",
+      "pre-push": "npm run pre-push"
+    }
+  },
   "build": {
     "productName": "Appium",
     "appId": "io.appium.desktop",
@@ -189,6 +193,7 @@
     "eslint-plugin-shopify": "^26.3.0",
     "express": "^4.16.2",
     "greenkeeper-lockfile": "^1.15.1",
+    "husky": "^1.3.1",
     "jquery": "^3.3.1",
     "jsdom": "^14.0.0",
     "less": "^2.7.3",
@@ -199,7 +204,6 @@
     "parcel-bundler": "^1.10.3",
     "parcel-plugin-asset-copier": "^1.0.0",
     "postcss-modules": "^1.4.1",
-    "pre-commit": "^1.2.2",
     "react-addons-test-utils": "^15.6.2",
     "release": "^6.0.1",
     "request": "^2.88.0",
