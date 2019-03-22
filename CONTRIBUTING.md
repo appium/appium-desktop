@@ -167,4 +167,4 @@ Appium Desktop uses [i18next](https://www.i18next.com) library to manage its tra
 - https://www.i18next.com/translation-function/plurals
 - https://react.i18next.com/legacy-v9/trans-component
 
-Please only edit the resources for the English language since the other languages are managed by the external Translation Management System and should only be changed by automated scripts. Use `npm run crowdin-update` command to update the original translations in the TMS. Use `npm run crowdin-sync` command to synchronize the translated files with the TMS.
+Please only edit the resources for the English language since the other languages are managed by the external Translation Management System and should only be changed by automated scripts. The `npm run crowdin-update` command updates the original translations in the translation management service (https://crowdin.com/project/appium-desktop). The `npm run crowdin-sync` command synchronizes the translated files with the translation management service. These scripts are run automatically by our CI service.
