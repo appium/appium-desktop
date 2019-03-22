@@ -10,29 +10,30 @@ import { NEW_SESSION_REQUESTED, NEW_SESSION_BEGAN, NEW_SESSION_DONE,
          CHANGE_SERVER_TYPE, SET_SERVER_PARAM, SET_SERVER, SET_ATTACH_SESS_ID,
          GET_SESSIONS_REQUESTED, GET_SESSIONS_DONE,
          ENABLE_DESIRED_CAPS_EDITOR, ABORT_DESIRED_CAPS_EDITOR, SAVE_RAW_DESIRED_CAPS, SET_RAW_DESIRED_CAPS, SHOW_DESIRED_CAPS_JSON_ERROR,
+         IS_ADDING_CLOUD_PROVIDER, SET_PROVIDERS,
          ServerTypes } from '../actions/Session';
+
+
+const visibleProviders = []; // Pull this from "electron-settings"
+const server = {
+  local: {},
+  remote: {},
+  advanced: {},
+};
+
+for (const serverName of _.keys(ServerTypes)) {
+  server[serverName] = {};
+}
+
+server.testobject.dataCenter = 'US';
 
 // Make sure there's always at least one cap
 const INITIAL_STATE = {
   savedSessions: [],
   tabKey: 'new',
   serverType: ServerTypes.local,
-  server: {
-    local: {},
-    remote: {},
-    sauce: {},
-    testobject: {
-      dataCenter: 'US',
-    },
-    headspin: {},
-    browserstack: {},
-    advanced: {},
-    bitbar: {},
-    kobiton: {},
-    perfecto: {},
-    pcloudy: {},
-    testingbot: {},
-  },
+  server,
+  visibleProviders,
   attachSessId: null,
 
   // Make sure there's always at least one cap
@@ -46,6 +47,7 @@ const INITIAL_STATE = {
   isEditingDesiredCaps: false,
   isValidCapsJson: true,
   isValidatingCapsJson: false,
+  isAddingCloudProvider: false,
 };
 
 let nextState;
@@ -194,7 +196,6 @@ export default function session (state = INITIAL_STATE, action) {
           perfecto: action.server.perfecto || {},
           pcloudy: action.server.pcloudy || {},
           testingbot: action.server.testingbot || {},
-
         },
         serverType: action.serverType || ServerTypes.local,
       };
@@ -275,6 +276,18 @@ export default function session (state = INITIAL_STATE, action) {
         rawDesiredCaps: action.rawDesiredCaps,
         isValidCapsJson: action.isValidCapsJson,
         invalidCapsJsonReason: action.invalidCapsJsonReason,
+      };
+
+    case IS_ADDING_CLOUD_PROVIDER:
+      return {
+        ...state,
+        isAddingCloudProvider: action.isAddingProvider,
+      };
+
+    case SET_PROVIDERS:
+      return {
+        ...state,
+        visibleProviders: action.providers
       };
 
     default:

@@ -3,9 +3,10 @@ import settings from '../../shared/settings';
 import { v4 as UUID } from 'uuid';
 import { push } from 'connected-react-router';
 import { notification } from 'antd';
-import { debounce, toPairs } from 'lodash';
+import { debounce, toPairs, union, without, keys } from 'lodash';
 import { setSessionDetails } from './Inspector';
 import i18n from '../../configs/i18next.config.renderer';
+import CloudProviders from '../components/Session/CloudProviders';
 
 export const NEW_SESSION_REQUESTED = 'NEW_SESSION_REQUESTED';
 export const NEW_SESSION_BEGAN = 'NEW_SESSION_BEGAN';
@@ -35,6 +36,7 @@ export const SAVED_SESSIONS = 'SAVED_SESSIONS';
 export const SESSION_SERVER_PARAMS = 'SESSION_SERVER_PARAMS';
 export const SESSION_SERVER_TYPE = 'SESSION_SERVER_TYPE';
 export const SERVER_ARGS = 'SERVER_ARGS';
+export const VISIBLE_PROVIDERS = 'VISIBLE_PROVIDERS';
 
 export const SET_ATTACH_SESS_ID = 'SET_ATTACH_SESS_ID';
 
@@ -48,19 +50,18 @@ export const SAVE_RAW_DESIRED_CAPS = 'SAVE_RAW_DESIRED_CAPS';
 export const SET_RAW_DESIRED_CAPS = 'SET_RAW_DESIRED_CAPS';
 export const SHOW_DESIRED_CAPS_JSON_ERROR = 'SHOW_DESIRED_CAPS_JSON_ERROR';
 
-export const ServerTypes = {
-  local: 'local',
-  remote: 'remote',
-  sauce: 'sauce',
-  testobject: 'testobject',
-  headspin: 'headspin',
-  browserstack: 'browserstack',
-  bitbar: 'bitbar',
-  kobiton: 'kobiton',
-  perfecto: 'perfecto',
-  pcloudy: 'pcloudy',
-  testingbot: 'testingbot'
-};
+export const IS_ADDING_CLOUD_PROVIDER = 'IS_ADDING_CLOUD_PROVIDER';
+
+export const SET_PROVIDERS = 'SET_PROVIDERS';
+
+const serverTypes = {};
+for (const key of keys(CloudProviders)) {
+  serverTypes[key] = key;
+}
+serverTypes.local = 'local';
+serverTypes.remote = 'remote';
+
+export const ServerTypes = serverTypes;
 
 const JSON_TYPES = ['object', 'number', 'boolean'];
 
@@ -368,7 +369,6 @@ export function newSession (caps, attachSessId = null) {
 
     // Save the current server settings
     await settings.set(SESSION_SERVER_PARAMS, session.server);
-    await settings.set(SESSION_SERVER_TYPE, session.serverType);
   };
 }
 
@@ -493,8 +493,9 @@ export function changeServerType (serverType) {
  */
 export function setServerParam (name, value, serverType) {
   const debounceGetRunningSessions = debounce(getRunningSessions(), 5000);
-  return (dispatch, getState) => {
+  return async (dispatch, getState) => {
     serverType = serverType || getState().session.serverType;
+    await settings.set(SESSION_SERVER_TYPE, serverType);
     dispatch({type: SET_SERVER_PARAM, serverType, name, value});
     debounceGetRunningSessions(dispatch, getState);
   };
@@ -635,4 +636,41 @@ function removeNewSessionListeners () {
 function removeRunningSessionsListeners () {
   ipcRenderer.removeAllListeners('appium-client-get-sessions-fail');
   ipcRenderer.removeAllListeners('appium-client-get-sessions-response');
+}
+
+export function addCloudProvider () {
+  return (dispatch) => {
+    dispatch({type: IS_ADDING_CLOUD_PROVIDER, isAddingProvider: true});
+  };
+}
+
+export function stopAddCloudProvider () {
+  return (dispatch) => {
+    dispatch({type: IS_ADDING_CLOUD_PROVIDER, isAddingProvider: false});
+  };
+}
+
+export function addVisibleProvider (provider) {
+  return async (dispatch, getState) => {
+    let currentProviders = getState().session.visibleProviders;
+    const providers = union(currentProviders, [provider]);
+    await settings.set(VISIBLE_PROVIDERS, providers);
+    dispatch({type: SET_PROVIDERS, providers});
+  };
+}
+
+export function removeVisibleProvider (provider) {
+  return async (dispatch, getState) => {
+    let currentProviders = getState().session.visibleProviders;
+    const providers = without(currentProviders, provider);
+    await settings.set(VISIBLE_PROVIDERS, providers);
+    dispatch({type: SET_PROVIDERS, providers});
+  };
+}
+
+export function setVisibleProviders () {
+  return async (dispatch) => {
+    const providers = await settings.get(VISIBLE_PROVIDERS);
+    dispatch({type: SET_PROVIDERS, providers});
+  };
 }
