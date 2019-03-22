@@ -1,6 +1,6 @@
 jobs:
   - job: CrowdinSync
-    pool:
+    pool: 
       vmImage: "macOS 10.13"
     steps:
     - script: |
