@@ -12,6 +12,38 @@
     flex-flow: column;
 }
 
+.sessionContainer :global(.ant-tabs-tab .anticon.anticon-close-square) {
+  color: red;
+  margin-left: 10px;
+}
+
+.sessionContainer :global(.anticon:hover) {
+  background-color: #F08080;
+  color: white;
+}
+
+.sessionContainer :global(.addCloudProviderTab) {
+  font-style: italic;
+}
+
+.cloudProviderModal {
+  min-width: 600px;
+  max-width: 100%;
+}
+
+.cloudProviderModal :global(.ant-row) {
+  margin-bottom: 16px;
+}
+
+.cloudProviderModal :global(.ant-modal-body button) {
+  width: 100%;
+  padding: 4px;
+}
+
+.cloudProviderModal :global(.ant-modal-body button img) {
+  height: 100%;
+}
+
 .serverTabs :global(.ant-row > div) {
   height: 56px;
 }

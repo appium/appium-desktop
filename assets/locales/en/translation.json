@@ -310,5 +310,6 @@
   "commandWasReturnedWithResult": "Command was returned with result: {{result}}",
   "Invalid JSON": "Invalid JSON: {{json}}",
   "TestingBot Key": "TestingBot Key",
-  "TestingBot Secret": "TestingBot Secret"
+  "TestingBot Secret": "TestingBot Secret",
+  "Select Cloud Providers": "Select Cloud Providers"
 }

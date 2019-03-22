@@ -1,28 +1,11 @@
 import { app, shell, dialog, Menu } from 'electron';
-import _ from 'lodash';
 import { createNewSessionWindow, createNewConfigWindow} from './appium';
 import { checkNewUpdates } from './auto-updater';
-import CloudProviders from '../shared/cloud-providers';
 import config from '../configs/app.config';
 import i18n from '../configs/i18next.config';
 
 let menuTemplates = {mac: {}, other: {}};
 let mainWindow = null;
-
-async function getCloudProvidersViewMenu () {
-  const providersMenu = [];
-  for (let provider of _.values(CloudProviders)) {
-    providersMenu.push({
-      label: provider.label,
-      type: 'checkbox',
-      checked: await provider.isVisible(),
-      click (menuItem) {
-        provider.setVisible(menuItem.checked);
-      },
-    });
-  }
-  return providersMenu;
-}
 
 function languageMenu () {
   return config.languages.map((languageCode) => ({
@@ -115,7 +98,7 @@ function macMenuEdit () {
   };
 }
 
-async function macMenuView () {
+function macMenuView () {
   const submenu = (process.env.NODE_ENV === 'development') ? [{
     label: i18n.t('Reload'),
     accelerator: 'Command+R',
@@ -141,11 +124,6 @@ async function macMenuView () {
   submenu.push({
     label: i18n.t('Languages'),
     submenu: languageMenu(),
-  });
-
-  submenu.push({
-    label: i18n.t('Cloud Providers'),
-    submenu: await getCloudProvidersViewMenu(),
   });
 
   return {
@@ -253,7 +231,7 @@ function otherMenuFile () {
   };
 }
 
-async function otherMenuView () {
+function otherMenuView () {
   const submenu = [];
   submenu.push([{
     label: i18n.t('Toggle &Full Screen'),
@@ -266,11 +244,6 @@ async function otherMenuView () {
   submenu.push({
     label: i18n.t('Languages'),
     submenu: languageMenu(),
-  });
-
-  submenu.push({
-    label: i18n.t('Cloud Providers'),
-    submenu: await getCloudProvidersViewMenu(),
   });
 
   if (process.env.NODE_ENV === 'development') {
