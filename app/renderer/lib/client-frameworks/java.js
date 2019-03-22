@@ -72,11 +72,7 @@ ${this.indent(code, 4)}
       '-ios class chain': 'IosClassChain',
     };
     if (!suffixMap[strategy]) {
-      if (isArray) {
-        return `List<MobileElement> ${localVar} = (MobileElement) driver.findElementsBy('${strategy}', ${JSON.stringify(locator)});`;
-      } else {
-        return `MobileElement ${localVar} = (MobileElement) driver.findElementBy('${strategy}', ${JSON.stringify(locator)});`;
-      }
+      throw new Error(`Strategy ${strategy} can't be code-gened`);
     }
     if (isArray) {
       return `List<MobileElement> ${localVar} = (MobileElement) driver.findElementsBy${suffixMap[strategy]}(${JSON.stringify(locator)});`;
