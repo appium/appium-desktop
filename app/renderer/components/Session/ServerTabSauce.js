@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Form, Row, Col, Input, Checkbox } from 'antd';
+import { Form, Row, Col, Input, Checkbox, Radio } from 'antd';
+import SessionStyles from './Session.css';
 const FormItem = Form.Item;
 
 export default class ServerTabSauce extends Component {
@@ -18,6 +19,17 @@ export default class ServerTabSauce extends Component {
         <Col span={12}>
           <FormItem>
             <Input id='saucePassword' type='password' placeholder={process.env.SAUCE_ACCESS_KEY ? 'Using data found in $SAUCE_ACCESS_KEY' : 'your-access-key'} addonBefore="Sauce Access Key" value={server.sauce.accessKey} onChange={(e) => setServerParam('accessKey', e.target.value)} />
+          </FormItem>
+        </Col>
+      </Row>
+      <Row gutter={8}>
+        <Col span={24}>
+          <FormItem>
+            <div className={['ant-input-group-addon', SessionStyles.addonDataCenter].join(' ') }>Saucelabs Data Center</div>
+            <Radio.Group className={SessionStyles.inputDataCenter} buttonStyle="solid" defaultValue='us-west-1' id='sauceObjectDataCenter' value={server.sauce.dataCenter} onChange={(e) => setServerParam('dataCenter', e.target.value)}>
+              <Radio value='us-west-1'>US</Radio>
+              <Radio value='eu-central-1'>EU</Radio>
+            </Radio.Group>
           </FormItem>
         </Col>
       </Row>

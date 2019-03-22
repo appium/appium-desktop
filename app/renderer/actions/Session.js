@@ -181,7 +181,8 @@ export function newSession (caps, attachSessId = null) {
         https = session.server.remote.ssl;
         break;
       case ServerTypes.sauce:
-        host = 'ondemand.saucelabs.com';
+        host = session.server.sauce.dataCenter === 'eu-central-1' ?
+          'ondemand.eu-central-1.saucelabs.com' : 'ondemand.saucelabs.com';
         port = 80;
         if (session.server.sauce.useSCProxy) {
           host = session.server.sauce.scHost || 'localhost';

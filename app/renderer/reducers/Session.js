@@ -20,7 +20,9 @@ const INITIAL_STATE = {
   server: {
     local: {},
     remote: {},
-    sauce: {},
+    sauce: {
+      dataCenter: 'us-west-1',
+    },
     testobject: {
       dataCenter: 'US',
     },
