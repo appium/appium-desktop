@@ -2,6 +2,7 @@
   "en": "English",
   "de": "Deutsch",
   "ru": "Русский",
+  "ja": "日本語",
   "Edit": "編集",
   "Redo": "やり直し",
   "Cut": "切り取り",
@@ -16,6 +17,7 @@
   "Documentation": "ドキュメント",
   "Search Issues": "Issueを検索する",
   "About Appium": "Appiumについて",
+  "Add Or Improve Translations": "翻訳を追加または改善する",
   "Check for updates": "更新の確認",
   "New Session Window…": "新しいセッションのウィンドウを開く…",
   "Configurations…": "環境設定…",
@@ -82,7 +84,7 @@
   "Install Later": "後でインストールする",
   "Update Download Started": "更新のダウンロードを開始しました",
   "No update available": "利用可能な更新はありません",
-  "Appium Desktop is up-to-date": "Appiumデスクトップは最新版です",
+  "Appium Desktop is up-to-date": "Appium Desktopは最新版です",
   "Later": "後で",
   "Update Downloaded": "更新のダウンロードが完了しました",
   "Could not download update": "更新のダウンロードに失敗しました",
@@ -96,6 +98,7 @@
   "Could not start session": "セッションを開始できませんでした。",
   "couldNotConnect": "サーバーに接続できませんでした。サーバーが実行中であることを確認してください。",
   "sauceCredentialsRequired": "Sauceのユーザー名とアクセス キーが必要です",
+  "testingbotCredentialsRequired": "TestingBot key and secret are required!",
   "Perfecto SecurityToken is required": "PerfectoのSecurityTokenが必要です",
   "browserstackCredentialsRequired": "Browserstackのユーザ名とアクセスキーが必要です",
   "bitbarCredentialsRequired": "BitbarのAPIキーが必要です",
@@ -305,5 +308,7 @@
   "callToMethodFailed": "'{{methodName}}'の実行に失敗しました",
   "methodCallResult": "'{{methodName}}' の結果",
   "commandWasReturnedWithResult": "コマンドの実行結果は次の通りです: {{result}}",
-  "Invalid JSON": "無効なJSON形式です: {{json}}"
+  "Invalid JSON": "無効なJSON形式です: {{json}}",
+  "TestingBot Key": "TestingBot Key",
+  "TestingBot Secret": "TestingBot Secret"
 }
