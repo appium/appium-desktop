@@ -25,9 +25,6 @@ if (!isDev) {
 }
 setSavedEnv();
 
-// Enable Sentry crash report logging
-initSentry();
-
 app.on('window-all-closed', () => {
   app.quit();
 });

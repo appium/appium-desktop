@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types';
-import { ipcRenderer } from 'electron';
 import { DEFAULT_ARGS } from '../../reducers/StartServer';
 
 export const propTypes = {
@@ -16,16 +15,6 @@ export const propTypes = {
 export function updateArg (evt) {
   const {updateArgs} = this.props;
   let argName = evt.target.name;
-
-  // Backdoor for testing purposes only. This forces an error to occur so
-  // that we can test errors on sentry
-  if (evt.target.value) {
-    if (evt.target.value.toLowerCase() === 'force_browser_error') {
-      throw new Error(`Browser error intentionally thrown`);
-    } else if (evt.target.value && evt.target.value.toLowerCase() === 'force_nodejs_error') {
-      ipcRenderer.send('appium-force-nodejs-error');
-    }
-  }
 
   let newVal;
   switch (evt.target.type) {
