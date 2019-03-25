@@ -153,10 +153,6 @@ Instructions will be given by the GitHub Bot when you make a pull request.
 Just use the GitHub issue tracker to submit your bug reports and feature
 requests. If you are submitting a bug report, please follow the [issue template](https://github.com/appium/appium-desktop/issues/new).
 
-### Sentry
-
-Appium Desktop has crash logs reported to it using [Sentry](https://sentry.io/appium/appiumdesktop/). This requires permission to access.
-
 ### Localization
 
 Appium Desktop uses [i18next](https://www.i18next.com) library to manage its translations. All translatable resources are stored in `assets/locales/en/translation.json` file. The list of supported languages can be found (or altered) in `app/configs/app.config.js` module. Please read through i18next API documentation to get more information on how to manage the localized resources:

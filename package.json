@@ -48,7 +48,6 @@
     "postversion": "git pull --tags && git push && git push --tags",
     "pre-commit": "npm run lint",
     "pre-push": "npm run lint && mocha --reporter dot ./test/unit ./test/integration",
-    "prepublish": "node ./sentry-set-version",
     "crowdin-update": "node crowdin-update-resources.js",
     "crowdin-sync": "node crowdin-sync-translations.js"
   },
