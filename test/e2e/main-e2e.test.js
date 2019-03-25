@@ -48,7 +48,9 @@ before(async function () {
       SKIP_AUTO_UPDATE: true,
     }
   });
+  log.info(`Spectron Application instance created. Starting app`);
   await this.app.start();
+  log.info(`App started`);
 });
 
 after(function () {

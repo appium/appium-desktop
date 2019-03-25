@@ -25,6 +25,9 @@ if (!isDev) {
 }
 setSavedEnv();
 
+// Enable Sentry crash report logging
+initSentry();
+
 app.on('window-all-closed', () => {
   app.quit();
 });
@@ -57,7 +60,7 @@ app.on('ready', async () => {
     minHeight: 600,
   });
 
-  mainWindow.loadURL(`file://${__dirname}/renderer/index.html`);
+  mainWindow.loadURL(`file://${__dirname}/index.html`);
 
   mainWindow.webContents.on('did-finish-load', () => {
     mainWindow.show();

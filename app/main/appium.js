@@ -397,6 +397,7 @@ export function initializeIpc (win) {
   connectOpenConfig(win);
   connectGetEnv();
   connectSaveEnv();
+  connectServerErrorBackdoor();
 
   setTimeout(checkNewUpdates, 10000);
 }
