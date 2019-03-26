@@ -16,7 +16,6 @@ jobs:
       E2E_TIMEOUT: 600000
       CI: true
       CSC_IDENTITY_AUTO_DISCOVERY: true
-      SENTRY_ORG: appium
     steps:
     - task: NodeTool@0
       inputs:
@@ -31,4 +30,3 @@ jobs:
         GH_TOKEN: $(GH_TOKEN)
         CSC_LINK: $(CSC_LINK)
         CSC_KEY_PASSWORD: $(CSC_KEY_PASSWORD)
-        SENTRY_AUTH_TOKEN: $(SENTRY_AUTH_TOKEN)
