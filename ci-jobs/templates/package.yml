@@ -24,7 +24,7 @@ jobs:
       displayName: 'Install dependencies'
     - script: npm run build
       displayName: Build project
-    - script: npx build --publish onTagOrDraft
+    - script: npx build --publish always
       displayName: Build application bundles
       env:
         GH_TOKEN: $(GH_TOKEN)
