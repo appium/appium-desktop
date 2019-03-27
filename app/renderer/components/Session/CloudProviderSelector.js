@@ -31,7 +31,7 @@ export default class CloudProviderSelector extends Component {
   }
 
   render () {
-    const {t, isAddingCloudProvider, stopAddCloudProvider, visibleProviders} = this.props;
+    const {t, isAddingCloudProvider, stopAddCloudProvider, visibleProviders = []} = this.props;
     const providersGrid = _.chunk(_.keys(CloudProviders), 2); // Converts list of providers into list of pairs of providers
     const footer = [<Button key="back" type="primary" onClick={stopAddCloudProvider}>{t('Done')}</Button>];
 
