@@ -39,7 +39,8 @@ driver.quit()`;
       'id': 'id',
       'name': 'name', // TODO: How does Python use name selector
       'class name': 'class_name',
-      '-android uiautomator': 'AndroidUIAutomator',
+      '-android uiautomator': 'android_uiautomator',
+      '-android datamatcher': 'android_datamatcher',
       '-ios predicate string': 'ios_predicate',
       '-ios class chain': 'ios_uiautomation', // TODO: Could not find iOS UIAutomation
     };

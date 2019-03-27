@@ -67,6 +67,7 @@ ${this.indent(code, 4)}
       'class name': 'ClassName',
       'name': 'Name',
       '-android uiautomator': 'AndroidUIAutomator',
+      '-android datamatcher': 'AndroidDataMatcher',
       '-ios predicate string': 'IosNsPredicate',
       '-ios class chain': 'IosClassChain',
     };

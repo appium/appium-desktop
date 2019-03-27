@@ -34,6 +34,7 @@ main().catch(console.log);
       'name': 'Name',
       'class name': 'ClassName',
       '-android uiautomator': 'AndroidUIAutomator',
+      '-android datamatcher': 'AndroidDataMatcher',
       '-ios predicate string': 'IosUIAutomation',
       '-ios class chain': 'IosClassChain',
     };

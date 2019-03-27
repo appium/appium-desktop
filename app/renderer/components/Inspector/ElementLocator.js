@@ -39,7 +39,8 @@ class ElementLocator extends Component {
       ['name', 'Name'],
       ['class name', 'Class Name'],
       ['accessibility id', 'Accessibility ID'],
-      ['-android uiautomator', 'UIAutomator Selector (Android)'],
+      ['-android uiautomator', 'UIAutomator Selector (Android UiAutomator2)'],
+      ['-android datamatcher', 'DataMatcher Selector (Android Espresso)'],
       ['-ios predicate string', 'Predicate String (iOS)'],
       ['-ios class chain', 'Class Chain (iOS)'],
     ];
@@ -59,7 +60,7 @@ class ElementLocator extends Component {
       </Row> <Row>
         {t('selector')}
         <Col>
-          <Input onChange={(e) => setLocatorTestValue(e.target.value)} value={locatorTestValue} />
+          <Input.TextArea onChange={(e) => setLocatorTestValue(e.target.value)} value={locatorTestValue} />
         </Col>
       </Row>
     </div>;
