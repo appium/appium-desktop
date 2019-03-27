@@ -7,6 +7,7 @@ parameters:
   pool: ''
   xvfb: false
   target: ''
+  buildScript: 'npx build --publish always'
 jobs:
   - job: ${{parameters.name}}
     pool: ${{parameters.pool}}
@@ -24,7 +25,7 @@ jobs:
       displayName: 'Install dependencies'
     - script: npm run build
       displayName: Build project
-    - script: npx build --publish always
+    - script: ${{ parameters.buildScript }}
       displayName: Build application bundles
       env:
         GH_TOKEN: $(GH_TOKEN)

@@ -287,7 +287,7 @@ export default function session (state = INITIAL_STATE, action) {
     case SET_PROVIDERS:
       return {
         ...state,
-        visibleProviders: action.providers
+        visibleProviders: action.providers || []
       };
 
     default:
