@@ -16,6 +16,7 @@ jobs:
     target: NSIS
     pool: 'Hosted Windows 2019 with VS2019'
     name: 'windows_package_nsis'
+    buildScript: 'npx build --win nsis --publish always && npx build --win nsis-web --publish always'
 - template: templates/package.yml
   parameters:
     pool: 'Hosted Ubuntu 1604'
