@@ -1,5 +1,5 @@
 {
-  "name": "appium-desktop",
+  "private": true,
   "version": "1.12.0",
   "description": "Graphical interface for the Appium server, and an app inspector",
   "repository": {
