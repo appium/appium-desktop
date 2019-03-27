@@ -47,7 +47,7 @@ export default class Session extends Component {
     const {newSessionBegan, savedSessions, tabKey, switchTabs,
            serverType, server,
            requestSaveAsModal, newSession, caps, capsUUID, saveSession,
-           visibleProviders,
+           visibleProviders = [],
            isCapsDirty, sessionLoading, attachSessId, t} = this.props;
 
     const isAttaching = tabKey === 'attach';

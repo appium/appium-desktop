@@ -17,7 +17,7 @@ export default class CloudProviderSelector extends Component {
   }
 
   toggleVisibleProvider (providerName) {
-    const {addVisibleProvider, removeVisibleProvider, visibleProviders} = this.props;
+    const {addVisibleProvider, removeVisibleProvider, visibleProviders = []} = this.props;
     if (visibleProviders.includes(providerName)) {
       removeVisibleProvider(providerName);
     } else {
