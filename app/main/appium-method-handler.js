@@ -7,8 +7,8 @@ import { SCREENSHOT_INTERACTION_MODE } from '../renderer/components/Inspector/sh
 const isDevelopment = process.env.NODE_ENV === 'development';
 
 const KEEP_ALIVE_PING_INTERVAL = 5 * 1000;
-const NO_NEW_COMMAND_LIMIT = isDevelopment ? 30 * 1000 : 5 * 60 * 1000;
-const WAIT_FOR_USER_KEEP_ALIVE = 30 * 1000;
+const NO_NEW_COMMAND_LIMIT = isDevelopment ? 30 * 1000 : 24 * 60 * 60 * 1000; // Set timeout to 24 hours
+const WAIT_FOR_USER_KEEP_ALIVE = 60 * 60 * 1000; // Give user 1 hour to reply
 
 export default class AppiumMethodHandler {
   constructor (driver, sender) {
