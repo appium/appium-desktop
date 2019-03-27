@@ -1,6 +1,6 @@
 {
   "name": "appium-desktop",
-  "version": "1.11.1",
+  "version": "1.12.0",
   "description": "Graphical interface for the Appium server, and an app inspector",
   "repository": {
     "type": "git",
@@ -118,7 +118,7 @@
     "@babel/polyfill": "^7.4.0",
     "ansi-to-html": "~0.6.7",
     "antd": "^3.11.2",
-    "appium": "^1.12.0",
+    "appium": "^1.12.1",
     "appium-support": "^2.25.0",
     "bluebird": "^3.5.3",
     "connected-react-router": "^6.0.0",
@@ -132,7 +132,7 @@
     "format-json": "1.x",
     "highlight.js": "9.x",
     "history": "^4.7.2",
-    "i18next": "^15.0.7",
+    "i18next": "^15.0.8",
     "i18next-node-fs-backend": "^2.1.1",
     "lodash": "4.x",
     "moment": "^2.20.1",
@@ -204,7 +204,7 @@
     "release": "^6.0.1",
     "request": "^2.88.0",
     "rimraf": "^2.6.2",
-    "sinon": "^7.1.1",
+    "sinon": "^7.3.1",
     "spectron": "^5.0.0",
     "xmldom": "^0.1.27"
   },
