@@ -379,12 +379,6 @@ function connectSaveEnv () {
   });
 }
 
-function connectServerErrorBackdoor () {
-  ipcMain.on('appium-force-nodejs-error', () => {
-    throw new Error('A NodeJS error was intentionally thrown');
-  });
-}
-
 export function initializeIpc (win) {
   // listen for 'start-server' from the renderer
   connectStartServer(win);
@@ -403,7 +397,6 @@ export function initializeIpc (win) {
   connectOpenConfig(win);
   connectGetEnv();
   connectSaveEnv();
-  connectServerErrorBackdoor();
 
   setTimeout(checkNewUpdates, 10000);
 }

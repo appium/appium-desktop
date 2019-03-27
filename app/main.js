@@ -5,8 +5,6 @@ import { setSavedEnv } from './main/helpers';
 import rebuildMenus from './main/menus';
 import shellEnv from 'shell-env';
 import fixPath from 'fix-path';
-import { initSentry } from './shared/sentry';
-import { promptUser } from './main/sentry-permission-prompt';
 import settings from './shared/settings';
 
 let mainWindow = null;
@@ -26,9 +24,6 @@ if (!isDev) {
   fixPath();
 }
 setSavedEnv();
-
-// Enable Sentry crash report logging
-initSentry();
 
 app.on('window-all-closed', () => {
   app.quit();
@@ -99,8 +94,6 @@ app.on('ready', async () => {
   });
 
   rebuildMenus(mainWindow);
-
-  promptUser();
 
   initializeIpc(mainWindow);
 });

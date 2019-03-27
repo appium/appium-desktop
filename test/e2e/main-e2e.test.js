@@ -10,7 +10,6 @@ import { retryInterval } from 'asyncbox';
 import MainPage from './pages/main-page-object';
 
 const log = logger.getLogger('E2E Test');
-
 const platform = os.platform();
 
 chai.should();
