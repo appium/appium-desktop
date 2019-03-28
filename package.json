@@ -43,7 +43,7 @@
     "postinstall": "node ./check-engines package.json package.json && rimraf node_modules/jimp/browser",
     "postversion": "git pull --tags && git push && git push --tags",
     "pre-commit": "npm run test:lint",
-    "pre-push": "npm run test:lint && mocha --reporter dot ./test/unit ./test/integration",
+    "pre-push": "npm test",
     "crowdin-update": "node crowdin-update-resources.js",
     "crowdin-sync": "node crowdin-sync-translations.js"
   },
