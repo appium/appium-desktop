@@ -51,6 +51,20 @@ export default class Actions extends Component {
       }
     }
 
+    // Special case for 'updateSettings'
+    if (action.methodName === 'updateSettings') {
+      if (_.isString(args[0])) {
+        try {
+          args[0] = JSON.parse(args[0]);
+        } catch (e) {
+          notification.error({
+            message: t('invalidJson', {json: args[1]}),
+            duration: 5,
+          });
+        }
+      }
+    }
+
     applyClientMethod({methodName, args, skipScreenshotAndSource: !action.refresh});
     cancelPendingAction();
   }
