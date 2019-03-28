@@ -58,7 +58,7 @@ export default class Actions extends Component {
           args[0] = JSON.parse(args[0]);
         } catch (e) {
           notification.error({
-            message: t('invalidJson', {json: args[1]}),
+            message: t('invalidJson', {json: args[0]}),
             duration: 5,
           });
         }
