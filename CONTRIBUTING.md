@@ -108,7 +108,7 @@ To package the app for your platform, locally, run:
 npx build --publish never
 ```
 
-This will build the app save the assets to `release/`.
+This will build the app and save the assets to `release/`.
 
 Appium Desktop is published to Github Releases (at http://github.com/appium/appium-desktop/releases). Packaging and releasing gets triggered when a git tag is committed and the CI creates the assets for all platforms and uploads them. The changelog needs to be written manually.
 
