@@ -69,14 +69,6 @@ To run unit tests, run the command
 npm test
 ```
 
-Before running e2e tests, run the command
-
-```bash
-npm run package-e2e-test
-```
-
-This will create builds in the `release/` folder that are specific for e2e testing. This only needs to be run whenever you make changes to the application.
-
 To run the e2e tests call
 
 ```bash
@@ -110,29 +102,15 @@ npm run e2e
 
 Appium Desktop uses [Electron Builder](https://github.com/electron-userland/electron-builder/) to build app. Read this document for instructions on how to set up your local environment so that you can build and package the app: https://github.com/electron-userland/electron-builder/wiki/Multi-Platform-Build
 
-To package the app for your platform, run:
+To package the app for your platform, locally, run:
 
 ```bash
-npm run package
+npx build --publish never
 ```
 
-To package the app for _all_ platforms, run:
+This will build the app and save the assets to `release/`.
 
-```bash
-npm run package-all
-```
-
-This will build the apps with the latest version of electron and put the various app packages in `release/`.
-
-```bash
-npm version <VERSION_TYPE>
-```
-
-This will increment the version and push a new tag. This will trigger Azure Pipelines to run a CI
-build process and then publish the assets (.dmg, .exe, .AppImage) to GitHub releases which will contain a
-draft of the new release.
-
-Appium Desktop follows the same npm versioning workflow but isn't published to NPM.
+Appium Desktop is published to Github Releases (at http://github.com/appium/appium-desktop/releases). Packaging and releasing gets triggered when a git tag is committed and the CI creates the assets for all platforms and uploads them. The changelog needs to be written manually.
 
 ## Submitting changes to the Appium Desktop code or docs
 
