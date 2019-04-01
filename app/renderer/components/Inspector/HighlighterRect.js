@@ -9,7 +9,7 @@ import { parseCoordinates } from './shared';
 export default class HighlighterRect extends Component {
 
   render () {
-    const {selectedElement = {}, selectHoveredElement, unselectHoveredElement, hoveredElement = {}, element,
+    const {selectedElement = {}, selectHoveredElement, unselectHoveredElement, hoveredElement = {}, selectElement, unselectElement, element,
            zIndex, scaleRatio, xOffset, elLocation, elSize} = this.props;
     const {path: hoveredPath} = hoveredElement;
     const {path: selectedPath} = selectedElement;
@@ -45,6 +45,7 @@ export default class HighlighterRect extends Component {
     return <div className={highlighterClasses.join(' ').trim()}
       onMouseOver={() => selectHoveredElement(key)}
       onMouseOut={unselectHoveredElement}
+      onClick={() => key === selectedPath ? unselectElement() : selectElement(key)}
       key={key}
       style={{zIndex, left: (left || 0), top: (top || 0), width: (width || 0), height: (height || 0)}}>
       <div></div>
