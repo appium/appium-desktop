@@ -3,6 +3,7 @@
   "de": "Deutsch",
   "ru": "Русский",
   "ja": "日本語",
+  "zh-CN": "中文",
   "Edit": "Edit",
   "Redo": "Redo",
   "Cut": "Cut",
@@ -311,5 +312,6 @@
   "Invalid JSON": "Invalid JSON: {{json}}",
   "TestingBot Key": "TestingBot Key",
   "TestingBot Secret": "TestingBot Secret",
-  "Select Cloud Providers": "Select Cloud Providers"
+  "Select Cloud Providers": "Select Cloud Providers",
+  "Advanced Settings": "Advanced Settings"
 }

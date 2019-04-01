@@ -38,7 +38,7 @@
     "build-main-dev": "cross-env NODE_ENV=development parcel build --target node --out-dir ./dist --out-file main.js ./app/main.js",
     "build-renderer-dev": "cross-env NODE_ENV=development parcel build --out-dir ./dist --target electron --public-url . ./app/renderer/index.html",
     "start-dev": "cross-env RUNNING_LOCALLY=true FORCE_NO_WRONG_FOLDER=true NODE_ENV=development electron --inspect ./",
-    "dev": "cross-env NODE_ENV=development npm run build-main-dev && npm run build-renderer-dev && concurrently --kill-others \"npm run start-dev\" \"npm run watch-main\" \"npm run watch-renderer\" ",
+    "dev": "cross-env NODE_ENV=development npm run build-main-dev && npm run build-renderer-dev && concurrently --kill-others \"npm run start-dev\" \"npm run watch:main\" \"npm run watch:renderer\" ",
     "dev-wrong-folder": "cross-env WRONG_FOLDER=true npm run dev",
     "postinstall": "node ./check-engines package.json package.json && rimraf node_modules/jimp/browser",
     "postversion": "git pull --tags && git push && git push --tags",

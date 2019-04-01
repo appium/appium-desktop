@@ -15,7 +15,7 @@ export default class AdvancedServerParams extends Component {
       <Col>
         <div className={styles.advancedSettingsContainer}>
           <Collapse bordered={true}>
-            <Panel header="Advanced Settings">
+            <Panel header={t('Advanced Settings')}>
               <Col span={6}>
                 <FormItem>
                   <Checkbox checked={!!server.advanced.allowUnauthorized} onChange={(e) => setServerParam('allowUnauthorized', e.target.checked, 'advanced')}>{t('allowUnauthorizedCerts')}</Checkbox>
