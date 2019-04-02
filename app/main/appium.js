@@ -300,13 +300,10 @@ function connectClientMethodListener () {
           }
         }
 
-        if (ignoreResult) {
-          res = {};
-        }
-
         renderer.send('appium-client-command-response', {
           ...res,
           methodName,
+          ignoreResult,
           uuid,
         });
       }
