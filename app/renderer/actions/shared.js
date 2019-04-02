@@ -1,5 +1,6 @@
 import { ipcRenderer } from 'electron';
 import { notification } from 'antd';
+import { util } from 'appium-support';
 import i18n from '../../configs/i18next.config.renderer';
 import _ from 'lodash';
 import UUID from 'uuid';
@@ -23,7 +24,7 @@ export function bindClient () {
 
     const truncatedResult = _.truncate(JSON.stringify(res), {length: 2000});
 
-    if (!_.isNull(res) && !_.isUndefined(res) && !resp.ignoreResult) {
+    if (util.hasValue(res) && !resp.ignoreResult) {
       notification.success({
         message: i18n.t('methodCallResult', {methodName}),
         description: i18n.t('commandWasReturnedWithResult', {result: truncatedResult}),
