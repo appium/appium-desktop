@@ -17,7 +17,7 @@
     "babel/arrow-parens": 0,
     "require-await": 2,
     "shopify/jsx-no-hardcoded-content": [2, {
-      "checkProps": ["tab", "placeholder", "addonBefore", "addonAfter", "title"]
+      "checkProps": ["tab", "placeholder", "addonBefore", "addonAfter", "title", "header"]
     }],
     "react-native/no-inline-styles": 2
   }
