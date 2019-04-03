@@ -7,7 +7,7 @@ parameters:
   pool: ''
   xvfb: false
   target: ''
-  buildScript: 'npx build --publish always'
+  buildScript: 'npx build --publish onTagOrDraft'
 jobs:
   - job: ${{parameters.name}}
     pool: ${{parameters.pool}}
