@@ -116,7 +116,7 @@
     "antd": "^3.16.1",
     "appium": "1.12.1",
     "appium-support": "^2.25.0",
-    "bluebird": "^3.5.3",
+    "bluebird": "^3.5.4",
     "connected-react-router": "^6.0.0",
     "css-modules-require-hook": "^4.2.3",
     "electron-debug": "^2.0.0",
