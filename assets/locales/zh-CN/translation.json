@@ -3,6 +3,7 @@
   "de": "Deutsch",
   "ru": "Русский",
   "ja": "日本語",
+  "zh-CN": "中文",
   "Edit": "编辑",
   "Redo": "恢复",
   "Cut": "剪切",
@@ -311,5 +312,6 @@
   "Invalid JSON": "无效的 JSON: {{json}}",
   "TestingBot Key": "TestingBot 键",
   "TestingBot Secret": "TestingBot Secret",
-  "Select Cloud Providers": "选择云提供商"
+  "Select Cloud Providers": "选择云提供商",
+  "Advanced Settings": "高级设置"
 }
