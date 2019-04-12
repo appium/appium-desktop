@@ -1,6 +1,7 @@
-import React, { Component } from 'react';
+import React, { Component, Suspense } from 'react';
 import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'connected-react-router';
+import Spinner from '../components/Spinner/Spinner';
 import Routes from '../routes';
 import WrongFolder from '../components/WrongFolder/WrongFolder';
 import electron from 'electron';
@@ -28,7 +29,9 @@ export default class Root extends Component {
     return (
       <Provider store={store}>
         {shouldShowWrongFolderComponent() ?
-          <WrongFolder /> :
+          <Suspense fallback={<Spinner />}>
+            <WrongFolder />
+          </Suspense> :
           <ConnectedRouter history={history}>
             <Routes />
           </ConnectedRouter>
