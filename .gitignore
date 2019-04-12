@@ -10,3 +10,4 @@ main.map
 Certificates.p12
 .cache/
 .idea/
+junit-test-results.xml
