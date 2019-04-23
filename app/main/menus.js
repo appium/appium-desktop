@@ -273,7 +273,7 @@ function otherMenuHelp () {
   return {
     label: i18n.t('Help'),
     submenu: [{
-      label: 'Learn More',
+      label: i18n.t('Learn More'),
       click () {
         shell.openExternal('http://appium.io');
       }
