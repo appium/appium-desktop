@@ -229,7 +229,7 @@
   "willUseCurrentlyRunningServer": "Будет использован текущий сервер Appium Desktop",
   "Name": "Название",
   "enterYourSessionId": "Введите идентификатор сессии здесь",
-  "Proxy URL": "Адрес сервера",
+  "Proxy URL": "URL прокси-сервера",
   "Source": "Источник",
   "Actions": "Действия",
   "Select Action Group": "Выберите группу действий",
