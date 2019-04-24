@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=Appium Desktop
+GenericName=Appium 
+Comment= Appium Server and Inspector in Desktop GUIs 
+Exec=appium -p
+Icon=${SNAP}/meta/gui/appium.png
+Terminal=false
+Type=Application
+Categories=Development;IDE;
