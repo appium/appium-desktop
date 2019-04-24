@@ -96,18 +96,6 @@ class SelectedElement extends Component {
       });
     }
 
-    const copyAttributesToClipboard = (dataSource) => {
-      let result = '';
-      Object.entries(dataSource).forEach(function (obj) {
-        if (obj[1].key === 'bounds') {
-          result += `${obj[1].key},"${obj[1].value}"\n`;
-        } else {
-          result += `${obj[1].key},${obj[1].value}\n`;
-        }
-      });
-      return result.toString();
-    };
-
     return <div>
       {elementInteractionsNotAvailable && <Row type="flex" gutter={10}>
         <Col>
@@ -143,7 +131,7 @@ class SelectedElement extends Component {
               <Button
                 disabled={!elementId}
                 id='btnCopyAttributes' icon="copy"
-                onClick={() => clipboard.writeText(copyAttributesToClipboard(dataSource))}/>
+                onClick={() => clipboard.writeText(JSON.stringify(dataSource))}/>
             </Tooltip>
           </ButtonGroup>
         </Col>
