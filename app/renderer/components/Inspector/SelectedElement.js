@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import _ from 'lodash';
 import { getLocators } from './shared';
 import styles from './Inspector.css';
-import { Button, Row, Col, Input, Modal, Table, Alert } from 'antd';
+import { Button, Row, Col, Input, Modal, Table, Alert, Tooltip } from 'antd';
 import { withTranslation } from '../../util';
+import { clipboard } from 'electron';
 
 const ButtonGroup = Button.Group;
 
@@ -95,6 +96,18 @@ class SelectedElement extends Component {
       });
     }
 
+    const copyAttributesToClipboard = (dataSource) => {
+      let result = '';
+      Object.entries(dataSource).forEach(function (obj) {
+        if (obj[1].key === 'bounds') {
+          result += `${obj[1].key},"${obj[1].value}"\n`;
+        } else {
+          result += `${obj[1].key},${obj[1].value}\n`;
+        }
+      });
+      return result.toString();
+    };
+
     return <div>
       {elementInteractionsNotAvailable && <Row type="flex" gutter={10}>
         <Col>
@@ -126,6 +139,12 @@ class SelectedElement extends Component {
             >
               {t('Clear')}
             </Button>
+            <Tooltip title={t('Copy Attributes to Clipboard')}>
+              <Button
+                disabled={!elementId}
+                id='btnCopyAttributes' icon="copy"
+                onClick={() => clipboard.writeText(copyAttributesToClipboard(dataSource))}/>
+            </Tooltip>
           </ButtonGroup>
         </Col>
       </Row>
