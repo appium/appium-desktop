@@ -212,21 +212,20 @@ export function newSession (caps, attachSessId = null) {
         }
         break;
       case ServerTypes.headspin: {
-        if (!/^(http|https):\/\/(localhost|.+\.headspin.io)(|:)[0-9]*\/v\d+\/\w+\/wd\/hub$/.test(
-          session.server.headspin.webDriverUrl)) {
+        const headspinUrl = url.parse(session.server.headspin.webDriverUrl);
+        host = headspinUrl.hostname;
+        port = headspinUrl.port;
+        path = headspinUrl.pathname;
+        https = headspinUrl.protocol === 'https:';
+        if (!/^(localhost|.+\.headspin.io)$/.test(host)
+          || !/v\d+\/\w+\/wd\/hub$/.test(path)) {
           notification.error({
             message: i18n.t('Error'),
-            description: i18n.t('invalid HeadSpin Web Driver URL. Make sure it'),
+            description: i18n.t('invalid HeadSpin Web Driver URL. Please make sure the Web Driver URL'),
             duration: 4
           });
           return;
         }
-        const headspinUrl = url.parse(session.server.headspin.webDriverUrl);
-
-        host = headspinUrl.hostname;
-        port = headspinUrl.port;
-        path = headspinUrl.pathname;
-        https = headspinUrl.protocol === 'https:' ? true : false;
         break;
       }
       case ServerTypes.perfecto:
