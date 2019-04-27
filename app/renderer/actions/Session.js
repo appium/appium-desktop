@@ -221,7 +221,7 @@ export function newSession (caps, attachSessId = null) {
           || !/v\d+\/\w+\/wd\/hub$/.test(path)) { // '/v0/xxxxxx/wd/hub'
           notification.error({
             message: i18n.t('Error'),
-            description: i18n.t('headspinInvalidWebDriverURLSessionError'),
+            description: i18n.t('sessionHeadspinInvalidWebDriverURLError'),
             duration: 4
           });
           return;
