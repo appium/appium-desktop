@@ -1,6 +1,7 @@
 import { ipcRenderer } from 'electron';
 import settings from '../../shared/settings';
 import { v4 as UUID } from 'uuid';
+import url from 'url';
 import { push } from 'connected-react-router';
 import { notification } from 'antd';
 import { debounce, toPairs, union, without, keys } from 'lodash';
@@ -210,12 +211,24 @@ export function newSession (caps, attachSessId = null) {
           desiredCapabilities.testobject_api_key = session.server.testobject.apiKey || process.env.TESTOBJECT_API_KEY;
         }
         break;
-      case ServerTypes.headspin:
-        host = session.server.headspin.hostname;
-        port = session.server.headspin.port;
-        path = `/v0/${session.server.headspin.apiKey}/wd/hub`;
-        https = true;
+      case ServerTypes.headspin: {
+        if (!/^(http|https):\/\/.+\.headspin.io(|:)[0-9]*\/v\d+\/\w+\/wd\/hub$/.test(
+          session.server.headspin.webDriverUrl)) {
+          notification.error({
+            message: i18n.t('Error'),
+            description: i18n.t('invalid HeadSpin Web Driver URL. Make sure it'),
+            duration: 4
+          });
+          return;
+        }
+        const headspinUrl = url.parse(session.server.headspin.webDriverUrl);
+
+        host = headspinUrl.hostname;
+        port = headspinUrl.port;
+        path = headspinUrl.pathname;
+        https = headspinUrl.protocol === 'https:' ? true : false;
         break;
+      }
       case ServerTypes.perfecto:
         host = session.server.perfecto.hostname;
         port = session.server.perfecto.port;
