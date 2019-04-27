@@ -212,7 +212,7 @@ export function newSession (caps, attachSessId = null) {
         }
         break;
       case ServerTypes.headspin: {
-        if (!/^(http|https):\/\/.+\.headspin.io(|:)[0-9]*\/v\d+\/\w+\/wd\/hub$/.test(
+        if (!/^(http|https):\/\/(localhost|.+\.headspin.io)(|:)[0-9]*\/v\d+\/\w+\/wd\/hub$/.test(
           session.server.headspin.webDriverUrl)) {
           notification.error({
             message: i18n.t('Error'),
