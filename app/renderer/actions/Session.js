@@ -214,11 +214,11 @@ export function newSession (caps, attachSessId = null) {
       case ServerTypes.headspin: {
         const headspinUrl = url.parse(session.server.headspin.webDriverUrl);
         host = headspinUrl.hostname;
-        port = headspinUrl.port;
+        port = headspinUrl.port; // Will be parsed by url.format()
         path = headspinUrl.pathname;
         https = headspinUrl.protocol === 'https:';
-        if (!/^(localhost|.+\.headspin.io)$/.test(host)
-          || !/v\d+\/\w+\/wd\/hub$/.test(path)) {
+        if (!/^(localhost|.+\.headspin\.io)$/.test(host) // 'localhost' or 'subomain.headspin.io'
+          || !/v\d+\/\w+\/wd\/hub$/.test(path)) { // '/v0/xxxxxx/wd/hub'
           notification.error({
             message: i18n.t('Error'),
             description: i18n.t('invalid HeadSpin Web Driver URL. Please make sure the Web Driver URL'),
