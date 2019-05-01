@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import _ from 'lodash';
 import { getLocators } from './shared';
 import styles from './Inspector.css';
-import { Button, Row, Col, Input, Modal, Table, Alert } from 'antd';
+import { Button, Row, Col, Input, Modal, Table, Alert, Tooltip } from 'antd';
 import { withTranslation } from '../../util';
+import { clipboard } from 'electron';
 
 const ButtonGroup = Button.Group;
 
@@ -126,6 +127,12 @@ class SelectedElement extends Component {
             >
               {t('Clear')}
             </Button>
+            <Tooltip title={t('Copy Attributes to Clipboard')}>
+              <Button
+                disabled={!elementId}
+                id='btnCopyAttributes' icon="copy"
+                onClick={() => clipboard.writeText(JSON.stringify(dataSource))}/>
+            </Tooltip>
           </ButtonGroup>
         </Col>
       </Row>

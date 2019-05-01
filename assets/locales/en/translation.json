@@ -133,6 +133,7 @@
   "Pause Recording": "Pause Recording",
   "Search for element": "Search for element",
   "Copy XML Source to Clipboard": "Copy XML Source to Clipboard",
+  "Copy Attributes to Clipboard": "Copy Attributes to Clipboard",
   "quitSessionAndClose": "Quit Session & Close Inspector",
   "Session Inactive": "Session Inactive",
   "Keep Session Running": "Keep Session Running",
