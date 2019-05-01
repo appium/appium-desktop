@@ -133,7 +133,7 @@
   "Pause Recording": "Приостановить запись",
   "Search for element": "Поиск элемента",
   "Copy XML Source to Clipboard": "Копировать XML-источник в буфер обмена",
-  "Copy Attributes to Clipboard": "Copy Attributes to Clipboard",
+  "Copy Attributes to Clipboard": "Копировать атрибуты в буфер обмена",
   "quitSessionAndClose": "Выйти из сессии и закрыть инспектор",
   "Session Inactive": "Сессия неактивна",
   "Keep Session Running": "Оставить сессию запущенной",
