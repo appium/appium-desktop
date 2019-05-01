@@ -133,6 +133,7 @@
   "Pause Recording": "記録を一時停止",
   "Search for element": "要素を検索する",
   "Copy XML Source to Clipboard": "XML形式でソースをクリップボードにコピーする",
+  "Copy Attributes to Clipboard": "Copy Attributes to Clipboard",
   "quitSessionAndClose": "セッションを閉じ、インスペクターを閉じます",
   "Session Inactive": "非アクティブなセッション",
   "Keep Session Running": "実行中のセッションを維持します",
@@ -215,9 +216,8 @@
   "Perfecto Token": "Perfectoのトークン",
   "Your Kobiton Username": "Kobitonのユーザ名",
   "Kobiton Access Key": "Kobitonのアクセスキー",
-  "Headspin Host": "HeadSpinのホスト",
-  "Headspin Port": "HeadSpinのポート",
-  "Headspin API Token": "HeadSpinのAPIトークン",
+  "serverTabHeasdpinWebDriverURL": "HeadSpinのWeb Driver URL",
+  "sessionHeadspinInvalidWebDriverURLError": "HeadSpinのWeb Driver URLが正しくありません。正しいURLを入力し、再度実行ください。",
   "Remote Host": "リモートホスト",
   "Remote Port": "リモートポート",
   "Remote Path": "リモートパス",
@@ -314,5 +314,5 @@
   "TestingBot Key": "TestingBotキー",
   "TestingBot Secret": "TestingBotシークレット",
   "Select Cloud Providers": "クラウド事業者を選択する",
-  "Advanced Settings": "Advanced Settings"
+  "Advanced Settings": "詳細設定"
 }
