@@ -133,7 +133,7 @@
   "Pause Recording": "記録を一時停止",
   "Search for element": "要素を検索する",
   "Copy XML Source to Clipboard": "XML形式でソースをクリップボードにコピーする",
-  "Copy Attributes to Clipboard": "Copy Attributes to Clipboard",
+  "Copy Attributes to Clipboard": "クリップボードに属性をコピーします",
   "quitSessionAndClose": "セッションを閉じ、インスペクターを閉じます",
   "Session Inactive": "非アクティブなセッション",
   "Keep Session Running": "実行中のセッションを維持します",
