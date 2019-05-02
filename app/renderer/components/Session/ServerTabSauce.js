@@ -32,10 +32,10 @@ export default class ServerTabSauce extends Component {
       <Row gutter={8}>
         <Col span={24}>
           <FormItem>
-            <div className={['ant-input-group-addon', SessionStyles.addonDataCenter].join(' ') }>Saucelabs Data Center</div>
+            <div className={['ant-input-group-addon', SessionStyles.addonDataCenter].join(' ') }>{t('SauceLabs Data Center')}</div>
             <Radio.Group className={SessionStyles.inputDataCenter} buttonStyle="solid" defaultValue='us-west-1' id='sauceObjectDataCenter' value={server.sauce.dataCenter} onChange={(e) => setServerParam('dataCenter', e.target.value)}>
-              <Radio value='us-west-1'>US</Radio>
-              <Radio value='eu-central-1'>EU</Radio>
+              <Radio value='us-west-1'>{t('US')}</Radio>
+              <Radio value='eu-central-1'>{t('EU')}</Radio>
             </Radio.Group>
           </FormItem>
         </Col>

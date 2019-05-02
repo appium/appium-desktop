@@ -13,7 +13,6 @@ import { NEW_SESSION_REQUESTED, NEW_SESSION_BEGAN, NEW_SESSION_DONE,
          IS_ADDING_CLOUD_PROVIDER, SET_PROVIDERS,
          ServerTypes } from '../actions/Session';
 
-
 const visibleProviders = []; // Pull this from "electron-settings"
 const server = {
   local: {},
@@ -24,8 +23,6 @@ const server = {
 for (const serverName of _.keys(ServerTypes)) {
   server[serverName] = {};
 }
-
-server.testobject.dataCenter = 'US';
 
 // Make sure there's always at least one cap
 const INITIAL_STATE = {
@@ -64,6 +61,23 @@ const INITIAL_STATE = {
   isValidatingCapsJson: false,
   isAddingCloudProvider: false,
 };
+
+/**
+ * Get updated `state.server` with a new server state extended to it
+ *
+ * @param {object} state The current state of the Session reducer
+ * @param {object} newServerState state.server with newServerState extended to it
+ */
+function getUpdatedServerState (state, newServerState) {
+  const nextServerState = _.cloneDeep(state.server || {});
+  for (let serverName of _.keys(nextServerState)) {
+    nextServerState[serverName] = {
+      ...(nextServerState[serverName] || {}),
+      ...(newServerState[serverName] || {}),
+    };
+  }
+  return nextServerState;
+}
 
 let nextState;
 
@@ -200,17 +214,7 @@ export default function session (state = INITIAL_STATE, action) {
         // Only set remote and cloud providers;
         // 'local' comes from electron-settings
         server: {
-          ...state.server,
-          remote: action.server.remote || {},
-          sauce: action.server.sauce || {},
-          testobject: action.server.testobject || {},
-          headspin: action.server.headspin || {},
-          browserstack: action.server.browserstack || {},
-          bitbar: action.server.bitbar || {},
-          kobiton: action.server.kobiton || {},
-          perfecto: action.server.perfecto || {},
-          pcloudy: action.server.pcloudy || {},
-          testingbot: action.server.testingbot || {},
+          ...getUpdatedServerState(state, action.server),
         },
         serverType: action.serverType || ServerTypes.local,
       };
