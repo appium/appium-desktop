@@ -45,6 +45,8 @@ const INITIAL_STATE = {
     bitbar: {},
     kobiton: {},
     perfecto: {},
+    pcloudy: {},
+    testingbot: {},
   },
   attachSessId: null,
 
