@@ -195,9 +195,11 @@ export default function session (state = INITIAL_STATE, action) {
       return {
         ...state,
         server: {
-          // Set 'remote' and 'cloud providers' to new object
-          ...((state, newServerState) => {
-            const nextServerState = _.cloneDeep(state.server || {});
+          ...(function extendCurrentServerStateWithNewServerState (currentServerState, newServerState) {
+            // Copy current server state and extend it with new server state
+            const nextServerState = _.cloneDeep(currentServerState || {});
+
+            // Extend each server (sauce, testobject, remote, kobiton, etc...)
             for (let serverName of _.keys(nextServerState)) {
               nextServerState[serverName] = {
                 ...(nextServerState[serverName] || {}),
@@ -205,7 +207,7 @@ export default function session (state = INITIAL_STATE, action) {
               };
             }
             return nextServerState;
-          })(state, action.server),
+          })(state.server, action.server),
         },
         serverType: action.serverType || ServerTypes.local,
       };
