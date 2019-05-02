@@ -62,23 +62,6 @@ const INITIAL_STATE = {
   isAddingCloudProvider: false,
 };
 
-/**
- * Get updated `state.server` with a new server state extended to it
- *
- * @param {object} state The current state of the Session reducer
- * @param {object} newServerState state.server with newServerState extended to it
- */
-function getUpdatedServerState (state, newServerState) {
-  const nextServerState = _.cloneDeep(state.server || {});
-  for (let serverName of _.keys(nextServerState)) {
-    nextServerState[serverName] = {
-      ...(nextServerState[serverName] || {}),
-      ...(newServerState[serverName] || {}),
-    };
-  }
-  return nextServerState;
-}
-
 let nextState;
 
 export default function session (state = INITIAL_STATE, action) {
@@ -211,10 +194,18 @@ export default function session (state = INITIAL_STATE, action) {
     case SET_SERVER:
       return {
         ...state,
-        // Only set remote and cloud providers;
-        // 'local' comes from electron-settings
         server: {
-          ...getUpdatedServerState(state, action.server),
+          // Set 'remote' and 'cloud providers' to new object
+          ...((state, newServerState) => {
+            const nextServerState = _.cloneDeep(state.server || {});
+            for (let serverName of _.keys(nextServerState)) {
+              nextServerState[serverName] = {
+                ...(nextServerState[serverName] || {}),
+                ...(newServerState[serverName] || {}),
+              };
+            }
+            return nextServerState;
+          })(state, action.server),
         },
         serverType: action.serverType || ServerTypes.local,
       };
