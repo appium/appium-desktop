@@ -13,7 +13,6 @@ import { NEW_SESSION_REQUESTED, NEW_SESSION_BEGAN, NEW_SESSION_DONE,
          IS_ADDING_CLOUD_PROVIDER, SET_PROVIDERS,
          ServerTypes } from '../actions/Session';
 
-
 const visibleProviders = []; // Pull this from "electron-settings"
 const server = {
   local: {},
@@ -25,15 +24,30 @@ for (const serverName of _.keys(ServerTypes)) {
   server[serverName] = {};
 }
 
-server.testobject.dataCenter = 'US';
-
 // Make sure there's always at least one cap
 const INITIAL_STATE = {
   savedSessions: [],
   tabKey: 'new',
   serverType: ServerTypes.local,
-  server,
   visibleProviders,
+  server: {
+    local: {},
+    remote: {},
+    sauce: {
+      dataCenter: 'us-west-1',
+    },
+    testobject: {
+      dataCenter: 'US',
+    },
+    headspin: {},
+    browserstack: {},
+    advanced: {},
+    bitbar: {},
+    kobiton: {},
+    perfecto: {},
+    pcloudy: {},
+    testingbot: {},
+  },
   attachSessId: null,
 
   // Make sure there's always at least one cap
@@ -182,20 +196,20 @@ export default function session (state = INITIAL_STATE, action) {
     case SET_SERVER:
       return {
         ...state,
-        // Only set remote and cloud providers;
-        // 'local' comes from electron-settings
         server: {
-          ...state.server,
-          remote: action.server.remote || {},
-          sauce: action.server.sauce || {},
-          testobject: action.server.testobject || {},
-          headspin: action.server.headspin || {},
-          browserstack: action.server.browserstack || {},
-          bitbar: action.server.bitbar || {},
-          kobiton: action.server.kobiton || {},
-          perfecto: action.server.perfecto || {},
-          pcloudy: action.server.pcloudy || {},
-          testingbot: action.server.testingbot || {},
+          ...(function extendCurrentServerStateWithNewServerState (currentServerState, newServerState) {
+            // Copy current server state and extend it with new server state
+            const nextServerState = _.cloneDeep(currentServerState || {});
+
+            // Extend each server (sauce, testobject, remote, kobiton, etc...)
+            for (let serverName of _.keys(nextServerState)) {
+              nextServerState[serverName] = {
+                ...(nextServerState[serverName] || {}),
+                ...(newServerState[serverName] || {}),
+              };
+            }
+            return nextServerState;
+          })(state.server, action.server),
         },
         serverType: action.serverType || ServerTypes.local,
       };
