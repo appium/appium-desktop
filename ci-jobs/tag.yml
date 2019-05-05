@@ -1,0 +1,19 @@
+# Node.js
+# Build a general Node.js application with npm.
+# Add steps that analyze code, save build artifacts, deploy, and more:
+# https://docs.microsoft.com/vsts/pipelines/languages/javascript
+jobs:
+- template: templates/package.yml
+  parameters:
+    pool: 'Hosted MacOS Preview'
+    name: 'osx_package'
+- template: templates/package.yml
+  parameters:
+    target: NSIS
+    pool: 'Hosted Windows 2019 with VS2019'
+    name: 'windows_package_nsis'
+    buildScript: 'npx build --win nsis --publish always'
+- template: templates/package.yml
+  parameters:
+    pool: 'Hosted Ubuntu 1604'
+    name: 'linux_package'
