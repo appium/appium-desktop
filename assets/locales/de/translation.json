@@ -177,6 +177,7 @@
   "xCoordinate": "X: {{x}}",
   "yCoordinate": "Y: {{y}}",
   "TestObject Data Center": "TestObject Data Center",
+  "SauceLabs Data Center": "SauceLabs Data Center",
   "US": "US",
   "EU": "EU",
   "proxyThroughSC": "Proxy through Sauce Connect's Selenium Relay",
