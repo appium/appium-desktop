@@ -9,14 +9,10 @@ jobs:
     name: 'osx_package'
 - template: templates/package.yml
   parameters:
-    pool: 'Hosted Windows 2019 with VS2019'
-    name: 'windows_package'
-- template: templates/package.yml
-  parameters:
     target: NSIS
     pool: 'Hosted Windows 2019 with VS2019'
     name: 'windows_package_nsis'
-    buildScript: 'npx build --win nsis-web --publish always'
+    buildScript: 'npx build --win nsis --publish always'
 - template: templates/package.yml
   parameters:
     pool: 'Hosted Ubuntu 1604'
