@@ -18,6 +18,7 @@ const ButtonGroup = Button.Group;
 
 const MIN_WIDTH = 1080;
 const MIN_HEIGHT = 570;
+const MAX_SCREENSHOT_WIDTH = 500;
 
 export default class Inspector extends Component {
 
@@ -35,27 +36,28 @@ export default class Inspector extends Component {
     // too much space to the right or bottom, adjust the max-width of the
     // screenshot container so the source tree flex adjusts to always fill the
     // remaining space. This keeps everything looking tight.
-    if (this.screenAndSourceEl) {
-      const maxScreenshotWidth = 500;
-      //const buffer = 10;
-      const screenshotBox = this.screenAndSourceEl.querySelector('#screenshotContainer');
-      const img = this.screenAndSourceEl.querySelector('#screenshotContainer img#screenshot');
-      if (img) {
-        const imgRect = img.getBoundingClientRect();
-        const screenshotRect = screenshotBox.getBoundingClientRect();
-        screenshotBox.style.flexBasis = `${imgRect.width}px`;
-        if (imgRect.width < screenshotRect.width) {
-          screenshotBox.style.maxWidth = `${imgRect.width}px`;
-        } else if (imgRect.height < screenshotRect.height) {
-          // get what the img width would be if it fills screenshot box height
-          const attemptedWidth = (screenshotRect.height / imgRect.height) * imgRect.width;
-          if (attemptedWidth > maxScreenshotWidth) {
-            screenshotBox.style.maxWidth = `${maxScreenshotWidth}px`;
-          } else {
-            screenshotBox.style.maxWidth = `${attemptedWidth}px`;
-          }
-        }
-      }
+    if (!this.screenAndSourceEl) {
+      return;
+    }
+
+    const screenshotBox = this.screenAndSourceEl.querySelector('#screenshotContainer');
+    const img = this.screenAndSourceEl.querySelector('#screenshotContainer img#screenshot');
+
+    if (!img) {
+      return;
+    }
+
+    const imgRect = img.getBoundingClientRect();
+    const screenshotRect = screenshotBox.getBoundingClientRect();
+    screenshotBox.style.flexBasis = `${imgRect.width}px`;
+    if (imgRect.width < screenshotRect.width) {
+      screenshotBox.style.maxWidth = `${imgRect.width}px`;
+    } else if (imgRect.height < screenshotRect.height) {
+      // get what the img width would be if it fills screenshot box height
+      const attemptedWidth = (screenshotRect.height / imgRect.height) * imgRect.width;
+      screenshotBox.style.maxWidth = attemptedWidth > MAX_SCREENSHOT_WIDTH ?
+        `${MAX_SCREENSHOT_WIDTH}px` :
+        `${attemptedWidth}px`;
     }
   }
 
