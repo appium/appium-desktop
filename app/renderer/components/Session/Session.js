@@ -29,13 +29,13 @@ export default class Session extends Component {
     })();
   }
 
-  handleSelectServerTab (tab) {
+  async handleSelectServerTab (tab) {
     const {changeServerType, addCloudProvider} = this.props;
     if (tab === ADD_CLOUD_PROVIDER) {
       addCloudProvider();
       return;
     }
-    changeServerType(tab);
+    await changeServerType(tab);
   }
 
   removeCloudProvider (providerName) {
