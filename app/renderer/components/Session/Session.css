@@ -104,17 +104,45 @@
   width: 0px;
 }
 
+.saved-sessions,
+.saved-sessions :global(.ant-col),
+.saved-sessions :global(.ant-table),
+.saved-sessions :global(.ant-table-wrapper) {
+  height: 100%;
+}
+
+.saved-sessions :global(.ant-table) {
+  overflow-y: scroll;
+}
+
+.saved-sessions :global(.ant-table::-webkit-scrollbar) {
+  width: 0px;
+}
+
+.formattedCapsCont {
+  height: 100%;
+}
+
 .formattedCaps {
-    width: 100%;
-    margin-bottom: 15px;
-    margin-left: 12px;
-    min-height: 250px;
+  height: 100%;
+  width: 100%;
+  margin-bottom: 15px;
+  margin-left: 12px;
+  display: flex;
+  flex-flow: column;
+  align-items: stretch;
+}
+
+.formattedCaps :global(.ant-card-body) {
+  flex: 1;
+  overflow-y: scroll;
 }
 
 .formattedCaps pre {
   white-space: pre-wrap;
   word-wrap: break-word;
 }
+
 
 .start-session-button {
     margin-left: 1em;
