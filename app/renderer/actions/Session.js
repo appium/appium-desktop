@@ -495,7 +495,8 @@ export function setAttachSessId (attachSessId) {
  * Change the server type
  */
 export function changeServerType (serverType) {
-  return (dispatch, getState) => {
+  return async (dispatch, getState) => {
+    await settings.set(SESSION_SERVER_TYPE, serverType);
     dispatch({type: CHANGE_SERVER_TYPE, serverType});
     getRunningSessions()(dispatch, getState);
   };
@@ -530,7 +531,7 @@ export function setLocalServerParams () {
       dispatch({type: SET_SERVER_PARAM, serverType: ServerTypes.local, name: 'port', value: undefined});
       dispatch({type: SET_SERVER_PARAM, serverType: ServerTypes.local, name: 'hostname', value: undefined});
       if (getState().session.serverType === 'local') {
-        changeServerType('remote')(dispatch, getState);
+        await changeServerType('remote')(dispatch, getState);
       }
     }
   };
@@ -541,10 +542,18 @@ export function setLocalServerParams () {
  * Params are saved whenever there's a new session
  */
 export function setSavedServerParams () {
-  return async (dispatch) => {
+  return async (dispatch, getState) => {
     let server = await settings.get(SESSION_SERVER_PARAMS);
     let serverType = await settings.get(SESSION_SERVER_TYPE);
+    let currentProviders = getState().session.visibleProviders;
+
     if (server) {
+      // if we have a cloud provider as a saved server, but for some reason the
+      // cloud provider is no longer in the list, revert server type to remote
+      if (keys(CloudProviders).includes(serverType) &&
+          !currentProviders.includes(serverType)) {
+        serverType = ServerTypes.remote;
+      }
       dispatch({type: SET_SERVER, server, serverType});
     }
   };

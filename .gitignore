@@ -11,3 +11,4 @@ Certificates.p12
 .cache/
 .idea/
 junit-test-results.xml
+junit-testresults.xml
