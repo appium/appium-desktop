@@ -83,17 +83,16 @@ export default class SavedSessions extends Component {
     }
 
 
-    return (<Row gutter={20}>
+    return (<Row gutter={20} className={SessionCSS['saved-sessions']}>
       <Col span={12}>
-        <Table className={SessionCSS['saved-sessions']}
-          pagination={false}
+        <Table pagination={false}
           dataSource={dataSource}
           columns={columns}
           onRowClick={this.onRowClick}
           rowClassName={this.getRowClassName}
         />
       </Col>
-      <Col span={12} className={SessionCSS.savedCaps}>
+      <Col span={12}>
         <FormattedCaps {...this.props}
           title={capsUUID ? this.sessionFromUUID(capsUUID).name : null}
         />
