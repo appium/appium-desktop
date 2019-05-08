@@ -17,6 +17,7 @@ export default class ServerTabHeadspin extends Component {
           <FormItem>
             <Input className={SessionStyles.customServerInputLeft} id='headspinServerHost' placeholder={headspinUrl} addonBefore={t('serverTabHeasdpinWebDriverURL')}
               value={server.headspin.webDriverUrl} onChange={(e) => setServerParam('webDriverUrl', e.target.value)} />
+            <p className={SessionStyles.localDesc}>{t('sessionHeadspinWebDriverURLDescription')}</p>
           </FormItem>
         </Col>
       </Row>
