@@ -552,14 +552,14 @@ export function setSavedServerParams () {
 
 export function getRunningSessions () {
   return (dispatch, getState) => {
-    const avoidGetRunningSessions = ['sauce', 'testobject'];
+    const avoidServerTypes = ['sauce', 'testobject'];
     // Get currently running sessions for this server
     const state = getState().session;
     const {server, serverType} = state;
     const serverInfo = server[serverType];
 
     dispatch({type: GET_SESSIONS_REQUESTED});
-    if (avoidGetRunningSessions.includes(serverType)) {
+    if (avoidServerTypes.includes(serverType)) {
       dispatch({type: GET_SESSIONS_DONE});
     } else {
       ipcRenderer.send('appium-client-get-sessions', {
