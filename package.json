@@ -119,7 +119,7 @@
     "bluebird": "^3.5.4",
     "connected-react-router": "^6.0.0",
     "css-modules-require-hook": "^4.2.3",
-    "electron-debug": "^2.0.0",
+    "electron-debug": "^3.0.0",
     "electron-log": "^3.0.1",
     "electron-settings": "^2.2.4",
     "electron-updater": "^4.0.1",
