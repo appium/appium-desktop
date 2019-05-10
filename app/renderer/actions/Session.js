@@ -214,10 +214,10 @@ export function newSession (caps, attachSessId = null) {
         break;
       case ServerTypes.headspin: {
         const headspinUrl = url.parse(session.server.headspin.webDriverUrl);
-        host = headspinUrl.hostname;
-        port = headspinUrl.port;
-        path = headspinUrl.pathname;
-        https = headspinUrl.protocol === 'https:';
+        host = session.server.headspin.hostname = headspinUrl.hostname;
+        port = session.server.headspin.port = headspinUrl.port;
+        path = session.server.headspin.path = headspinUrl.pathname;
+        https = session.server.headspin.ssl = headspinUrl.protocol === 'https:';
         break;
       }
       case ServerTypes.perfecto:
@@ -552,14 +552,19 @@ export function setSavedServerParams () {
 
 export function getRunningSessions () {
   return (dispatch, getState) => {
+    const avoidServerTypes = ['sauce', 'testobject'];
     // Get currently running sessions for this server
     const state = getState().session;
     const {server, serverType} = state;
     const serverInfo = server[serverType];
 
     dispatch({type: GET_SESSIONS_REQUESTED});
-    if (serverType !== 'sauce' && serverType !== 'testobject') {
-      ipcRenderer.send('appium-client-get-sessions', {host: serverInfo.hostname, port: serverInfo.port});
+    if (avoidServerTypes.includes(serverType)) {
+      dispatch({type: GET_SESSIONS_DONE});
+    } else {
+      ipcRenderer.send('appium-client-get-sessions', {
+        host: serverInfo.hostname, port: serverInfo.port, path: serverInfo.path, ssl: serverInfo.ssl
+      });
       ipcRenderer.once('appium-client-get-sessions-response', (evt, e) => {
         const res = JSON.parse(e.res);
         dispatch({type: GET_SESSIONS_DONE, sessions: res.value});
@@ -569,8 +574,6 @@ export function getRunningSessions () {
         dispatch({type: GET_SESSIONS_DONE});
         removeRunningSessionsListeners();
       });
-    } else {
-      dispatch({type: GET_SESSIONS_DONE});
     }
   };
 }
