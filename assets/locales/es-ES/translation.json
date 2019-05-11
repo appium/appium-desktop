@@ -218,7 +218,7 @@
   "Your Kobiton Username": "Your Kobiton Username",
   "Kobiton Access Key": "Kobiton Access Key",
   "serverTabHeasdpinWebDriverURL": "HeadSpin Web Driver URL",
-  "sessionHeadspinInvalidWebDriverURLError": "The HeadSpin WebDriver URL is not valid. Please enter the correct URL it and try again.",
+  "sessionHeadspinWebDriverURLDescription": "Get the URL from the HeadSpin UI or the HeadSpin API using the automation configuration route",
   "Remote Host": "Remote Host",
   "Remote Port": "Remote Port",
   "Remote Path": "Remote Path",
