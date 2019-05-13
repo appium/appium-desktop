@@ -113,7 +113,7 @@
   "dependencies": {
     "@babel/polyfill": "^7.4.0",
     "ansi-to-html": "~0.6.7",
-    "antd": "^3.16.1",
+    "antd": "^3.18.1",
     "appium": "1.13.0",
     "appium-support": "^2.25.0",
     "bluebird": "^3.5.4",
