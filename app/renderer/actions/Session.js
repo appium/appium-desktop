@@ -552,7 +552,9 @@ export function setSavedServerParams () {
 
 export function getRunningSessions () {
   return (dispatch, getState) => {
-    const avoidServerTypes = ['sauce', 'testobject'];
+    const avoidServerTypes = [
+      'sauce', 'testobject', 'testingbot'
+    ];
     // Get currently running sessions for this server
     const state = getState().session;
     const {server, serverType} = state;
