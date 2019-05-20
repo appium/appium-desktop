@@ -224,7 +224,7 @@ export function newSession (caps, attachSessId = null) {
         host = session.server.perfecto.hostname;
         port = session.server.perfecto.port;
         token = session.server.perfecto.token || process.env.PERFECTO_TOKEN;
-        path = '/nexperience/perfectomobile/wd/hub';
+        path = session.server.perfecto.path = '/nexperience/perfectomobile/wd/hub';
         if (!token) {
           notification.error({
             message: i18n.t('Error'),
@@ -234,12 +234,12 @@ export function newSession (caps, attachSessId = null) {
           return;
         }
         desiredCapabilities.securityToken = token;
-        https = false;
+        https = session.server.perfecto.ssl = false;
         break;
       case ServerTypes.browserstack:
         host = process.env.BROWSERSTACK_HOST || 'hub-cloud.browserstack.com';
-        port = 443;
-        path = '/wd/hub';
+        port = session.server.browserstack.port = 443;
+        path = session.server.browserstack.path = '/wd/hub';
         username = session.server.browserstack.username || process.env.BROWSERSTACK_USERNAME;
         desiredCapabilities['browserstack.source'] = 'appiumdesktop';
         accessKey = session.server.browserstack.accessKey || process.env.BROWSERSTACK_ACCESS_KEY;
@@ -251,12 +251,12 @@ export function newSession (caps, attachSessId = null) {
           });
           return;
         }
-        https = true;
+        https = session.server.browserstack.ssl = true;
         break;
       case ServerTypes.bitbar:
         host = process.env.BITBAR_HOST || 'appium.bitbar.com';
-        port = 443;
-        path = '/wd/hub';
+        port = session.server.bitbar.port = 443;
+        path = session.server.bitbar.path = '/wd/hub';
         accessKey = session.server.bitbar.apiKey || process.env.BITBAR_API_KEY;
         if (!accessKey) {
           notification.error({
@@ -268,12 +268,12 @@ export function newSession (caps, attachSessId = null) {
         }
         desiredCapabilities.testdroid_source = 'appiumdesktop';
         desiredCapabilities.testdroid_apiKey = accessKey;
-        https = true;
+        https = session.server.bitbar.ssl = true;
         break;
       case ServerTypes.kobiton:
         host = process.env.KOBITON_HOST || 'api.kobiton.com';
-        port = 443;
-        path = '/wd/hub';
+        port = session.server.kobiton.port = 443;
+        path = session.server.kobiton.path = '/wd/hub';
         username = session.server.kobiton.username || process.env.KOBITON_USERNAME;
         desiredCapabilities['kobiton.source'] = 'appiumdesktop';
         accessKey = session.server.kobiton.accessKey || process.env.KOBITON_ACCESS_KEY;
@@ -285,12 +285,12 @@ export function newSession (caps, attachSessId = null) {
           });
           return;
         }
-        https = true;
+        https = session.server.kobiton.ssl = true;
         break;
       case ServerTypes.pcloudy:
         host = session.server.pcloudy.hostname;
-        port = 443;
-        path = '/objectspy/wd/hub';
+        port = session.server.pcloudy.port = 443;
+        path = session.server.pcloudy.path = '/objectspy/wd/hub';
         username = session.server.pcloudy.username || process.env.PCLOUDY_USERNAME;
         desiredCapabilities.pCloudy_Username = username;
         accessKey = session.server.pcloudy.accessKey || process.env.PCLOUDY_ACCESS_KEY;
@@ -303,11 +303,11 @@ export function newSession (caps, attachSessId = null) {
           });
           return;
         }
-        https = true;
+        https = session.server.pcloudy.ssl = true;
         break;
       case ServerTypes.testingbot:
-        host = process.env.TB_HOST || 'hub.testingbot.com';
-        port = 443;
+        host = session.server.testingbot.hostname = process.env.TB_HOST || 'hub.testingbot.com';
+        port = session.server.testingbot.port = 443;
         username = session.server.testingbot.key || process.env.TB_KEY;
         accessKey = session.server.testingbot.secret || process.env.TB_SECRET;
         desiredCapabilities['tb.source'] = 'appiumdesktop';
@@ -319,7 +319,7 @@ export function newSession (caps, attachSessId = null) {
           });
           return;
         }
-        https = true;
+        https = session.server.testingbot.ssl = true;
         break;
       default:
         break;
@@ -552,7 +552,9 @@ export function setSavedServerParams () {
 
 export function getRunningSessions () {
   return (dispatch, getState) => {
-    const avoidServerTypes = ['sauce', 'testobject'];
+    const avoidServerTypes = [
+      'sauce', 'testobject', 'testingbot'
+    ];
     // Get currently running sessions for this server
     const state = getState().session;
     const {server, serverType} = state;
