@@ -128,7 +128,7 @@
     "format-json": "1.x",
     "highlight.js": "9.x",
     "history": "^4.7.2",
-    "i18next": "^15.0.8",
+    "i18next": "^16.0.0",
     "i18next-node-fs-backend": "^2.1.1",
     "lodash": "4.x",
     "moment": "^2.20.1",
