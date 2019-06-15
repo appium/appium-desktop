@@ -136,7 +136,7 @@
     "prop-types": "^15.6.2",
     "react": "^16.8.1",
     "react-dom": "^16.8.1",
-    "react-hot-loader": "^4.3.12",
+    "react-hot-loader": "^4.11.1",
     "react-i18next": "^10.0.4",
     "react-redux": "^7.0.0",
     "react-router": "^5.0.0",
