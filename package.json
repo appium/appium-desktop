@@ -160,7 +160,7 @@
     "appium-fake-driver": "^0.6.2",
     "asar": "^2.0.0",
     "asyncbox": "^2.5.3",
-    "babel-eslint": "^10.0.1",
+    "babel-eslint": "^10.0.2",
     "babel-plugin-transform-class-properties": "^6.24.1",
     "chai": "^4.2.0",
     "chai-as-promised": "^7.1.1",
