@@ -1,7 +1,5 @@
 jobs:
   - job: CrowdinSync
-    pool: 
-      vmImage: "macOS 10.13"
     steps:
     - script: |
         git remote add triager https://triager:$GITHUB_TOKEN@github.com/appium/appium-desktop
@@ -19,7 +17,7 @@ jobs:
       env:
         CROWDIN_PROJECT_KEY: $(CROWDIN_PROJECT_KEY)
     - script: |
-        git commit -u triager -a -n -m 'Update translations'
+        git commit -a -n -m 'Update translations'
         git push -u triager master
         git status
       displayName: Commit Translation Changes
