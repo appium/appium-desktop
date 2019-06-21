@@ -37,4 +37,4 @@ parts:
       - libxtst6
     source: dist/linux-unpacked
     after:
-- desktop-gtk2
+      - desktop-gtk2
