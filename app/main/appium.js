@@ -68,7 +68,7 @@ function connectStartServer (win) {
           );
           win.webContents.send('appium-log-line', batchedLogs);
         } catch (ign) { }
-        batchedLogs = [];
+        batchedLogs.splice(0, batchedLogs.length);
       }
     }, LOG_SEND_INTERVAL_MS);
 

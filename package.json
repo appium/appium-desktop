@@ -173,7 +173,7 @@
     "electron-builder": "^20.38.2",
     "electron-builder-lib": "^20.15.3",
     "electron-devtools-installer": "^2.2.3",
-    "eslint": "^5.13.0",
+    "eslint": "^6.0.0",
     "eslint-config-appium": "^4.0.1",
     "eslint-plugin-babel": "^5.2.1",
     "eslint-plugin-import": "^2.8.0",
