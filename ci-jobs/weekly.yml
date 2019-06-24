@@ -5,7 +5,7 @@ jobs:
     steps:
     - script: |
         git remote add triager https://triager:$GITHUB_TOKEN@github.com/appium/appium-desktop
-        git checkout -b crowdin-sync-$(Build.BuildNumber)
+        git checkout -b master
         git status
       env:
         GITHUB_TOKEN: $(GITHUB_TOKEN)
@@ -24,9 +24,3 @@ jobs:
         git push -u triager crowdin-sync-$(Build.BuildNumber)
         git status
       displayName: Commit Translation Changes
-    - script: brew install hub
-      displayName: Install Hub
-    - script: hub pull-request -m 'Update Crowdin translations'
-      displayName: Make Pull Request to Update Translations
-      env:
-        GITHUB_TOKEN: $(GITHUB_TOKEN)
