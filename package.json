@@ -117,7 +117,7 @@
     "appium": "1.14.0-beta.1",
     "appium-support": "^2.25.0",
     "bluebird": "^3.5.5",
-    "connected-react-router": "^6.0.0",
+    "connected-react-router": "6.4.0",
     "css-modules-require-hook": "^4.2.3",
     "electron-debug": "^3.0.0",
     "electron-log": "^3.0.1",
