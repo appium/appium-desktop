@@ -209,6 +209,12 @@ function connectCreateNewSession () {
         desiredCapabilities.connectHardwareKeyboard = true;
       }
 
+      // Prevent wd from injecting default desired capabilities
+      if (typeof desiredCapabilities.wdNoDefaults === 'undefined' &&
+          typeof desiredCapabilities['wd-no-defaults'] === 'undefined') {
+        desiredCapabilities.wdNoDefaults = true;
+      }
+
       // Try initializing it. If it fails, kill it and send error message to sender
       let p = driver.init(desiredCapabilities);
       event.sender.send('appium-new-session-successful');
