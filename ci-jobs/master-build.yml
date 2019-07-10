@@ -1,8 +1,6 @@
 # Master build. Runs on any commit to master.
 jobs:
 - job: crowdin
-  variables:
-    GITHUB_TOKEN: $(GITHUB_TOKEN)
   steps:
     - task: NodeTool@0
       inputs:
@@ -11,6 +9,8 @@ jobs:
       displayName: NPM install
     - script: npx semantic-release --dry-run --branch dpgraham-semantic-release
       displayName: Semantic Release -- Dry Run
+      env:
+        GITHUB_TOKEN: $(GITHUB_TOKEN)
     - script: npm run crowdin-update
       env:
         CROWDIN_PROJECT_KEY: $(CROWDIN_PROJECT_KEY)
