@@ -135,6 +135,7 @@
     "postcss": "^7.0.4",
     "prop-types": "^15.6.2",
     "react": "^16.8.1",
+    "react-click-outside-component": "^1.1.1",
     "react-dom": "^16.8.1",
     "react-hot-loader": "^4.3.12",
     "react-i18next": "^10.0.4",
