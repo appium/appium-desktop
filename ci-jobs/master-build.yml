@@ -7,6 +7,8 @@ jobs:
         versionSpec: '11.x'
     - script: npm install
       displayName: NPM install
+    - script: npx semantic-release --dry-run
+      displayName: Semantic Release -- Dry Run
     - script: npm run crowdin-update
       env:
         CROWDIN_PROJECT_KEY: $(CROWDIN_PROJECT_KEY)
