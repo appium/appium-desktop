@@ -1,3 +1,4 @@
+# CI Build. Runs on every commit to any branch.
 jobs:
   - job: BuildAndTest
     variables:

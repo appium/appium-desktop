@@ -19,17 +19,17 @@ jobs:
       inputs:
         versionSpec: '11.x'
     - ${{ if eq(parameters.xvfb, 'true') }}:
-      - script: "Xvfb :99 -screen 0 1600x900x24 &"
+      - script: Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
+        displayName: XVFB
     - script: npm install
       displayName: 'Install dependencies'
     - script: npm run build
       displayName: Build project
     - script: npm test
       displayName: NPM test
-    - script: npx build --publish never --dir
-      displayName: Build application bundles
-    #- script: npm run e2e
-      #displayName: Run end-to-end tests
+    - ${{ if eq(parameters.e2e, 'true') }}:
+      - script: npm run e2e
+        displayName: Run end-to-end tests
     - task: PublishTestResults@2
       displayName: 'Publish Test Results'
       inputs:

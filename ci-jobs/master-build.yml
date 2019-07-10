@@ -1,7 +1,4 @@
-# Node.js
-# Build a general Node.js application with npm.
-# Add steps that analyze code, save build artifacts, deploy, and more:
-# https://docs.microsoft.com/vsts/pipelines/languages/javascript
+# Master build. Runs on any commit to master.
 jobs:
 - job: crowdin
   steps:
@@ -13,3 +10,4 @@ jobs:
     - script: npm run crowdin-update
       env:
         CROWDIN_PROJECT_KEY: $(CROWDIN_PROJECT_KEY)
+      displayName: Crowdin Update

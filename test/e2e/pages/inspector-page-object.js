@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import { retryInterval } from 'asyncbox';
 import BasePage from './base-page-object';
+import { setValueReact } from './utils';
 
 export default class InspectorPage extends BasePage {
   constructor (client) {
@@ -17,11 +18,11 @@ export default class InspectorPage extends BasePage {
   }
 
   async setCustomServerHost (host) {
-    await this.client.setValue(this.customServerHost, host);
+    await this.client.execute(setValueReact(this.customServerHost, host));
   }
 
   async setCustomServerPort (port) {
-    await this.client.setValue(this.customServerPort, port);
+    await this.client.execute(setValueReact(this.customServerPort, port));
   }
 
   async addDCaps (dcaps) {

@@ -14,8 +14,9 @@ export function openBrowserWindow (route, opts) {
     backgroundColor: '#f2f2f2',
     frame: 'customButtonsOnHover',
     webPreferences: {
-      devTools: true
-    }
+      devTools: true,
+      nodeIntegration: true
+    },
   };
 
   let win = new BrowserWindow({

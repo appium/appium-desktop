@@ -55,6 +55,9 @@ app.on('ready', async () => {
     height: 600,
     minWidth: 650,
     minHeight: 600,
+    webPreferences: {
+      nodeIntegration: true
+    }
   });
 
   mainWindow.loadURL(`file://${__dirname}/index.html`);

@@ -18,7 +18,7 @@ const runningLocally = isDev || process.env.RUNNING_LOCALLY;
 
 let checkNewUpdates = _.noop;
 
-if (!runningLocally && !process.env.SKIP_AUTO_UPDATE) {
+if (!runningLocally && !process.env.RUNNING_IN_SPECTRON) {
 
   autoUpdater.setFeedURL(getFeedUrl(app.getVersion()));
 
@@ -29,6 +29,9 @@ if (!runningLocally && !process.env.SKIP_AUTO_UPDATE) {
     // autoupdate.checkForUpdates always downloads updates immediately
     // This method (getUpdate) let's us take a peek to see if there is an update
     // available before calling .checkForUpdates
+    if (process.env.RUNNING_IN_SPECTRON) {
+      return;
+    }
     const update = await checkUpdate(app.getVersion());
     if (update) {
       let {name, notes, pub_date: pubDate} = update;
