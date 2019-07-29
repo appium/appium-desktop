@@ -145,7 +145,7 @@ class AdvancedTab extends Component {
               {this.buildInput('localTimezone', 'checkbox', t('Local Timezone'))}
               {this.buildInput('sessionOverride', 'checkbox', t('Allow Session Override'))}
               {this.buildInput('logTimestamp', 'checkbox', t('Log Timestamps'))}
-              {this.buildInput('logNoColors', 'checkbox', t('Supress Log Color'))}
+              {this.buildInput('logNoColors', 'checkbox', t('Suppress Log Color'))}
               {this.buildInput('enforceStrictCaps', 'checkbox', t('Strict Caps Mode'))}
               {this.buildInput('relaxedSecurityEnabled', 'checkbox', t('Relaxed Security'))}
               {this.buildInput('defaultCapabilities', 'textarea', t('Default Capabilities'))}
