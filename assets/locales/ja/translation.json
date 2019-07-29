@@ -58,7 +58,7 @@
   "Local Timezone": "ローカルタイムゾーンを使う",
   "Allow Session Override": "セッションの上書きを許可",
   "Log Timestamps": "ログにタイムスタンプを付与する",
-  "Supress Log Color": "ログに色を付けない",
+  "Suppress Log Color": "ログに色を付けない",
   "Strict Caps Mode": "Appiumの設定を厳密にする",
   "Relaxed Security": "セキュリティ設定を緩和する",
   "Default Capabilities": "Appiumの既定設定",
