@@ -58,7 +58,7 @@
   "Local Timezone": "Местный часовой пояс",
   "Allow Session Override": "Разрешить переопределение сессии",
   "Log Timestamps": "Записывать метки времени в журнал",
-  "Supress Log Color": "Текст журнала одним цветом",
+  "Suppress Log Color": "Текст журнала одним цветом",
   "Strict Caps Mode": "Строгий режим для возможностей устройств",
   "Relaxed Security": "Без дополнительной защиты",
   "Default Capabilities": "Возможности по умолчанию",
