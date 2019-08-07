@@ -3,7 +3,6 @@ import formatJSON from 'format-json';
 import SessionCSS from './Session.css';
 import { Card, Button, Alert, Tooltip } from 'antd';
 import { getCapsObject } from '../../actions/Session.js';
-import ClickOutside from 'react-click-outside-component';
 
 export default class FormattedCaps extends Component {
 
@@ -16,7 +15,6 @@ export default class FormattedCaps extends Component {
            isValidCapsJson, invalidCapsJsonReason, t} = this.props;
     return caps && <div className={SessionCSS.formattedCapsCont}>
       <Card title={title || 'JSON Representation'} className={SessionCSS.formattedCaps}>
-        <ClickOutside onClickOutside={saveRawDesiredCaps}>
           <div className={SessionCSS.capsEditorControls}>
             {isEditingDesiredCaps && <Tooltip title={t('Cancel')}>
               <Button onClick={abortDesiredCapsEditor} icon='close' className={SessionCSS.capsEditorButton} />
@@ -35,7 +33,6 @@ export default class FormattedCaps extends Component {
           {!isEditingDesiredCaps && <div>
             <pre>{this.getFormattedJSON(caps)}</pre>
           </div>}
-        </ClickOutside>
       </Card>
     </div>;
   }
