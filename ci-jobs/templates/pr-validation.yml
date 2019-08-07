@@ -17,7 +17,7 @@ jobs:
     steps:
     - task: NodeTool@0
       inputs:
-        versionSpec: '11.x'
+        versionSpec: '10.x'
     - ${{ if eq(parameters.xvfb, 'true') }}:
       - script: Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
         displayName: XVFB

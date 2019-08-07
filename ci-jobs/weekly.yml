@@ -12,7 +12,7 @@ jobs:
       displayName: Create Crowdin Sync branch
     - task: NodeTool@0
       inputs:
-        versionSpec: '11.x'
+        versionSpec: '10.x'
     - script: npm install request bluebird asyncbox 
       displayName: Install dependencies
     - script: npm run crowdin-sync

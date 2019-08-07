@@ -20,8 +20,8 @@ jobs:
     steps:
     - task: NodeTool@0
       inputs:
-        versionSpec: '11.x'
-    - script: npm install
+        versionSpec: '10.x'
+    - script: npm ci
       displayName: 'Install dependencies'
     - script: npm run build
       displayName: Build project
