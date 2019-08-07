@@ -22,7 +22,9 @@ jobs:
       inputs:
         versionSpec: '10.x'
     - script: npm ci
-      displayName: 'Install dependencies'
+      displayName: Install dependencies
+    - script: npm run e2e
+      displayName: Run E2E Tests
     - script: npm run build
       displayName: Build project
     - script: ${{ parameters.buildScript }}
