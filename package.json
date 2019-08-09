@@ -136,7 +136,7 @@
     "moment": "^2.20.1",
     "postcss": "^7.0.4",
     "prop-types": "^15.6.2",
-    "react": "^16.8.1",
+    "react": "^16.9.0",
     "react-click-outside-component": "^1.1.1",
     "react-dom": "^16.8.1",
     "react-hot-loader": "^4.3.12",
