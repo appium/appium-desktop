@@ -1,4 +1,4 @@
-# Appium Desktop 
+# Appium Desktop
 [![Build Status](https://dev.azure.com/AppiumCI/Appium%20Desktop/_apis/build/status/appium.appium-desktop)](https://dev.azure.com/AppiumCI/Appium%20Desktop/_build/latest?definitionId=1)
 [![Crowdin](https://d322cqt584bo4o.cloudfront.net/appium-desktop/localized.svg)](https://crowdin.com/project/appium-desktop)
 [![Greenkeeper badge](https://badges.greenkeeper.io/dpgraham/appium-desktop.svg)](https://greenkeeper.io/)
@@ -103,6 +103,14 @@ to the New Session window without starting an Appium Desktop server. Simply go
 to "File" (Windows/Linux) or "Appium" (Mac) and choose "New Session...", which
 will open the New Session window without having to start a local server. In
 this case, attaching to the local server will be disabled.
+
+You can add available cloud providers as new tabs.
+When you select _Select Cloud Providers_ tab on the view,
+_Select Cloud Providers_ dialog appears.
+You can select some of them and click _Done_, they will appear on
+the _New session window_ as tabs.
+
+![Select Cloud Providers](docs/images/screen-new-session-cloud-providers.png)
 
 #### Appium Endpoints
 
@@ -270,6 +278,25 @@ for Appium Desktop, or Appium's main tracker if the request is for Appium more
 generally.)
 
 ## Advanced Topics and Troubleshooting
+
+#### Connect to local Appium server
+
+Appium Desktop has own Appium CLI. You can launch it via [Starting a simple server](#starting-a-simple-server).
+But sometimes you need another Appium version which is bundled in the desktop.
+For example, when you want to use Appium beta.
+
+Then, please follow below steps.
+
+1. Build Appium CLI environment: [Getting Started](http://appium.io/docs/en/about-appium/getting-started/)
+    - e.g., `$ npm install -g appium@1.14.0`
+2. Launch the Appium
+    - `$ appium`
+3. Launch Appium Desktop and open [The New Session window](#the-new-session-window)
+4. Connect to the running Appium server as `Custom Server` as below (by default)
+    - Remote Host: `localhost`
+    - Remote Port: `4723`
+    - Remote Path: `/wd/hub`
+5. Start session
 
 #### Appium can't detect environment variables on Mac
 
