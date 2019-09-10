@@ -13,7 +13,7 @@ const frameworks = {
   java: JavaFramework,
   python: PythonFramework,
   ruby: RubyFramework,
-  robot: RobotFramework,  
+  robot: RobotFramework,
 };
 
 export default frameworks;
