@@ -41,6 +41,7 @@ driver.quit()`;
       'class name': 'class_name',
       '-android uiautomator': 'android_uiautomator',
       '-android datamatcher': 'android_datamatcher',
+      '-android viewtag': 'android_viewtag',
       '-ios predicate string': 'ios_predicate',
       '-ios class chain': 'ios_uiautomation', // TODO: Could not find iOS UIAutomation
     };

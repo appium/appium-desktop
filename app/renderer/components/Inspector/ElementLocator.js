@@ -41,6 +41,7 @@ class ElementLocator extends Component {
       ['accessibility id', 'Accessibility ID'],
       ['-android uiautomator', 'UIAutomator Selector (Android UiAutomator2)'],
       ['-android datamatcher', 'DataMatcher Selector (Android Espresso)'],
+      ['-android viewtag', 'Android View Tag (Android Espresso)'],
       ['-ios predicate string', 'Predicate String (iOS)'],
       ['-ios class chain', 'Class Chain (iOS)'],
     ];

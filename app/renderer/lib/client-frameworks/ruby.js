@@ -39,6 +39,7 @@ driver.quit`;
       'class name': ':class_name',
       '-android uiautomator': ':uiautomation',
       '-android datamatcher': ':datamatcher',
+      '-android viewtag': ':viewtag',
       '-ios predicate string': ':predicate',
       '-ios class chain': ':class_chain',
     };

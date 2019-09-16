@@ -49,6 +49,7 @@ ${this.indent(this.chainifyCode(code), 2)}
       case 'class name': locator = `${locator}`; break;
       case '-android uiautomator': locator = `android=${locator}`; break;
       case '-android datamatcher': locator = `android=${locator}`; break;
+      case '-android viewtag': locator = `android=unsupported`; break;
       case '-ios predicate string': locator = `ios=${locator}`; break;
       case '-ios class chain': locator = `ios=${locator}`; break; // TODO: Handle IOS class chain properly. Not all libs support it. Or take it out
       default: throw new Error(`Can't handle strategy ${strategy}`);

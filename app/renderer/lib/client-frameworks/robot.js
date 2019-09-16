@@ -57,6 +57,7 @@ ${this.indent(code, 4)}
       'class name': 'class_name',
       '-android uiautomator': 'unsupported',
       '-android datamatcher': 'unsupported',
+      '-android viewtag': 'unsupported',
       '-ios predicate string': 'ios_predicate',
       '-ios class chain': 'ios_uiautomation', // TODO: Could not find iOS UIAutomation
     };
