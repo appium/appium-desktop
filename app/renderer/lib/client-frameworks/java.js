@@ -68,6 +68,7 @@ ${this.indent(code, 4)}
       'name': 'Name',
       '-android uiautomator': 'AndroidUIAutomator',
       '-android datamatcher': 'AndroidDataMatcher',
+      '-android viewtag': 'AndroidViewTag',
       '-ios predicate string': 'IosNsPredicate',
       '-ios class chain': 'IosClassChain',
     };
