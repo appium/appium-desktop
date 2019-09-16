@@ -134,6 +134,7 @@ export default class AppiumMethodHandler {
         const [startX, startY, endX, endY] = args;
         res = await (new wd.TouchAction(this.driver))
           .press({x: startX, y: startY})
+          .wait(500)
           .moveTo({x: endX, y: endY})
           .release()
           .perform();
