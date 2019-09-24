@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { debounce } from 'lodash';
 import { SCREENSHOT_INTERACTION_MODE, INTERACTION_MODE } from './shared';
 import { Card, Icon, Button, Spin, Tooltip, Modal, Tabs } from 'antd';
 import Screenshot from './Screenshot';
@@ -18,7 +17,6 @@ const ButtonGroup = Button.Group;
 
 const MIN_WIDTH = 1080;
 const MIN_HEIGHT = 570;
-const MAX_SCREENSHOT_WIDTH = 500;
 
 export default class Inspector extends Component {
 
@@ -26,39 +24,6 @@ export default class Inspector extends Component {
     super();
     this.didInitialResize = false;
     this.state = {};
-    this.screenAndSourceEl = null;
-    this.lastScreenshot = null;
-    this.updateSourceTreeWidth = debounce(this.updateSourceTreeWidth.bind(this), 50);
-  }
-
-  updateSourceTreeWidth () {
-    // the idea here is to keep track of the screenshot image width. if it has
-    // too much space to the right or bottom, adjust the max-width of the
-    // screenshot container so the source tree flex adjusts to always fill the
-    // remaining space. This keeps everything looking tight.
-    if (!this.screenAndSourceEl) {
-      return;
-    }
-
-    const screenshotBox = this.screenAndSourceEl.querySelector('#screenshotContainer');
-    const img = this.screenAndSourceEl.querySelector('#screenshotContainer img#screenshot');
-
-    if (!img) {
-      return;
-    }
-
-    const imgRect = img.getBoundingClientRect();
-    const screenshotRect = screenshotBox.getBoundingClientRect();
-    screenshotBox.style.flexBasis = `${imgRect.width}px`;
-    if (imgRect.width < screenshotRect.width) {
-      screenshotBox.style.maxWidth = `${imgRect.width}px`;
-    } else if (imgRect.height < screenshotRect.height) {
-      // get what the img width would be if it fills screenshot box height
-      const attemptedWidth = (screenshotRect.height / imgRect.height) * imgRect.width;
-      screenshotBox.style.maxWidth = attemptedWidth > MAX_SCREENSHOT_WIDTH ?
-        `${MAX_SCREENSHOT_WIDTH}px` :
-        `${attemptedWidth}px`;
-    }
   }
 
   componentDidMount () {
@@ -75,17 +40,6 @@ export default class Inspector extends Component {
     this.props.bindAppium();
     this.props.applyClientMethod({methodName: 'source'});
     this.props.getSavedActionFramework();
-    window.addEventListener('resize', this.updateSourceTreeWidth);
-  }
-
-  componentDidUpdate () {
-    const {screenshot} = this.props;
-    // only update when the screenshot changed, not for any other kind of
-    // update
-    if (screenshot !== this.lastScreenshot) {
-      this.updateSourceTreeWidth();
-      this.lastScreenshot = screenshot;
-    }
   }
 
   screenshotInteractionChange (mode) {
@@ -103,7 +57,7 @@ export default class Inspector extends Component {
            showKeepAlivePrompt, keepSessionAlive, sourceXML, t} = this.props;
     const {path} = selectedElement;
 
-    let main = <div className={InspectorStyles['inspector-main']} ref={(el) => {this.screenAndSourceEl = el;}}>
+    let main = <div className={InspectorStyles['inspector-main']}>
       <div id='screenshotContainer' className={InspectorStyles['screenshot-container']}>
         {screenshot && <Screenshot {...this.props} />}
         {screenshotError && t('couldNotObtainScreenshot', {screenshotError})}
