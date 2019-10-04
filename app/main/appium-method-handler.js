@@ -251,7 +251,7 @@ export function getSessionHandler (winId) {
   if (handler) {
     return handler;
   } else {
-    log.error(`Could not find session with window id '${winId}'. Availalable sessions are: '${JSON.stringify(_.keys(appiumHandlers))}'`);
+    log.error(`Could not find session with window id '${winId}'. Available sessions are: '${JSON.stringify(_.keys(appiumHandlers))}'`);
     return false;
   }
 }
