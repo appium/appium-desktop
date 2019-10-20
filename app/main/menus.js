@@ -233,13 +233,13 @@ function otherMenuFile () {
 
 function otherMenuView () {
   const submenu = [];
-  submenu.push([{
+  submenu.push({
     label: i18n.t('Toggle &Full Screen'),
     accelerator: 'F11',
     click () {
       mainWindow.setFullScreen(!mainWindow.isFullScreen());
     }
-  }]);
+  });
 
   submenu.push({
     label: i18n.t('Languages'),
