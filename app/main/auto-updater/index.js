@@ -4,11 +4,11 @@
  * Similar to https://electronjs.org/docs/api/auto-updater#events
  * See https://electronjs.org/docs/tutorial/updates for documentation
  */
-import { app, autoUpdater, dialog } from 'electron';
+import { app, dialog } from 'electron';
+import { autoUpdater } from 'electron-updater';
 import moment from 'moment';
 import B from 'bluebird';
 import { checkUpdate } from './update-checker';
-import { getFeedUrl } from './config';
 import _ from 'lodash';
 import env from '../../env';
 import i18n from '../../configs/i18next.config';
@@ -19,9 +19,6 @@ const runningLocally = isDev || process.env.RUNNING_LOCALLY;
 let checkNewUpdates = _.noop;
 
 if (!runningLocally && !process.env.RUNNING_IN_SPECTRON) {
-
-  autoUpdater.setFeedURL(getFeedUrl(app.getVersion()));
-
   /**
    * Check for new updates
    */
