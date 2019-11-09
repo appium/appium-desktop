@@ -8,6 +8,8 @@ import { clipboard } from 'electron';
 
 const ButtonGroup = Button.Group;
 
+const tableColumnsStyle = { wordWrap: 'break-word', wordBreak: 'break-word' };
+
 /**
  * Shows details of the currently selected element and shows methods that can
  * be called on the elements (tap, sendKeys)
@@ -46,11 +48,15 @@ class SelectedElement extends Component {
       title: t('Attribute'),
       dataIndex: 'name',
       key: 'name',
-      width: 100
+      width: 100,
+      render: (text) => (<div style={tableColumnsStyle}>{text}</div>)
+
     }, {
       title: t('Value'),
       dataIndex: 'value',
-      key: 'value'
+      key: 'value',
+      render: (text) => (<div style={tableColumnsStyle}>{text}</div>)
+
     }];
 
     // Get the data for the attributes table
@@ -67,11 +73,13 @@ class SelectedElement extends Component {
       title: t('Find By'),
       dataIndex: 'find',
       key: 'find',
-      width: 100
+      width: 100,
+      render: (text) => (<div style={tableColumnsStyle}>{text}</div>)
     }, {
       title: t('Selector'),
       dataIndex: 'selector',
-      key: 'selector'
+      key: 'selector',
+      render: (text) => (<div style={tableColumnsStyle}>{text}</div>)
     }];
 
     // Get the data for the strategies table
@@ -137,12 +145,14 @@ class SelectedElement extends Component {
         </Col>
       </Row>
       {findDataSource.length > 0 &&
-        <Table
-          columns={findColumns}
-          dataSource={findDataSource}
-          size="small"
-          pagination={false}
-        />}
+        <Row>
+          <Table
+            columns={findColumns}
+            dataSource={findDataSource}
+            size="small"
+            pagination={false} />
+        </Row>
+      }
       <br />
       {showXpathWarning &&
         <div>
@@ -155,9 +165,13 @@ class SelectedElement extends Component {
         </div>
       }
       {dataSource.length > 0 &&
-      <Row>
-        <Table columns={attributeColumns} dataSource={dataSource} size="small" pagination={false} />
-      </Row>
+        <Row>
+          <Table
+            columns={attributeColumns}
+            dataSource={dataSource}
+            size="small"
+            pagination={false} />
+        </Row>
       }
       <Modal title={t('Send Keys')}
         visible={sendKeysModalVisible}
