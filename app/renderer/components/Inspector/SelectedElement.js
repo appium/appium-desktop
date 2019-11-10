@@ -8,7 +8,7 @@ import { clipboard } from 'electron';
 
 const ButtonGroup = Button.Group;
 
-const tableColumnsStyle = { wordWrap: 'break-word', wordBreak: 'break-word' };
+const tableColumnsStyle = { wordWrap: 'break-all', wordBreak: 'break-all' };
 
 /**
  * Shows details of the currently selected element and shows methods that can
