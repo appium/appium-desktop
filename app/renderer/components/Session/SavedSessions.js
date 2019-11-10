@@ -5,7 +5,7 @@ import { Button, Row, Col, Table } from 'antd';
 import FormattedCaps from './FormattedCaps';
 import SessionCSS from './Session.css';
 
-const heightOfServerConfigArea = 400;
+const HEIGHT_OF_SERVICE_CONFIG_AREA = 400;
 
 export default class SavedSessions extends Component {
 
@@ -83,7 +83,7 @@ export default class SavedSessions extends Component {
       });
     }
 
-    const windowSizeHeight = remote.getCurrentWindow().getSize()[1] - heightOfServerConfigArea;
+    const windowSizeHeight = remote.getCurrentWindow().getSize()[1] - HEIGHT_OF_SERVICE_CONFIG_AREA;
     return (<Row gutter={20} className={SessionCSS['saved-sessions']}>
       <Col span={12}>
         <Table
