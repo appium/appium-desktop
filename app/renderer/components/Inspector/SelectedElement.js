@@ -9,7 +9,7 @@ import { clipboard } from 'electron';
 const ButtonGroup = Button.Group;
 
 const selectedElementTableCell = (text) => (
-  <div className={styles['selected-element-table-cells']}>{text}</div>)
+  <div className={styles['selected-element-table-cells']}>{text}</div>);
 
 /**
  * Shows details of the currently selected element and shows methods that can
