@@ -8,8 +8,6 @@ import { clipboard } from 'electron';
 
 const ButtonGroup = Button.Group;
 
-const tableColumnsStyle = { wordWrap: 'break-all', wordBreak: 'break-all' };
-
 /**
  * Shows details of the currently selected element and shows methods that can
  * be called on the elements (tap, sendKeys)
@@ -49,14 +47,13 @@ class SelectedElement extends Component {
       dataIndex: 'name',
       key: 'name',
       width: 100,
-      render: (text) => (<div style={tableColumnsStyle}>{text}</div>)
+      render: (text) => (<div className={styles['selected-element-table-cells']}>{text}</div>)
 
     }, {
       title: t('Value'),
       dataIndex: 'value',
       key: 'value',
-      render: (text) => (<div style={tableColumnsStyle}>{text}</div>)
-
+      render: (text) => (<div className={styles['selected-element-table-cells']}>{text}</div>)
     }];
 
     // Get the data for the attributes table
@@ -74,12 +71,12 @@ class SelectedElement extends Component {
       dataIndex: 'find',
       key: 'find',
       width: 100,
-      render: (text) => (<div style={tableColumnsStyle}>{text}</div>)
+      render: (text) => (<div className={styles['selected-element-table-cells']}>{text}</div>)
     }, {
       title: t('Selector'),
       dataIndex: 'selector',
       key: 'selector',
-      render: (text) => (<div style={tableColumnsStyle}>{text}</div>)
+      render: (text) => (<div className={styles['selected-element-table-cells']}>{text}</div>)
     }];
 
     // Get the data for the strategies table

@@ -194,6 +194,12 @@
     margin-bottom: 20px;
 }
 
+.selected-element-table-cells {
+    word-wrap: break-all;
+    word-break: break-all;
+ }
+
+
 .selected-element-card {
     display: flex;
     flex-direction: column;
@@ -340,7 +346,7 @@
  .actions-container :global(.ant-select) {
     width: 100%;
  }
- 
+
  .actions-container :global(.ant-btn) {
     width: 100%;
  }
