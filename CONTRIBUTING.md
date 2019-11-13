@@ -51,7 +51,7 @@ This launches both the app and a development server which feeds UI code changes 
 Another important thing to do before committing is to run a lint tool on your code:
 
 ```bash
-npm run lint
+npm run test:lint
 ```
 
 Finally, you might want to run the app in a non-development mode in order to make sure that everything works as expected if you were to publish:
