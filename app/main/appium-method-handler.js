@@ -167,37 +167,36 @@ export default class AppiumMethodHandler {
   }
 
   async _getSourceAndScreenshot () {
+    let source, sourceError, screenshot, screenshotError, windowSize, windowSizeError;
+    try {
+      source = await this.driver.source();
+    } catch (e) {
+      if (e.status === 6) {
+        throw e;
+      }
+      sourceError = e;
+    }
 
-    /* eslint-disable promise/catch-or-return */
-    return await new Bluebird((resolve) => {
-      let res = {};
+    try {
+      screenshot = await this.driver.takeScreenshot();
+    } catch (e) {
+      if (e.status === 6) {
+        throw e;
+      }
+      screenshotError = e;
+    }
 
-      // Resolve when we have source/sourceError, screenshot/screenshotError and windowSize/windowSizeError
-      // NOTE: Couldn't use Promise.all here because Promise.all fails when it encounters just one error. In this
-      // case we need it to finish all of the promises and get either the response or the error for each
-      const checkShouldResolve = () => {
-        if (
-          (res.source || res.sourceError) &&
-          (res.screenshot || res.screenshotError) &&
-          (res.windowSize || res.windowSizeError)
-        ) {
-          resolve(res);
-        }
-      };
+    try {
+      windowSize = await this.driver.getWindowSize();
 
-      this.driver.source()
-        .then((source) => (res.source = source) && checkShouldResolve())
-        .catch((sourceError) => (res.sourceError = sourceError) && checkShouldResolve());
+    } catch (e) {
+      if (e.status === 6) {
+        throw e;
+      }
+      windowSizeError = e;
+    }
 
-      this.driver.takeScreenshot()
-        .then((screenshot) => (res.screenshot = screenshot) && checkShouldResolve())
-        .catch((screenshotError) => (res.screenshotError = screenshotError) && checkShouldResolve());
-
-      this.driver.getWindowSize()
-        .then((windowSize) => (res.windowSize = windowSize) && checkShouldResolve())
-        .catch((windowSizeError) => (res.windowSizeError = windowSizeError) && checkShouldResolve());
-    });
-    /* eslint-enable promise/catch-or-return */
+    return {source, sourceError, screenshot, screenshotError, windowSize, windowSizeError};
   }
 
   restart () {
