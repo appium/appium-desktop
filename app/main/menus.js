@@ -7,6 +7,11 @@ import i18n from '../configs/i18next.config';
 let menuTemplates = {mac: {}, other: {}};
 let mainWindow = null;
 
+const appVersionTitle = i18n.t('Appium Desktop');
+const appVersionMessage = `App Version: ${app.getVersion()}\n` +
+                          `Electron: ${process.versions.electron}\n` +
+                          `Node.js: ${process.versions.node}\n`;
+
 function languageMenu () {
   return config.languages.map((languageCode) => ({
     label: i18n.t(languageCode),
@@ -16,12 +21,18 @@ function languageMenu () {
   }));
 }
 
+
 function macMenuAppium () {
   return {
     label: 'Appium',
     submenu: [{
       label: i18n.t('About Appium'),
-      selector: 'orderFrontStandardAboutPanel:'
+      click () {
+        dialog.showMessageBox({
+          title: appVersionTitle,
+          message: appVersionMessage,
+        });
+      }
     }, {
       label: i18n.t('Check for updates'),
       click () {
@@ -195,8 +206,8 @@ function otherMenuFile () {
     label: i18n.t('&About Appium'),
     click () {
       dialog.showMessageBox({
-        title: i18n.t('Appium Desktop'),
-        message: i18n.t(`Version ${app.getVersion()}`),
+        title: appVersionTitle,
+        message: appVersionMessage,
       });
     }
   }, {
