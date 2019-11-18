@@ -16,7 +16,6 @@ function languageMenu () {
   }));
 }
 
-
 function macMenuAppium () {
   return {
     label: 'Appium',
@@ -24,7 +23,7 @@ function macMenuAppium () {
       label: i18n.t('About Appium'),
       click () {
         dialog.showMessageBox({
-          title: i18n.t('Appium Desktop'),
+          title: i18n.t('appiumDesktop'),
           message: i18n.t('showAppInfo', {
             appVersion: app.getVersion(),
             electronVersion: process.versions.electron,
