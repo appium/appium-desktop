@@ -135,6 +135,7 @@ requests. If you are submitting a bug report, please follow the [issue template]
 
 Appium Desktop uses [i18next](https://www.i18next.com) library to manage its translations. All translatable resources are stored in `assets/locales/en/translation.json` file. The list of supported languages can be found (or altered) in `app/configs/app.config.js` module. Please read through i18next API documentation to get more information on how to manage the localized resources:
 
+- https://i18next.github.io/i18next/pages/doc_features.html
 - https://www.i18next.com/translation-function/essentials
 - https://www.i18next.com/translation-function/interpolation
 - https://www.i18next.com/translation-function/formatting
