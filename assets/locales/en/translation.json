@@ -11,6 +11,7 @@
   "pa-IN": "Punjabi",
   "te": "Telugu",
   "pt-BR": "Portuguese (Brazil)",
+  "showAppInfo": "App Version: {{appVersion}}\nElectron: {{electronVersion}}\nNode.js: {{nodejsVersion}}\n",
   "Edit": "Edit",
   "Redo": "Redo",
   "Cut": "Cut",

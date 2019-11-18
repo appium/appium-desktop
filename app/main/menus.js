@@ -8,9 +8,11 @@ let menuTemplates = {mac: {}, other: {}};
 let mainWindow = null;
 
 const appVersionTitle = i18n.t('Appium Desktop');
-const appVersionMessage = `App Version: ${app.getVersion()}\n` +
-                          `Electron: ${process.versions.electron}\n` +
-                          `Node.js: ${process.versions.node}\n`;
+const appVersionMessage = i18n.t('showAppInfo', {
+  appVersion: app.getVersion(),
+  electronVersion: process.versions.electron,
+  nodejsVersion: process.versions.node
+});
 
 function languageMenu () {
   return config.languages.map((languageCode) => ({
