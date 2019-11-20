@@ -16,20 +16,22 @@ function languageMenu () {
   }));
 }
 
+const showAppInfoClickAction = () => dialog.showMessageBox({
+  title: i18n.t('appiumDesktop'),
+  message: i18n.t('showAppInfo', {
+    appVersion: app.getVersion(),
+    electronVersion: process.versions.electron,
+    nodejsVersion: process.versions.node
+  }),
+});
+
 function macMenuAppium () {
   return {
     label: 'Appium',
     submenu: [{
       label: i18n.t('About Appium'),
       click () {
-        dialog.showMessageBox({
-          title: i18n.t('appiumDesktop'),
-          message: i18n.t('showAppInfo', {
-            appVersion: app.getVersion(),
-            electronVersion: process.versions.electron,
-            nodejsVersion: process.versions.node
-          }),
-        });
+        showAppInfoClickAction();
       }
     }, {
       label: i18n.t('Check for updates'),
@@ -203,14 +205,7 @@ function otherMenuFile () {
   }, {
     label: i18n.t('&About Appium'),
     click () {
-      dialog.showMessageBox({
-        title: i18n.t('appiumDesktop'),
-        message: i18n.t('showAppInfo', {
-          appVersion: app.getVersion(),
-          electronVersion: process.versions.electron,
-          nodejsVersion: process.versions.node
-        }),
-      });
+      showAppInfoClickAction();
     }
   }, {
     type: 'separator'
