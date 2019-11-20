@@ -30,9 +30,7 @@ function macMenuAppium () {
     label: 'Appium',
     submenu: [{
       label: i18n.t('About Appium'),
-      click () {
-        showAppInfoClickAction();
-      }
+      click: showAppInfoClickAction
     }, {
       label: i18n.t('Check for updates'),
       click () {
@@ -204,9 +202,7 @@ function otherMenuFile () {
     accelerator: 'Ctrl+O'
   }, {
     label: i18n.t('&About Appium'),
-    click () {
-      showAppInfoClickAction();
-    }
+    click: showAppInfoClickAction,
   }, {
     type: 'separator'
   }, {
