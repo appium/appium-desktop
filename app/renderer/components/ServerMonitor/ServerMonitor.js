@@ -115,12 +115,13 @@ export default class ServerMonitor extends Component {
     document.removeEventListener('keydown', this.keydownListener);
   }
 
-  componentWillUpdate () {
+  getSnapshotBeforeUpdate () {
     this.shouldScroll = false;
     let n = this._term;
     if (n) {
       this.shouldScroll = n.scrollTop + n.offsetHeight >= n.scrollHeight;
     }
+    return null;
   }
 
   componentDidUpdate () {

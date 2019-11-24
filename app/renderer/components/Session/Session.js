@@ -18,7 +18,7 @@ const ADD_CLOUD_PROVIDER = 'addCloudProvider';
 
 export default class Session extends Component {
 
-  componentWillMount () {
+  componentDidMount () {
     const {setLocalServerParams, getSavedSessions, setSavedServerParams, setVisibleProviders, getRunningSessions} = this.props;
     (async () => {
       await getSavedSessions();

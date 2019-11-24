@@ -10,7 +10,7 @@ const ENV_VARIABLE_NAMES = [
 const {app, dialog, getCurrentWindow} = remote;
 
 class Config extends Component {
-  componentWillMount () {
+  componentDidMount () {
     this.props.getEnvironmentVariables();
   }
 
