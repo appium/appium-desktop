@@ -121,6 +121,7 @@ export default class ServerMonitor extends Component {
     if (n) {
       this.shouldScroll = n.scrollTop + n.offsetHeight >= n.scrollHeight;
     }
+    return null;
   }
 
   componentDidUpdate () {
