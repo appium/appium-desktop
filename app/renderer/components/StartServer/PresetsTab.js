@@ -17,7 +17,7 @@ class PresetsTab extends Component {
     this.state = {selectedPreset: null};
   }
 
-  componentWillMount () {
+  componentDidMount () {
     this.props.getPresets();
   }
 

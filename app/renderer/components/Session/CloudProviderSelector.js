@@ -6,7 +6,7 @@ import SessionStyles from './Session.css';
 
 export default class CloudProviderSelector extends Component {
 
-  componentWillMount () {
+  componentDidMount () {
     const {setLocalServerParams, getSavedSessions, setSavedServerParams, getRunningSessions} = this.props;
     (async () => {
       await getSavedSessions();
