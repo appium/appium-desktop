@@ -11,11 +11,11 @@ export default class SavedSessions extends Component {
 
   constructor (props) {
     super(props);
-    this.onRowClick = this.onRowClick.bind(this);
+    this.onRow = this.onRow.bind(this);
     this.getRowClassName = this.getRowClassName.bind(this);
   }
 
-  onRowClick (record) {
+  onRow (record) {
     const {setCaps} = this.props;
     let session = this.sessionFromUUID(record.key);
     setCaps(session.caps, session.uuid);
