@@ -115,7 +115,7 @@
   "dependencies": {
     "@babel/polyfill": "^7.4.0",
     "ansi-to-html": "~0.6.7",
-    "antd": "^3.18.1",
+    "antd": "^3.25.2",
     "appium": "^1.15.0",
     "appium-support": "^2.25.0",
     "bluebird": "^3.5.5",
@@ -171,7 +171,7 @@
     "cross-env": "^6.0.0",
     "devtron": "1.x",
     "dir-compare": "^1.4.0",
-    "electron": "^6.1.5",
+    "electron": "^7.1.2",
     "electron-builder": "^22.1.0",
     "electron-builder-lib": "^20.15.3",
     "electron-devtools-installer": "^2.2.3",
@@ -205,7 +205,7 @@
     "rimraf": "^3.0.0",
     "run-s": "0.0.0",
     "sinon": "^7.3.1",
-    "spectron": "^8.0.0",
+    "spectron": "^9.0.0",
     "xmldom": "^0.1.27"
   },
   "devEngines": {

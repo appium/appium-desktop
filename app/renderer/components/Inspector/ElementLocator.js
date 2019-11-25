@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
 import { Input, Select, Row, Col } from 'antd';
 import InspectorStyles from './Inspector.css';
 import { withTranslation } from '../../util';
