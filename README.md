@@ -122,7 +122,7 @@ These are the options for launching a session against a non-local Appium server:
 | Custom Server    | Launch a session on an Appium server running on another machine over the network                                           |
 | Sauce Labs       | Launch a session on the [Sauce Labs](https://saucelabs.com) cloud. [Documentation](https://wiki.saucelabs.com/)            |
 | TestObject       | Launch a session on the [TestObject](https://testobject.com) cloud. [Documentation](https://wiki.saucelabs.com/)           |
-| Headspin         | Launch a session on the [Headspin](https://headspin.com) cloud. [Documentation](https://docs.headspin.io/)                 |
+| Headspin         | Launch a session on the [Headspin](https://headspin.io) cloud. [Documentation](https://headspin.io/)                 |
 | BrowserStack     | Launch a session on the [Browserstack](https://browserstack.com) cloud. [Documentation](https://www.browserstack.com/docs) |
 | Bitbar           | Launch a session on the [Bitbar](https://bitbar.com) cloud. [Documentation](http://docs.bitbar.com/)                       |
 | Kobiton           | Launch a session on the [Kobiton](https://kobiton.com) cloud. [Documentation](https://docs.kobiton.com/)                       |
