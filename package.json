@@ -187,7 +187,7 @@
     "eslint-plugin-shopify": "^30.0.0",
     "express": "^4.16.2",
     "greenkeeper-lockfile": "^1.15.1",
-    "husky": "^3.0.0",
+    "husky": "^4.0.2",
     "jquery": "^3.3.1",
     "jsdom": "^15.0.0",
     "less": "^2.7.3",
