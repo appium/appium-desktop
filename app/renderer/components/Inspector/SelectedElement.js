@@ -107,7 +107,7 @@ class SelectedElement extends Component {
           <ButtonGroup size="small">
             <Button
               disabled={!elementId}
-              icon={!elementInteractionsNotAvailable && !elementId && 'loading'}
+              icon={(!elementInteractionsNotAvailable && !elementId) ? 'loading' : null}
               id='btnTapElement'
               onClick={() => applyClientMethod({methodName: 'click', elementId})}
             >
