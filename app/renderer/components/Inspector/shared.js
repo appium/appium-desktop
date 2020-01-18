@@ -24,7 +24,7 @@ export function isUnique (attrName, attrValue, sourceXML) {
     return true;
   }
   const doc = new DOMParser().parseFromString(sourceXML);
-  return xpath.select(`//*[@${attrName}="${attrValue}"]`, doc).length < 2;
+  return xpath.select(`//*[@${attrName}="${attrValue.replace(/"/g, '')}"]`, doc).length < 2;
 }
 
 // Map of the optimal strategies.
