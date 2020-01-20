@@ -215,6 +215,10 @@ function connectCreateNewSession () {
         desiredCapabilities.wdNoDefaults = true;
       }
 
+      // Allow to send W3C spec capabilities in addition to MJSONWP
+      desiredCapabilities.allowW3C = true;
+      desiredCapabilities.w3cPrefix = 'appium';
+
       // Try initializing it. If it fails, kill it and send error message to sender
       let p = driver.init(desiredCapabilities);
       event.sender.send('appium-new-session-successful');
