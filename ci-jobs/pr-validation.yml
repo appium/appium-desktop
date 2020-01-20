@@ -2,7 +2,8 @@
 jobs:
 - template: templates/pr-validation.yml
   parameters:
-    pool: 'Hosted MacOS Preview'
+    pool:
+      vmImage: 'macOS-10.14'
     name: 'osx_build'
     e2e: true
 - template: templates/pr-validation.yml
