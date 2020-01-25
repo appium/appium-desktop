@@ -168,7 +168,7 @@
     "chai-as-promised": "^7.1.1",
     "check-engines": "^1.5.0",
     "concurrently": "^5.0.0",
-    "cross-env": "^6.0.0",
+    "cross-env": "^7.0.0",
     "devtron": "1.x",
     "dir-compare": "^2.0.0",
     "electron": "^7.1.2",
