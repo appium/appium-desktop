@@ -152,6 +152,7 @@
     "temp": "0.x",
     "uuid": "3.x",
     "wd": "^1.6.0",
+    "xmldom": "^0.2.1",
     "xpath": "0.0.27"
   },
   "devDependencies": {
@@ -205,8 +206,7 @@
     "rimraf": "^3.0.0",
     "run-s": "0.0.0",
     "sinon": "^8.0.0",
-    "spectron": "^9.0.0",
-    "xmldom": "^0.2.0"
+    "spectron": "^9.0.0"
   },
   "devEngines": {
     "node": ">=6.x",
