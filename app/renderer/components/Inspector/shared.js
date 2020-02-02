@@ -159,6 +159,22 @@ export const actionDefinitions = {
       'Get Device Settings': {methodName: 'settings'},
     },
   },
+  'Web': {
+    'Navigation': {
+      'Go to URL': {methodName: 'get', args: [['url', STRING]], refresh: true},
+      'Get URL': {methodName: 'url'},
+      'Back': {methodName: 'back', refresh: true},
+      'Forward': {methodName: 'forward', refresh: true},
+      'Refresh': {methodName: 'refresh', refresh: true}
+    }
+  },
+  'Context': {
+    'Context': {
+      'Get Context': {methodName: 'currentContext'},
+      'Get All Context': {methodName: 'contexts'},
+      'Set Context': {methodName: 'context', args: [['contextRef', STRING]], refresh: true}
+    }
+  }
 };
 
 export const INTERACTION_MODE = {
