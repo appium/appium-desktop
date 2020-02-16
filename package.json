@@ -125,7 +125,7 @@
     "electron-log": "^4.0.0",
     "electron-settings": "^2.2.4",
     "electron-updater": "^4.2.0",
-    "fix-path": "^2.1.0",
+    "fix-path": "^3.0.0",
     "font-awesome": "4.x",
     "format-json": "1.x",
     "highlight.js": "9.x",
