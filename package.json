@@ -205,7 +205,7 @@
     "request": "^2.88.0",
     "rimraf": "^3.0.0",
     "run-s": "0.0.0",
-    "sinon": "^8.0.0",
+    "sinon": "^9.0.0",
     "spectron": "^9.0.0"
   },
   "devEngines": {
