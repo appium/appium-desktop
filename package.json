@@ -206,7 +206,7 @@
     "rimraf": "^3.0.0",
     "run-s": "0.0.0",
     "sinon": "^8.0.0",
-    "spectron": "^10.0.0",
+    "spectron": "^10.0.0"
   },
   "devEngines": {
     "node": ">=6.x",
