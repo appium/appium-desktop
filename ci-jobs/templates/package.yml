@@ -7,7 +7,7 @@ parameters:
   pool: ''
   xvfb: false
   target: ''
-  buildScript: 'npx electron-builder build --publish always'
+  buildScript: 'npx electron-builder build -ml -w --ia32 --x64 --publish never'
 jobs:
   - job: ${{parameters.name}}
     pool: ${{parameters.pool}}

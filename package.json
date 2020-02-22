@@ -87,7 +87,10 @@
     ],
     "win": {
       "artifactName": "${productName}-windows-${version}.${ext}",
-      "target": "nsis",
+      "target": [
+        "nsis",
+        "zip"
+      ],
       "icon": "build/icon.ico"
     },
     "nsisWeb": {
