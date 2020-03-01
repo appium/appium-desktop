@@ -4,8 +4,7 @@ import { remote } from 'electron';
 import { Button, Row, Col, Table } from 'antd';
 import FormattedCaps from './FormattedCaps';
 import SessionCSS from './Session.css';
-
-const HEIGHT_OF_SERVICE_CONFIG_AREA = 400;
+import { HEIGHT_OF_SERVICE_CONFIG_AREA } from './Session.js';
 
 export default class SavedSessions extends Component {
 

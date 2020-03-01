@@ -16,6 +16,8 @@ const {TabPane} = Tabs;
 
 const ADD_CLOUD_PROVIDER = 'addCloudProvider';
 
+const HEIGHT_OF_SERVICE_CONFIG_AREA = 400;
+
 export default class Session extends Component {
 
   componentDidMount () {
@@ -120,3 +122,5 @@ export default class Session extends Component {
     ];
   }
 }
+
+export { HEIGHT_OF_SERVICE_CONFIG_AREA };
