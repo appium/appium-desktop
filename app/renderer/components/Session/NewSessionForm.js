@@ -4,18 +4,10 @@ import FormattedCaps from './FormattedCaps';
 import CapabilityControl from './CapabilityControl';
 import SessionStyles from './Session.css';
 import {remote} from 'electron';
-import { HEIGHT_OF_SERVICE_CONFIG_AREA } from './Session.js';
+import { HEIGHT_OF_SERVICE_CONFIG_AREA } from './Layout';
 
 const {Item: FormItem} = Form;
 const {Option} = Select;
-
-const styles = {
-  // Got warning messages not to set by CSS
-  formCaps: {
-    overflow: 'auto',
-    overflowX: 'hidden'
-  }
-};
 
 export default class NewSessionForm extends Component {
 
@@ -64,7 +56,10 @@ export default class NewSessionForm extends Component {
     return <div>
       <Row type="flex" align="top" justify="start" className={SessionStyles.capsFormRow}>
         <Col order={1} span={12} className={`${SessionStyles.capsFormCol} ${isEditingDesiredCaps ? SessionStyles.capsFormDisabled : ''}`}>
-          <Form style={{...styles.formCaps, maxHeight: (remote.getCurrentWindow().getSize()[1] - HEIGHT_OF_SERVICE_CONFIG_AREA)}}>
+          <Form
+            className={SessionStyles.newSessionForm}
+            style={{maxHeight: remote.getCurrentWindow().getSize()[1] - HEIGHT_OF_SERVICE_CONFIG_AREA}}>
+
             {caps.map((cap, index) => {
               return <Row gutter={8} key={index}>
                 <Col span={7}>

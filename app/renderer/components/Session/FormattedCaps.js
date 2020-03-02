@@ -4,7 +4,7 @@ import SessionCSS from './Session.css';
 import { Card, Button, Alert, Tooltip } from 'antd';
 import { getCapsObject } from '../../actions/Session.js';
 import { remote } from 'electron';
-import { HEIGHT_OF_SERVICE_CONFIG_AREA } from './Session.js';
+import { HEIGHT_OF_SERVICE_CONFIG_AREA } from './Layout';
 
 export default class NewSessionForm extends Component {
 
