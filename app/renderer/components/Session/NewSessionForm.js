@@ -4,7 +4,7 @@ import FormattedCaps from './FormattedCaps';
 import CapabilityControl from './CapabilityControl';
 import SessionStyles from './Session.css';
 import {remote} from 'electron';
-import { HEIGHT_OF_SERVICE_CONFIG_AREA } from './Layout';
+import { HEIGHT_OF_SESSION_CONFIG_AREA } from './Layout';
 
 const {Item: FormItem} = Form;
 const {Option} = Select;
@@ -58,7 +58,7 @@ export default class NewSessionForm extends Component {
         <Col order={1} span={12} className={`${SessionStyles.capsFormCol} ${isEditingDesiredCaps ? SessionStyles.capsFormDisabled : ''}`}>
           <Form
             className={SessionStyles.newSessionForm}
-            style={{maxHeight: remote.getCurrentWindow().getSize()[1] - HEIGHT_OF_SERVICE_CONFIG_AREA}}>
+            style={{maxHeight: remote.getCurrentWindow().getSize()[1] - HEIGHT_OF_SESSION_CONFIG_AREA}}>
 
             {caps.map((cap, index) => {
               return <Row gutter={8} key={index}>

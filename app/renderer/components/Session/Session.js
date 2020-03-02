@@ -16,7 +16,6 @@ const {TabPane} = Tabs;
 
 const ADD_CLOUD_PROVIDER = 'addCloudProvider';
 
-
 export default class Session extends Component {
 
   componentDidMount () {

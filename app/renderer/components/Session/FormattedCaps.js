@@ -4,7 +4,7 @@ import SessionCSS from './Session.css';
 import { Card, Button, Alert, Tooltip } from 'antd';
 import { getCapsObject } from '../../actions/Session.js';
 import { remote } from 'electron';
-import { HEIGHT_OF_SERVICE_CONFIG_AREA } from './Layout';
+import { HEIGHT_OF_SESSION_CONFIG_AREA } from './Layout';
 
 export default class NewSessionForm extends Component {
 
@@ -19,7 +19,7 @@ export default class NewSessionForm extends Component {
       <Card
         title={title || 'JSON Representation'}
         className={SessionCSS.formattedCaps}
-        bodyStyle={{maxHeight: remote.getCurrentWindow().getSize()[1] - HEIGHT_OF_SERVICE_CONFIG_AREA}}>
+        bodyStyle={{maxHeight: remote.getCurrentWindow().getSize()[1] - HEIGHT_OF_SESSION_CONFIG_AREA}}>
 
         <div className={SessionCSS.capsEditorControls}>
           {isEditingDesiredCaps && <Tooltip title={t('Cancel')}>
