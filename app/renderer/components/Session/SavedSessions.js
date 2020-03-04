@@ -4,8 +4,7 @@ import { remote } from 'electron';
 import { Button, Row, Col, Table } from 'antd';
 import FormattedCaps from './FormattedCaps';
 import SessionCSS from './Session.css';
-
-const HEIGHT_OF_SERVICE_CONFIG_AREA = 400;
+import { HEIGHT_OF_SESSION_CONFIG_AREA } from './Layout';
 
 export default class SavedSessions extends Component {
 
@@ -83,7 +82,7 @@ export default class SavedSessions extends Component {
       });
     }
 
-    const windowSizeHeight = remote.getCurrentWindow().getSize()[1] - HEIGHT_OF_SERVICE_CONFIG_AREA;
+    const windowSizeHeight = remote.getCurrentWindow().getSize()[1] - HEIGHT_OF_SESSION_CONFIG_AREA;
     return (<Row gutter={20} className={SessionCSS['saved-sessions']}>
       <Col span={12}>
         <Table
