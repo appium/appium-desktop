@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Button, Tooltip, Icon } from 'antd';
+import { Button, Tooltip } from 'antd';
 import { STATUS_RUNNING, STATUS_STOPPING,
          STATUS_STOPPED } from '../../reducers/ServerMonitor';
 import styles from './ServerMonitor.css';
@@ -8,7 +8,7 @@ import AnsiConverter from 'ansi-to-html';
 import { withTranslation } from '../../util';
 
 import AppiumSmallMagenta from '../../images/appium_small_magenta.png';
-import {
+import LegacyIcon, {
   PauseOutlined,
   SearchOutlined,
   DownloadOutlined,
@@ -161,7 +161,7 @@ export default class ServerMonitor extends Component {
 
       return (
         <div key={i}>
-          <Icon type={icn} theme="filled" />
+          <LegacyIcon type={icn} theme="filled" />
           {
             serverArgs.logTimestamp &&
             // eslint-disable-next-line shopify/jsx-no-hardcoded-content
@@ -190,7 +190,7 @@ export default class ServerMonitor extends Component {
         <div className={`${styles.bar} ${styles['bar-' + serverStatus]}`}>
           <img src={AppiumSmallMagenta} className={styles.logo} />
           <div className={`${styles.status} ${styles[serverStatus]}`}>
-            <Icon type={statusIcon} theme="filled" />
+            <LegacyIcon type={statusIcon} theme="filled" />
             {statusMsg}
           </div>
           <div className={`${styles['button-container']}`}>

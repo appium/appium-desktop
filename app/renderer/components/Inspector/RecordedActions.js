@@ -1,11 +1,11 @@
 import { clipboard } from 'electron';
 import React, { Component } from 'react';
-import { Card, Select, Tooltip, Button, Icon } from 'antd';
+import { Card, Select, Tooltip, Button } from 'antd';
 import InspectorStyles from './Inspector.css';
 import frameworks from '../../lib/client-frameworks';
 import { highlight } from 'highlight.js';
 import { withTranslation } from '../../util';
-import {
+import LegacyIcon, {
   ExportOutlined,
   CopyOutlined,
   DeleteOutlined,
@@ -94,7 +94,7 @@ class RecordedActions extends Component {
 
     const highlightedCode = this.code(false);
 
-    return <Card title={<span><Icon type="code-o"/> {t('Recorder')}</span>}
+    return <Card title={<span><LegacyIcon type="code-o"/> {t('Recorder')}</span>}
       className={InspectorStyles['recorded-actions']}
       extra={this.actionBar()}
     >

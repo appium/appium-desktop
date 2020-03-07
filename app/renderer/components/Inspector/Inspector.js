@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { debounce } from 'lodash';
 import { SCREENSHOT_INTERACTION_MODE, INTERACTION_MODE } from './shared';
-import { Card, Icon, Button, Spin, Tooltip, Modal, Tabs } from 'antd';
+import { Card, Button, Spin, Tooltip, Modal, Tabs } from 'antd';
 import Screenshot from './Screenshot';
 import SelectedElement from './SelectedElement';
 import Source from './Source';
@@ -9,7 +9,7 @@ import InspectorStyles from './Inspector.css';
 import RecordedActions from './RecordedActions';
 import Actions from './Actions';
 import { clipboard } from 'electron';
-import {
+import LegacyIcon, {
   SelectOutlined,
   ScanOutlined,
   SwapRightOutlined,
@@ -19,7 +19,7 @@ import {
   PauseOutlined,
   SearchOutlined,
   CopyOutlined,
-  CloseOutlined
+  CloseOutlined,
 } from '@ant-design/icons';
 
 
@@ -137,13 +137,13 @@ export default class Inspector extends Component {
           <TabPane tab={t('Source')} key={INTERACTION_MODE.SOURCE}>
             <div className='action-row'>
               <div className='action-col'>
-                <Card title={<span><Icon type="file-text" /> {t('App Source')}</span>}>
+                <Card title={<span><LegacyIcon type="file-text" /> {t('App Source')}</span>}>
                   <Source {...this.props} />
                 </Card>
               </div>
               <div id='selectedElementContainer'
                 className={`${InspectorStyles['interaction-tab-container']} ${InspectorStyles['element-detail-container']} action-col`}>
-                <Card title={<span><Icon type="tag-o" /> {t('selectedElement')}</span>}
+                <Card title={<span><LegacyIcon type="tag-o" /> {t('selectedElement')}</span>}
                   className={InspectorStyles['selected-element-card']}>
                   {path && <SelectedElement {...this.props}/>}
                   {!path && <i>{t('selectElementInSource')}</i>}
@@ -153,7 +153,7 @@ export default class Inspector extends Component {
           </TabPane>
           <TabPane tab={t('Actions')} key={INTERACTION_MODE.ACTIONS}>
             <Card
-              title={<span><Icon type="thunderbolt" /> {t('Actions')}</span>}
+              title={<span><LegacyIcon type="thunderbolt" /> {t('Actions')}</span>}
               className={InspectorStyles['interaction-tab-card']}>
               <Actions {...this.props} />
             </Card>

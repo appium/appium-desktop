@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Switch, Input, Icon } from 'antd';
 import SessionStyles from './Session.css';
 import {remote} from 'electron';
+import LegacyIcon from '@ant-design/icons';
+
 const {dialog} = remote;
 
 
@@ -19,7 +21,7 @@ export default class NewSessionForm extends Component {
   render () {
     const {cap, onSetCapabilityParam, isEditingDesiredCaps, id, t} = this.props;
 
-    const buttonAfter = <Icon className={SessionStyles['filepath-button']}
+    const buttonAfter = <LegacyIcon className={SessionStyles['filepath-button']}
       type="file"
       onClick={() => this.getLocalFilePath((filepath) => onSetCapabilityParam(filepath[0]))} />;
 
