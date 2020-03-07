@@ -31,7 +31,7 @@ export default class AttachToSession extends Component {
         <Row>
           <Col span={23}>
             <Select showSearch
-              mode='combobox'
+              mode='AutoComplete'
               notFoundContent='None found'
               placeholder={t('enterYourSessionId')}
               value={attachSessId}
