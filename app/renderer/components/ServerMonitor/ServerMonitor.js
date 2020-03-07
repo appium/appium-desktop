@@ -8,6 +8,12 @@ import AnsiConverter from 'ansi-to-html';
 import { withTranslation } from '../../util';
 
 import AppiumSmallMagenta from '../../images/appium_small_magenta.png';
+import {
+  PauseOutlined,
+  SearchOutlined,
+  DownloadOutlined,
+  CloseOutlined
+} from '@ant-design/icons';
 
 const convert = new AnsiConverter({fg: '#bbb', bg: '#222'});
 const MAX_LOGS_RENDERED = 1000;
@@ -33,19 +39,19 @@ class StopButtonComponent extends Component {
     const {serverStatus, stopServer, closeMonitor, t} = this.props;
     let btn = <Tooltip title={t('Stop Server')}
       placement="bottomLeft">
-      <Button icon="pause" className={styles.serverButton}
+      <Button icon={PauseOutlined} className={styles.serverButton}
         onClick={stopServer} />
     </Tooltip>;
     if (serverStatus === STATUS_STOPPED) {
       btn = <Tooltip title={t('Close Logs')} placement="bottomLeft">
         <Button className={styles.serverButton}
-          icon="close"
+          icon={CloseOutlined}
           onClick={closeMonitor} />
       </Tooltip>;
     } else if (serverStatus === STATUS_STOPPING) {
       btn = <Tooltip title={t('Stopping…')} visible={true}
         placement="bottomLeft">
-        <Button icon="pause"
+        <Button icon={PauseOutlined}
           className={styles.serverButton} type="disabled" />
       </Tooltip>;
     }
@@ -65,7 +71,7 @@ class StartSessionButtonComponent extends Component {
     if (serverStatus !== STATUS_STOPPED && serverStatus !== STATUS_STOPPING) {
       return <Tooltip title={t('Start Inspector Session')}>
         <Button className={styles.serverButton} id='startNewSessionBtn'
-          icon="search"
+          icon={SearchOutlined}
           onClick={startSession} />
       </Tooltip>;
     } else {
@@ -86,7 +92,7 @@ class GetRawLogsButtonComponent extends Component {
     const {t, getRawLogs} = this.props;
     return <Tooltip title={t('Get Raw Logs')}>
       <Button className={styles.serverButton}
-        icon="download"
+        icon={DownloadOutlined}
         onClick={() => getRawLogs()} />
     </Tooltip>;
   }

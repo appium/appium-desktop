@@ -3,6 +3,11 @@ import { Button, Input, Modal, Form, Row, Col, Select } from 'antd';
 import FormattedCaps from './FormattedCaps';
 import CapabilityControl from './CapabilityControl';
 import SessionStyles from './Session.css';
+import {
+  DeleteOutlined,
+  PlusOutlined
+} from '@ant-design/icons';
+
 const {Item: FormItem} = Form;
 const {Option} = Select;
 
@@ -82,7 +87,7 @@ export default class NewSessionForm extends Component {
                 <Col span={2}>
                   <div className={SessionStyles.btnDeleteCap}>
                     <FormItem>
-                      <Button {...{disabled: caps.length <= 1 || isEditingDesiredCaps}} icon='delete' onClick={() => removeCapability(index)}/>
+                      <Button {...{disabled: caps.length <= 1 || isEditingDesiredCaps}} icon={DeleteOutlined} onClick={() => removeCapability(index)}/>
                     </FormItem>
                   </div>
                 </Col>
@@ -91,7 +96,7 @@ export default class NewSessionForm extends Component {
             <Row>
               <Col span={24}>
                 <FormItem>
-                  <Button disabled={isEditingDesiredCaps} id='btnAddDesiredCapability' icon='plus' onClick={addCapability} className={SessionStyles['add-desired-capability-button']} />
+                  <Button disabled={isEditingDesiredCaps} id='btnAddDesiredCapability' icon={PlusOutlined} onClick={addCapability} className={SessionStyles['add-desired-capability-button']} />
                 </FormItem>
               </Col>
             </Row>

@@ -3,6 +3,11 @@ import formatJSON from 'format-json';
 import SessionCSS from './Session.css';
 import { Card, Button, Alert, Tooltip } from 'antd';
 import { getCapsObject } from '../../actions/Session.js';
+import {
+  CloseOutlined,
+  SaveOutlined,
+  EditOutlined
+} from '@ant-design/icons';
 
 export default class NewSessionForm extends Component {
 
@@ -17,13 +22,13 @@ export default class NewSessionForm extends Component {
       <Card title={title || 'JSON Representation'} className={SessionCSS.formattedCaps}>
         <div className={SessionCSS.capsEditorControls}>
           {isEditingDesiredCaps && <Tooltip title={t('Cancel')}>
-            <Button onClick={abortDesiredCapsEditor} icon='close' className={SessionCSS.capsEditorButton} />
+            <Button onClick={abortDesiredCapsEditor} icon={CloseOutlined} className={SessionCSS.capsEditorButton} />
           </Tooltip> }
           {isEditingDesiredCaps && <Tooltip title={t('Save')}>
-            <Button onClick={saveRawDesiredCaps} icon='save' className={SessionCSS.capsEditorButton} />
+            <Button onClick={saveRawDesiredCaps} icon={SaveOutlined} className={SessionCSS.capsEditorButton} />
           </Tooltip>}
           {!isEditingDesiredCaps && <Tooltip title={t('Edit Raw JSON')} placement="topRight" >
-            <Button onClick={startDesiredCapsEditor} icon='edit' />
+            <Button onClick={startDesiredCapsEditor} icon={EditOutlined} />
           </Tooltip> }
         </div>
         {isEditingDesiredCaps && <div>

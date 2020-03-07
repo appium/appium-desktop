@@ -5,6 +5,10 @@ import styles from './Inspector.css';
 import { Button, Row, Col, Input, Modal, Table, Alert, Tooltip } from 'antd';
 import { withTranslation } from '../../util';
 import { clipboard } from 'electron';
+import {
+  LoadingOutlined,
+  CopyOutlined,
+} from '@ant-design/icons';
 
 const ButtonGroup = Button.Group;
 
@@ -115,7 +119,7 @@ class SelectedElement extends Component {
           <ButtonGroup size="small">
             <Button
               disabled={!elementId}
-              icon={!elementInteractionsNotAvailable && !elementId && 'loading'}
+              icon={!elementInteractionsNotAvailable && !elementId && {LoadingOutlined}}
               id='btnTapElement'
               onClick={() => applyClientMethod({methodName: 'click', elementId})}
             >
@@ -138,7 +142,7 @@ class SelectedElement extends Component {
             <Tooltip title={t('Copy Attributes to Clipboard')}>
               <Button
                 disabled={!elementId}
-                id='btnCopyAttributes' icon="copy"
+                id='btnCopyAttributes' icon={CopyOutlined}
                 onClick={() => clipboard.writeText(JSON.stringify(dataSource))}/>
             </Tooltip>
           </ButtonGroup>
