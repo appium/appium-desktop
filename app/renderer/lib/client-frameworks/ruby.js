@@ -299,6 +299,38 @@ driver.quit`;
   codeFor_settings () {
     return `settings = driver.get_settings`;
   }
+
+  // Web
+
+  codeFor_get (url) {
+    return `driver.get '${url}'`;
+  }
+
+  codeFor_url () {
+    return `current_url = driver.current_url`;
+  }
+
+  codeFor_forward () {
+    return `driver.navigate().forward`;
+  }
+
+  codeFor_refresh () {
+    return `driver.navigate().refresh`;
+  }
+
+  // Context
+
+  codeFor_currentContext () {
+    return `driver.current_context`;
+  }
+
+  codeFor_contexts () {
+    return `driver.available_contexts`;
+  }
+
+  codeFor_context (name) {
+    return `set_context '${name}'`;
+  }
 }
 
 RubyFramework.readableName = 'Ruby';
