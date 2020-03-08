@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Switch, Input, Icon } from 'antd';
+import { Switch, Input } from 'antd';
 import SessionStyles from './Session.css';
 import {remote} from 'electron';
 import LegacyIcon from '@ant-design/icons';

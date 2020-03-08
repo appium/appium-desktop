@@ -36,6 +36,7 @@ function leveler (level) {
 
 class StopButtonComponent extends Component {
   render () {
+    // TODO: Here raises an error, 'If you meant to render a collection of children, use an array instead'
     const {serverStatus, stopServer, closeMonitor, t} = this.props;
     let btn = <Tooltip title={t('Stop Server')}
       placement="bottomLeft">
