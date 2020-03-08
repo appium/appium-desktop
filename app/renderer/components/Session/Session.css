@@ -119,6 +119,11 @@
   width: 0px;
 }
 
+.newSessionForm {
+  overflow: auto;
+  overflow-x: hidden;
+}
+
 .formattedCapsCont {
   height: 100%;
 }
