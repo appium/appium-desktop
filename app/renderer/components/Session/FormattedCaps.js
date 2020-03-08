@@ -28,13 +28,21 @@ export default class NewSessionForm extends Component {
 
         <div className={SessionCSS.capsEditorControls}>
           {isEditingDesiredCaps && <Tooltip title={t('Cancel')}>
-            <Button onClick={abortDesiredCapsEditor} icon={CloseOutlined} className={SessionCSS.capsEditorButton} />
+            <Button
+              onClick={abortDesiredCapsEditor}
+              icon={<CloseOutlined/>}
+              className={SessionCSS.capsEditorButton} />
           </Tooltip> }
           {isEditingDesiredCaps && <Tooltip title={t('Save')}>
-            <Button onClick={saveRawDesiredCaps} icon={SaveOutlined} className={SessionCSS.capsEditorButton} />
+            <Button
+              onClick={saveRawDesiredCaps}
+              icon={<SaveOutlined/>}
+              className={SessionCSS.capsEditorButton} />
           </Tooltip>}
           {!isEditingDesiredCaps && <Tooltip title={t('Edit Raw JSON')} placement="topRight" >
-            <Button onClick={startDesiredCapsEditor} icon={EditOutlined} />
+            <Button
+              onClick={startDesiredCapsEditor}
+              icon={<EditOutlined/>} />
           </Tooltip> }
         </div>
         {isEditingDesiredCaps && <div>

@@ -119,7 +119,7 @@ class SelectedElement extends Component {
           <ButtonGroup size="small">
             <Button
               disabled={!elementId}
-              icon={!elementInteractionsNotAvailable && !elementId && {LoadingOutlined}}
+              icon={!elementInteractionsNotAvailable && !elementId && <LoadingOutlined/>}
               id='btnTapElement'
               onClick={() => applyClientMethod({methodName: 'click', elementId})}
             >
@@ -142,7 +142,8 @@ class SelectedElement extends Component {
             <Tooltip title={t('Copy Attributes to Clipboard')}>
               <Button
                 disabled={!elementId}
-                id='btnCopyAttributes' icon={CopyOutlined}
+                id='btnCopyAttributes'
+                icon={<CopyOutlined/>}
                 onClick={() => clipboard.writeText(JSON.stringify(dataSource))}/>
             </Tooltip>
           </ButtonGroup>

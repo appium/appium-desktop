@@ -66,11 +66,14 @@ export default class SavedSessions extends Component {
         let session = this.sessionFromUUID(record.key);
         return (
           <div>
-            <Button icon={EditOutlined}
+            <Button
+              icon={<EditOutlined/>}
               onClick={() => {setCaps(session.caps, session.uuid); switchTabs('new');}}
               className={SessionCSS['edit-session']}
             />
-            <Button icon={DeleteOutlined} onClick={this.handleDelete(session.uuid)}/>
+            <Button
+              icon={<DeleteOutlined/>}
+              onClick={this.handleDelete(session.uuid)}/>
           </div>
         );
       }

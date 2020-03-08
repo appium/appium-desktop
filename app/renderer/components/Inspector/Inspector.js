@@ -165,17 +165,17 @@ export default class Inspector extends Component {
     let actionControls = <div className={InspectorStyles['action-controls']}>
       <ButtonGroup size="large" value={screenshotInteractionMode}>
         <Tooltip title={t('Select Elements')}>
-          <Button icon={SelectOutlined} onClick={() => {this.screenshotInteractionChange(SELECT);}}
+          <Button icon={<SelectOutlined/>} onClick={() => {this.screenshotInteractionChange(SELECT);}}
             type={screenshotInteractionMode === SELECT ? 'primary' : 'default'}
           />
         </Tooltip>
         <Tooltip title={t('Swipe By Coordinates')}>
-          <Button icon={SwapRightOutlined} onClick={() => {this.screenshotInteractionChange(SWIPE);}}
+          <Button icon={<SwapRightOutlined/>} onClick={() => {this.screenshotInteractionChange(SWIPE);}}
             type={screenshotInteractionMode === SWIPE ? 'primary' : 'default'}
           />
         </Tooltip>
         <Tooltip title={t('Tap By Coordinates')}>
-          <Button icon={ScanOutlined} onClick={() => {this.screenshotInteractionChange(TAP);}}
+          <Button icon={<ScanOutlined/>} onClick={() => {this.screenshotInteractionChange(TAP);}}
             type={screenshotInteractionMode === TAP ? 'primary' : 'default'}
           />
         </Tooltip>
@@ -186,29 +186,29 @@ export default class Inspector extends Component {
       {actionControls}
       <ButtonGroup size="large">
         <Tooltip title={t('Back')}>
-          <Button id='btnGoBack' icon={ArrowLeftOutlined} onClick={() => applyClientMethod({methodName: 'back'})}/>
+          <Button id='btnGoBack' icon={<ArrowLeftOutlined/>} onClick={() => applyClientMethod({methodName: 'back'})}/>
         </Tooltip>
         <Tooltip title={t('refreshSource')}>
-          <Button id='btnReload' icon={ReloadOutlined} onClick={() => applyClientMethod({methodName: 'source'})}/>
+          <Button id='btnReload' icon={<ReloadOutlined/>} onClick={() => applyClientMethod({methodName: 'source'})}/>
         </Tooltip>
         {!isRecording &&
           <Tooltip title={t('Start Recording')}>
-            <Button id='btnStartRecording' icon={EyeOutlined} onClick={startRecording}/>
+            <Button id='btnStartRecording' icon={<EyeOutlined/>} onClick={startRecording}/>
           </Tooltip>
         }
         {isRecording &&
           <Tooltip title={t('Pause Recording')}>
-            <Button id='btnPause' icon={PauseOutlined} type="danger" onClick={pauseRecording}/>
+            <Button id='btnPause' icon={<PauseOutlined/>} type="danger" onClick={pauseRecording}/>
           </Tooltip>
         }
         <Tooltip title={t('Search for element')}>
-          <Button id='searchForElement' icon={SearchOutlined} onClick={showLocatorTestModal}/>
+          <Button id='searchForElement' icon={<SearchOutlined/>} onClick={showLocatorTestModal}/>
         </Tooltip>
         <Tooltip title={t('Copy XML Source to Clipboard')}>
-          <Button id='btnSourceXML' icon={CopyOutlined} onClick={() => clipboard.writeText(sourceXML)}/>
+          <Button id='btnSourceXML' icon={<CopyOutlined/>} onClick={() => clipboard.writeText(sourceXML)}/>
         </Tooltip>
         <Tooltip title={t('quitSessionAndClose')}>
-          <Button id='btnClose' icon={CloseOutlined} onClick={() => quitSession()}/>
+          <Button id='btnClose' icon={<CloseOutlined/>} onClick={() => quitSession()}/>
         </Tooltip>
       </ButtonGroup>
     </div>;

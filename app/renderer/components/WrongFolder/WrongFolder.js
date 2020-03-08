@@ -20,7 +20,7 @@ class WrongFolder extends Component {
         <div>{t('Appium Desktop should be run from the Applications folder')}</div>
         <Button
           size='large'
-          icon={ExportOutlined}
+          icon={<ExportOutlined/>}
           type="primary"
           onClick={this.moveToApplicationsFolder.bind(this)}>
           {t('Move to Applications Folder')}

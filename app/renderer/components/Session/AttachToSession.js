@@ -46,7 +46,9 @@ export default class AttachToSession extends Component {
           </Col>
           <Col span={1}>
             <div className={SessionCSS.btnReload}>
-              <Button onClick={getRunningSessions} icon={ReloadOutlined} />
+              <Button
+                onClick={getRunningSessions}
+                icon={<ReloadOutlined/>} />
             </div>
           </Col>
         </Row>

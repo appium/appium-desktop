@@ -36,24 +36,28 @@ function leveler (level) {
 
 class StopButtonComponent extends Component {
   render () {
-    // TODO: Here raises an error, 'If you meant to render a collection of children, use an array instead'
     const {serverStatus, stopServer, closeMonitor, t} = this.props;
     let btn = <Tooltip title={t('Stop Server')}
       placement="bottomLeft">
-      <Button icon={PauseOutlined} className={styles.serverButton}
+      <Button
+        icon={<PauseOutlined/>}
+        className={styles.serverButton}
         onClick={stopServer} />
     </Tooltip>;
     if (serverStatus === STATUS_STOPPED) {
       btn = <Tooltip title={t('Close Logs')} placement="bottomLeft">
-        <Button className={styles.serverButton}
-          icon={CloseOutlined}
+        <Button
+          className={styles.serverButton}
+          icon={<CloseOutlined/>}
           onClick={closeMonitor} />
       </Tooltip>;
     } else if (serverStatus === STATUS_STOPPING) {
       btn = <Tooltip title={t('Stopping…')} visible={true}
         placement="bottomLeft">
-        <Button icon={PauseOutlined}
-          className={styles.serverButton} type="disabled" />
+        <Button
+          icon={<PauseOutlined/>}
+          className={styles.serverButton}
+          type="disabled" />
       </Tooltip>;
     }
     return btn;
@@ -71,8 +75,9 @@ class StartSessionButtonComponent extends Component {
     const {serverStatus, startSession, t} = this.props;
     if (serverStatus !== STATUS_STOPPED && serverStatus !== STATUS_STOPPING) {
       return <Tooltip title={t('Start Inspector Session')}>
-        <Button className={styles.serverButton} id='startNewSessionBtn'
-          icon={SearchOutlined}
+        <Button
+          className={styles.serverButton} id='startNewSessionBtn'
+          icon={<SearchOutlined/>}
           onClick={startSession} />
       </Tooltip>;
     } else {
@@ -93,7 +98,7 @@ class GetRawLogsButtonComponent extends Component {
     const {t, getRawLogs} = this.props;
     return <Tooltip title={t('Get Raw Logs')}>
       <Button className={styles.serverButton}
-        icon={DownloadOutlined}
+        icon={<DownloadOutlined/>}
         onClick={() => getRawLogs()} />
     </Tooltip>;
   }
