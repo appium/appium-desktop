@@ -203,6 +203,10 @@
   border-color: lightgray;
 }
 
+.advancedSettingsContainerCol {
+  width: 100%;
+}
+
 .advancedSettingsContainer {
   padding-top: 12px;
 }
