@@ -90,7 +90,7 @@ export default class SavedSessions extends Component {
           pagination={false}
           dataSource={dataSource}
           columns={columns}
-          onRowClick={this.onRowClick}
+          onRowClick={this.onRow}
           rowClassName={this.getRowClassName}
         />
       </Col>
