@@ -307,7 +307,7 @@ main().catch(console.log);
   // Context
 
   codeFor_currentContext () {
-    return `driver.currentContext()`;
+    return `driver.currentContext();`;
   }
 
   codeFor_contexts () {
