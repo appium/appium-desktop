@@ -5,11 +5,12 @@ import InspectorStyles from './Inspector.css';
 import frameworks from '../../lib/client-frameworks';
 import { highlight } from 'highlight.js';
 import { withTranslation } from '../../util';
-import LegacyIcon, {
+import {
   ExportOutlined,
   CopyOutlined,
   DeleteOutlined,
-  CloseOutlined
+  CloseOutlined,
+  CodeOutlined
 } from '@ant-design/icons';
 
 const Option = Select.Option;
@@ -101,7 +102,7 @@ class RecordedActions extends Component {
 
     const highlightedCode = this.code(false);
 
-    return <Card title={<span><LegacyIcon type="code-o"/> {t('Recorder')}</span>}
+    return <Card title={<span><CodeOutlined /> {t('Recorder')}</span>}
       className={InspectorStyles['recorded-actions']}
       extra={this.actionBar()}
     >

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Button } from 'antd';
 import { ipcRenderer } from 'electron';
 import { withTranslation } from '../../util';
-import LegacyIcon from '@ant-design/icons';
+import { SettingOutlined } from '@ant-design/icons';
 
 import styles from './StartButton.css';
 
@@ -40,7 +40,7 @@ class StartButton extends Component {
         <Button id='configBtn'
           className={styles.configButton}
           onClick={() => this.openConfig()}>
-          {t('Edit Configurations')}<LegacyIcon type="setting" />
+          {t('Edit Configurations')}<SettingOutlined />
         </Button>
       </div>
     );
