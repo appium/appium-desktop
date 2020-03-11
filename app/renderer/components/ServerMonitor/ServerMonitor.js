@@ -8,11 +8,12 @@ import AnsiConverter from 'ansi-to-html';
 import { withTranslation } from '../../util';
 
 import AppiumSmallMagenta from '../../images/appium_small_magenta.png';
-import LegacyIcon, {
+import {
   PauseOutlined,
   SearchOutlined,
   DownloadOutlined,
-  CloseOutlined
+  CloseOutlined,
+  CodeFilled
 } from '@ant-design/icons';
 
 const convert = new AnsiConverter({fg: '#bbb', bg: '#222'});
@@ -167,7 +168,7 @@ export default class ServerMonitor extends Component {
 
       return (
         <div key={i}>
-          <LegacyIcon type={icn} theme="filled" />
+          <CodeFilled type={icn} />
           {
             serverArgs.logTimestamp &&
             // eslint-disable-next-line shopify/jsx-no-hardcoded-content
@@ -196,7 +197,7 @@ export default class ServerMonitor extends Component {
         <div className={`${styles.bar} ${styles['bar-' + serverStatus]}`}>
           <img src={AppiumSmallMagenta} className={styles.logo} />
           <div className={`${styles.status} ${styles[serverStatus]}`}>
-            <LegacyIcon type={statusIcon} theme="filled" />
+            <CodeFilled type={statusIcon} />
             {statusMsg}
           </div>
           <div className={`${styles['button-container']}`}>

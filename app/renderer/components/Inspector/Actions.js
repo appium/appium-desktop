@@ -88,11 +88,13 @@ export default class Actions extends Component {
           </Select>
         </Col>
       </Row>}
-      {selectedSubActionGroup && _.toPairs(actionDefinitions[selectedActionGroup][selectedSubActionGroup]).map(([actionName, action]) => <Col span={8}>
-        <div className={InspectorStyles['btn-container']}>
-          <Button onClick={() => this.startPerformingAction(actionName, action) }>{t(actionName)}</Button>
-        </div>
-      </Col>)}
+      <Row>
+        {selectedSubActionGroup && _.toPairs(actionDefinitions[selectedActionGroup][selectedSubActionGroup]).map(([actionName, action]) => <Col span={8}>
+          <div className={InspectorStyles['btn-container']}>
+            <Button onClick={() => this.startPerformingAction(actionName, action)}>{t(actionName)}</Button>
+          </div>
+        </Col>)}
+      </Row>
       {!!pendingAction && <Modal
         title={pendingAction.actionName}
         okText={t('Execute Action')}

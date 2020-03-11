@@ -11,7 +11,7 @@ import AdvancedServerParams from './AdvancedServerParams';
 import SessionStyles from './Session.css';
 import CloudProviders from './CloudProviders';
 import CloudProviderSelector from './CloudProviderSelector';
-import LegacyIcon from '@ant-design/icons';
+import { LikeOutlined } from '@ant-design/icons';
 
 const {TabPane} = Tabs;
 
@@ -100,7 +100,7 @@ export default class Session extends Component {
           <div className={SessionStyles.sessionFooter}>
             <div className={SessionStyles.desiredCapsLink}>
               <a href="#" onClick={(e) => e.preventDefault() || shell.openExternal('https://github.com/appium/appium/blob/master/docs/en/writing-running-appium/caps.md')}>
-                <LegacyIcon type='link' />&nbsp;
+                <LikeOutlined />&nbsp;
                 {t('desiredCapabilitiesDocumentation')}
               </a>
             </div>
