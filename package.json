@@ -115,7 +115,7 @@
   "dependencies": {
     "@babel/polyfill": "^7.4.0",
     "ansi-to-html": "~0.6.7",
-    "antd": "^3.25.2",
+    "antd": "^4.0.0",
     "appium": "^1.15.0",
     "appium-support": "^2.25.0",
     "bluebird": "^3.5.5",
@@ -136,7 +136,7 @@
     "moment": "^2.20.1",
     "postcss": "^7.0.4",
     "prop-types": "^15.6.2",
-    "react": "^16.9.0",
+    "react": "^16.13.0",
     "react-dom": "^16.9.0",
     "react-hot-loader": "^4.3.12",
     "react-i18next": "^11.0.0",

@@ -3,6 +3,9 @@ import { Button } from 'antd';
 import { ipcRenderer } from 'electron';
 import WrongFolderStyles from './WrongFolderStyles.css';
 import { withTranslation } from '../../util';
+import {
+  ExportOutlined
+} from '@ant-design/icons';
 
 class WrongFolder extends Component {
   // This tells the main thread to move this to applications folder which will cause the app to close and restart
@@ -17,7 +20,7 @@ class WrongFolder extends Component {
         <div>{t('Appium Desktop should be run from the Applications folder')}</div>
         <Button
           size='large'
-          icon='export'
+          icon={<ExportOutlined/>}
           type="primary"
           onClick={this.moveToApplicationsFolder.bind(this)}>
           {t('Move to Applications Folder')}

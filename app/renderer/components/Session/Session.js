@@ -6,11 +6,12 @@ import SavedSessions from './SavedSessions';
 import AttachToSession from './AttachToSession';
 import ServerTabAutomatic from './ServerTabAutomatic';
 import ServerTabCustom from './ServerTabCustom';
-import { Tabs, Button, Spin, Icon } from 'antd';
+import { Tabs, Button, Spin } from 'antd';
 import AdvancedServerParams from './AdvancedServerParams';
 import SessionStyles from './Session.css';
 import CloudProviders from './CloudProviders';
 import CloudProviderSelector from './CloudProviderSelector';
+import LegacyIcon from '@ant-design/icons';
 
 const {TabPane} = Tabs;
 
@@ -99,7 +100,7 @@ export default class Session extends Component {
           <div className={SessionStyles.sessionFooter}>
             <div className={SessionStyles.desiredCapsLink}>
               <a href="#" onClick={(e) => e.preventDefault() || shell.openExternal('https://github.com/appium/appium/blob/master/docs/en/writing-running-appium/caps.md')}>
-                <Icon type='link' />&nbsp;
+                <LegacyIcon type='link' />&nbsp;
                 {t('desiredCapabilitiesDocumentation')}
               </a>
             </div>

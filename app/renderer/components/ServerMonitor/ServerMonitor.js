@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Button, Tooltip, Icon } from 'antd';
+import { Button, Tooltip } from 'antd';
 import { STATUS_RUNNING, STATUS_STOPPING,
          STATUS_STOPPED } from '../../reducers/ServerMonitor';
 import styles from './ServerMonitor.css';
@@ -8,6 +8,12 @@ import AnsiConverter from 'ansi-to-html';
 import { withTranslation } from '../../util';
 
 import AppiumSmallMagenta from '../../images/appium_small_magenta.png';
+import LegacyIcon, {
+  PauseOutlined,
+  SearchOutlined,
+  DownloadOutlined,
+  CloseOutlined
+} from '@ant-design/icons';
 
 const convert = new AnsiConverter({fg: '#bbb', bg: '#222'});
 const MAX_LOGS_RENDERED = 1000;
@@ -33,20 +39,25 @@ class StopButtonComponent extends Component {
     const {serverStatus, stopServer, closeMonitor, t} = this.props;
     let btn = <Tooltip title={t('Stop Server')}
       placement="bottomLeft">
-      <Button icon="pause" className={styles.serverButton}
+      <Button
+        icon={<PauseOutlined/>}
+        className={styles.serverButton}
         onClick={stopServer} />
     </Tooltip>;
     if (serverStatus === STATUS_STOPPED) {
       btn = <Tooltip title={t('Close Logs')} placement="bottomLeft">
-        <Button className={styles.serverButton}
-          icon="close"
+        <Button
+          className={styles.serverButton}
+          icon={<CloseOutlined/>}
           onClick={closeMonitor} />
       </Tooltip>;
     } else if (serverStatus === STATUS_STOPPING) {
       btn = <Tooltip title={t('Stopping…')} visible={true}
         placement="bottomLeft">
-        <Button icon="pause"
-          className={styles.serverButton} type="disabled" />
+        <Button
+          icon={<PauseOutlined/>}
+          className={styles.serverButton}
+          type="disabled" />
       </Tooltip>;
     }
     return btn;
@@ -64,8 +75,9 @@ class StartSessionButtonComponent extends Component {
     const {serverStatus, startSession, t} = this.props;
     if (serverStatus !== STATUS_STOPPED && serverStatus !== STATUS_STOPPING) {
       return <Tooltip title={t('Start Inspector Session')}>
-        <Button className={styles.serverButton} id='startNewSessionBtn'
-          icon="search"
+        <Button
+          className={styles.serverButton} id='startNewSessionBtn'
+          icon={<SearchOutlined/>}
           onClick={startSession} />
       </Tooltip>;
     } else {
@@ -86,7 +98,7 @@ class GetRawLogsButtonComponent extends Component {
     const {t, getRawLogs} = this.props;
     return <Tooltip title={t('Get Raw Logs')}>
       <Button className={styles.serverButton}
-        icon="download"
+        icon={<DownloadOutlined/>}
         onClick={() => getRawLogs()} />
     </Tooltip>;
   }
@@ -155,7 +167,7 @@ export default class ServerMonitor extends Component {
 
       return (
         <div key={i}>
-          <Icon type={icn} theme="filled" />
+          <LegacyIcon type={icn} theme="filled" />
           {
             serverArgs.logTimestamp &&
             // eslint-disable-next-line shopify/jsx-no-hardcoded-content
@@ -184,7 +196,7 @@ export default class ServerMonitor extends Component {
         <div className={`${styles.bar} ${styles['bar-' + serverStatus]}`}>
           <img src={AppiumSmallMagenta} className={styles.logo} />
           <div className={`${styles.status} ${styles[serverStatus]}`}>
-            <Icon type={statusIcon} theme="filled" />
+            <LegacyIcon type={statusIcon} theme="filled" />
             {statusMsg}
           </div>
           <div className={`${styles['button-container']}`}>

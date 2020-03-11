@@ -4,6 +4,11 @@ import { remote } from 'electron';
 import { Button, Row, Col, Table } from 'antd';
 import FormattedCaps from './FormattedCaps';
 import SessionCSS from './Session.css';
+import {
+  EditOutlined,
+  DeleteOutlined
+} from '@ant-design/icons';
+
 import { HEIGHT_OF_SESSION_CONFIG_AREA } from './Layout';
 
 export default class SavedSessions extends Component {
@@ -61,11 +66,14 @@ export default class SavedSessions extends Component {
         let session = this.sessionFromUUID(record.key);
         return (
           <div>
-            <Button icon='edit'
+            <Button
+              icon={<EditOutlined/>}
               onClick={() => {setCaps(session.caps, session.uuid); switchTabs('new');}}
               className={SessionCSS['edit-session']}
             />
-            <Button icon='delete' onClick={this.handleDelete(session.uuid)}/>
+            <Button
+              icon={<DeleteOutlined/>}
+              onClick={this.handleDelete(session.uuid)}/>
           </div>
         );
       }

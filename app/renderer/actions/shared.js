@@ -3,7 +3,7 @@ import { notification } from 'antd';
 import { util } from 'appium-support';
 import i18n from '../../configs/i18next.config.renderer';
 import _ from 'lodash';
-import UUID from 'uuid';
+import { v4 as UUID } from 'uuid';
 import Promise from 'bluebird';
 
 const clientMethodPromises = {};
@@ -62,7 +62,7 @@ export function callClientMethod (params) {
   if (!ipcRenderer) {
     throw new Error('Cannot call ipcRenderer from main context');
   }
-  let uuid = UUID.v4();
+  let uuid = UUID();
   let promise = new Promise((resolve, reject) => clientMethodPromises[uuid] = {resolve, reject});
   ipcRenderer.send('appium-client-command-request', {
     ...params,
