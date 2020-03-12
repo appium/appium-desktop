@@ -297,6 +297,38 @@ ${this.indent(this.chainifyCode(code), 2)}
   codeFor_settings () {
     return `let settings = await driver.settings();`;
   }
+
+  // Web
+
+  codeFor_get (url) {
+    return `driver.navigateTo('${url}');`;
+  }
+
+  codeFor_url () {
+    return `let current_url = driver.getUrl();`;
+  }
+
+  codeFor_forward () {
+    return `driver.forward();`;
+  }
+
+  codeFor_refresh () {
+    return `driver.refresh();`;
+  }
+
+  // Context
+
+  codeFor_currentContext () {
+    return `let context = driver.getContext();`;
+  }
+
+  codeFor_contexts () {
+    return `driver.getContexts();`;
+  }
+
+  codeFor_context (name) {
+    return `driver.switchContext('${name}');`;
+  }
 }
 
 JsWdIoFramework.readableName = 'JS - Webdriver.io';

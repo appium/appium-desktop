@@ -3,6 +3,13 @@ import { Button, Input, Modal, Form, Row, Col, Select } from 'antd';
 import FormattedCaps from './FormattedCaps';
 import CapabilityControl from './CapabilityControl';
 import SessionStyles from './Session.css';
+import {
+  DeleteOutlined,
+  PlusOutlined
+} from '@ant-design/icons';
+import {remote} from 'electron';
+import { HEIGHT_OF_SESSION_CONFIG_AREA } from './Layout';
+
 const {Item: FormItem} = Form;
 const {Option} = Select;
 
@@ -53,7 +60,10 @@ export default class NewSessionForm extends Component {
     return <div>
       <Row type="flex" align="top" justify="start" className={SessionStyles.capsFormRow}>
         <Col order={1} span={12} className={`${SessionStyles.capsFormCol} ${isEditingDesiredCaps ? SessionStyles.capsFormDisabled : ''}`}>
-          <Form>
+          <Form
+            className={SessionStyles.newSessionForm}
+            style={{maxHeight: remote.getCurrentWindow().getSize()[1] - HEIGHT_OF_SESSION_CONFIG_AREA}}>
+
             {caps.map((cap, index) => {
               return <Row gutter={8} key={index}>
                 <Col span={7}>
@@ -82,7 +92,9 @@ export default class NewSessionForm extends Component {
                 <Col span={2}>
                   <div className={SessionStyles.btnDeleteCap}>
                     <FormItem>
-                      <Button {...{disabled: caps.length <= 1 || isEditingDesiredCaps}} icon='delete' onClick={() => removeCapability(index)}/>
+                      <Button {...{disabled: caps.length <= 1 || isEditingDesiredCaps}}
+                        icon={<DeleteOutlined/>}
+                        onClick={() => removeCapability(index)}/>
                     </FormItem>
                   </div>
                 </Col>
@@ -91,7 +103,11 @@ export default class NewSessionForm extends Component {
             <Row>
               <Col span={24}>
                 <FormItem>
-                  <Button disabled={isEditingDesiredCaps} id='btnAddDesiredCapability' icon='plus' onClick={addCapability} className={SessionStyles['add-desired-capability-button']} />
+                  <Button
+                    disabled={isEditingDesiredCaps} id='btnAddDesiredCapability'
+                    icon={<PlusOutlined/>}
+                    onClick={addCapability}
+                    className={SessionStyles['add-desired-capability-button']} />
                 </FormItem>
               </Col>
             </Row>

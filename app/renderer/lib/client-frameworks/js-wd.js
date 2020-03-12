@@ -286,6 +286,37 @@ main().catch(console.log);
     return `let settings = await driver.settings();`;
   }
 
+  // Web
+
+  codeFor_get (url) {
+    return `driver.get('${url}');`;
+  }
+
+  codeFor_url () {
+    return `let current_url = driver.url();`;
+  }
+
+  codeFor_forward () {
+    return `driver.forward();`;
+  }
+
+  codeFor_refresh () {
+    return `driver.refresh();`;
+  }
+
+  // Context
+
+  codeFor_currentContext () {
+    return `driver.currentContext();`;
+  }
+
+  codeFor_contexts () {
+    return `driver.contexts();`;
+  }
+
+  codeFor_context (name) {
+    return `driver.context('${name}');`;
+  }
 }
 
 JsWdFramework.readableName = 'JS - WD (Promise)';

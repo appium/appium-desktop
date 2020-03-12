@@ -342,6 +342,37 @@ ${this.indent(code, 4)}
 
   */
 
+  // Web
+
+  codeFor_get (url) {
+    return `driver.get("${url}");`;
+  }
+
+  codeFor_url () {
+    return `String current_url = driver.getCurrentUrl();`;
+  }
+
+  codeFor_forward () {
+    return `driver.navigate().forward();`;
+  }
+
+  codeFor_refresh () {
+    return `driver.navigate().refresh();`;
+  }
+
+  // Context
+
+  codeFor_currentContext () {
+    return `driver.getContext()`;
+  }
+
+  codeFor_contexts () {
+    return `driver.getContextHandles();`;
+  }
+
+  codeFor_context (name) {
+    return `driver.context("${name}");`;
+  }
 }
 
 JavaFramework.readableName = 'Java - JUnit';

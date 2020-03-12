@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Button, Icon } from 'antd';
+import { Button } from 'antd';
 import { ipcRenderer } from 'electron';
 import { withTranslation } from '../../util';
+import { SettingOutlined } from '@ant-design/icons';
 
 import styles from './StartButton.css';
 
@@ -39,7 +40,7 @@ class StartButton extends Component {
         <Button id='configBtn'
           className={styles.configButton}
           onClick={() => this.openConfig()}>
-          {t('Edit Configurations')}<Icon type="setting" />
+          {t('Edit Configurations')}<SettingOutlined />
         </Button>
       </div>
     );

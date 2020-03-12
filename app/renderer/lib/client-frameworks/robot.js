@@ -308,6 +308,38 @@ ${this.indent(code, 4)}
   codeFor_settings () {
     return ``;
   }
+
+  // Web
+
+  codeFor_get () {
+    return ``;
+  }
+
+  codeFor_url () {
+    return ``;
+  }
+
+  codeFor_forward () {
+    return ``;
+  }
+
+  codeFor_refresh () {
+    return ``;
+  }
+
+  // Context
+
+  codeFor_currentContext () {
+    return ``;
+  }
+
+  codeFor_contexts () {
+    return ``;
+  }
+
+  codeFor_context () {
+    return ``;
+  }
 }
 
 RobotFramework.readableName = 'Robot Framework';

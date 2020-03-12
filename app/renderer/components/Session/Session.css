@@ -119,6 +119,11 @@
   width: 0px;
 }
 
+.newSessionForm {
+  overflow: auto;
+  overflow-x: hidden;
+}
+
 .formattedCapsCont {
   height: 100%;
 }
@@ -196,6 +201,10 @@
   width: 100%;
   height: 100%;
   border-color: lightgray;
+}
+
+.advancedSettingsContainerCol {
+  width: 100%;
 }
 
 .advancedSettingsContainer {

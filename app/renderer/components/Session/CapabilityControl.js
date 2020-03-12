@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
-import { Switch, Input, Icon } from 'antd';
+import { Switch, Input } from 'antd';
 import SessionStyles from './Session.css';
-import {remote} from 'electron';
+import { remote } from 'electron';
+import { FileOutlined } from '@ant-design/icons';
+
 const {dialog} = remote;
 
 
@@ -19,8 +21,8 @@ export default class NewSessionForm extends Component {
   render () {
     const {cap, onSetCapabilityParam, isEditingDesiredCaps, id, t} = this.props;
 
-    const buttonAfter = <Icon className={SessionStyles['filepath-button']}
-      type="file"
+    const buttonAfter = <FileOutlined
+      className={SessionStyles['filepath-button']}
       onClick={() => this.getLocalFilePath((filepath) => onSetCapabilityParam(filepath[0]))} />;
 
     switch (cap.type) {
