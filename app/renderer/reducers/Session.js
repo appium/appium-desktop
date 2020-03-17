@@ -47,6 +47,7 @@ const INITIAL_STATE = {
     perfecto: {},
     pcloudy: {},
     testingbot: {},
+    experitest: {},
   },
   attachSessId: null,
 

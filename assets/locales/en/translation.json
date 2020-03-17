@@ -113,6 +113,7 @@
   "browserstackCredentialsRequired": "Browserstack username and access key are required!",
   "bitbarCredentialsRequired": "Bitbar API key required!",
   "kobitonCredentialsRequired": "KOBITON username and api key are required!",
+  "experitestAccessKeyURLRequired": "Experitest AccessKey and URL are required",
   "errorStartingServer": "Error starting Appium server: {{message}}",
   "errorSavingPreset": "There was a problem saving preset: {{message}}",
   "errorGettingPreset": "Error getting presets: {{message}}",

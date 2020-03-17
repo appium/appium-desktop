@@ -129,6 +129,7 @@ These are the options for launching a session against a non-local Appium server:
 | Perfecto         | Launch a session on the [Perfecto](https://www.perfecto.io) cloud. [Documentation](https://developers.perfectomobile.com/display/PD/Appium) |
 | Pcloudy         | Launch a session on the [Pcloudy](https://www.pcloudy.com) cloud. [Documentation](https://www.pcloudy.com/mobile-application-testing-documentation) |
 | TestingBot       | Launch a session on the [TestingBot](https://testingbot.com) cloud. [Documentation](https://testingbot.com/support) |
+| Experitest       | Launch a session on the [Experitest](http://www.experitest.com) cloud. [Documentation](https://docs.experitest.com/display/TE/Appium) |
 
 It should be straightforward to get set up with any of these options. Simply
 enter your details in the input fields provided.
