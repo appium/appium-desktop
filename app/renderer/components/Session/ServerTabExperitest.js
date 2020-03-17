@@ -2,16 +2,14 @@ import React, { Component } from 'react';
 import { Form, Row, Col, Input } from 'antd';
 import SessionStyles from './Session.css';
 
-
 const FormItem = Form.Item;
 
-const accessKeyPlaceholder = 'accessKey';
 export default class ServerTabExperitest extends Component {
 
   render () {
 
     const {server, setServerParam, t} = this.props;
-
+    const accessKeyPlaceholder = 'accessKey';
     const placeholderUrl = 'https://example.experitest.com';
 
     return <Form>

@@ -324,7 +324,7 @@ export function newSession (caps, attachSessId = null) {
       case ServerTypes.experitest: {
         if (!session.server.experitest.url || !session.server.experitest.accessKey) {
           notification.error({
-            message: 'Error',
+            message: i18n.t('Error'),
             description: i18n.t('experitestAccessKeyURLRequired'),
             duration: 4
           });
