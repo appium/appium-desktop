@@ -8,6 +8,7 @@ import ServerTabPerfecto from './ServerTabPerfecto';
 import ServerTabPcloudy from './ServerTabPcloudy';
 import ServerTabSauce from './ServerTabSauce';
 import ServerTabTestingbot from './ServerTabTestingbot';
+import ServerTabExperitest from './ServerTabExperitest';
 
 import SessionStyles from './Session.css';
 
@@ -21,6 +22,7 @@ import KobitonLogo from '../../images/kobiton_logo.svg';
 import PerfectoLogo from '../../images/perfecto_logo.png';
 import PcloudyLogo from '../../images/pcloudy_logo.svg';
 import TestingBotLogo from '../../images/testingbot_logo.svg';
+import ExperitestLogo from '../../images/experitest_logo.svg';
 
 const CloudProviders = {
   sauce: {
@@ -67,6 +69,11 @@ const CloudProviders = {
     tabhead: () => <span className={SessionStyles.tabText}><img src={TestingBotLogo} /></span>,
     tab: props => <ServerTabTestingbot {...props} />,
     logo: TestingBotLogo,
+  },
+  experitest: {
+    tabhead: () => <span className={SessionStyles.tabText}><img src={ExperitestLogo} /></span>,
+    tab: props => <ServerTabExperitest {...props} />,
+    logo: ExperitestLogo,
   },
 };
 
