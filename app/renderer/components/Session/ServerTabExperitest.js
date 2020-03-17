@@ -19,8 +19,8 @@ export default class ServerTabExperitest extends Component {
         <Col span={24}>
           <FormItem>
             <Input className={SessionStyles.customServerInputLeft} id='ExperitestServerUrl' placeholder={placeholderUrl}
-              addonBefore={t('Experitest Url')} value={server.experitest.url}
-              onChange={(e) => setServerParam('url', e.target.value)} />
+              addonBefore={t('experitestUrl')} value={server.experitest.url}
+              onChange={(evt) => setServerParam('url', evt.target.value)} />
           </FormItem>
         </Col>
       </Row>
@@ -28,8 +28,8 @@ export default class ServerTabExperitest extends Component {
         <Col span={24}>
           <FormItem>
             <Input className={SessionStyles.customServerInputLeft} id='ExperitestServerAccessKey' placeholder={accessKeyPlaceholder}
-              addonBefore={t('Experitest AccessKey')} value={server.experitest.accessKey}
-              onChange={(e) => setServerParam('accessKey', e.target.value)} />
+              addonBefore={t('experitestAccessKey')} value={server.experitest.accessKey}
+              onChange={(evt) => setServerParam('accessKey', evt.target.value)} />
           </FormItem>
         </Col>
       </Row>
