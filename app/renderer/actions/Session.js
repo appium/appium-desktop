@@ -222,7 +222,7 @@ export function newSession (caps, attachSessId = null) {
       }
       case ServerTypes.perfecto:
         host = session.server.perfecto.hostname;
-        port = session.server.perfecto.port;
+        port = session.server.perfecto.port || 80;
         token = session.server.perfecto.token || process.env.PERFECTO_TOKEN;
         path = session.server.perfecto.path = '/nexperience/perfectomobile/wd/hub';
         if (!token) {
