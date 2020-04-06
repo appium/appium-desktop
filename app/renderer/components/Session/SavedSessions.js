@@ -20,9 +20,13 @@ export default class SavedSessions extends Component {
   }
 
   onRow (record) {
-    const {setCaps} = this.props;
-    let session = this.sessionFromUUID(record.key);
-    setCaps(session.caps, session.uuid);
+    return {
+      onClick: () => {
+        const {setCaps} = this.props;
+        let session = this.sessionFromUUID(record.key);
+        setCaps(session.caps, session.uuid);
+      }
+    };
   }
 
   getRowClassName (record) {
@@ -98,7 +102,7 @@ export default class SavedSessions extends Component {
           pagination={false}
           dataSource={dataSource}
           columns={columns}
-          onClick={this.onRow}
+          onRow={this.onRow}
           rowClassName={this.getRowClassName}
         />
       </Col>
