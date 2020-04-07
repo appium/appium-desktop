@@ -103,6 +103,11 @@
 
 .inspector-main .tree-container {
     height: 100%;
+    overflow-y: auto;
+}
+
+.inspector-main .tree-container::-webkit-scrollbar {
+    display: none;
 }
 
 .inspector-main .tree-container :global(ul.ant-tree) {
