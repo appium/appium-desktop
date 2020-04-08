@@ -37,13 +37,13 @@ export default class StartServer extends Component {
           <img src={AppiumLogo} className={styles.logo} />
           <div className={styles.tabs}>
             <Button.Group className={styles.tabButtons}>
-              <Button type={tabId === TAB_SIMPLE ? 'primary' : null }
+              <Button type={tabId === TAB_SIMPLE ? 'primary' : 'default' }
                 onClick={() => switchTab(TAB_SIMPLE)}
               >{t('Simple')}</Button>
-              <Button type={tabId === TAB_ADVANCED ? 'primary' : null }
+              <Button type={tabId === TAB_ADVANCED ? 'primary' : 'default' }
                 onClick={() => switchTab(TAB_ADVANCED)}
               >{t('Advanced')}</Button>
-              <Button type={tabId === TAB_PRESETS ? 'primary' : null }
+              <Button type={tabId === TAB_PRESETS ? 'primary' : 'default' }
                 onClick={() => switchTab(TAB_PRESETS)}
               >{t('Presets')}</Button>
             </Button.Group>

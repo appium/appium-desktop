@@ -11,7 +11,7 @@ class SavePresetButton extends Component {
     return (
       <div>
         <Button className={styles.startButton}
-          type={presetSaving ? 'disabled' : ''}
+          type={presetSaving ? 'disabled' : 'default'}
           onClick={savePreset}
         >{presetSaving ? t('Saving…') : t('Save As Preset…')}</Button>
         <input type="submit" hidden={true} />

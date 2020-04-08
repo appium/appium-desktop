@@ -50,8 +50,6 @@ class RecordedActions extends Component {
       {frameworks[f].readableName}
     </Option>);
 
-    let boilerplateType = showBoilerplate ? 'primary' : 'default';
-
     return <div>
       {!!recordedActions.length &&
         <Select defaultValue={actionFramework} onChange={setActionFramework}
@@ -66,7 +64,7 @@ class RecordedActions extends Component {
             <Button
               onClick={toggleShowBoilerplate}
               icon={<ExportOutlined/>}
-              type={boilerplateType}
+              type={showBoilerplate ? 'primary' : 'default'}
             />
           </Tooltip>
           }
