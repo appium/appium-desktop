@@ -187,7 +187,6 @@
     "eslint-plugin-react-native": "^3.6.0",
     "eslint-plugin-shopify": "^30.0.0",
     "express": "^4.16.2",
-    "greenkeeper-lockfile": "^1.15.1",
     "husky": "^4.0.2",
     "jquery": "^3.3.1",
     "jsdom": "^16.0.1",

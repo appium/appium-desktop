@@ -1,7 +1,6 @@
 # Appium Desktop
 [![Build Status](https://dev.azure.com/AppiumCI/Appium%20Desktop/_apis/build/status/appium.appium-desktop)](https://dev.azure.com/AppiumCI/Appium%20Desktop/_build/latest?definitionId=1)
 [![Crowdin](https://d322cqt584bo4o.cloudfront.net/appium-desktop/localized.svg)](https://crowdin.com/project/appium-desktop)
-[![Greenkeeper badge](https://badges.greenkeeper.io/dpgraham/appium-desktop.svg)](https://greenkeeper.io/)
 ![Action screenshot](docs/images/screen-inspector-and-logs.png)
 
 Appium Desktop is an app for Mac, Windows, and Linux which gives you the power of the [Appium](http://appium.io) automation server in a beautiful and flexible UI. It is a combination of a few Appium-related tools:
