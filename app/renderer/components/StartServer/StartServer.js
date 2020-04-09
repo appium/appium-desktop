@@ -9,6 +9,7 @@ import PresetsTab from './PresetsTab';
 import styles from './StartServer.css';
 
 import AppiumLogo from '../../images/appium_logo.png';
+import { BUTTON_PRIMARY, BUTTON_DEFAULT } from '../AntdType';
 
 const TAB_SIMPLE = 0, TAB_ADVANCED = 1, TAB_PRESETS = 2;
 
@@ -37,13 +38,13 @@ export default class StartServer extends Component {
           <img src={AppiumLogo} className={styles.logo} />
           <div className={styles.tabs}>
             <Button.Group className={styles.tabButtons}>
-              <Button type={tabId === TAB_SIMPLE ? 'primary' : 'default' }
+              <Button type={tabId === TAB_SIMPLE ? BUTTON_PRIMARY : BUTTON_DEFAULT }
                 onClick={() => switchTab(TAB_SIMPLE)}
               >{t('Simple')}</Button>
-              <Button type={tabId === TAB_ADVANCED ? 'primary' : 'default' }
+              <Button type={tabId === TAB_ADVANCED ? BUTTON_PRIMARY : BUTTON_DEFAULT }
                 onClick={() => switchTab(TAB_ADVANCED)}
               >{t('Advanced')}</Button>
-              <Button type={tabId === TAB_PRESETS ? 'primary' : 'default' }
+              <Button type={tabId === TAB_PRESETS ? BUTTON_PRIMARY : BUTTON_DEFAULT }
                 onClick={() => switchTab(TAB_PRESETS)}
               >{t('Presets')}</Button>
             </Button.Group>
