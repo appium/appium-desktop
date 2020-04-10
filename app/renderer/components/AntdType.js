@@ -1,6 +1,21 @@
-// Button
-const BUTTON_DEFAULT = 'default';
-const BUTTON_PRIMARY = 'primary';
-const BUTTON_DISABLED = 'disabled';
+const BUTTON = {
+  DEFAULT: 'default',
+  PRIMARY: 'primary',
+  DISABLED: 'disabled',
+  DANGER: 'danger'
+};
 
-export { BUTTON_DEFAULT, BUTTON_PRIMARY, BUTTON_DISABLED };
+const ALERT = {
+  ERROR: 'error'
+};
+
+const INPUT = {
+  NUMBER: 'number'
+};
+
+
+export {
+  BUTTON,
+  ALERT,
+  INPUT
+};

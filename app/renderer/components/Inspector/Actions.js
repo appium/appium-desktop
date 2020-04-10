@@ -3,6 +3,7 @@ import _ from 'lodash';
 import { Row, Col, Button, Select, Modal, Input, notification, } from 'antd';
 import { actionDefinitions, actionArgTypes } from './shared';
 import InspectorStyles from './Inspector.css';
+import { INPUT } from '../AntdType';
 
 const { STRING, NUMBER } = actionArgTypes;
 
@@ -104,7 +105,14 @@ export default class Actions extends Component {
         {
           !_.isEmpty(pendingAction.action.args) && _.map(pendingAction.action.args, ([argName, argType], index) => <Row key={index} gutter={16}>
             <Col span={24} className={InspectorStyles['arg-container']}>
-              {argType === NUMBER && <Input type="number" value={pendingAction.args[index]} addonBefore={t(argName)} onChange={(e) => setActionArg(index, _.toNumber(e.target.value))} />}
+              {
+                argType === NUMBER && <Input
+                  type={INPUT.NUMBER}
+                  value={pendingAction.args[index]}
+                  addonBefore={t(argName)}
+                  onChange={(e) => setActionArg(index, _.toNumber(e.target.value))}
+                />
+              }
               {argType === STRING && <Input addonBefore={t(argName)} onChange={(e) => setActionArg(index, e.target.value)}/>}
             </Col>
           </Row>)

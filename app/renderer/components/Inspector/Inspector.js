@@ -24,6 +24,7 @@ import {
   TagOutlined,
   ThunderboltOutlined
 } from '@ant-design/icons';
+import { BUTTON } from '../AntdType';
 
 
 
@@ -169,17 +170,17 @@ export default class Inspector extends Component {
       <ButtonGroup size="large" value={screenshotInteractionMode}>
         <Tooltip title={t('Select Elements')}>
           <Button icon={<SelectOutlined/>} onClick={() => {this.screenshotInteractionChange(SELECT);}}
-            type={screenshotInteractionMode === SELECT ? 'primary' : 'default'}
+            type={screenshotInteractionMode === SELECT ? BUTTON.PRIMARY : BUTTON.DEFAULT}
           />
         </Tooltip>
         <Tooltip title={t('Swipe By Coordinates')}>
           <Button icon={<SwapRightOutlined/>} onClick={() => {this.screenshotInteractionChange(SWIPE);}}
-            type={screenshotInteractionMode === SWIPE ? 'primary' : 'default'}
+            type={screenshotInteractionMode === SWIPE ? BUTTON.PRIMARY : BUTTON.DEFAULT}
           />
         </Tooltip>
         <Tooltip title={t('Tap By Coordinates')}>
           <Button icon={<ScanOutlined/>} onClick={() => {this.screenshotInteractionChange(TAP);}}
-            type={screenshotInteractionMode === TAP ? 'primary' : 'default'}
+            type={screenshotInteractionMode === TAP ? BUTTON.PRIMARY : BUTTON.DEFAULT}
           />
         </Tooltip>
       </ButtonGroup>
@@ -201,7 +202,7 @@ export default class Inspector extends Component {
         }
         {isRecording &&
           <Tooltip title={t('Pause Recording')}>
-            <Button id='btnPause' icon={<PauseOutlined/>} type="danger" onClick={pauseRecording}/>
+            <Button id='btnPause' icon={<PauseOutlined/>} type={BUTTON.DANGER} onClick={pauseRecording}/>
           </Tooltip>
         }
         <Tooltip title={t('Search for element')}>
