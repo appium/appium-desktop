@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Form, Row, Col, Input, Checkbox, Radio } from 'antd';
 import SessionStyles from './Session.css';
+import { INPUT } from '../AntdType';
 const FormItem = Form.Item;
 
 export default class ServerTabSauce extends Component {
@@ -24,7 +25,7 @@ export default class ServerTabSauce extends Component {
         </Col>
         <Col span={12}>
           <FormItem>
-            <Input id='saucePassword' type='password' placeholder={sauceAccessKeyPlaceholder}
+            <Input id='saucePassword' type={INPUT.PASSWORD} placeholder={sauceAccessKeyPlaceholder}
               addonBefore={t('Sauce Access Key')} value={server.sauce.accessKey} onChange={(e) => setServerParam('accessKey', e.target.value)} />
           </FormItem>
         </Col>
@@ -60,4 +61,3 @@ export default class ServerTabSauce extends Component {
     </Form>;
   }
 }
-

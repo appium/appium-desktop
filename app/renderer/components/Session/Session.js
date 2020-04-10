@@ -12,6 +12,7 @@ import SessionStyles from './Session.css';
 import CloudProviders from './CloudProviders';
 import CloudProviderSelector from './CloudProviderSelector';
 import { LikeOutlined } from '@ant-design/icons';
+import { BUTTON } from '../AntdType';
 
 const {TabPane} = Tabs;
 
@@ -106,11 +107,11 @@ export default class Session extends Component {
             </div>
             { (!isAttaching && capsUUID) && <Button onClick={() => saveSession(caps, {uuid: capsUUID})} disabled={!isCapsDirty}>{t('Save')}</Button> }
             {!isAttaching && <Button onClick={requestSaveAsModal}>{t('saveAs')}</Button>}
-            {!isAttaching && <Button type="primary" id='btnStartSession'
+            {!isAttaching && <Button type={BUTTON.PRIMARY} id='btnStartSession'
               onClick={() => newSession(caps)} className={SessionStyles['start-session-button']}>{t('startSession')}</Button>
             }
             {isAttaching &&
-              <Button type="primary" disabled={!attachSessId} onClick={() => newSession(null, attachSessId)}>
+              <Button type={BUTTON.PRIMARY} disabled={!attachSessId} onClick={() => newSession(null, attachSessId)}>
                 {t('attachToSession')}
               </Button>
             }

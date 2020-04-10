@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Form, Input, Row, Col } from 'antd';
+import { INPUT } from '../AntdType';
 
 const FormItem = Form.Item;
 
@@ -26,7 +27,7 @@ export default class ServerTabTestingbot extends Component {
       <Row gutter={8}>
         <Col span={12}>
           <FormItem>
-            <Input id='testingbotSecret' type='password' placeholder={testingbotSecretPlaceholder} addonBefore={t('TestingBot Secret')} value={server.testingbot.secret} onChange={(e) => setServerParam('secret', e.target.value)} />
+            <Input id='testingbotSecret' type={INPUT.PASSWORD} placeholder={testingbotSecretPlaceholder} addonBefore={t('TestingBot Secret')} value={server.testingbot.secret} onChange={(e) => setServerParam('secret', e.target.value)} />
           </FormItem>
         </Col>
       </Row>

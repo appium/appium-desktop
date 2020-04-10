@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Form, Input, Radio, Row, Col } from 'antd';
 import SessionStyles from './Session.css';
+import { INPUT } from '../AntdType';
 
 const FormItem = Form.Item;
 
@@ -17,7 +18,7 @@ export default class ServerTabTestobject extends Component {
       <Row gutter={8}>
         <Col span={24}>
           <FormItem>
-            <Input id='testObjectPassword' type='password' placeholder={placeholder} addonBefore={t('TestObject API Key')} value={server.testobject.apiKey} onChange={(e) => setServerParam('apiKey', e.target.value)} />
+            <Input id='testObjectPassword' type={INPUT.PASSWORD} placeholder={placeholder} addonBefore={t('TestObject API Key')} value={server.testobject.apiKey} onChange={(e) => setServerParam('apiKey', e.target.value)} />
           </FormItem>
         </Col>
       </Row>

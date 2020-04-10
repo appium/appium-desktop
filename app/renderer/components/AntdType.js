@@ -6,16 +6,27 @@ const BUTTON = {
 };
 
 const ALERT = {
-  ERROR: 'error'
+  ERROR: 'error',
+  WARNING: 'warning',
+  INFO: 'info'
 };
 
 const INPUT = {
-  NUMBER: 'number'
+  NUMBER: 'number',
+  TEXT: 'text',
+  TEXTAREA: 'textarea',
+  PASSWORD: 'password',
+  SUBMIT: 'submit'
+};
+
+const ROW = {
+  FLEX: 'flex'
 };
 
 
 export {
   BUTTON,
   ALERT,
-  INPUT
+  INPUT,
+  ROW
 };
