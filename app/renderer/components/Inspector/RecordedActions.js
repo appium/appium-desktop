@@ -12,6 +12,7 @@ import {
   CloseOutlined,
   CodeOutlined
 } from '@ant-design/icons';
+import { BUTTON_PRIMARY, BUTTON_DEFAULT } from '../AntdType';
 
 const Option = Select.Option;
 const ButtonGroup = Button.Group;
@@ -50,8 +51,6 @@ class RecordedActions extends Component {
       {frameworks[f].readableName}
     </Option>);
 
-    let boilerplateType = showBoilerplate ? 'primary' : 'default';
-
     return <div>
       {!!recordedActions.length &&
         <Select defaultValue={actionFramework} onChange={setActionFramework}
@@ -66,7 +65,7 @@ class RecordedActions extends Component {
             <Button
               onClick={toggleShowBoilerplate}
               icon={<ExportOutlined/>}
-              type={boilerplateType}
+              type={showBoilerplate ? BUTTON_PRIMARY : BUTTON_DEFAULT}
             />
           </Tooltip>
           }
