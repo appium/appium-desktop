@@ -10,6 +10,7 @@ import {
 } from '@ant-design/icons';
 import { remote } from 'electron';
 import { HEIGHT_OF_SESSION_CONFIG_AREA } from './Layout';
+import { ALERT } from '../AntdTypes';
 
 export default class NewSessionForm extends Component {
 
@@ -47,7 +48,7 @@ export default class NewSessionForm extends Component {
         </div>
         {isEditingDesiredCaps && <div>
           <textarea rows='9' onChange={(e) => setRawDesiredCaps(e.target.value)} value={rawDesiredCaps} className={SessionCSS.capsEditor} />
-          {!isValidCapsJson && <Alert message={invalidCapsJsonReason} type="error" />}
+          {!isValidCapsJson && <Alert message={invalidCapsJsonReason} type={ALERT.ERROR} />}
         </div>}
         {!isEditingDesiredCaps && <div>
           <pre>{this.getFormattedJSON(caps)}</pre>

@@ -9,6 +9,7 @@ import {
   LoadingOutlined,
   CopyOutlined,
 } from '@ant-design/icons';
+import { ROW, ALERT } from '../AntdTypes';
 
 const ButtonGroup = Button.Group;
 
@@ -109,12 +110,12 @@ class SelectedElement extends Component {
     }
 
     return <div>
-      {elementInteractionsNotAvailable && <Row type="flex" gutter={10}>
+      {elementInteractionsNotAvailable && <Row type={ROW.FLEX} gutter={10}>
         <Col>
-          <Alert type="info" message={t('Interactions are not available for this element')} showIcon />
+          <Alert type={ALERT.INFO} message={t('Interactions are not available for this element')} showIcon />
         </Col>
       </Row>}
-      <Row justify="center" type="flex" align="middle" gutter={10} className={styles.elementActions}>
+      <Row justify="center" type={ROW.FLEX} align="middle" gutter={10} className={styles.elementActions}>
         <Col>
           <ButtonGroup size="small">
             <Button
@@ -163,7 +164,7 @@ class SelectedElement extends Component {
         <div>
           <Alert
             message={t('usingXPathNotRecommended')}
-            type="warning"
+            type={ALERT.WARNING}
             showIcon
           />
           <br />

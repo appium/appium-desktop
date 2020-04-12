@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Button } from 'antd';
 import { withTranslation } from '../../util';
 import styles from './StartButton.css';
-import { BUTTON_DEFAULT, BUTTON_DISABLED } from '../AntdType';
+import { BUTTON, INPUT } from '../AntdTypes';
 
 class SavePresetButton extends Component {
   render () {
@@ -12,10 +12,10 @@ class SavePresetButton extends Component {
     return (
       <div>
         <Button className={styles.startButton}
-          type={presetSaving ? BUTTON_DISABLED : BUTTON_DEFAULT}
+          type={presetSaving ? BUTTON.DISABLED : BUTTON.DEFAULT}
           onClick={savePreset}
         >{presetSaving ? t('Saving…') : t('Save As Preset…')}</Button>
-        <input type="submit" hidden={true} />
+        <input type={INPUT.SUBMIT} hidden={true} />
       </div>
     );
   }

@@ -9,6 +9,7 @@ import {
 } from '@ant-design/icons';
 import {remote} from 'electron';
 import { HEIGHT_OF_SESSION_CONFIG_AREA } from './Layout';
+import { ROW } from '../AntdTypes';
 
 const {Item: FormItem} = Form;
 const {Option} = Select;
@@ -58,7 +59,7 @@ export default class NewSessionForm extends Component {
            saveAsText, showSaveAsModal, setSaveAsText, isEditingDesiredCaps, t} = this.props;
 
     return <div>
-      <Row type="flex" align="top" justify="start" className={SessionStyles.capsFormRow}>
+      <Row type={ROW.FLEX} align="top" justify="start" className={SessionStyles.capsFormRow}>
         <Col order={1} span={12} className={`${SessionStyles.capsFormCol} ${isEditingDesiredCaps ? SessionStyles.capsFormDisabled : ''}`}>
           <Form
             className={SessionStyles.newSessionForm}

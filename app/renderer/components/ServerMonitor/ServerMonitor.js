@@ -15,6 +15,7 @@ import {
   CloseOutlined,
   CodeFilled
 } from '@ant-design/icons';
+import { BUTTON } from '../AntdTypes';
 
 const convert = new AnsiConverter({fg: '#bbb', bg: '#222'});
 const MAX_LOGS_RENDERED = 1000;
@@ -58,7 +59,7 @@ class StopButtonComponent extends Component {
         <Button
           icon={<PauseOutlined/>}
           className={styles.serverButton}
-          type="disabled" />
+          type={BUTTON.DISABLED} />
       </Tooltip>;
     }
     return btn;

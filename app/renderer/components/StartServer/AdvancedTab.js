@@ -6,6 +6,7 @@ import { propTypes, updateArg } from './shared';
 import StartButton from './StartButton';
 import SavePresetButton from './SavePresetButton';
 import styles from './AdvancedTab.css';
+import { INPUT } from '../AntdTypes';
 
 // args we build a UI for:
 // ipa, address, port, callbackAddress, callbackPort,
@@ -33,7 +34,7 @@ class AdvancedTab extends Component {
     if (type === 'text') {
       return (
         <div className={styles.input}>
-          <Input ref={argName} type="text"
+          <Input ref={argName} type={INPUT.TEXT}
             defaultValue={serverArgs[argName]}
             name={argName} onChange={updateArg.bind(this)}
             addonBefore={label}
@@ -106,7 +107,7 @@ class AdvancedTab extends Component {
             onChange={this.updatePresetName.bind(this)}
             size="large"
           />
-          <input type="submit" hidden={true} />
+          <input type={INPUT.SUBMIT} hidden={true} />
         </form>
       </div>
     );

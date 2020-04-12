@@ -6,6 +6,7 @@ import { withTranslation } from '../../util';
 import {
   ExportOutlined
 } from '@ant-design/icons';
+import { BUTTON } from '../AntdTypes';
 
 class WrongFolder extends Component {
   // This tells the main thread to move this to applications folder which will cause the app to close and restart
@@ -21,7 +22,7 @@ class WrongFolder extends Component {
         <Button
           size='large'
           icon={<ExportOutlined/>}
-          type="primary"
+          type={BUTTON.PRIMARY}
           onClick={this.moveToApplicationsFolder.bind(this)}>
           {t('Move to Applications Folder')}
         </Button>

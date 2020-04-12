@@ -3,6 +3,7 @@ import _ from 'lodash';
 import { Modal, Row, Col, Button } from 'antd';
 import CloudProviders from './CloudProviders';
 import SessionStyles from './Session.css';
+import { BUTTON } from '../AntdTypes';
 
 export default class CloudProviderSelector extends Component {
 
@@ -33,7 +34,7 @@ export default class CloudProviderSelector extends Component {
   render () {
     const {t, isAddingCloudProvider, stopAddCloudProvider, visibleProviders = []} = this.props;
     const providersGrid = _.chunk(_.keys(CloudProviders), 2); // Converts list of providers into list of pairs of providers
-    const footer = [<Button key="back" type="primary" onClick={stopAddCloudProvider}>{t('Done')}</Button>];
+    const footer = [<Button key="back" type={BUTTON.PRIMARY} onClick={stopAddCloudProvider}>{t('Done')}</Button>];
 
     return <Modal key="modal"
       className={SessionStyles.cloudProviderModal}

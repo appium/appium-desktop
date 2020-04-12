@@ -1,6 +1,7 @@
 import React from 'react';
 import { Alert } from 'antd';
 import styles from './ErrorBoundary.css';
+import { ALERT } from '../AntdTypes';
 
 const CREATE_ISSUE_URL = 'https://github.com/appium/appium-desktop/issues/new';
 
@@ -24,7 +25,7 @@ export default class ErrorBoundary extends React.Component {
         <div className={styles.errorBoundary}>
           <Alert
             message="Unhandled Exception"
-            type="error"
+            type={ALERT.ERROR}
             description={
               <>
                 <span children={`An unexpected error occurred with message: ${error.message}.`} />
