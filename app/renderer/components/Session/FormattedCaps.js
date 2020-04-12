@@ -10,7 +10,7 @@ import {
 } from '@ant-design/icons';
 import { remote } from 'electron';
 import { HEIGHT_OF_SESSION_CONFIG_AREA } from './Layout';
-import { ALERT } from '../AntdType';
+import { ALERT } from '../AntdTypes';
 
 export default class NewSessionForm extends Component {
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Alert } from 'antd';
 import styles from './ErrorBoundary.css';
-import { ALERT } from '../AntdType';
+import { ALERT } from '../AntdTypes';
 
 const CREATE_ISSUE_URL = 'https://github.com/appium/appium-desktop/issues/new';
 

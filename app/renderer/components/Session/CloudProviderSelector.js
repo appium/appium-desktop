@@ -3,7 +3,7 @@ import _ from 'lodash';
 import { Modal, Row, Col, Button } from 'antd';
 import CloudProviders from './CloudProviders';
 import SessionStyles from './Session.css';
-import { BUTTON } from '../AntdType';
+import { BUTTON } from '../AntdTypes';
 
 export default class CloudProviderSelector extends Component {
 

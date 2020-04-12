@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Form, Input, Radio, Row, Col } from 'antd';
 import SessionStyles from './Session.css';
-import { INPUT } from '../AntdType';
+import { INPUT } from '../AntdTypes';
 
 const FormItem = Form.Item;
 

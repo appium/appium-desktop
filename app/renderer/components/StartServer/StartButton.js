@@ -6,7 +6,7 @@ import { withTranslation } from '../../util';
 import { SettingOutlined } from '@ant-design/icons';
 
 import styles from './StartButton.css';
-import { BUTTON, INPUT } from '../AntdType';
+import { BUTTON, INPUT } from '../AntdTypes';
 
 class StartButton extends Component {
   isEnabled () {

@@ -24,7 +24,7 @@ import {
   TagOutlined,
   ThunderboltOutlined
 } from '@ant-design/icons';
-import { BUTTON } from '../AntdType';
+import { BUTTON } from '../AntdTypes';
 
 
 

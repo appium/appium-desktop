@@ -12,7 +12,7 @@ import SessionStyles from './Session.css';
 import CloudProviders from './CloudProviders';
 import CloudProviderSelector from './CloudProviderSelector';
 import { LikeOutlined } from '@ant-design/icons';
-import { BUTTON } from '../AntdType';
+import { BUTTON } from '../AntdTypes';
 
 const {TabPane} = Tabs;
 

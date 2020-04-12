@@ -9,7 +9,7 @@ import {
   LoadingOutlined,
   CopyOutlined,
 } from '@ant-design/icons';
-import { ROW, ALERT } from '../AntdType';
+import { ROW, ALERT } from '../AntdTypes';
 
 const ButtonGroup = Button.Group;
 

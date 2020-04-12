@@ -4,7 +4,7 @@ import { Button } from 'antd';
 import { withTranslation } from '../../util';
 
 import styles from './StartButton.css';
-import { BUTTON } from '../AntdType';
+import { BUTTON } from '../AntdTypes';
 
 class DeletePresetButton extends Component {
   render () {

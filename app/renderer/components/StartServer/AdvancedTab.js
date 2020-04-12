@@ -6,7 +6,7 @@ import { propTypes, updateArg } from './shared';
 import StartButton from './StartButton';
 import SavePresetButton from './SavePresetButton';
 import styles from './AdvancedTab.css';
-import { INPUT } from '../AntdType';
+import { INPUT } from '../AntdTypes';
 
 // args we build a UI for:
 // ipa, address, port, callbackAddress, callbackPort,

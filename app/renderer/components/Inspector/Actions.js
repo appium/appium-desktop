@@ -3,7 +3,7 @@ import _ from 'lodash';
 import { Row, Col, Button, Select, Modal, Input, notification, } from 'antd';
 import { actionDefinitions, actionArgTypes } from './shared';
 import InspectorStyles from './Inspector.css';
-import { INPUT } from '../AntdType';
+import { INPUT } from '../AntdTypes';
 
 const { STRING, NUMBER } = actionArgTypes;
 

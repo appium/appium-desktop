@@ -3,7 +3,7 @@ import { Switch, Input } from 'antd';
 import SessionStyles from './Session.css';
 import { remote } from 'electron';
 import { FileOutlined } from '@ant-design/icons';
-import { INPUT } from '../AntdType';
+import { INPUT } from '../AntdTypes';
 
 const {dialog} = remote;
 

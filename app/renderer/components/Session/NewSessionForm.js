@@ -9,7 +9,7 @@ import {
 } from '@ant-design/icons';
 import {remote} from 'electron';
 import { HEIGHT_OF_SESSION_CONFIG_AREA } from './Layout';
-import { ROW } from '../AntdType';
+import { ROW } from '../AntdTypes';
 
 const {Item: FormItem} = Form;
 const {Option} = Select;

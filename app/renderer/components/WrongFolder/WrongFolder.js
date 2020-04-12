@@ -6,7 +6,7 @@ import { withTranslation } from '../../util';
 import {
   ExportOutlined
 } from '@ant-design/icons';
-import { BUTTON } from '../AntdType';
+import { BUTTON } from '../AntdTypes';
 
 class WrongFolder extends Component {
   // This tells the main thread to move this to applications folder which will cause the app to close and restart
