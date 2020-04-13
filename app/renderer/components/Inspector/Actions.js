@@ -5,10 +5,6 @@ import { actionDefinitions, actionArgTypes } from './shared';
 import InspectorStyles from './Inspector.css';
 import { INPUT } from '../AntdTypes';
 
-const { STRING, NUMBER } = actionArgTypes;
-
-const Option = { Select };
-
 export default class Actions extends Component {
 
   startPerformingAction (actionName, action) {
@@ -78,19 +74,19 @@ export default class Actions extends Component {
       <Row gutter={16} className={InspectorStyles['arg-row']}>
         <Col span={24}>
           <Select onChange={(actionGroupName) => selectActionGroup(actionGroupName)} placeholder={t('Select Action Group')}>
-            { _.keys(actionDefinitions).map((actionGroup) => <Option key={actionGroup}>{t(actionGroup)}</Option>) }
+            { _.keys(actionDefinitions).map((actionGroup) => <Select.Option key={actionGroup}>{t(actionGroup)}</Select.Option>) }
           </Select>
         </Col>
       </Row>
       {selectedActionGroup && <Row>
         <Col span={24}>
           <Select onChange={(actionGroupName) => selectSubActionGroup(actionGroupName)} placeholder={t('Select Sub Group')}>
-            { _.keys(actionDefinitions[selectedActionGroup]).map((actionGroup) => <Option key={actionGroup}>{t(actionGroup)}</Option>) }
+            { _.keys(actionDefinitions[selectedActionGroup]).map((actionGroup) => <Select.Option key={actionGroup}>{t(actionGroup)}</Select.Option>) }
           </Select>
         </Col>
       </Row>}
       <Row>
-        {selectedSubActionGroup && _.toPairs(actionDefinitions[selectedActionGroup][selectedSubActionGroup]).map(([actionName, action]) => <Col span={8}>
+        {selectedSubActionGroup && _.toPairs(actionDefinitions[selectedActionGroup][selectedSubActionGroup]).map(([actionName, action], index) => <Col key={index} span={8}>
           <div className={InspectorStyles['btn-container']}>
             <Button onClick={() => this.startPerformingAction(actionName, action)}>{t(actionName)}</Button>
           </div>
@@ -106,14 +102,14 @@ export default class Actions extends Component {
           !_.isEmpty(pendingAction.action.args) && _.map(pendingAction.action.args, ([argName, argType], index) => <Row key={index} gutter={16}>
             <Col span={24} className={InspectorStyles['arg-container']}>
               {
-                argType === NUMBER && <Input
+                argType === actionArgTypes.NUMBER && <Input
                   type={INPUT.NUMBER}
                   value={pendingAction.args[index]}
                   addonBefore={t(argName)}
                   onChange={(e) => setActionArg(index, _.toNumber(e.target.value))}
                 />
               }
-              {argType === STRING && <Input addonBefore={t(argName)} onChange={(e) => setActionArg(index, e.target.value)}/>}
+              {argType === actionArgTypes.STRING && <Input addonBefore={t(argName)} onChange={(e) => setActionArg(index, e.target.value)}/>}
             </Col>
           </Row>)
         }
