@@ -1,6 +1,6 @@
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import { getOptimalXPath } from '../../app/renderer/util';
+import { getOptimalXPath, xmlToJSON } from '../../app/renderer/util';
 import { DOMParser } from 'xmldom';
 import xpath from 'xpath';
 import sinon from 'sinon';
@@ -16,6 +16,58 @@ function testXPath (doc, node, expectedXPath, uniqueAttributes) {
 }
 
 describe('util.js', function () {
+  describe('#xmlToJSON', function () {
+    it('should convert xml with unicode chars to json', function () {
+      const json = xmlToJSON(`<hierarchy>
+        <XCUIElementTypeApplication
+          type="XCUIElementTypeApplication"
+          name="🦋"
+          label=""
+          enabled="true"
+          visible="true"
+          x="0" y="0" width="768" height="1024">
+            <XCUIElementTypeWindow
+              type="XCUIElementTypeWindow"
+              enabled="true"
+              visible="false"
+              x="0" y="0" width="1024" height="768">
+            </XCUIElementTypeWindow>
+        </XCUIElementTypeApplication>
+      </hierarchy>`);
+      json.should.eql({
+        children: [{
+          children: [],
+          tagName: 'XCUIElementTypeWindow',
+          attributes: {
+            type: 'XCUIElementTypeWindow',
+            enabled: 'true',
+            visible: 'false',
+            x: '0',
+            y: '0',
+            width: '1024',
+            height: '768',
+          },
+          xpath: '//XCUIElementTypeApplication[@name="🦋"]/XCUIElementTypeWindow',
+          path: '0',
+        }],
+        tagName: 'XCUIElementTypeApplication',
+        attributes: {
+          type: 'XCUIElementTypeApplication',
+          name: '🦋',
+          label: '',
+          enabled: 'true',
+          visible: 'true',
+          x: '0',
+          y: '0',
+          width: '768',
+          height: '1024',
+        },
+        xpath: '//XCUIElementTypeApplication[@name="🦋"]',
+        path: '',
+      });
+    });
+  });
+
   describe('#getOptimalXPath', function () {
     describe('on XML with height == 1', function () {
       it('should set an absolute xpath if attrName "id" is set', function () {

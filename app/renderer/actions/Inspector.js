@@ -6,7 +6,7 @@ import B from 'bluebird';
 import { getLocators } from '../components/Inspector/shared';
 import { showError } from './Session';
 import { bindClient, unbindClient, callClientMethod } from './shared';
-import { getOptimalXPath } from '../util';
+import { xmlToJSON } from '../util';
 import frameworks from '../lib/client-frameworks';
 import settings from '../../shared/settings';
 import i18n from '../../configs/i18next.config.renderer';
@@ -66,49 +66,6 @@ export const SELECT_SUB_ACTION_GROUP = 'SELECT_SUB_ACTION_GROUP';
 export const ENTERING_ACTION_ARGS = 'ENTERING_ACTION_ARGS';
 export const REMOVE_ACTION = 'REMOVE_ACTION';
 export const SET_ACTION_ARG = 'SET_ACTION_ARG';
-
-
-// Attributes on nodes that we know are unique to the node
-const uniqueAttributes = [
-  'name',
-  'content-desc',
-  'id',
-  'accessibility-id',
-];
-
-/**
- * Translates sourceXML to JSON
- */
-function xmlToJSON (source) {
-  let xmlDoc;
-
-  // Replace strings with Unicode format &#012345 with #012345
-  // The &# unicode format breaks the parser
-  source = source.replace(/&#([0-9]{4,})/g, '#$1');
-
-  let recursive = (xmlNode, parentPath, index) => {
-
-    // Translate attributes array to an object
-    let attrObject = {};
-    for (let attribute of xmlNode.attributes || []) {
-      attrObject[attribute.name] = attribute.value;
-    }
-
-    // Dot Separated path of indices
-    let path = (index !== undefined) && `${!parentPath ? '' : parentPath + '.'}${index}`;
-
-    return {
-      children: [...xmlNode.children].map((childNode, childIndex) => recursive(childNode, path, childIndex)),
-      tagName: xmlNode.tagName,
-      attributes: attrObject,
-      xpath: getOptimalXPath(xmlDoc, xmlNode, uniqueAttributes),
-      path,
-    };
-  };
-  xmlDoc = (new DOMParser()).parseFromString(source, 'application/xml');
-  let sourceXML = xmlDoc.children[0];
-  return recursive(sourceXML);
-}
 
 
 export function bindAppium () {
