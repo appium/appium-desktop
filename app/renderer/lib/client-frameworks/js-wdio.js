@@ -151,7 +151,7 @@ ${this.indent(this.chainifyCode(code), 2)}
   }
 
   codeFor_isKeyboardShown () {
-    return `//isKeyboardShown not supported`;
+    return `await driver.isKeyboardShown();`;
   }
 
   codeFor_pushFileToDevice (varNameIgnore, varIndexIgnore, pathToInstallTo, fileContentString) {
