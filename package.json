@@ -116,7 +116,7 @@
     "@babel/polyfill": "^7.4.0",
     "ansi-to-html": "~0.6.7",
     "antd": "^4.0.0",
-    "appium": "1.17.1",
+    "appium": "^1.17.0",
     "appium-support": "^2.25.0",
     "bluebird": "^3.5.5",
     "connected-react-router": "^6.0.0",
