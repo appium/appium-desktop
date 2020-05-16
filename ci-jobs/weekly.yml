@@ -1,7 +1,7 @@
 jobs:
   - job: CrowdinSync
-    pool: 
-      vmImage: "macOS 10.13"
+    pool:
+      vmImage: 'macOS-10.15'
     steps:
     - script: |
         git remote add triager https://triager:$GITHUB_TOKEN@github.com/appium/appium-desktop
@@ -13,7 +13,7 @@ jobs:
     - task: NodeTool@0
       inputs:
         versionSpec: '11.x'
-    - script: npm install request bluebird asyncbox 
+    - script: npm install request bluebird asyncbox
       displayName: Install dependencies
     - script: npm run crowdin-sync
       displayName: Crowdin Sync
