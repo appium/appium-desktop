@@ -4,7 +4,6 @@ import LocatorTestModal from './LocatorTestModal';
 import InspectorStyles from './Inspector.css';
 import { withTranslation } from '../../util';
 
-const {TreeNode} = Tree;
 const IMPORTANT_ATTRS = [
   'name',
   'content-desc',
@@ -72,9 +71,11 @@ class Source extends Component {
       if (elemObj.children.length === 0) {return null;}
 
       return elemObj.children.map((el) => {
-        return <TreeNode title={this.getFormattedTag(el)} key={el.path}>
-          {recursive(el)}
-        </TreeNode>;
+        return {
+          title: this.getFormattedTag(el),
+          key: el.path,
+          children: recursive(el),
+        };
       });
     };
 
@@ -85,9 +86,8 @@ class Source extends Component {
           autoExpandParent={false}
           expandedKeys={expandedPaths}
           onSelect={(selectedPaths) => this.handleSelectElement(selectedPaths[0])}
-          selectedKeys={[path]}>
-          {recursive(source)}
-        </Tree>
+          selectedKeys={[path]}
+          treeData={recursive(source)} />
       }
       {!source && !sourceError &&
         <i>{t('Gathering initial app source…')}</i>

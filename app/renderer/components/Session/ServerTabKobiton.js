@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Form, Input, Row, Col } from 'antd';
+import { INPUT } from '../AntdTypes';
 
 const FormItem = Form.Item;
 
@@ -25,7 +26,7 @@ export default class ServerTabKobiton extends Component {
       <Row gutter={8}>
         <Col span={12}>
           <FormItem>
-            <Input id='kobitonAccessKey' type='password' placeholder={kobitonAccessKeyPlaceholder} addonBefore={t('Kobiton Access Key')} value={server.kobiton.accessKey} onChange={(e) => setServerParam('accessKey', e.target.value)} />
+            <Input id='kobitonAccessKey' type={INPUT.PASSWORD} placeholder={kobitonAccessKeyPlaceholder} addonBefore={t('Kobiton Access Key')} value={server.kobiton.accessKey} onChange={(e) => setServerParam('accessKey', e.target.value)} />
           </FormItem>
         </Col>
       </Row>

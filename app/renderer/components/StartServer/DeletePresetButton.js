@@ -4,6 +4,7 @@ import { Button } from 'antd';
 import { withTranslation } from '../../util';
 
 import styles from './StartButton.css';
+import { BUTTON } from '../AntdTypes';
 
 class DeletePresetButton extends Component {
   render () {
@@ -12,7 +13,7 @@ class DeletePresetButton extends Component {
     return (
       <div>
         <Button className={styles.startButton}
-          type={presetDeleting ? 'disabled' : null}
+          type={presetDeleting ? BUTTON.DISABLED : BUTTON.DEFAULT}
           onClick={deletePreset}
         >{presetDeleting ? t('Deleting…') : t('Delete Preset')}</Button>
       </div>

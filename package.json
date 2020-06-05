@@ -1,6 +1,6 @@
 {
   "name": "appium-desktop",
-  "version": "1.15.0",
+  "version": "1.17.1-1",
   "description": "Graphical interface for the Appium server, and an app inspector",
   "repository": {
     "type": "git",
@@ -118,8 +118,8 @@
   "dependencies": {
     "@babel/polyfill": "^7.4.0",
     "ansi-to-html": "~0.6.7",
-    "antd": "^3.25.2",
-    "appium": "^1.15.0",
+    "antd": "~4.0.4",
+    "appium": "1.17.1",
     "appium-support": "^2.25.0",
     "bluebird": "^3.5.5",
     "connected-react-router": "^6.0.0",
@@ -139,7 +139,7 @@
     "moment": "^2.20.1",
     "postcss": "^7.0.4",
     "prop-types": "^15.6.2",
-    "react": "^16.9.0",
+    "react": "^16.13.0",
     "react-dom": "^16.9.0",
     "react-hot-loader": "^4.3.12",
     "react-i18next": "^11.0.0",
@@ -153,9 +153,9 @@
     "source-map-support": "^0.5.0",
     "teen_process": "^1.11.0",
     "temp": "0.x",
-    "uuid": "3.x",
-    "wd": "^1.11.2",
-    "xmldom": "^0.2.1",
+    "uuid": "^7.0.0",
+    "wd": "1.11.2",
+    "xmldom": "^0.3.0",
     "xpath": "0.0.27"
   },
   "devDependencies": {
@@ -178,7 +178,7 @@
     "electron": "^7.1.2",
     "electron-builder": "^22.1.0",
     "electron-builder-lib": "^20.15.3",
-    "electron-devtools-installer": "^2.2.3",
+    "electron-devtools-installer": "^3.0.0",
     "eslint": "^6.0.0",
     "eslint-config-appium": "^4.0.1",
     "eslint-plugin-babel": "^5.2.1",
@@ -190,7 +190,6 @@
     "eslint-plugin-react-native": "^3.6.0",
     "eslint-plugin-shopify": "^30.0.0",
     "express": "^4.16.2",
-    "greenkeeper-lockfile": "^1.15.1",
     "husky": "^4.0.2",
     "jquery": "^3.3.1",
     "jsdom": "^16.0.1",
@@ -218,12 +217,5 @@
   "engines": {
     "node": ">=10.x",
     "npm": ">=5.x"
-  },
-  "greenkeeper": {
-    "ignore": [
-      "electron",
-      "less",
-      "electron-settings"
-    ]
   }
 }

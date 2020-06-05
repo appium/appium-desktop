@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Button, Icon } from 'antd';
+import { Button } from 'antd';
 import { ipcRenderer } from 'electron';
 import { withTranslation } from '../../util';
+import { SettingOutlined } from '@ant-design/icons';
 
 import styles from './StartButton.css';
+import { BUTTON, INPUT } from '../AntdTypes';
 
 class StartButton extends Component {
   isEnabled () {
@@ -30,16 +32,16 @@ class StartButton extends Component {
       <div>
         <Button {...buttonProps} id='startServerBtn'
           className={styles.startButton}
-          type="primary"
+          type={BUTTON.PRIMARY}
           onClick={this.isEnabled() ? startServer : this.noop}
         >
           {serverStarting ? t('Starting…') : t('startServer', {serverVersion})}
         </Button>
-        <input type="submit" hidden={true} />
+        <input type={INPUT.SUBMIT} hidden={true} />
         <Button id='configBtn'
           className={styles.configButton}
           onClick={() => this.openConfig()}>
-          {t('Edit Configurations')}<Icon type="setting" />
+          {t('Edit Configurations')}<SettingOutlined />
         </Button>
       </div>
     );

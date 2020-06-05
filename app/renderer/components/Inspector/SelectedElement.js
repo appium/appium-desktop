@@ -5,6 +5,11 @@ import styles from './Inspector.css';
 import { Button, Row, Col, Input, Modal, Table, Alert, Tooltip } from 'antd';
 import { withTranslation } from '../../util';
 import { clipboard } from 'electron';
+import {
+  LoadingOutlined,
+  CopyOutlined,
+} from '@ant-design/icons';
+import { ROW, ALERT } from '../AntdTypes';
 
 const ButtonGroup = Button.Group;
 
@@ -105,17 +110,17 @@ class SelectedElement extends Component {
     }
 
     return <div>
-      {elementInteractionsNotAvailable && <Row type="flex" gutter={10}>
+      {elementInteractionsNotAvailable && <Row type={ROW.FLEX} gutter={10}>
         <Col>
-          <Alert type="info" message={t('Interactions are not available for this element')} showIcon />
+          <Alert type={ALERT.INFO} message={t('Interactions are not available for this element')} showIcon />
         </Col>
       </Row>}
-      <Row justify="center" type="flex" align="middle" gutter={10} className={styles.elementActions}>
+      <Row justify="center" type={ROW.FLEX} align="middle" gutter={10} className={styles.elementActions}>
         <Col>
           <ButtonGroup size="small">
             <Button
               disabled={!elementId}
-              icon={!elementInteractionsNotAvailable && !elementId && 'loading'}
+              icon={!elementInteractionsNotAvailable && !elementId && <LoadingOutlined/>}
               id='btnTapElement'
               onClick={() => applyClientMethod({methodName: 'click', elementId})}
             >
@@ -138,7 +143,8 @@ class SelectedElement extends Component {
             <Tooltip title={t('Copy Attributes to Clipboard')}>
               <Button
                 disabled={!elementId}
-                id='btnCopyAttributes' icon="copy"
+                id='btnCopyAttributes'
+                icon={<CopyOutlined/>}
                 onClick={() => clipboard.writeText(JSON.stringify(dataSource))}/>
             </Tooltip>
           </ButtonGroup>
@@ -158,7 +164,7 @@ class SelectedElement extends Component {
         <div>
           <Alert
             message={t('usingXPathNotRecommended')}
-            type="warning"
+            type={ALERT.WARNING}
             showIcon
           />
           <br />

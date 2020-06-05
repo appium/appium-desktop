@@ -6,11 +6,13 @@ import SavedSessions from './SavedSessions';
 import AttachToSession from './AttachToSession';
 import ServerTabAutomatic from './ServerTabAutomatic';
 import ServerTabCustom from './ServerTabCustom';
-import { Tabs, Button, Spin, Icon } from 'antd';
+import { Tabs, Button, Spin } from 'antd';
 import AdvancedServerParams from './AdvancedServerParams';
 import SessionStyles from './Session.css';
 import CloudProviders from './CloudProviders';
 import CloudProviderSelector from './CloudProviderSelector';
+import { LikeOutlined } from '@ant-design/icons';
+import { BUTTON } from '../AntdTypes';
 
 const {TabPane} = Tabs;
 
@@ -99,17 +101,17 @@ export default class Session extends Component {
           <div className={SessionStyles.sessionFooter}>
             <div className={SessionStyles.desiredCapsLink}>
               <a href="#" onClick={(e) => e.preventDefault() || shell.openExternal('https://github.com/appium/appium/blob/master/docs/en/writing-running-appium/caps.md')}>
-                <Icon type='link' />&nbsp;
+                <LikeOutlined />&nbsp;
                 {t('desiredCapabilitiesDocumentation')}
               </a>
             </div>
             { (!isAttaching && capsUUID) && <Button onClick={() => saveSession(caps, {uuid: capsUUID})} disabled={!isCapsDirty}>{t('Save')}</Button> }
             {!isAttaching && <Button onClick={requestSaveAsModal}>{t('saveAs')}</Button>}
-            {!isAttaching && <Button type="primary" id='btnStartSession'
+            {!isAttaching && <Button type={BUTTON.PRIMARY} id='btnStartSession'
               onClick={() => newSession(caps)} className={SessionStyles['start-session-button']}>{t('startSession')}</Button>
             }
             {isAttaching &&
-              <Button type="primary" disabled={!attachSessId} onClick={() => newSession(null, attachSessId)}>
+              <Button type={BUTTON.PRIMARY} disabled={!attachSessId} onClick={() => newSession(null, attachSessId)}>
                 {t('attachToSession')}
               </Button>
             }

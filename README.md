@@ -1,7 +1,6 @@
 # Appium Desktop
 [![Build Status](https://dev.azure.com/AppiumCI/Appium%20Desktop/_apis/build/status/appium.appium-desktop)](https://dev.azure.com/AppiumCI/Appium%20Desktop/_build/latest?definitionId=1)
 [![Crowdin](https://d322cqt584bo4o.cloudfront.net/appium-desktop/localized.svg)](https://crowdin.com/project/appium-desktop)
-[![Greenkeeper badge](https://badges.greenkeeper.io/dpgraham/appium-desktop.svg)](https://greenkeeper.io/)
 ![Action screenshot](docs/images/screen-inspector-and-logs.png)
 
 Appium Desktop is an app for Mac, Windows, and Linux which gives you the power of the [Appium](http://appium.io) automation server in a beautiful and flexible UI. It is a combination of a few Appium-related tools:
@@ -129,6 +128,7 @@ These are the options for launching a session against a non-local Appium server:
 | Perfecto         | Launch a session on the [Perfecto](https://www.perfecto.io) cloud. [Documentation](https://developers.perfectomobile.com/display/PD/Appium) |
 | Pcloudy         | Launch a session on the [Pcloudy](https://www.pcloudy.com) cloud. [Documentation](https://www.pcloudy.com/mobile-application-testing-documentation) |
 | TestingBot       | Launch a session on the [TestingBot](https://testingbot.com) cloud. [Documentation](https://testingbot.com/support) |
+| Experitest       | Launch a session on the [Experitest](http://www.experitest.com) cloud. [Documentation](https://docs.experitest.com/display/TE/Appium) |
 
 It should be straightforward to get set up with any of these options. Simply
 enter your details in the input fields provided.

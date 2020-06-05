@@ -222,7 +222,7 @@ export function newSession (caps, attachSessId = null) {
       }
       case ServerTypes.perfecto:
         host = session.server.perfecto.hostname;
-        port = session.server.perfecto.port;
+        port = session.server.perfecto.port || 80;
         token = session.server.perfecto.token || process.env.PERFECTO_TOKEN;
         path = session.server.perfecto.path = '/nexperience/perfectomobile/wd/hub';
         if (!token) {
@@ -321,6 +321,23 @@ export function newSession (caps, attachSessId = null) {
         }
         https = session.server.testingbot.ssl = true;
         break;
+      case ServerTypes.experitest: {
+        if (!session.server.experitest.url || !session.server.experitest.accessKey) {
+          notification.error({
+            message: i18n.t('Error'),
+            description: i18n.t('experitestAccessKeyURLRequired'),
+            duration: 4
+          });
+          return;
+        }
+        desiredCapabilities['experitest:accessKey'] = session.server.experitest.accessKey;
+        let experitestUrl = url.parse(session.server.experitest.url);
+        host = session.server.experitest.hostname = experitestUrl.hostname;
+        path = session.server.experitest.path = '/wd/hub';
+        port = session.server.experitest.port = experitestUrl.port;
+        https = session.server.experitest.ssl = experitestUrl.protocol === 'https:';
+        break;
+      }
       default:
         break;
     }

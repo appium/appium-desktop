@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { debounce } from 'lodash';
 import { SCREENSHOT_INTERACTION_MODE, INTERACTION_MODE } from './shared';
-import { Card, Icon, Button, Spin, Tooltip, Modal, Tabs } from 'antd';
+import { Card, Button, Spin, Tooltip, Modal, Tabs } from 'antd';
 import Screenshot from './Screenshot';
 import SelectedElement from './SelectedElement';
 import Source from './Source';
@@ -9,6 +9,24 @@ import InspectorStyles from './Inspector.css';
 import RecordedActions from './RecordedActions';
 import Actions from './Actions';
 import { clipboard } from 'electron';
+import {
+  SelectOutlined,
+  ScanOutlined,
+  SwapRightOutlined,
+  ArrowLeftOutlined,
+  ReloadOutlined,
+  EyeOutlined,
+  PauseOutlined,
+  SearchOutlined,
+  CopyOutlined,
+  CloseOutlined,
+  FileTextOutlined,
+  TagOutlined,
+  ThunderboltOutlined
+} from '@ant-design/icons';
+import { BUTTON } from '../AntdTypes';
+
+
 
 const {SELECT, SWIPE, TAP} = SCREENSHOT_INTERACTION_MODE;
 
@@ -123,13 +141,13 @@ export default class Inspector extends Component {
           <TabPane tab={t('Source')} key={INTERACTION_MODE.SOURCE}>
             <div className='action-row'>
               <div className='action-col'>
-                <Card title={<span><Icon type="file-text" /> {t('App Source')}</span>}>
+                <Card title={<span><FileTextOutlined /> {t('App Source')}</span>}>
                   <Source {...this.props} />
                 </Card>
               </div>
               <div id='selectedElementContainer'
                 className={`${InspectorStyles['interaction-tab-container']} ${InspectorStyles['element-detail-container']} action-col`}>
-                <Card title={<span><Icon type="tag-o" /> {t('selectedElement')}</span>}
+                <Card title={<span><TagOutlined /> {t('selectedElement')}</span>}
                   className={InspectorStyles['selected-element-card']}>
                   {path && <SelectedElement {...this.props}/>}
                   {!path && <i>{t('selectElementInSource')}</i>}
@@ -139,7 +157,7 @@ export default class Inspector extends Component {
           </TabPane>
           <TabPane tab={t('Actions')} key={INTERACTION_MODE.ACTIONS}>
             <Card
-              title={<span><Icon type="thunderbolt" /> {t('Actions')}</span>}
+              title={<span><ThunderboltOutlined /> {t('Actions')}</span>}
               className={InspectorStyles['interaction-tab-card']}>
               <Actions {...this.props} />
             </Card>
@@ -151,18 +169,18 @@ export default class Inspector extends Component {
     let actionControls = <div className={InspectorStyles['action-controls']}>
       <ButtonGroup size="large" value={screenshotInteractionMode}>
         <Tooltip title={t('Select Elements')}>
-          <Button icon='select' onClick={() => {this.screenshotInteractionChange(SELECT);}}
-            type={screenshotInteractionMode === SELECT ? 'primary' : 'default'}
+          <Button icon={<SelectOutlined/>} onClick={() => {this.screenshotInteractionChange(SELECT);}}
+            type={screenshotInteractionMode === SELECT ? BUTTON.PRIMARY : BUTTON.DEFAULT}
           />
         </Tooltip>
         <Tooltip title={t('Swipe By Coordinates')}>
-          <Button icon='swap-right' onClick={() => {this.screenshotInteractionChange(SWIPE);}}
-            type={screenshotInteractionMode === SWIPE ? 'primary' : 'default'}
+          <Button icon={<SwapRightOutlined/>} onClick={() => {this.screenshotInteractionChange(SWIPE);}}
+            type={screenshotInteractionMode === SWIPE ? BUTTON.PRIMARY : BUTTON.DEFAULT}
           />
         </Tooltip>
         <Tooltip title={t('Tap By Coordinates')}>
-          <Button icon='scan' onClick={() => {this.screenshotInteractionChange(TAP);}}
-            type={screenshotInteractionMode === TAP ? 'primary' : 'default'}
+          <Button icon={<ScanOutlined/>} onClick={() => {this.screenshotInteractionChange(TAP);}}
+            type={screenshotInteractionMode === TAP ? BUTTON.PRIMARY : BUTTON.DEFAULT}
           />
         </Tooltip>
       </ButtonGroup>
@@ -172,29 +190,29 @@ export default class Inspector extends Component {
       {actionControls}
       <ButtonGroup size="large">
         <Tooltip title={t('Back')}>
-          <Button id='btnGoBack' icon='arrow-left' onClick={() => applyClientMethod({methodName: 'back'})}/>
+          <Button id='btnGoBack' icon={<ArrowLeftOutlined/>} onClick={() => applyClientMethod({methodName: 'back'})}/>
         </Tooltip>
         <Tooltip title={t('refreshSource')}>
-          <Button id='btnReload' icon='reload' onClick={() => applyClientMethod({methodName: 'source'})}/>
+          <Button id='btnReload' icon={<ReloadOutlined/>} onClick={() => applyClientMethod({methodName: 'source'})}/>
         </Tooltip>
         {!isRecording &&
           <Tooltip title={t('Start Recording')}>
-            <Button id='btnStartRecording' icon="eye-o" onClick={startRecording}/>
+            <Button id='btnStartRecording' icon={<EyeOutlined/>} onClick={startRecording}/>
           </Tooltip>
         }
         {isRecording &&
           <Tooltip title={t('Pause Recording')}>
-            <Button id='btnPause' icon="pause" type="danger" onClick={pauseRecording}/>
+            <Button id='btnPause' icon={<PauseOutlined/>} type={BUTTON.DANGER} onClick={pauseRecording}/>
           </Tooltip>
         }
         <Tooltip title={t('Search for element')}>
-          <Button id='searchForElement' icon="search" onClick={showLocatorTestModal}/>
+          <Button id='searchForElement' icon={<SearchOutlined/>} onClick={showLocatorTestModal}/>
         </Tooltip>
         <Tooltip title={t('Copy XML Source to Clipboard')}>
-          <Button id='btnSourceXML' icon="copy" onClick={() => clipboard.writeText(sourceXML)}/>
+          <Button id='btnSourceXML' icon={<CopyOutlined/>} onClick={() => clipboard.writeText(sourceXML)}/>
         </Tooltip>
         <Tooltip title={t('quitSessionAndClose')}>
-          <Button id='btnClose' icon='close' onClick={() => quitSession()}/>
+          <Button id='btnClose' icon={<CloseOutlined/>} onClick={() => quitSession()}/>
         </Tooltip>
       </ButtonGroup>
     </div>;

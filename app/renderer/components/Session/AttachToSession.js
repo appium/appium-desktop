@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import { Form, Card, Select, Button, Row, Col } from 'antd';
 import SessionCSS from './Session.css';
+import {
+  ReloadOutlined
+} from '@ant-design/icons';
 
 const FormItem = Form.Item;
 
@@ -31,7 +34,7 @@ export default class AttachToSession extends Component {
         <Row>
           <Col span={23}>
             <Select showSearch
-              mode='combobox'
+              mode='AutoComplete'
               notFoundContent='None found'
               placeholder={t('enterYourSessionId')}
               value={attachSessId}
@@ -43,7 +46,9 @@ export default class AttachToSession extends Component {
           </Col>
           <Col span={1}>
             <div className={SessionCSS.btnReload}>
-              <Button onClick={getRunningSessions} icon='reload' />
+              <Button
+                onClick={getRunningSessions}
+                icon={<ReloadOutlined/>} />
             </div>
           </Col>
         </Row>

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Form, Input, Row, Col } from 'antd';
+import { INPUT } from '../AntdTypes';
 
 const FormItem = Form.Item;
 
@@ -15,7 +16,7 @@ export default class ServerTabBitbar extends Component {
       <Row gutter={8}>
         <Col span={12}>
           <FormItem>
-            <Input id='bitbarApiKey' type='password' placeholder={bitbarApiKeyPlaceholder} addonBefore={t('Bitbar API Key')}
+            <Input id='bitbarApiKey' type={INPUT.PASSWORD} placeholder={bitbarApiKeyPlaceholder} addonBefore={t('Bitbar API Key')}
               value={server.bitbar.apiKey} onChange={(e) => setServerParam('apiKey', e.target.value)} />
           </FormItem>
         </Col>

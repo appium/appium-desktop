@@ -2,11 +2,68 @@ import XPath from 'xpath';
 import { withTranslation as wt } from 'react-i18next';
 import config from '../configs/app.config';
 import _ from 'lodash';
+import { DOMParser } from 'xmldom';
+
+// Attributes on nodes that we know are unique to the node
+const UNIQUE_ATTRIBUTES = [
+  'name',
+  'content-desc',
+  'id',
+  'accessibility-id',
+];
+
+/**
+ * Translates sourceXML to JSON
+ *
+ * @param {string} source
+ * @returns {Object}
+ */
+export function xmlToJSON (source) {
+  const childNodesOf = (xmlNode) => {
+    if (!xmlNode || !xmlNode.hasChildNodes()) {
+      return [];
+    }
+
+    const result = [];
+    for (let childIdx = 0; childIdx < xmlNode.childNodes.length; ++childIdx) {
+      const childNode = xmlNode.childNodes.item(childIdx);
+      if (childNode.nodeType === 1) {
+        result.push(childNode);
+      }
+    }
+    return result;
+  };
+
+  const translateRecursively = (xmlNode, parentPath = '', index = null) => {
+    const attributes = {};
+    for (let attrIdx = 0; attrIdx < xmlNode.attributes.length; ++attrIdx) {
+      const attr = xmlNode.attributes.item(attrIdx);
+      attributes[attr.name] = attr.value;
+    }
+
+    // Dot Separated path of indices
+    const path = _.isNil(index) ? '' : `${!parentPath ? '' : parentPath + '.'}${index}`;
+    return {
+      children: childNodesOf(xmlNode)
+        .map((childNode, childIndex) => translateRecursively(childNode, path, childIndex)),
+      tagName: xmlNode.tagName,
+      attributes,
+      xpath: getOptimalXPath(xmlDoc, xmlNode, UNIQUE_ATTRIBUTES),
+      path,
+    };
+  };
+  const xmlDoc = new DOMParser().parseFromString(source);
+  const firstChild = childNodesOf(xmlDoc.documentElement)[0];
+  return firstChild ? translateRecursively(firstChild) : {};
+}
 
 /**
  * Get an optimal XPath for a DOMNode
- * @param {*} domNode {DOMNode}
- * @param {*} uniqueAttributes {array[string]} Attributes we know are unique (defaults to just 'id')
+ *
+ * @param {DOMDocument} doc
+ * @param {DOMNode} domNode
+ * @param {Array<String>} uniqueAttributes Attributes we know are unique (defaults to just 'id')
+ * @returns {string}
  */
 export function getOptimalXPath (doc, domNode, uniqueAttributes = ['id']) {
   try {

@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
-import { Switch, Input, Icon } from 'antd';
+import { Switch, Input } from 'antd';
 import SessionStyles from './Session.css';
-import {remote} from 'electron';
+import { remote } from 'electron';
+import { FileOutlined } from '@ant-design/icons';
+import { INPUT } from '../AntdTypes';
+
 const {dialog} = remote;
 
 
@@ -19,8 +22,8 @@ export default class NewSessionForm extends Component {
   render () {
     const {cap, onSetCapabilityParam, isEditingDesiredCaps, id, t} = this.props;
 
-    const buttonAfter = <Icon className={SessionStyles['filepath-button']}
-      type="file"
+    const buttonAfter = <FileOutlined
+      className={SessionStyles['filepath-button']}
       onClick={() => this.getLocalFilePath((filepath) => onSetCapabilityParam(filepath[0]))} />;
 
     switch (cap.type) {
@@ -31,7 +34,7 @@ export default class NewSessionForm extends Component {
         onChange={(e) => !isNaN(parseInt(e.target.value, 10)) ? onSetCapabilityParam(parseInt(e.target.value, 10)) : onSetCapabilityParam(undefined)} />;
       case 'object':
       case 'json_object':
-        return <Input disabled={isEditingDesiredCaps} id={id} type='textarea' rows={4} placeholder={t('Value')} value={cap.value}
+        return <Input disabled={isEditingDesiredCaps} id={id} type={INPUT.TEXTAREA} rows={4} placeholder={t('Value')} value={cap.value}
           onChange={(e) => onSetCapabilityParam(e.target.value)} />;
       case 'file': return <div className={SessionStyles.fileControlWrapper}>
         <Input disabled={isEditingDesiredCaps} id={id} placeholder={t('Value')} value={cap.value} addonAfter={buttonAfter} />

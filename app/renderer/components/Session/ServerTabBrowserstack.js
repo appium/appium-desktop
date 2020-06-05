@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Form, Input, Row, Col } from 'antd';
+import { INPUT } from '../AntdTypes';
 
 const FormItem = Form.Item;
 
@@ -27,7 +28,7 @@ export default class ServerTabBrowserstack extends Component {
       <Row gutter={8}>
         <Col span={12}>
           <FormItem>
-            <Input id='browserstackPassword' type='password' placeholder={browserstackAccessKeyPlaceholder} addonBefore={t('BrowserStack Access Key')}
+            <Input id='browserstackPassword' type={INPUT.PASSWORD} placeholder={browserstackAccessKeyPlaceholder} addonBefore={t('BrowserStack Access Key')}
               value={server.browserstack.accessKey} onChange={(e) => setServerParam('accessKey', e.target.value)} />
           </FormItem>
         </Col>
