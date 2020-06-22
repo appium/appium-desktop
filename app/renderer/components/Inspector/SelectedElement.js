@@ -36,6 +36,7 @@ class SelectedElement extends Component {
   render () {
     const {
       applyClientMethod,
+      contexts,
       setFieldValue,
       sendKeys,
       selectedElement,
@@ -164,6 +165,16 @@ class SelectedElement extends Component {
         <div>
           <Alert
             message={t('usingXPathNotRecommended')}
+            type={ALERT.WARNING}
+            showIcon
+          />
+          <br />
+        </div>
+      }
+      {contexts.length > 1 &&
+        <div>
+          <Alert
+            message={t('usingSwitchContextRecommended')}
             type={ALERT.WARNING}
             showIcon
           />

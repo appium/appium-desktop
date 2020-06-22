@@ -167,6 +167,7 @@
   "Selector": "选择器",
   "Interactions are not available for this element": "此元素的交互不可用",
   "usingXPathNotRecommended": "不建议使用 XPath 定位器, 这可能会导致脆弱的测试。请您的开发团队提供独特的辅助功能定位器!",
+  "usingSwitchContextRecommended": "Multiple contexts are detected. It is advised to switch context to WEBVIEW if you easily want to select elements like you would do on the web.",
   "Tap": "点击",
   "Gathering initial app source…": "收集初始应用源…",
   "couldNotObtainSource": "无法获取源代码: {{errorMsg}}",
