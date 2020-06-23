@@ -167,7 +167,6 @@
   "Selector": "セレクタ",
   "Interactions are not available for this element": "この要素に対しては対話的な操作は行えません",
   "usingXPathNotRecommended": "壊れやすいテストになりやすいため、XPathロケータの利用はおすすめされません。開発者と協力してユニークなaccessibilityロケータへの置き換えを検討してください。",
-  "usingSwitchContextRecommended": "Multiple contexts are detected. It is advised to switch context to WEBVIEW if you easily want to select elements like you would do on the web.",
   "Tap": "タップ",
   "Gathering initial app source…": "アプリのソースを取得しています…",
   "couldNotObtainSource": "ソースを取得できませんでした: {{errorMsg}}",

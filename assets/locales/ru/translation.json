@@ -167,7 +167,6 @@
   "Selector": "Селектор",
   "Interactions are not available for this element": "Взаимодействия недоступны этому элементу",
   "usingXPathNotRecommended": "XPath не рекомендуется и может привести к \"хрупким\" тестам. Попросите вашу команду разработчиков предоставить уникальные локаторы для поиска елементов!",
-  "usingSwitchContextRecommended": "Multiple contexts are detected. It is advised to switch context to WEBVIEW if you easily want to select elements like you would do on the web.",
   "Tap": "Нажать",
   "Gathering initial app source…": "Сбор исходного кода приложения…",
   "couldNotObtainSource": "Не удалось получить исходный код: {{errorMsg}}",

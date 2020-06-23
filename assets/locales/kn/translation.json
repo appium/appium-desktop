@@ -167,7 +167,6 @@
   "Selector": "ಸೆಲೆಕ್ಟರ್",
   "Interactions are not available for this element": "ಈ ಎಲಿಮೆಂಟ್ಗೆ ಸಂವಹನ ಲಭ್ಯವಿಲ್ಲ",
   "usingXPathNotRecommended": "XPath ಲೋಕೆಟರ್ಸ್ ಬಳಸಬೇಕು ಎಂಬುದು ನಮ್ಮ ಸಲಹೆಯಲ್ಲ ಹಾಗು ಇದು ಟೆಸ್ಟ್ನನ್ನ ಅಸ್ಥಿರ ಮಾಡಬಹುದು. ಅನುಪಮವಾದ ಅಕ್ಸೆಸೆಸಿಬಿಲಿಟಿ ಲೋಕೆಟರ್ಸ್ನನ್ನು ನಿಮ್ಮ ಡೆವಲಪ್ಮೆಂಟ್ ತಂಡದಿಂದ ಕೇಳಿ ಪಡೆದು ಬಳಸಿ!",
-  "usingSwitchContextRecommended": "Multiple contexts are detected. It is advised to switch context to WEBVIEW if you easily want to select elements like you would do on the web.",
   "Tap": "ಟ್ಯಾಪ್",
   "Gathering initial app source…": "ಅಪ್ಪ್ ಆರಂಭಿಕ ಮೂಲವನ್ನು ಸಂಗ್ರಹಿಸಲಾಗುತ್ತಿದೆ…",
   "couldNotObtainSource": "ಮೂಲ ವಿವರವನ್ನು ಪಡೆಯಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ {{errorMsg}}",

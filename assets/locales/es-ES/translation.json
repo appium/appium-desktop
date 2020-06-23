@@ -167,7 +167,6 @@
   "Selector": "Selector",
   "Interactions are not available for this element": "Las interacciones no están disponibles para este elemento",
   "usingXPathNotRecommended": "El uso de los localizadores XPath no es recomendado y puede llevar a pruebas frágiles. ¡Pide a tu equipo de desarrollo que proporcione a los localizadores de accesibilidad únicos en su lugar!",
-  "usingSwitchContextRecommended": "Multiple contexts are detected. It is advised to switch context to WEBVIEW if you easily want to select elements like you would do on the web.",
   "Tap": "Tap",
   "Gathering initial app source…": "Recolectando código fuente inicial de la aplicación…",
   "couldNotObtainSource": "No se pudo obtener fuente: {{errorMsg}}",

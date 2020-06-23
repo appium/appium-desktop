@@ -376,8 +376,8 @@ export function setLocatorTestElement (elementId) {
     if (elementId) {
       try {
         const [location, size] = await (B.all([
-          callClientMethod({methodName: 'getLocation', args: [elementId], skipContextsScreenshotAndSource: true, skipRecord: true, ignoreResult: true}),
-          callClientMethod({methodName: 'getSize', args: [elementId], skipContextsScreenshotAndSource: true, skipRecord: true, ignoreResult: true}),
+          callClientMethod({methodName: 'getLocation', args: [elementId], skipRefresh: true, skipRecord: true, ignoreResult: true}),
+          callClientMethod({methodName: 'getSize', args: [elementId], skipRefresh: true, skipRecord: true, ignoreResult: true}),
         ]));
         dispatch({type: SET_SEARCHED_FOR_ELEMENT_BOUNDS, location: location.res, size: size.res});
       } catch (ign) { }

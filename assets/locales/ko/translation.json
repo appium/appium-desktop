@@ -167,7 +167,6 @@
   "Selector": "Selector",
   "Interactions are not available for this element": "이 element에는 가능한 상호작용이 없습니다",
   "usingXPathNotRecommended": "XPath 로케이터를 사용하는 것은 권장하지 않으며, 불안정한 테스트로 이어질 수 있습니다. Accessibility 로케이터를 제공하도록 개발 팀에 요청하세요!",
-  "usingSwitchContextRecommended": "Multiple contexts are detected. It is advised to switch context to WEBVIEW if you easily want to select elements like you would do on the web.",
   "Tap": "탭",
   "Gathering initial app source…": "초기 어플리케이션 소스 수집중…",
   "couldNotObtainSource": "소스를 얻을 수 없습니다: {{errorMsg}}",

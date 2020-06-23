@@ -170,7 +170,7 @@
   "Selector": "Selector",
   "Interactions are not available for this element": "Interactions are not available for this element",
   "usingXPathNotRecommended": "Using XPath locators is not recommended and can lead to fragile tests. Ask your development team to provide unique accessibility locators instead!",
-  "usingSwitchContextRecommended": "Multiple contexts are detected. It is advised to switch context to WEBVIEW if you easily want to select elements like you would do on the web.",
+  "usingSwitchContextRecommended": "Webview context(s) detected; certain elements might only be accessible after switching to a webview context, which must be done in an Appium script. See http://appium.io/docs/en/writing-running-appium/web/hybrid/ for more information",
   "Tap": "Tap",
   "Gathering initial app source…": "Gathering initial app source…",
   "couldNotObtainSource": "Could not obtain source: {{errorMsg}}",

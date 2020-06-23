@@ -267,7 +267,7 @@ function connectClientMethodListener () {
       fetchArray = false, // Optional. Are we fetching an array of elements or just one?
       elementId, // Optional. Element being operated on
       args = [], // Optional. Arguments passed to method
-      skipContextsScreenshotAndSource = false, // Optional. Do we want the updated source and screenshot?
+      skipRefresh = false, // Optional. Do we want the updated source and screenshot?
       ignoreResult = false, // Optional. Do we want to send the result back to the renderer?
     } = data;
 
@@ -291,15 +291,15 @@ function connectClientMethodListener () {
         if (methodName) {
           if (elementId) {
             console.log(`Handling client method request with method '${methodName}', args ${JSON.stringify(args)} and elementId ${elementId}`);
-            res = await methodHandler.executeElementCommand(elementId, methodName, args, skipContextsScreenshotAndSource);
+            res = await methodHandler.executeElementCommand(elementId, methodName, args, skipRefresh);
           } else {
             console.log(`Handling client method request with method '${methodName}' and args ${JSON.stringify(args)}`);
-            res = await methodHandler.executeMethod(methodName, args, skipContextsScreenshotAndSource);
+            res = await methodHandler.executeMethod(methodName, args, skipRefresh);
           }
         } else if (strategy && selector) {
           if (fetchArray) {
             console.log(`Fetching elements with selector '${selector}' and strategy ${strategy}`);
-            res = await methodHandler.fetchElements(strategy, selector, skipContextsScreenshotAndSource);
+            res = await methodHandler.fetchElements(strategy, selector, skipRefresh);
           } else {
             console.log(`Fetching an element with selector '${selector}' and strategy ${strategy}`);
             res = await methodHandler.fetchElement(strategy, selector);

@@ -121,8 +121,6 @@ export default class Inspector extends Component {
            showKeepAlivePrompt, keepSessionAlive, sourceXML, t} = this.props;
     const {path} = selectedElement;
 
-
-
     let main = <div className={InspectorStyles['inspector-main']} ref={(el) => {this.screenAndSourceEl = el;}}>
       <div id='screenshotContainer' className={InspectorStyles['screenshot-container']}>
         {screenshot && <Screenshot {...this.props} />}

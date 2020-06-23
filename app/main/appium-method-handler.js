@@ -109,7 +109,7 @@ export default class AppiumMethodHandler {
     return {variableName, variableType, strategy, selector, elements};
   }
 
-  async _execute ({elementId, methodName, args, skipContextsScreenshotAndSource}) {
+  async _execute ({elementId, methodName, args, skipRefresh}) {
     this._lastActiveMoment = +(new Date());
     let cachedEl;
     let res = {};
@@ -147,7 +147,7 @@ export default class AppiumMethodHandler {
     await Bluebird.delay(500);
 
     let contextsSourceAndScreenshot;
-    if (!skipContextsScreenshotAndSource) {
+    if (!skipRefresh) {
       contextsSourceAndScreenshot = await this._getContextsSourceAndScreenshot();
     }
 
@@ -158,12 +158,12 @@ export default class AppiumMethodHandler {
     };
   }
 
-  async executeElementCommand (elementId, methodName, args = [], skipContextsScreenshotAndSource = false) {
-    return await this._execute({elementId, methodName, args, skipContextsScreenshotAndSource});
+  async executeElementCommand (elementId, methodName, args = [], skipRefresh = false) {
+    return await this._execute({elementId, methodName, args, skipRefresh});
   }
 
-  async executeMethod (methodName, args = [], skipContextsScreenshotAndSource = false) {
-    return await this._execute({methodName, args, skipContextsScreenshotAndSource});
+  async executeMethod (methodName, args = [], skipRefresh = false) {
+    return await this._execute({methodName, args, skipRefresh});
   }
 
   async _getContextsSourceAndScreenshot () {
