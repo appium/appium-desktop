@@ -56,6 +56,8 @@ export default function inspector (state = INITIAL_STATE, action) {
     case SET_SOURCE_AND_SCREENSHOT:
       return {
         ...state,
+        contexts: action.contexts,
+        contextsError: action.contextsError,
         source: action.source,
         sourceXML: action.sourceXML,
         sourceError: action.sourceError,

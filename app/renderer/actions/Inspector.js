@@ -173,7 +173,7 @@ export function applyClientMethod (params) {
                       getState().inspector.isRecording;
     try {
       dispatch({type: METHOD_CALL_REQUESTED});
-      const {source, screenshot, windowSize, result, sourceError,
+      const {contexts, contextsError, source, screenshot, windowSize, result, sourceError,
              screenshotError, windowSizeError, variableName,
              variableIndex, strategy, selector} = await callClientMethod(params);
 
@@ -193,10 +193,12 @@ export function applyClientMethod (params) {
       if (source && screenshot) {
         dispatch({
           type: SET_SOURCE_AND_SCREENSHOT,
+          contexts,
           source: source && xmlToJSON(source),
           sourceXML: source,
           screenshot,
           windowSize,
+          contextsError,
           sourceError,
           screenshotError,
           windowSizeError,
@@ -374,8 +376,8 @@ export function setLocatorTestElement (elementId) {
     if (elementId) {
       try {
         const [location, size] = await (B.all([
-          callClientMethod({methodName: 'getLocation', args: [elementId], skipScreenshotAndSource: true, skipRecord: true, ignoreResult: true}),
-          callClientMethod({methodName: 'getSize', args: [elementId], skipScreenshotAndSource: true, skipRecord: true, ignoreResult: true}),
+          callClientMethod({methodName: 'getLocation', args: [elementId], skipRefresh: true, skipRecord: true, ignoreResult: true}),
+          callClientMethod({methodName: 'getSize', args: [elementId], skipRefresh: true, skipRecord: true, ignoreResult: true}),
         ]));
         dispatch({type: SET_SEARCHED_FOR_ELEMENT_BOUNDS, location: location.res, size: size.res});
       } catch (ign) { }

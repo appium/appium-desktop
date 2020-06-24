@@ -166,6 +166,7 @@ export function newSession (caps, attachSessId = null) {
     let desiredCapabilities = caps ? getCapsObject(caps) : null;
     let session = getState().session;
     let host, port, username, accessKey, https, path, token;
+    desiredCapabilities = includeSafariInWebviews(desiredCapabilities);
 
     switch (session.serverType) {
       case ServerTypes.local:
@@ -707,5 +708,20 @@ export function setVisibleProviders () {
   return async (dispatch) => {
     const providers = await settings.get(VISIBLE_PROVIDERS);
     dispatch({type: SET_PROVIDERS, providers});
+  };
+}
+
+/**
+ * Check if Safari is started, if so add the includeSafariInWebviews
+ * for future HTML detection
+ *
+ * @param {object} caps
+ */
+function includeSafariInWebviews (caps) {
+  const {browserName = ''} = caps;
+
+  return {
+    ...caps,
+    ...(browserName.toLowerCase() === 'safari' ? {includeSafariInWebviews: true} : {}),
   };
 }

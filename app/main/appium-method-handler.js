@@ -109,7 +109,7 @@ export default class AppiumMethodHandler {
     return {variableName, variableType, strategy, selector, elements};
   }
 
-  async _execute ({elementId, methodName, args, skipScreenshotAndSource}) {
+  async _execute ({elementId, methodName, args, skipRefresh}) {
     this._lastActiveMoment = +(new Date());
     let cachedEl;
     let res = {};
@@ -146,28 +146,38 @@ export default class AppiumMethodHandler {
     // Give the source/screenshot time to change before taking the screenshot
     await Bluebird.delay(500);
 
-    let sourceAndScreenshot;
-    if (!skipScreenshotAndSource) {
-      sourceAndScreenshot = await this._getSourceAndScreenshot();
+    let contextsSourceAndScreenshot;
+    if (!skipRefresh) {
+      contextsSourceAndScreenshot = await this._getContextsSourceAndScreenshot();
     }
 
     return {
-      ...sourceAndScreenshot,
+      ...contextsSourceAndScreenshot,
       ...cachedEl,
       res,
     };
   }
 
-  async executeElementCommand (elementId, methodName, args = [], skipScreenshotAndSource = false) {
-    return await this._execute({elementId, methodName, args, skipScreenshotAndSource});
+  async executeElementCommand (elementId, methodName, args = [], skipRefresh = false) {
+    return await this._execute({elementId, methodName, args, skipRefresh});
   }
 
-  async executeMethod (methodName, args = [], skipScreenshotAndSource = false) {
-    return await this._execute({methodName, args, skipScreenshotAndSource});
+  async executeMethod (methodName, args = [], skipRefresh = false) {
+    return await this._execute({methodName, args, skipRefresh});
   }
 
-  async _getSourceAndScreenshot () {
-    let source, sourceError, screenshot, screenshotError, windowSize, windowSizeError;
+  async _getContextsSourceAndScreenshot () {
+    let contexts, contextsError, source, sourceError, screenshot, screenshotError, windowSize, windowSizeError;
+
+    try {
+      contexts = await this.driver.contexts();
+    } catch (e) {
+      if (e.status === 6) {
+        throw e;
+      }
+      contextsError = e;
+    }
+
     try {
       source = await this.driver.source();
     } catch (e) {
@@ -196,7 +206,7 @@ export default class AppiumMethodHandler {
       windowSizeError = e;
     }
 
-    return {source, sourceError, screenshot, screenshotError, windowSize, windowSizeError};
+    return {contexts, contextsError, source, sourceError, screenshot, screenshotError, windowSize, windowSizeError};
   }
 
   restart () {
