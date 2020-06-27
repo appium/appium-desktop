@@ -167,7 +167,8 @@ export default class AppiumMethodHandler {
   }
 
   async _getContextsSourceAndScreenshot () {
-    let contexts, contextsError, source, sourceError, screenshot, screenshotError, windowSize, windowSizeError;
+    let contexts, contextsError, currentContext, currentContextError,
+        source, sourceError, screenshot, screenshotError, windowSize, windowSizeError;
 
     try {
       contexts = await this.driver.contexts();
@@ -176,6 +177,15 @@ export default class AppiumMethodHandler {
         throw e;
       }
       contextsError = e;
+    }
+
+    try {
+      currentContext = await this.driver.currentContext();
+    } catch (e) {
+      if (e.status === 6) {
+        throw e;
+      }
+      currentContextError = e;
     }
 
     try {
@@ -206,7 +216,12 @@ export default class AppiumMethodHandler {
       windowSizeError = e;
     }
 
-    return {contexts, contextsError, source, sourceError, screenshot, screenshotError, windowSize, windowSizeError};
+    return {contexts, contextsError, currentContext, currentContextError,
+            source, sourceError, screenshot, screenshotError, windowSize, windowSizeError};
+  }
+
+  async setContext (context) {
+    await this.driver.context(context);
   }
 
   restart () {

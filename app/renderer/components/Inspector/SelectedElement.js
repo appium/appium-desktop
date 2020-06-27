@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import _ from 'lodash';
 import { getLocators } from './shared';
 import styles from './Inspector.css';
-import { Button, Row, Col, Input, Modal, Table, Alert, Tooltip } from 'antd';
+import { Button, Row, Col, Input, Modal, Table, Alert, Tooltip, Select } from 'antd';
 import { withTranslation } from '../../util';
 import { clipboard } from 'electron';
 import {
@@ -25,6 +25,7 @@ class SelectedElement extends Component {
   constructor (props) {
     super(props);
     this.handleSendKeys = this.handleSendKeys.bind(this);
+    this.contextSelect = this.contextSelect.bind(this);
   }
 
   handleSendKeys () {
@@ -33,10 +34,25 @@ class SelectedElement extends Component {
     hideSendKeysModal();
   }
 
+  contextSelect () {
+    const {applyClientMethod, contexts, currentContext, setContext} = this.props;
+
+    return (
+      <Select value={currentContext} onChange={(value) => {
+        setContext(value);
+        applyClientMethod({methodName: 'context', args: [value]});
+      }}
+      className={styles['locator-strategy-selector']}>
+        {contexts.map((context) => <Select.Option key={context} value={context}>{context}</Select.Option>)}
+      </Select>
+    );
+  }
+
   render () {
     const {
       applyClientMethod,
       contexts,
+      currentContext,
       setFieldValue,
       sendKeys,
       selectedElement,
@@ -161,7 +177,7 @@ class SelectedElement extends Component {
         </Row>
       }
       <br />
-      {showXpathWarning &&
+      {currentContext === 'NATIVE_APP' && showXpathWarning &&
         <div>
           <Alert
             message={t('usingXPathNotRecommended')}
@@ -171,7 +187,7 @@ class SelectedElement extends Component {
           <br />
         </div>
       }
-      {contexts.length > 1 &&
+      {currentContext === 'NATIVE_APP' && contexts.length > 1 &&
         <div>
           <Alert
             message={t('usingSwitchContextRecommended')}
@@ -179,6 +195,12 @@ class SelectedElement extends Component {
             showIcon
           />
           <br />
+        </div>
+      }
+      {contexts.length > 1 &&
+        <div>
+          {this.contextSelect()}
+          <br /><br />
         </div>
       }
       {dataSource.length > 0 &&

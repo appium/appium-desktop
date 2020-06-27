@@ -67,6 +67,8 @@ export const ENTERING_ACTION_ARGS = 'ENTERING_ACTION_ARGS';
 export const REMOVE_ACTION = 'REMOVE_ACTION';
 export const SET_ACTION_ARG = 'SET_ACTION_ARG';
 
+export const SET_CONTEXT = 'SET_CONTEXT';
+
 
 export function bindAppium () {
   return (dispatch) => {
@@ -173,7 +175,8 @@ export function applyClientMethod (params) {
                       getState().inspector.isRecording;
     try {
       dispatch({type: METHOD_CALL_REQUESTED});
-      const {contexts, contextsError, source, screenshot, windowSize, result, sourceError,
+      const {contexts, contextsError, currentContext, currentContextError,
+             source, screenshot, windowSize, result, sourceError,
              screenshotError, windowSizeError, variableName,
              variableIndex, strategy, selector} = await callClientMethod(params);
 
@@ -191,14 +194,20 @@ export function applyClientMethod (params) {
       dispatch({type: METHOD_CALL_DONE});
 
       if (source && screenshot) {
+        let newSource = source;
+        if (source.includes('<html')) {
+          newSource = `<AppiumAUT>${source}</AppiumAUT>`;
+        }
         dispatch({
           type: SET_SOURCE_AND_SCREENSHOT,
           contexts,
-          source: source && xmlToJSON(source),
-          sourceXML: source,
+          currentContext,
+          source: newSource && xmlToJSON(newSource),
+          sourceXML: newSource,
           screenshot,
           windowSize,
           contextsError,
+          currentContextError,
           sourceError,
           screenshotError,
           windowSizeError,
@@ -339,6 +348,12 @@ export function setLocatorTestValue (locatorTestValue) {
 export function setLocatorTestStrategy (locatorTestStrategy) {
   return (dispatch) => {
     dispatch({type: SET_LOCATOR_TEST_STRATEGY, locatorTestStrategy});
+  };
+}
+
+export function setContext (context) {
+  return (dispatch) => {
+    dispatch({type: SET_CONTEXT, context});
   };
 }
 
