@@ -141,6 +141,20 @@ export default class AppiumMethodHandler {
       } else if (methodName !== 'source' && methodName !== 'screenshot') {
         res = await this.driver[methodName].apply(this.driver, args);
       }
+
+      if (methodName === 'context' && !args.includes('NATIVE_APP')) {
+        await this.driver.execute(() => {
+          const elems = document.body.getElementsByTagName('*');
+
+          Array.from(elems).forEach(el => {
+            const rect = el.getBoundingClientRect();
+            el.setAttribute('width', rect.width);
+            el.setAttribute('height', rect.height);
+            el.setAttribute('x', rect.left);
+            el.setAttribute('y', rect.top);
+          });
+        }, []);
+      }
     }
 
     // Give the source/screenshot time to change before taking the screenshot
