@@ -3,6 +3,7 @@ import wd from 'wd';
 import log from 'electron-log';
 import _ from 'lodash';
 import { SCREENSHOT_INTERACTION_MODE } from '../renderer/components/Inspector/shared';
+import {getWebviewStatusAddressBarHeight, setHtmlElementAttributes} from './helpers';
 
 const isDevelopment = process.env.NODE_ENV === 'development';
 
@@ -170,8 +171,10 @@ export default class AppiumMethodHandler {
     let contexts, contextsError, currentContext, currentContextError,
         source, sourceError, screenshot, screenshotError, windowSize, windowSizeError;
 
+    const {platformName, statBarHeight} = await this.driver.sessionCapabilities();
+
     try {
-      contexts = await this.driver.contexts();
+      contexts = await this._getContexts(platformName);
     } catch (e) {
       if (e.status === 6) {
         throw e;
@@ -189,17 +192,17 @@ export default class AppiumMethodHandler {
     }
 
     /**
-     * If the its a webview then update the HTML with the element location
+     * If its a webview then update the HTML with the element location
      * so the source can be used in the native inspector
      */
     try {
       if (currentContext !== 'NATIVE_APP') {
-        const {statBarHeight} = await this.driver.sessionCapabilities();
+        const webviewStatusAddressBarHeight = await this.driver.execute(getWebviewStatusAddressBarHeight, [{statBarHeight}]);
 
-        await this.driver.execute(_setHtmlElementAttributes, [{statBarHeight}]);
+        await this.driver.execute(setHtmlElementAttributes, [{webviewStatusAddressBarHeight}]);
       }
     } catch (e) {
-      alert('\n\n error = ', e, '\n\n');
+      // do nothing
     }
 
     try {
@@ -232,6 +235,14 @@ export default class AppiumMethodHandler {
 
     return {contexts, contextsError, currentContext, currentContextError,
             source, sourceError, screenshot, screenshotError, windowSize, windowSizeError};
+  }
+
+  /**
+   * For iOS retrieve available contexts, along with the url and title associated with each webview,
+   * @TODO: implement the same thing for Android
+   */
+  async _getContexts (platform) {
+    return platform.toLowerCase() === 'ios' ? await this.driver.execute('mobile:getContexts', []) : await this.driver.contexts();
   }
 
   async setContext (context) {
@@ -292,34 +303,6 @@ export function getSessionHandler (winId) {
     log.error(`Could not find session with window id '${winId}'. Available sessions are: '${JSON.stringify(_.keys(appiumHandlers))}'`);
     return false;
   }
-}
-function _setHtmlElementAttributes ({statBarHeight}) {
-  // Calculate the status + address bar height
-  // Address bar height for iOS 11+ is 50, for lower it is 44,
-  // but we take 50 as a default here
-  // For Android it is 56
-  const screenHeight = window.screen.height;
-  const viewportHeight = window.innerHeight;
-  // Need to determine  this later
-  const osAddressBarDefaultHeight = 50;
-  // Chrome
-  const addressToolBarHeight = screenHeight - viewportHeight - statBarHeight;
-  // When a manual scroll has been executed for iOS and Android
-  // the address bar becomes smaller
-  // const sm  allAddressBar = screenHeight - viewportHeight - statBarHeight;
-  const addressBarHeight = (addressToolBarHeight - osAddressBarDefaultHeight) < 0
-    ? addressToolBarHeight : osAddressBarDefaultHeight;
-  const statusAddressBar = statBarHeight + addressBarHeight;
-
-  const htmlElements = document.body.getElementsByTagName('*');
-
-  Array.from(htmlElements).forEach(el => {
-    const rect = el.getBoundingClientRect();
-    el.setAttribute('width', Math.round(rect.width));
-    el.setAttribute('height', Math.round(rect.height));
-    el.setAttribute('x', Math.round(rect.left));
-    el.setAttribute('y', Math.round(rect.top + statusAddressBar));
-  });
 }
 
 

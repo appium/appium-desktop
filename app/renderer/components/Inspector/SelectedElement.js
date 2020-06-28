@@ -43,7 +43,9 @@ class SelectedElement extends Component {
         applyClientMethod({methodName: 'context', args: [value]});
       }}
       className={styles['locator-strategy-selector']}>
-        {contexts.map((context) => <Select.Option key={context} value={context}>{context}</Select.Option>)}
+        {contexts.map(({id, title}) =>
+          <Select.Option key={id} value={id}>{title ? `${title} (${id})` : id}</Select.Option>
+        )}
       </Select>
     );
   }

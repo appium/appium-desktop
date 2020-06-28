@@ -196,7 +196,8 @@ export function applyClientMethod (params) {
       if (source && screenshot) {
         let newSource = source;
         if (source.includes('<html')) {
-          newSource = `<AppiumAUT>${source}</AppiumAUT>`;
+          // Remove head and scripts which cause extra noise in the tree
+          newSource = source.replace(/<head.*?\/head>/s, '').replace(/<script.*?\/script>/g, '');
         }
 
         dispatch({
