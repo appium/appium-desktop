@@ -197,6 +197,16 @@ class SelectedElement extends Component {
           <br />
         </div>
       }
+      {currentContext !== 'NATIVE_APP' &&
+        <div>
+          <Alert
+            message={t('usingWebviewContext')}
+            type={ALERT.WARNING}
+            showIcon
+          />
+          <br />
+        </div>
+      }
       {contexts.length > 1 &&
         <div>
           {this.contextSelect()}

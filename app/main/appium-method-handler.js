@@ -141,20 +141,6 @@ export default class AppiumMethodHandler {
       } else if (methodName !== 'source' && methodName !== 'screenshot') {
         res = await this.driver[methodName].apply(this.driver, args);
       }
-
-      if (methodName === 'context' && !args.includes('NATIVE_APP')) {
-        await this.driver.execute(() => {
-          const elems = document.body.getElementsByTagName('*');
-
-          Array.from(elems).forEach(el => {
-            const rect = el.getBoundingClientRect();
-            el.setAttribute('width', rect.width);
-            el.setAttribute('height', rect.height);
-            el.setAttribute('x', rect.left);
-            el.setAttribute('y', rect.top);
-          });
-        }, []);
-      }
     }
 
     // Give the source/screenshot time to change before taking the screenshot
@@ -200,6 +186,20 @@ export default class AppiumMethodHandler {
         throw e;
       }
       currentContextError = e;
+    }
+
+    /**
+     * If the its a webview then update the HTML with the element location
+     * so the source can be used in the native inspector
+     */
+    try {
+      if (currentContext !== 'NATIVE_APP') {
+        const {statBarHeight} = await this.driver.sessionCapabilities();
+
+        await this.driver.execute(_setHtmlElementAttributes, [{statBarHeight}]);
+      }
+    } catch (e) {
+      alert('\n\n error = ', e, '\n\n');
     }
 
     try {
@@ -293,5 +293,34 @@ export function getSessionHandler (winId) {
     return false;
   }
 }
+function _setHtmlElementAttributes ({statBarHeight}) {
+  // Calculate the status + address bar height
+  // Address bar height for iOS 11+ is 50, for lower it is 44,
+  // but we take 50 as a default here
+  // For Android it is 56
+  const screenHeight = window.screen.height;
+  const viewportHeight = window.innerHeight;
+  // Need to determine  this later
+  const osAddressBarDefaultHeight = 50;
+  // Chrome
+  const addressToolBarHeight = screenHeight - viewportHeight - statBarHeight;
+  // When a manual scroll has been executed for iOS and Android
+  // the address bar becomes smaller
+  // const sm  allAddressBar = screenHeight - viewportHeight - statBarHeight;
+  const addressBarHeight = (addressToolBarHeight - osAddressBarDefaultHeight) < 0
+    ? addressToolBarHeight : osAddressBarDefaultHeight;
+  const statusAddressBar = statBarHeight + addressBarHeight;
+
+  const htmlElements = document.body.getElementsByTagName('*');
+
+  Array.from(htmlElements).forEach(el => {
+    const rect = el.getBoundingClientRect();
+    el.setAttribute('width', Math.round(rect.width));
+    el.setAttribute('height', Math.round(rect.height));
+    el.setAttribute('x', Math.round(rect.left));
+    el.setAttribute('y', Math.round(rect.top + statusAddressBar));
+  });
+}
+
 
 AppiumMethodHandler.appiumHandlers = {};

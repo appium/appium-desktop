@@ -198,6 +198,7 @@ export function applyClientMethod (params) {
         if (source.includes('<html')) {
           newSource = `<AppiumAUT>${source}</AppiumAUT>`;
         }
+
         dispatch({
           type: SET_SOURCE_AND_SCREENSHOT,
           contexts,
