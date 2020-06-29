@@ -172,6 +172,7 @@
   "usingXPathNotRecommended": "Using XPath locators is not recommended and can lead to fragile tests. Ask your development team to provide unique accessibility locators instead!",
   "usingSwitchContextRecommended": "Webview context(s) detected; certain elements might only be accessible after switching to a webview context, which must be done in an Appium script. See http://appium.io/docs/en/writing-running-appium/web/hybrid/ for more information",
   "usingWebviewContext": "Using the Webview inspector in Appium Desktop is less accurate in retrieving and selecting DOM elements in comparison to using the DevTools of Chrome and Safari.",
+  "context": "You can switch to a different context here. See http://appium.io/docs/en/writing-running-appium/web/hybrid/ for more information",
   "Tap": "Tap",
   "Gathering initial app source…": "Gathering initial app source…",
   "couldNotObtainSource": "Could not obtain source: {{errorMsg}}",

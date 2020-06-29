@@ -35,18 +35,20 @@ class SelectedElement extends Component {
   }
 
   contextSelect () {
-    const {applyClientMethod, contexts, currentContext, setContext} = this.props;
+    const {applyClientMethod, contexts, currentContext, setContext, t} = this.props;
 
     return (
-      <Select value={currentContext} onChange={(value) => {
-        setContext(value);
-        applyClientMethod({methodName: 'context', args: [value]});
-      }}
-      className={styles['locator-strategy-selector']}>
-        {contexts.map(({id, title}) =>
-          <Select.Option key={id} value={id}>{title ? `${title} (${id})` : id}</Select.Option>
-        )}
-      </Select>
+      <Tooltip title={t('context')}>
+        <Select value={currentContext} onChange={(value) => {
+          setContext(value);
+          applyClientMethod({methodName: 'context', args: [value]});
+        }}
+        className={styles['locator-strategy-selector']}>
+          {contexts.map(({id, title}) =>
+            <Select.Option key={id} value={id}>{title ? `${title} (${id})` : id}</Select.Option>
+          )}
+        </Select>
+      </Tooltip>
     );
   }
 

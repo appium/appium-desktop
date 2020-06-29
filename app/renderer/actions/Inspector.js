@@ -197,7 +197,7 @@ export function applyClientMethod (params) {
         let newSource = source;
         if (source.includes('<html')) {
           // Remove head and scripts which cause extra noise in the tree
-          newSource = source.replace(/<head.*?\/head>/s, '').replace(/<script.*?\/script>/g, '');
+          newSource = source.replace(/<head.*?\/head>/s, '').replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/g, '');
         }
 
         dispatch({
