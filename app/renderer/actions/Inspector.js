@@ -194,18 +194,12 @@ export function applyClientMethod (params) {
       dispatch({type: METHOD_CALL_DONE});
 
       if (source && screenshot) {
-        let newSource = source;
-        if (source.includes('<html')) {
-          // Remove head and scripts which cause extra noise in the tree
-          newSource = source.replace(/<head.*?\/head>/s, '').replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/g, '');
-        }
-
         dispatch({
           type: SET_SOURCE_AND_SCREENSHOT,
           contexts,
           currentContext,
-          source: newSource && xmlToJSON(newSource),
-          sourceXML: newSource,
+          source: source && xmlToJSON(source),
+          sourceXML: source,
           screenshot,
           windowSize,
           contextsError,

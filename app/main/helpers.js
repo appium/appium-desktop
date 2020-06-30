@@ -1,4 +1,4 @@
-import { BrowserWindow, Menu } from 'electron';
+import {BrowserWindow, Menu} from 'electron';
 import settings from '../shared/settings';
 import path from 'path';
 import i18n from '../configs/i18next.config';
@@ -63,39 +63,3 @@ export async function setSavedEnv () {
   };
 }
 
-/**
- * JS code that is executed in the webview to determine the status+address bar height
- */
-export function getWebviewStatusAddressBarHeight ({statBarHeight}) {
-  // Calculate the status + address bar height
-  // Address bar height for iOS 11+ is 50, for lower it is 44,
-  // but we take 50 as a default here
-  // For Chrome it is 56 for Android 6 to 10
-  const screenHeight = window.screen.height;
-  const viewportHeight = window.innerHeight;
-  // Need to determine this later for Chrome
-  const osAddressBarDefaultHeight = 50;
-  const addressToolBarHeight = screenHeight - viewportHeight - statBarHeight;
-  // When a manual scroll has been executed for iOS and Android
-  // the address bar becomes smaller
-  const addressBarHeight = (addressToolBarHeight >= 0) && (addressToolBarHeight - osAddressBarDefaultHeight) < 0
-    ? addressToolBarHeight : osAddressBarDefaultHeight;
-
-  return statBarHeight + addressBarHeight;
-}
-
-/**
- * JS code that is executed in the webview to set the needed attributes on the DOM so the source can be used for the
- * native inspector window.
- */
-export function setHtmlElementAttributes ({webviewStatusAddressBarHeight}) {
-  const htmlElements = document.body.getElementsByTagName('*');
-
-  Array.from(htmlElements).forEach((el) => {
-    const rect = el.getBoundingClientRect();
-    el.setAttribute('width', Math.round(rect.width));
-    el.setAttribute('height', Math.round(rect.height));
-    el.setAttribute('x', Math.round(rect.left));
-    el.setAttribute('y', Math.round(rect.top + webviewStatusAddressBarHeight));
-  });
-}

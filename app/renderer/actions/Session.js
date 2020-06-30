@@ -167,6 +167,7 @@ export function newSession (caps, attachSessId = null) {
     let session = getState().session;
     let host, port, username, accessKey, https, path, token;
     desiredCapabilities = includeSafariInWebviews(desiredCapabilities);
+    desiredCapabilities = setChromeDriverToJsonwp(desiredCapabilities);
 
     switch (session.serverType) {
       case ServerTypes.local:
@@ -719,9 +720,35 @@ export function setVisibleProviders () {
  */
 function includeSafariInWebviews (caps) {
   const {browserName = ''} = caps;
+  const safariCapabilities = {
+    includeSafariInWebviews: true,
+    safariInitialUrl: 'http://appium.io/docs/en/about-appium/intro/'
+  };
 
   return {
     ...caps,
-    ...(browserName.toLowerCase() === 'safari' ? {includeSafariInWebviews: true} : {}),
+    ...(browserName.toLowerCase() === 'safari' ? safariCapabilities : {}),
+  };
+}
+
+/**
+ * Check if Chrome is started, if so set the ChromeDriver to w3c:false because
+ * all internal calls are still JSONWP calls
+ *
+ * @param {object} caps
+ */
+function setChromeDriverToJsonwp (caps) {
+  const {browserName = ''} = caps;
+  const chromeCapabilities = {
+    nativeWebScreenshot: true,
+    chromeOptions: {
+      'w3c': false,
+
+    },
+  };
+
+  return {
+    ...caps,
+    ...(browserName.toLowerCase() === 'chrome' ? chromeCapabilities : {}),
   };
 }
