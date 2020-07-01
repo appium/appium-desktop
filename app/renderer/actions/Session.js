@@ -742,7 +742,6 @@ function setChromeDriverToJsonwp (caps) {
     nativeWebScreenshot: true,
     chromeOptions: {
       'w3c': false,
-
     },
   };
 

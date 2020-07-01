@@ -8,9 +8,7 @@ class RubyFramework extends Framework {
   }
 
   wrapWithBoilerplate (code) {
-    let capStr = Object.keys(this.caps).map((k) => {
-      return `caps[${JSON.stringify(k)}] = ${JSON.stringify(this.caps[k])}`;
-    }).join('\n');
+    let capStr = Object.keys(this.caps).map((k) => `caps[${JSON.stringify(k)}] = ${JSON.stringify(this.caps[k])}`).join('\n');
     return `# This sample code uses the Appium ruby client
 # gem install appium_lib
 # Then you can paste this into a file and simply run with Ruby

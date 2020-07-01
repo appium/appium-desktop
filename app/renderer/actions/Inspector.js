@@ -69,7 +69,6 @@ export const SET_ACTION_ARG = 'SET_ACTION_ARG';
 
 export const SET_CONTEXT = 'SET_CONTEXT';
 
-
 export function bindAppium () {
   return (dispatch) => {
     // Listen for session response messages from 'main'

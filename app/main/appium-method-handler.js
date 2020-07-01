@@ -246,12 +246,15 @@ export default class AppiumMethodHandler {
   }
 
   /**
-   * Retrieve available contexts, along with the url and title associated with each webview
+   * Retrieve available contexts, along with the title associated with each webview
    */
   async _getContexts (platform) {
     return platform.toLowerCase() === 'ios' ? await this.driver.execute('mobile:getContexts', []) : await this._getAndroidContexts();
   }
 
+  /**
+   * Custom implementation of the `mobile:getContexts` for Android, which only returns an object with the id and title
+   */
   async _getAndroidContexts () {
     let newContexts = [];
     const currentContext = await this.driver.currentContext();
@@ -280,10 +283,6 @@ export default class AppiumMethodHandler {
     await this.driver.context(currentContext);
 
     return newContexts;
-  }
-
-  async setContext (context) {
-    await this.driver.context(context);
   }
 
   restart () {

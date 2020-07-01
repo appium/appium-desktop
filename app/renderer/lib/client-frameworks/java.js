@@ -19,9 +19,7 @@ class JavaFramework extends Framework {
         return ['unknownPlatform', 'UnknownDriver'];
       }
     })();
-    let capStr = this.indent(Object.keys(this.caps).map((k) => {
-      return `desiredCapabilities.setCapability(${JSON.stringify(k)}, ${JSON.stringify(this.caps[k])});`;
-    }).join('\n'), 4);
+    let capStr = this.indent(Object.keys(this.caps).map((k) => `desiredCapabilities.setCapability(${JSON.stringify(k)}, ${JSON.stringify(this.caps[k])});`).join('\n'), 4);
     return `import io.appium.java_client.MobileElement;
 import io.appium.java_client.${pkg}.${cls};
 import junit.framework.TestCase;
