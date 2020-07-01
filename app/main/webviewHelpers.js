@@ -2,12 +2,20 @@ import {load} from 'cheerio';
 
 /**
  * JS code that is executed in the webview to determine the status+address bar height
+ *
+ * NOTE:
+ * object destructuring the arguments resulted in this error with iOS (not with Android)
+ *
+ * `Duplicate parameter 'e' not allowed in function with destructuring parameters.`
+ *
+ * That's why the object destructuring is done in the method itself
  */
-export function getWebviewStatusAddressBarHeight ({platformName, statBarHeight}) {
+export function getWebviewStatusAddressBarHeight (obj) {
   // Calculate the status + address bar height
   // Address bar height for iOS 11+ is 50, for lower it is 44,
   // but we take 50 as a default here
   // For Chrome it is 56 for Android 6 to 10
+  const {platformName, statBarHeight} = obj;
   const isAndroid = platformName.toLowerCase() === 'android';
   // iOS uses CSS sizes for elements and screenshots, Android sizes times DRP
   const dpr = isAndroid ? window.devicePixelRatio : 1;
@@ -27,8 +35,16 @@ export function getWebviewStatusAddressBarHeight ({platformName, statBarHeight})
 /**
  * JS code that is executed in the webview to set the needed attributes on the DOM so the source can be used for the
  * native inspector window.
+ *
+ * NOTE:
+ * object destructuring the arguments resulted in this error with iOS (not with Android)
+ *
+ * `Duplicate parameter 'e' not allowed in function with destructuring parameters.`
+ *
+ * That's why the object destructuring is done in the method itself
  */
-export function setHtmlElementAttributes ({platformName, webviewStatusAddressBarHeight}) {
+export function setHtmlElementAttributes (obj) {
+  const {platformName, webviewStatusAddressBarHeight} = obj;
   const htmlElements = document.body.getElementsByTagName('*');
   const isAndroid = platformName.toLowerCase() === 'android';
   // iOS uses CSS sizes for elements and screenshots, Android sizes times DRP
@@ -40,7 +56,7 @@ export function setHtmlElementAttributes ({platformName, webviewStatusAddressBar
     el.setAttribute('data-appium-desktop-width', Math.round(rect.width * dpr));
     el.setAttribute('data-appium-desktop-height', Math.round(rect.height * dpr));
     el.setAttribute('data-appium-desktop-x', Math.round(rect.left * dpr));
-    el.setAttribute('data-appium-desktop-y', Math.round((rect.top * dpr) + webviewStatusAddressBarHeight));
+    el.setAttribute('data-appium-desktop-y', Math.round(webviewStatusAddressBarHeight + (rect.top * dpr)));
   });
 }
 

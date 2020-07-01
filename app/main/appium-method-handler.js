@@ -6,6 +6,7 @@ import { SCREENSHOT_INTERACTION_MODE } from '../renderer/components/Inspector/sh
 import {getWebviewStatusAddressBarHeight, parseSource, setHtmlElementAttributes} from './webviewHelpers';
 
 const isDevelopment = process.env.NODE_ENV === 'development';
+const NATIVE_APP = 'NATIVE_APP';
 
 const KEEP_ALIVE_PING_INTERVAL = 5 * 1000;
 const NO_NEW_COMMAND_LIMIT = isDevelopment ? 30 * 1000 : 24 * 60 * 60 * 1000; // Set timeout to 24 hours
@@ -181,8 +182,8 @@ export default class AppiumMethodHandler {
     }
 
     // Note: These methods need to be executed in the native context because ChromeDriver behaves differently
-    if (currentContext !== 'NATIVE_APP') {
-      await this.driver.context('NATIVE_APP');
+    if (currentContext !== NATIVE_APP) {
+      await this.driver.context(NATIVE_APP);
     }
 
     ({platformName, statBarHeight} = await this.driver.sessionCapabilities());
@@ -205,7 +206,7 @@ export default class AppiumMethodHandler {
       contextsError = e;
     }
 
-    if (currentContext !== 'NATIVE_APP') {
+    if (currentContext !== NATIVE_APP) {
       await this.driver.context(currentContext);
     }
     // End of note
@@ -215,7 +216,7 @@ export default class AppiumMethodHandler {
      * so the source can be used in the native inspector
      */
     try {
-      if (currentContext !== 'NATIVE_APP') {
+      if (currentContext !== NATIVE_APP) {
         const webviewStatusAddressBarHeight = await this.driver.execute(getWebviewStatusAddressBarHeight, [{platformName, statBarHeight}]);
 
         await this.driver.execute(setHtmlElementAttributes, [{platformName, webviewStatusAddressBarHeight}]);
@@ -260,7 +261,7 @@ export default class AppiumMethodHandler {
     const getContextData = async (context) => {
       let title;
       const id = context;
-      if (id !== 'NATIVE_APP') {
+      if (id !== NATIVE_APP) {
         await this.driver.context(context);
         const pageTitle = await this.driver.title();
         title = pageTitle === '' ? 'No page title available' : pageTitle;

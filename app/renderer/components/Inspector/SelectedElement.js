@@ -12,7 +12,7 @@ import {
 import { ROW, ALERT } from '../AntdTypes';
 
 const ButtonGroup = Button.Group;
-
+const NATIVE_APP = 'NATIVE_APP';
 const selectedElementTableCell = (text) => (
   <div className={styles['selected-element-table-cells']}>{text}</div>);
 
@@ -181,7 +181,7 @@ class SelectedElement extends Component {
         </Row>
       }
       <br />
-      {currentContext === 'NATIVE_APP' && showXpathWarning &&
+      {currentContext === NATIVE_APP && showXpathWarning &&
         <div>
           <Alert
             message={t('usingXPathNotRecommended')}
@@ -191,7 +191,7 @@ class SelectedElement extends Component {
           <br />
         </div>
       }
-      {currentContext === 'NATIVE_APP' && contexts.length > 1 &&
+      {currentContext === NATIVE_APP && contexts.length > 1 &&
         <div>
           <Alert
             message={t('usingSwitchContextRecommended')}
@@ -201,7 +201,7 @@ class SelectedElement extends Component {
           <br />
         </div>
       }
-      {currentContext !== 'NATIVE_APP' &&
+      {currentContext !== NATIVE_APP &&
         <div>
           <Alert
             message={t('usingWebviewContext')}

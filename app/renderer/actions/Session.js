@@ -722,7 +722,6 @@ function includeSafariInWebviews (caps) {
   const {browserName = ''} = caps;
   const safariCapabilities = {
     includeSafariInWebviews: true,
-    safariInitialUrl: 'http://appium.io/docs/en/about-appium/intro/'
   };
 
   return {
