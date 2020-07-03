@@ -57,9 +57,6 @@ function connectStartServer (win) {
     // than the typical behavior, which is process.exit o_O
     args.throwInsteadOfExit = true;
 
-    // Let Appium Desktop automatically download the matching ChromeDriver
-    args.allowInsecure.push('chromedriver_autodownload');
-
     // set up our log watcher
     logWatcher = setInterval(async () => {
       if (batchedLogs.length) {

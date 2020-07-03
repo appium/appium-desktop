@@ -38,7 +38,7 @@ class SelectedElement extends Component {
     const {applyClientMethod, contexts, currentContext, setContext, t} = this.props;
 
     return (
-      <Tooltip title={t('context')}>
+      <Tooltip title={t('contextSwitcher')}>
         <Select value={currentContext} onChange={(value) => {
           setContext(value);
           applyClientMethod({methodName: 'context', args: [value]});
