@@ -267,7 +267,7 @@ export default class AppiumMethodHandler {
       if (id !== NATIVE_APP) {
         await this.driver.context(context);
         const pageTitle = await this.driver.title();
-        title = pageTitle === '' ? 'No page title available' : pageTitle;
+        title = _.isEmpty(pageTitle) ? 'No page title available' : pageTitle;
       }
       return {
         id,
