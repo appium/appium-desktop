@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import _ from 'lodash';
 import { getLocators } from './shared';
 import styles from './Inspector.css';
-import { Button, Row, Col, Input, Modal, Table, Alert, Tooltip } from 'antd';
+import { Button, Row, Col, Input, Modal, Table, Alert, Tooltip, Select } from 'antd';
 import { withTranslation } from '../../util';
 import { clipboard } from 'electron';
 import {
@@ -12,7 +12,7 @@ import {
 import { ROW, ALERT } from '../AntdTypes';
 
 const ButtonGroup = Button.Group;
-
+const NATIVE_APP = 'NATIVE_APP';
 const selectedElementTableCell = (text) => (
   <div className={styles['selected-element-table-cells']}>{text}</div>);
 
@@ -25,6 +25,7 @@ class SelectedElement extends Component {
   constructor (props) {
     super(props);
     this.handleSendKeys = this.handleSendKeys.bind(this);
+    this.contextSelect = this.contextSelect.bind(this);
   }
 
   handleSendKeys () {
@@ -33,10 +34,29 @@ class SelectedElement extends Component {
     hideSendKeysModal();
   }
 
+  contextSelect () {
+    const {applyClientMethod, contexts, currentContext, setContext, t} = this.props;
+
+    return (
+      <Tooltip title={t('contextSwitcher')}>
+        <Select value={currentContext} onChange={(value) => {
+          setContext(value);
+          applyClientMethod({methodName: 'context', args: [value]});
+        }}
+        className={styles['locator-strategy-selector']}>
+          {contexts.map(({id, title}) =>
+            <Select.Option key={id} value={id}>{title ? `${title} (${id})` : id}</Select.Option>
+          )}
+        </Select>
+      </Tooltip>
+    );
+  }
+
   render () {
     const {
       applyClientMethod,
       contexts,
+      currentContext,
       setFieldValue,
       sendKeys,
       selectedElement,
@@ -161,7 +181,7 @@ class SelectedElement extends Component {
         </Row>
       }
       <br />
-      {showXpathWarning &&
+      {currentContext === NATIVE_APP && showXpathWarning &&
         <div>
           <Alert
             message={t('usingXPathNotRecommended')}
@@ -171,7 +191,7 @@ class SelectedElement extends Component {
           <br />
         </div>
       }
-      {contexts.length > 1 &&
+      {currentContext === NATIVE_APP && contexts.length > 1 &&
         <div>
           <Alert
             message={t('usingSwitchContextRecommended')}
@@ -179,6 +199,22 @@ class SelectedElement extends Component {
             showIcon
           />
           <br />
+        </div>
+      }
+      {currentContext !== NATIVE_APP &&
+        <div>
+          <Alert
+            message={t('usingWebviewContext')}
+            type={ALERT.WARNING}
+            showIcon
+          />
+          <br />
+        </div>
+      }
+      {contexts.length > 1 &&
+        <div>
+          {this.contextSelect()}
+          <br /><br />
         </div>
       }
       {dataSource.length > 0 &&

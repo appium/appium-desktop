@@ -224,14 +224,17 @@ function connectCreateNewSession () {
         handler.runKeepAliveLoop();
       }
 
+      // The homepage arg in ChromeDriver is not working with Appium. iOS can have a default url, but
+      // we want to keep the process equal to prevent complexity so we launch a default url here to make
+      // sure we don't start with an empty page which will not show proper HTML in the inspector
+      const {browserName = ''} = desiredCapabilities;
 
-      // we don't really support the web portion of apps for a number of
-      // reasons, so pre-emptively ensure we're in native mode before doing the
-      // rest of the inspector startup. Since some platforms might not implement
-      // contexts, ignore any failures here.
-      try {
-        await driver.context('NATIVE_APP');
-      } catch (ign) {}
+      if (browserName.toLowerCase() !== '') {
+        try {
+          await driver.get('http://appium.io/docs/en/about-appium/intro/');
+        } catch (ign) {}
+      }
+
       event.sender.send('appium-new-session-ready');
     } catch (e) {
       // If the session failed, delete it from the cache

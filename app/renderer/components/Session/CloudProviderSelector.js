@@ -43,23 +43,21 @@ export default class CloudProviderSelector extends Component {
       footer={footer}
       title={t('Select Cloud Providers')}>
       {[
-        ..._.map(providersGrid, (row, key) => {
-          return <Row gutter={16} key={key}>{
-            [
-              ..._(row).map((providerName) => {
-                const providerIsVisible = visibleProviders.includes(providerName);
-                const style = {};
-                if (providerIsVisible) {
-                  style.borderColor = '#40a9ff';
-                }
-                const provider = CloudProviders[providerName];
-                return provider && <Col span={12} key={providerName}>
-                  <Button role="checkbox" style={style} onClick={() => this.toggleVisibleProvider(providerName)}><img src={provider.logo} /></Button>
-                </Col>;
-              })
-            ]
-          }</Row>;
-        })
+        ..._.map(providersGrid, (row, key) => <Row gutter={16} key={key}>{
+          [
+            ..._(row).map((providerName) => {
+              const providerIsVisible = visibleProviders.includes(providerName);
+              const style = {};
+              if (providerIsVisible) {
+                style.borderColor = '#40a9ff';
+              }
+              const provider = CloudProviders[providerName];
+              return provider && <Col span={12} key={providerName}>
+                <Button role="checkbox" style={style} onClick={() => this.toggleVisibleProvider(providerName)}><img src={provider.logo} /></Button>
+              </Col>;
+            })
+          ]
+        }</Row>)
       ]}
     </Modal>;
   }

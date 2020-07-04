@@ -1,4 +1,4 @@
-import { BrowserWindow, Menu } from 'electron';
+import {BrowserWindow, Menu} from 'electron';
 import settings from '../shared/settings';
 import path from 'path';
 import i18n from '../configs/i18next.config';

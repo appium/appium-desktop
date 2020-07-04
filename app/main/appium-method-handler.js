@@ -3,8 +3,10 @@ import wd from 'wd';
 import log from 'electron-log';
 import _ from 'lodash';
 import { SCREENSHOT_INTERACTION_MODE } from '../renderer/components/Inspector/shared';
+import {getWebviewStatusAddressBarHeight, parseSource, setHtmlElementAttributes} from './webviewHelpers';
 
 const isDevelopment = process.env.NODE_ENV === 'development';
+const NATIVE_APP = 'NATIVE_APP';
 
 const KEEP_ALIVE_PING_INTERVAL = 5 * 1000;
 const NO_NEW_COMMAND_LIMIT = isDevelopment ? 30 * 1000 : 24 * 60 * 60 * 1000; // Set timeout to 24 hours
@@ -167,10 +169,36 @@ export default class AppiumMethodHandler {
   }
 
   async _getContextsSourceAndScreenshot () {
-    let contexts, contextsError, source, sourceError, screenshot, screenshotError, windowSize, windowSizeError;
+    let contexts, contextsError, currentContext, currentContextError, platformName,
+        source, sourceError, screenshot, screenshotError, statBarHeight, windowSize, windowSizeError;
 
     try {
-      contexts = await this.driver.contexts();
+      currentContext = await this.driver.currentContext();
+    } catch (e) {
+      if (e.status === 6) {
+        throw e;
+      }
+      currentContextError = e;
+    }
+
+    // Note: These methods need to be executed in the native context because ChromeDriver behaves differently
+    if (currentContext !== NATIVE_APP) {
+      await this.driver.context(NATIVE_APP);
+    }
+
+    ({platformName, statBarHeight} = await this.driver.sessionCapabilities());
+
+    try {
+      windowSize = await this.driver.getWindowSize();
+    } catch (e) {
+      if (e.status === 6) {
+        throw e;
+      }
+      windowSizeError = e;
+    }
+
+    try {
+      contexts = await this._getContexts(platformName);
     } catch (e) {
       if (e.status === 6) {
         throw e;
@@ -178,8 +206,25 @@ export default class AppiumMethodHandler {
       contextsError = e;
     }
 
+    if (currentContext !== NATIVE_APP) {
+      await this.driver.context(currentContext);
+    }
+    // End of note
+
+    /**
+     * If its a webview then update the HTML with the element location
+     * so the source can be used in the native inspector
+     */
     try {
-      source = await this.driver.source();
+      if (currentContext !== NATIVE_APP) {
+        const webviewStatusAddressBarHeight = await this.driver.execute(getWebviewStatusAddressBarHeight, [{platformName, statBarHeight}]);
+
+        await this.driver.execute(setHtmlElementAttributes, [{platformName, webviewStatusAddressBarHeight}]);
+      }
+    } catch (ign) {}
+
+    try {
+      source = parseSource(await this.driver.source());
     } catch (e) {
       if (e.status === 6) {
         throw e;
@@ -196,17 +241,48 @@ export default class AppiumMethodHandler {
       screenshotError = e;
     }
 
-    try {
-      windowSize = await this.driver.getWindowSize();
+    return {contexts, contextsError, currentContext, currentContextError,
+            source, sourceError, screenshot, screenshotError, windowSize, windowSizeError};
+  }
 
-    } catch (e) {
-      if (e.status === 6) {
-        throw e;
+  /**
+   * Retrieve available contexts, along with the title associated with each webview
+   */
+  async _getContexts (platform) {
+    return platform.toLowerCase() === 'ios' ? await this.driver.execute('mobile:getContexts', []) : await this._getAndroidContexts();
+  }
+
+  /**
+   * Custom implementation of the `mobile:getContexts` for Android, which only returns an object with the id and title
+   */
+  async _getAndroidContexts () {
+    let newContexts = [];
+    const currentContext = await this.driver.currentContext();
+
+    // Get the contexts and retrieve extra data
+    const contexts = await this.driver.contexts();
+    const getContextData = async (context) => {
+      let title;
+      const id = context;
+      if (id !== NATIVE_APP) {
+        await this.driver.context(context);
+        const pageTitle = await this.driver.title();
+        title = _.isEmpty(pageTitle) ? 'No page title available' : pageTitle;
       }
-      windowSizeError = e;
+      return {
+        id,
+        ...(title ? {title} : {}),
+      };
+    };
+    // const newContexts = await Promise.all(contexts.map((context) => getContextData(context)));
+    for (const context of contexts) {
+      newContexts.push(await getContextData(context));
     }
 
-    return {contexts, contextsError, source, sourceError, screenshot, screenshotError, windowSize, windowSizeError};
+    // Set it back to the current context
+    await this.driver.context(currentContext);
+
+    return newContexts;
   }
 
   restart () {
@@ -264,5 +340,6 @@ export function getSessionHandler (winId) {
     return false;
   }
 }
+
 
 AppiumMethodHandler.appiumHandlers = {};

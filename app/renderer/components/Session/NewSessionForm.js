@@ -65,42 +65,40 @@ export default class NewSessionForm extends Component {
             className={SessionStyles.newSessionForm}
             style={{maxHeight: remote.getCurrentWindow().getSize()[1] - HEIGHT_OF_SESSION_CONFIG_AREA}}>
 
-            {caps.map((cap, index) => {
-              return <Row gutter={8} key={index}>
-                <Col span={7}>
+            {caps.map((cap, index) => <Row gutter={8} key={index}>
+              <Col span={7}>
+                <FormItem>
+                  <Input disabled={isEditingDesiredCaps} id={`desiredCapabilityName_${index}`} placeholder={t('Name')}
+                    value={cap.name} onChange={(e) => setCapabilityParam(index, 'name', e.target.value)}/>
+                </FormItem>
+              </Col>
+              <Col span={8}>
+                <FormItem>
+                  <Select disabled={isEditingDesiredCaps} onChange={(val) => this.handleSetType(index, val)} defaultValue={cap.type}>
+                    <Option value='text'>{t('text')}</Option>
+                    <Option value='boolean'>{t('boolean')}</Option>
+                    <Option value='number'>{t('number')}</Option>
+                    <Option value='object'>{t('JSON object')}</Option>
+                    <Option value='file'>{t('filepath')}</Option>
+                  </Select>
+                </FormItem>
+              </Col>
+              <Col span={7}>
+                <FormItem>
+                  <CapabilityControl {...this.props} cap={cap} id={`desiredCapabilityValue_${index}`}
+                    onSetCapabilityParam={(value) => setCapabilityParam(index, 'value', value)} />
+                </FormItem>
+              </Col>
+              <Col span={2}>
+                <div className={SessionStyles.btnDeleteCap}>
                   <FormItem>
-                    <Input disabled={isEditingDesiredCaps} id={`desiredCapabilityName_${index}`} placeholder={t('Name')}
-                      value={cap.name} onChange={(e) => setCapabilityParam(index, 'name', e.target.value)}/>
+                    <Button {...{disabled: caps.length <= 1 || isEditingDesiredCaps}}
+                      icon={<DeleteOutlined/>}
+                      onClick={() => removeCapability(index)}/>
                   </FormItem>
-                </Col>
-                <Col span={8}>
-                  <FormItem>
-                    <Select disabled={isEditingDesiredCaps} onChange={(val) => this.handleSetType(index, val)} defaultValue={cap.type}>
-                      <Option value='text'>{t('text')}</Option>
-                      <Option value='boolean'>{t('boolean')}</Option>
-                      <Option value='number'>{t('number')}</Option>
-                      <Option value='object'>{t('JSON object')}</Option>
-                      <Option value='file'>{t('filepath')}</Option>
-                    </Select>
-                  </FormItem>
-                </Col>
-                <Col span={7}>
-                  <FormItem>
-                    <CapabilityControl {...this.props} cap={cap} id={`desiredCapabilityValue_${index}`}
-                      onSetCapabilityParam={(value) => setCapabilityParam(index, 'value', value)} />
-                  </FormItem>
-                </Col>
-                <Col span={2}>
-                  <div className={SessionStyles.btnDeleteCap}>
-                    <FormItem>
-                      <Button {...{disabled: caps.length <= 1 || isEditingDesiredCaps}}
-                        icon={<DeleteOutlined/>}
-                        onClick={() => removeCapability(index)}/>
-                    </FormItem>
-                  </div>
-                </Col>
-              </Row>;
-            })}
+                </div>
+              </Col>
+            </Row>)}
             <Row>
               <Col span={24}>
                 <FormItem>

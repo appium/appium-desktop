@@ -27,52 +27,52 @@ import ExperitestLogo from '../../images/experitest_logo.svg';
 const CloudProviders = {
   sauce: {
     tabhead: () => <span className={SessionStyles.tabText}><img src={SauceLogo} /></span>,
-    tab: props => <ServerTabSauce {...props} />,
+    tab: (props) => <ServerTabSauce {...props} />,
     logo: SauceLogo,
   },
   testobject: {
     tabhead: () => <span className={SessionStyles.tabText}><img src={TestObjectLogo} /></span>,
-    tab: props => <ServerTabTestobject {...props} />,
+    tab: (props) => <ServerTabTestobject {...props} />,
     logo: TestObjectLogo,
   },
   headspin: {
     tabhead: () => <span className={SessionStyles.tabText}><img src={HeadSpinLogo} /></span>,
-    tab: props => <ServerTabHeadspin {...props} />,
+    tab: (props) => <ServerTabHeadspin {...props} />,
     logo: HeadSpinLogo,
   },
   browserstack: {
     tabhead: () => <span className={SessionStyles.tabText}><img src={BrowserStackLogo} /></span>,
-    tab: props => <ServerTabBrowserstack {...props} />,
+    tab: (props) => <ServerTabBrowserstack {...props} />,
     logo: BrowserStackLogo,
   },
   bitbar: {
     tabhead: () => <span className={SessionStyles.tabText}><img src={BitBarLogo} /></span>,
-    tab: props => <ServerTabBitbar {...props} />,
+    tab: (props) => <ServerTabBitbar {...props} />,
     logo: BitBarLogo,
   },
   kobiton: {
     tabhead: () => <span className={SessionStyles.tabText}><img src={KobitonLogo} /></span>,
-    tab: props => <ServerTabKobiton {...props} />,
+    tab: (props) => <ServerTabKobiton {...props} />,
     logo: KobitonLogo,
   },
   perfecto: {
     tabhead: () => <span className={SessionStyles.tabText}><img src={PerfectoLogo} /></span>,
-    tab: props => <ServerTabPerfecto {...props} />,
+    tab: (props) => <ServerTabPerfecto {...props} />,
     logo: PerfectoLogo,
   },
   pcloudy: {
     tabhead: () => <span className={SessionStyles.tabText}><img src={PcloudyLogo} /></span>,
-    tab: props => <ServerTabPcloudy {...props} />,
+    tab: (props) => <ServerTabPcloudy {...props} />,
     logo: PcloudyLogo,
   },
   testingbot: {
     tabhead: () => <span className={SessionStyles.tabText}><img src={TestingBotLogo} /></span>,
-    tab: props => <ServerTabTestingbot {...props} />,
+    tab: (props) => <ServerTabTestingbot {...props} />,
     logo: TestingBotLogo,
   },
   experitest: {
     tabhead: () => <span className={SessionStyles.tabText}><img src={ExperitestLogo} /></span>,
-    tab: props => <ServerTabExperitest {...props} />,
+    tab: (props) => <ServerTabExperitest {...props} />,
     logo: ExperitestLogo,
   },
 };

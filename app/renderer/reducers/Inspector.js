@@ -1,5 +1,4 @@
 import { omit } from 'lodash';
-
 import { SET_SOURCE_AND_SCREENSHOT, QUIT_SESSION_REQUESTED, QUIT_SESSION_DONE,
          SESSION_DONE, SELECT_ELEMENT, UNSELECT_ELEMENT, SELECT_HOVERED_ELEMENT, SET_SELECTED_ELEMENT_ID, SET_INTERACTIONS_NOT_AVAILABLE,
          UNSELECT_HOVERED_ELEMENT, METHOD_CALL_REQUESTED, METHOD_CALL_DONE,
@@ -12,7 +11,7 @@ import { SET_SOURCE_AND_SCREENSHOT, QUIT_SESSION_REQUESTED, QUIT_SESSION_DONE,
          SET_SWIPE_START, SET_SWIPE_END, CLEAR_SWIPE_ACTION, SET_SEARCHED_FOR_ELEMENT_BOUNDS, CLEAR_SEARCHED_FOR_ELEMENT_BOUNDS,
          PROMPT_KEEP_ALIVE, HIDE_PROMPT_KEEP_ALIVE,
          SELECT_ACTION_GROUP, SELECT_SUB_ACTION_GROUP,
-         SELECT_INTERACTION_MODE, ENTERING_ACTION_ARGS, SET_ACTION_ARG, REMOVE_ACTION
+         SELECT_INTERACTION_MODE, ENTERING_ACTION_ARGS, SET_ACTION_ARG, REMOVE_ACTION, SET_CONTEXT
 } from '../actions/Inspector';
 import { SCREENSHOT_INTERACTION_MODE, INTERACTION_MODE } from '../components/Inspector/shared';
 
@@ -58,6 +57,8 @@ export default function inspector (state = INITIAL_STATE, action) {
         ...state,
         contexts: action.contexts,
         contextsError: action.contextsError,
+        currentContext: action.currentContext,
+        currentContextError: action.currentContextError,
         source: action.source,
         sourceXML: action.sourceXML,
         sourceError: action.sourceError,
@@ -379,6 +380,12 @@ export default function inspector (state = INITIAL_STATE, action) {
       return {
         ...state,
         pendingAction: null,
+      };
+
+    case SET_CONTEXT:
+      return {
+        ...state,
+        currentContext: action.context
       };
 
     default:
