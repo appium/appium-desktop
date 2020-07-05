@@ -12,7 +12,12 @@ export const DEFAULT_ARGS = ipcRenderer.sendSync('get-default-args');
 //export const ARG_DATA = ipcRenderer.sendSync('get-args-metadata');
 
 const initialState = {
-  serverArgs: {...DEFAULT_ARGS},
+  serverArgs: {
+    ...DEFAULT_ARGS,
+    // Turn on all insecure features, this is needed to auto download ChromeDriver
+    // A tooltip is added to the settings screen
+    ...{relaxedSecurityEnabled: true}
+  },
   serverVersion: SERVER_VERSION,
   serverStarting: false,
   serverFailMsg: '',

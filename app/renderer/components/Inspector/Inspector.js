@@ -26,8 +26,6 @@ import {
 } from '@ant-design/icons';
 import { BUTTON } from '../AntdTypes';
 
-
-
 const {SELECT, SWIPE, TAP} = SCREENSHOT_INTERACTION_MODE;
 
 const { TabPane } = Tabs;

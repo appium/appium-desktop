@@ -85,13 +85,11 @@ export default class SavedSessions extends Component {
 
     let dataSource = [];
     if (savedSessions) {
-      dataSource = savedSessions.map((session) => {
-        return {
-          key: session.uuid,
-          name: (session.name || '(Unnamed)'),
-          date: moment(session.date).format('YYYY-MM-DD')
-        };
-      });
+      dataSource = savedSessions.map((session) => ({
+        key: session.uuid,
+        name: (session.name || '(Unnamed)'),
+        date: moment(session.date).format('YYYY-MM-DD')
+      }));
     }
 
     const windowSizeHeight = remote.getCurrentWindow().getSize()[1] - HEIGHT_OF_SESSION_CONFIG_AREA;

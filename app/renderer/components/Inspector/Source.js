@@ -70,13 +70,11 @@ class Source extends Component {
       if (!elemObj) {return null;}
       if (elemObj.children.length === 0) {return null;}
 
-      return elemObj.children.map((el) => {
-        return {
-          title: this.getFormattedTag(el),
-          key: el.path,
-          children: recursive(el),
-        };
-      });
+      return elemObj.children.map((el) => ({
+        title: this.getFormattedTag(el),
+        key: el.path,
+        children: recursive(el),
+      }));
     };
 
     return <div id='sourceContainer' className={InspectorStyles['tree-container']}>
