@@ -10,7 +10,7 @@ import { SET_SOURCE_AND_SCREENSHOT, QUIT_SESSION_REQUESTED, QUIT_SESSION_DONE,
          SEARCHING_FOR_ELEMENTS, SEARCHING_FOR_ELEMENTS_COMPLETED, SET_LOCATOR_TEST_ELEMENT, CLEAR_SEARCH_RESULTS,
          ADD_ASSIGNED_VAR_CACHE, CLEAR_ASSIGNED_VAR_CACHE, SET_SCREENSHOT_INTERACTION_MODE,
          SET_SWIPE_START, SET_SWIPE_END, CLEAR_SWIPE_ACTION, SET_SEARCHED_FOR_ELEMENT_BOUNDS, CLEAR_SEARCHED_FOR_ELEMENT_BOUNDS,
-         PROMPT_KEEP_ALIVE, HIDE_PROMPT_KEEP_ALIVE,
+         PROMPT_KEEP_ALIVE, HIDE_PROMPT_KEEP_ALIVE, GET_FIND_ELEMENTS_TIMES, GET_FIND_ELEMENTS_TIMES_COMPLETED,
          SELECT_ACTION_GROUP, SELECT_SUB_ACTION_GROUP,
          SELECT_INTERACTION_MODE, ENTERING_ACTION_ARGS, SET_ACTION_ARG, REMOVE_ACTION
 } from '../actions/Inspector';
@@ -38,6 +38,8 @@ const INITIAL_STATE = {
   selectedSubActionGroup: null,
   selectedInteractionMode: INTERACTION_MODE.SOURCE,
   pendingAction: null,
+  findElementsExecutionTimes: [],
+  isFindingElementsTimes: false,
 };
 
 /**
@@ -65,6 +67,7 @@ export default function inspector (state = INITIAL_STATE, action) {
         screenshotError: action.screenshotError,
         windowSize: action.windowSize,
         windowSizeError: action.windowSizeError,
+        findElementsExecutionTimes: [],
       };
 
     case QUIT_SESSION_REQUESTED:
@@ -92,6 +95,7 @@ export default function inspector (state = INITIAL_STATE, action) {
         selectedElement: findElementByPath(action.path, state.source),
         selectedElementPath: action.path,
         elementInteractionsNotAvailable: false,
+        findElementsExecutionTimes: [],
       };
 
     case UNSELECT_ELEMENT:
@@ -110,6 +114,7 @@ export default function inspector (state = INITIAL_STATE, action) {
         selectedElementId: action.elementId,
         selectedElementVariableName: action.variableName,
         selectedElementVariableType: action.variableType,
+        findElementsExecutionTimes: [],
       };
 
     case SET_INTERACTIONS_NOT_AVAILABLE:
@@ -149,6 +154,7 @@ export default function inspector (state = INITIAL_STATE, action) {
       return {
         ...state,
         expandedPaths: action.paths,
+        findElementsExecutionTimes: [],
       };
 
     case SHOW_SEND_KEYS_MODAL:
@@ -266,6 +272,19 @@ export default function inspector (state = INITIAL_STATE, action) {
         ...state,
         locatedElements: action.elements,
         isSearchingForElements: false,
+      };
+
+    case GET_FIND_ELEMENTS_TIMES:
+      return {
+        ...state,
+        isFindingElementsTimes: true,
+      };
+
+    case GET_FIND_ELEMENTS_TIMES_COMPLETED:
+      return {
+        ...state,
+        findElementsExecutionTimes: action.findElementsExecutionTimes,
+        isFindingElementsTimes: false,
       };
 
     case SET_LOCATOR_TEST_ELEMENT:

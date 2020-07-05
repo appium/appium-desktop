@@ -62,7 +62,11 @@ export default class AppiumMethodHandler {
   }
 
   async fetchElement (strategy, selector) {
+    const start = process.hrtime.bigint();
     let element = await this.driver.elementOrNull(strategy, selector);
+    const end = process.hrtime.bigint();
+    const executionTime = Math.round(Number(end - start) / 1000000);
+
     if (element === null) {
       return {};
     }
@@ -82,6 +86,7 @@ export default class AppiumMethodHandler {
       strategy,
       selector,
       id,
+      executionTime,
     };
   }
 

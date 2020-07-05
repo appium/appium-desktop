@@ -116,7 +116,7 @@ export default class Inspector extends Component {
     const {screenshot, screenshotError, selectedElement = {},
            applyClientMethod, quitSession, isRecording, showRecord, startRecording,
            pauseRecording, showLocatorTestModal,
-           screenshotInteractionMode,
+           screenshotInteractionMode, isFindingElementsTimes,
            selectedInteractionMode, selectInteractionMode,
            showKeepAlivePrompt, keepSessionAlive, sourceXML, t} = this.props;
     const {path} = selectedElement;
@@ -217,19 +217,21 @@ export default class Inspector extends Component {
       </ButtonGroup>
     </div>;
 
-    return <div className={InspectorStyles['inspector-container']}>
-      {controls}
-      {main}
-      <Modal
-        title={t('Session Inactive')}
-        visible={showKeepAlivePrompt}
-        onOk={() => keepSessionAlive()}
-        onCancel={() => quitSession()}
-        okText={t('Keep Session Running')}
-        cancelText={t('Quit Session')}
-      >
-        <p>{t('Your session is about to expire')}</p>
-      </Modal>
-    </div>;
+    return (<Spin spinning={isFindingElementsTimes} key="main">
+      <div className={InspectorStyles['inspector-container']}>
+        {controls}
+        {main}
+        <Modal
+          title={t('Session Inactive')}
+          visible={showKeepAlivePrompt}
+          onOk={() => keepSessionAlive()}
+          onCancel={() => quitSession()}
+          okText={t('Keep Session Running')}
+          cancelText={t('Quit Session')}
+        >
+          <p>{t('Your session is about to expire')}</p>
+        </Modal>
+      </div>
+    </Spin>);
   }
 }

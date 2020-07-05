@@ -44,6 +44,8 @@ export const SET_LOCATOR_TEST_STRATEGY = 'SET_LOCATOR_TEST_STRATEGY';
 export const SET_LOCATOR_TEST_VALUE = 'SET_LOCATOR_TEST_VALUE';
 export const SEARCHING_FOR_ELEMENTS = 'SEARCHING_FOR_ELEMENTS';
 export const SEARCHING_FOR_ELEMENTS_COMPLETED = 'SEARCHING_FOR_ELEMENTS_COMPLETED';
+export const GET_FIND_ELEMENTS_TIMES = 'GET_FIND_ELEMENTS_TIMES';
+export const GET_FIND_ELEMENTS_TIMES_COMPLETED = 'GET_FIND_ELEMENTS_TIMES_COMPLETED';
 export const SET_LOCATOR_TEST_ELEMENT = 'SET_LOCATOR_TEST_ELEMENT';
 export const CLEAR_SEARCH_RESULTS = 'CLEAR_SEARCH_RESULTS';
 export const ADD_ASSIGNED_VAR_CACHE = 'ADD_ASSIGNED_VAR_CACHE';
@@ -352,6 +354,27 @@ export function searchForElement (strategy, selector) {
       dispatch({type: SEARCHING_FOR_ELEMENTS_COMPLETED, elements});
     } catch (error) {
       dispatch({type: SEARCHING_FOR_ELEMENTS_COMPLETED});
+      showError(error, 10);
+    }
+  };
+}
+
+/**
+ * Get all the find element times based on the find data source
+ */
+export function getFindElementsTimes (findDataSource) {
+  return async (dispatch) => {
+    dispatch({type: GET_FIND_ELEMENTS_TIMES});
+    try {
+      const findElementsExecutionTimes = [];
+      for (const element of findDataSource) {
+        const {find, selector} = element;
+        const {executionTime} = await callClientMethod({strategy: find, selector});
+        findElementsExecutionTimes.push({find, key: find, selector, time: executionTime});
+      }
+      dispatch({type: GET_FIND_ELEMENTS_TIMES_COMPLETED, findElementsExecutionTimes});
+    } catch (error) {
+      dispatch({type: GET_FIND_ELEMENTS_TIMES_COMPLETED});
       showError(error, 10);
     }
   };
