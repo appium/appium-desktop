@@ -123,7 +123,7 @@ class SelectedElement extends Component {
         id='btnGetTimings'
         onClick={() => getFindElementsTimes(findDataSource)}
       >
-        {t('Get Time')}
+        {t('Get Timing')}
       </Button>
     </Tooltip>);
 
