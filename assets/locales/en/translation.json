@@ -63,6 +63,7 @@
   "Log Timestamps": "Log Timestamps",
   "Suppress Log Color": "Suppress Log Color",
   "Strict Caps Mode": "Strict Caps Mode",
+  "Allow CORS": "Allow CORS",
   "Relaxed Security": "Relaxed Security",
   "relaxedSecurityInfo": "This option is enabled by default to automatically download ChromeDriver, see http://appium.io/docs/en/writing-running-appium/security/ for more information. Disabling this option will result in an error when you want to inspect Chrome browser or inspect a Webview in a Android hybrid app.",
   "Default Capabilities": "Default Capabilities",
