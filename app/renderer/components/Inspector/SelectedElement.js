@@ -117,12 +117,22 @@ class SelectedElement extends Component {
       render: selectedElementTableCell
     }];
 
+    const getTimeButton = (<Tooltip title={t('getTimes')}>
+      <Button
+        disabled={isDisabled}
+        id='btnGetTimings'
+        onClick={() => getFindElementsTimes(findDataSource)}
+      >
+        {t('Get Time')}
+      </Button>
+    </Tooltip>);
+
     // Get the data for the strategies table
     let findDataSource = _.toPairs(getLocators(attributes, sourceXML)).map(([key, selector]) => ({
       key,
       selector,
       find: key,
-      time: '',
+      time: getTimeButton,
     }));
 
     // If XPath is the only provided data source, warn the user about it's brittleness
@@ -137,7 +147,7 @@ class SelectedElement extends Component {
         key: 'xpath',
         find: 'xpath',
         selector: xpath,
-        time: '',
+        time: getTimeButton,
       });
     }
 
@@ -177,15 +187,6 @@ class SelectedElement extends Component {
             >
               {t('Clear')}
             </Button>
-            <Tooltip title={t('getTimes')}>
-              <Button
-                disabled={isDisabled}
-                id='btnGetTimings'
-                onClick={() => getFindElementsTimes(findDataSource)}
-              >
-                {t('Get Times')}
-              </Button>
-            </Tooltip>
             <Tooltip title={t('Copy Attributes to Clipboard')}>
               <Button
                 disabled={isDisabled}
