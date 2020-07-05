@@ -58,6 +58,9 @@ class SelectedElement extends Component {
       contexts,
       currentContext,
       setFieldValue,
+      getFindElementsTimes,
+      findElementsExecutionTimes,
+      isFindingElementsTimes,
       sendKeys,
       selectedElement,
       sendKeysModalVisible,
@@ -69,6 +72,7 @@ class SelectedElement extends Component {
       t,
     } = this.props;
     const {attributes, xpath} = selectedElement;
+    const isDisabled = !elementId || isFindingElementsTimes;
 
     // Get the columns for the attributes table
     let attributeColumns = [{
@@ -106,13 +110,29 @@ class SelectedElement extends Component {
       dataIndex: 'selector',
       key: 'selector',
       render: selectedElementTableCell
+    }, {
+      title: t('Time'),
+      dataIndex: 'time',
+      key: 'time',
+      render: selectedElementTableCell
     }];
+
+    const getTimeButton = (<Tooltip title={t('getTimes')}>
+      <Button
+        disabled={isDisabled}
+        id='btnGetTimings'
+        onClick={() => getFindElementsTimes(findDataSource)}
+      >
+        {t('Get Timing')}
+      </Button>
+    </Tooltip>);
 
     // Get the data for the strategies table
     let findDataSource = _.toPairs(getLocators(attributes, sourceXML)).map(([key, selector]) => ({
       key,
       selector,
       find: key,
+      time: getTimeButton,
     }));
 
     // If XPath is the only provided data source, warn the user about it's brittleness
@@ -127,7 +147,13 @@ class SelectedElement extends Component {
         key: 'xpath',
         find: 'xpath',
         selector: xpath,
+        time: getTimeButton,
       });
+    }
+
+    // Replace table data with table data that has the times
+    if (findElementsExecutionTimes.length > 0) {
+      findDataSource = findElementsExecutionTimes;
     }
 
     return <div>
@@ -140,7 +166,7 @@ class SelectedElement extends Component {
         <Col>
           <ButtonGroup size="small">
             <Button
-              disabled={!elementId}
+              disabled={isDisabled}
               icon={!elementInteractionsNotAvailable && !elementId && <LoadingOutlined/>}
               id='btnTapElement'
               onClick={() => applyClientMethod({methodName: 'click', elementId})}
@@ -148,14 +174,14 @@ class SelectedElement extends Component {
               {t('Tap')}
             </Button>
             <Button
-              disabled={!elementId}
+              disabled={isDisabled}
               id='btnSendKeysToElement'
               onClick={() => showSendKeysModal()}
             >
               {t('Send Keys')}
             </Button>
             <Button
-              disabled={!elementId}
+              disabled={isDisabled}
               id='btnClearElement'
               onClick={() => applyClientMethod({methodName: 'clear', elementId})}
             >
@@ -163,7 +189,7 @@ class SelectedElement extends Component {
             </Button>
             <Tooltip title={t('Copy Attributes to Clipboard')}>
               <Button
-                disabled={!elementId}
+                disabled={isDisabled}
                 id='btnCopyAttributes'
                 icon={<CopyOutlined/>}
                 onClick={() => clipboard.writeText(JSON.stringify(dataSource))}/>

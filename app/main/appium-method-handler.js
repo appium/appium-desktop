@@ -2,6 +2,7 @@ import Bluebird from 'bluebird';
 import wd from 'wd';
 import log from 'electron-log';
 import _ from 'lodash';
+import { timing } from 'appium-support';
 import { SCREENSHOT_INTERACTION_MODE } from '../renderer/components/Inspector/shared';
 import {getWebviewStatusAddressBarHeight, parseSource, setHtmlElementAttributes} from './webviewHelpers';
 
@@ -64,7 +65,11 @@ export default class AppiumMethodHandler {
   }
 
   async fetchElement (strategy, selector) {
+    const timer = new timing.Timer().start();
     let element = await this.driver.elementOrNull(strategy, selector);
+    const duration = timer.getDuration();
+    const executionTime = Math.round(duration.asMilliSeconds);
+
     if (element === null) {
       return {};
     }
@@ -84,6 +89,7 @@ export default class AppiumMethodHandler {
       strategy,
       selector,
       id,
+      executionTime,
     };
   }
 
