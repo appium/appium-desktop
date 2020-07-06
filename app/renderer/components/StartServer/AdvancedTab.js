@@ -15,7 +15,7 @@ import { INPUT } from '../AntdTypes';
 // defaultDevice, automationTraceTemplatePath, instrumentsPath,
 // nodeconfig, robotAddress, robotPort, selendroidPort,
 // chromeDriverPort, chromedriverExecutable, enforceStrictCaps,
-// isolateSimDevice, tmpDir, traceDir, debugLogSpacing,
+// isolateSimDevice, tmpDir, traceDir, debugLogSpacing, allowCors,
 // suppressAdbKillServer, webkitDebugProxyPort, defaultCapabilities
 
 class AdvancedTab extends Component {
@@ -151,6 +151,7 @@ class AdvancedTab extends Component {
               <Tooltip title={t('relaxedSecurityInfo')}>
                 {this.buildInput('relaxedSecurityEnabled', 'checkbox', t('Relaxed Security'))}
               </Tooltip>
+              {this.buildInput('allowCors', 'checkbox', t('Allow CORS'))}
               {this.buildInput('defaultCapabilities', 'textarea', t('Default Capabilities'))}
             </div>
 
