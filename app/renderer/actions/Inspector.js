@@ -378,11 +378,15 @@ export function getFindElementsTimes (findDataSource) {
     try {
       const findElementsExecutionTimes = [];
       for (const element of findDataSource) {
-        const {find, selector} = element;
-        const {executionTime} = await callClientMethod({strategy: find, selector});
-        findElementsExecutionTimes.push({find, key: find, selector, time: executionTime});
+        const {find, key, selector} = element;
+        const {executionTime} = await callClientMethod({strategy: key, selector});
+        findElementsExecutionTimes.push({find, key, selector, time: executionTime});
       }
-      dispatch({type: GET_FIND_ELEMENTS_TIMES_COMPLETED, findElementsExecutionTimes});
+
+      dispatch({
+        type: GET_FIND_ELEMENTS_TIMES_COMPLETED,
+        findElementsExecutionTimes: _.sortBy(findElementsExecutionTimes, ['time']),
+      });
     } catch (error) {
       dispatch({type: GET_FIND_ELEMENTS_TIMES_COMPLETED});
       showError(error, 10);
