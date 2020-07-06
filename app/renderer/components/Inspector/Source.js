@@ -67,9 +67,7 @@ class Source extends Component {
 
     // Recursives through the source and renders a TreeNode for an element
     let recursive = (elemObj) => {
-      if (!elemObj) {return null;}
-      if (!elemObj.children) {return null;}
-      if (elemObj.children.length === 0) {return null;}
+      if (!elemObj?.children?.length) {return null;}
 
       return elemObj.children.map((el) => ({
         title: this.getFormattedTag(el),
