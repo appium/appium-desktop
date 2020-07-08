@@ -49,6 +49,7 @@ describe('util.js', function () {
           },
           xpath: '//XCUIElementTypeApplication[@name="🦋"]/XCUIElementTypeWindow',
           path: '0',
+          classChain: '**/XCUIElementTypeWindow',
         }],
         tagName: 'XCUIElementTypeApplication',
         attributes: {
@@ -64,6 +65,7 @@ describe('util.js', function () {
         },
         xpath: '//XCUIElementTypeApplication[@name="🦋"]',
         path: '',
+        classChain: '',
       });
     });
   });

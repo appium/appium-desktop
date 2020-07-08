@@ -47,13 +47,14 @@ export function xmlToJSON (source) {
 
     // Dot Separated path of indices
     const path = _.isNil(index) ? '' : `${!parentPath ? '' : parentPath + '.'}${index}`;
+    const classChainSelector = isIOS ? getOptimalClassChain(xmlDoc, xmlNode, UNIQUE_PREDICATE_ATTRIBUTES) : '';
     return {
       children: childNodesOf(xmlNode)
         .map((childNode, childIndex) => translateRecursively(childNode, path, childIndex)),
       tagName: xmlNode.tagName,
       attributes,
       xpath: getOptimalXPath(xmlDoc, xmlNode, UNIQUE_XPATH_ATTRIBUTES),
-      ...(isIOS ? {classChain: `**${getOptimalClassChain(xmlDoc, xmlNode, UNIQUE_PREDICATE_ATTRIBUTES)}`} : {}),
+      ...(isIOS ? {classChain: classChainSelector ? `**${classChainSelector}` : ''} : {}),
       path,
     };
   };
