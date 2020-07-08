@@ -47,55 +47,6 @@ export function getLocators (attributes, sourceXML) {
   return res;
 }
 
-export function xpathToClassChain (xpath) {
-  let xpathArray = xpath
-    // XPATH can hold parentheses like this `(//XCUIElementTypeOther[@name="something"])[2]/(XCUIElementTypeOther)[4]/XCUIElementTypeOther[2]`
-    // There might be an issue if `(\` or `/(` or `)[` are in attribute values. Not sure how to fix that
-    // first replace parentheses `(` of `(//XCUIElementTypeOther[@name="banner"])`
-    .replace(/\(\//, '/')
-    // then replace `(` of `/(XCUIElementTypeOther)[4]`
-    .replace(/\/\(/g, '/')
-    // then replace `)[` of `/(XCUIElementTypeOther)[4]`
-    .replace(/\)\[/g, '[')
-    // Replace the first two // by a single one
-    .replace(/^(\/\/)/, '/')
-    // Split it into small parts
-    .split(/(?=\/XCUI)/)
-    // Make sure we don't have the XCUIElementTypeApplication part
-    .filter(((string) => !string.includes('XCUIElementTypeApplication')))
-    // Remove empty strings from results
-    .filter(Boolean);
-
-  const classChain = xpathArray.map((xpathString) => {
-    const xpathBracketData = xpathString
-      // Split based on [{content}]
-      .split(/\[([^[\]]*)\]/g)
-      // Remove empty strings from results
-      .filter(Boolean);
-
-    // Restructure the bracket data
-    const restructuredData = xpathBracketData.map((brackedData) => {
-      if (brackedData.includes('XCUI')) {
-        return brackedData;
-      }
-
-      // If we have attributes that start with @
-      if (brackedData.indexOf('@') === 0) {
-        // need to return something like this `{attribute} == "{value}"`
-        const [attribute, value] = brackedData.split('=');
-
-        return `[\`${attribute.replace('@', '')} == ${value}\`]`;
-      }
-
-      return `[${brackedData}]`;
-    });
-
-    return restructuredData.join('');
-  }).join('');
-
-  return `**${classChain}`;
-}
-
 export const SCREENSHOT_INTERACTION_MODE = {
   SELECT: 'select',
   SWIPE: 'swipe',

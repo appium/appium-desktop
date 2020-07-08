@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
-import {getLocators, xpathToClassChain} from './shared';
+import {getLocators} from './shared';
 import styles from './Inspector.css';
 import { Button, Row, Col, Input, Modal, Table, Alert, Tooltip, Select } from 'antd';
 import { withTranslation } from '../../util';
@@ -71,7 +71,7 @@ class SelectedElement extends Component {
       elementInteractionsNotAvailable,
       t,
     } = this.props;
-    const {attributes, xpath} = selectedElement;
+    const {attributes, classChain, xpath} = selectedElement;
     const isDisabled = !elementId || isFindingElementsTimes;
 
     // Get the columns for the attributes table
@@ -141,28 +141,29 @@ class SelectedElement extends Component {
       showXpathWarning = true;
     }
 
+    // Add class chain to the data source as well
+    if (classChain && currentContext === NATIVE_APP) {
+      const classChainText = <Tooltip title={t('This selector is in BETA, it is the XML selector translated to `-ios class chain`.')}>
+        {/* eslint-disable-next-line shopify/jsx-no-hardcoded-content */}
+        <span>
+          -ios class chain
+          <strong>
+            {/* eslint-disable-next-line shopify/jsx-no-hardcoded-content */}
+            <a onClick={(e) => e.preventDefault() || shell.openExternal('https://github.com/facebookarchive/WebDriverAgent/wiki/Class-Chain-Queries-Construction-Rules')}>(beta)</a>
+          </strong>
+        </span>
+      </Tooltip>;
+
+      findDataSource.push({
+        key: '-ios class chain',
+        find: classChainText,
+        selector: classChain,
+        time: getTimeButton
+      });
+    }
+
     // Add XPath to the data source as well
     if (xpath) {
-      if (xpath.includes('XCUIElement') && currentContext === NATIVE_APP) {
-        const classChainText = <Tooltip title={t('This selector is in BETA, it is the XML selector translated to `-ios class chain`.')}>
-          {/* eslint-disable-next-line shopify/jsx-no-hardcoded-content */}
-          <span>
-            -ios class chain
-            <strong>
-              {/* eslint-disable-next-line shopify/jsx-no-hardcoded-content */}
-              <a onClick={(e) => e.preventDefault() || shell.openExternal('https://github.com/facebookarchive/WebDriverAgent/wiki/Class-Chain-Queries-Construction-Rules')}>(beta)</a>
-            </strong>
-          </span>
-        </Tooltip>;
-
-        findDataSource.push({
-          key: '-ios class chain',
-          find: classChainText,
-          selector: xpathToClassChain(xpath),
-          time: getTimeButton
-        });
-      }
-
       findDataSource.push({
         key: 'xpath',
         find: 'xpath',

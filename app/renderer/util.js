@@ -5,11 +5,16 @@ import _ from 'lodash';
 import { DOMParser } from 'xmldom';
 
 // Attributes on nodes that we know are unique to the node
-const UNIQUE_ATTRIBUTES = [
+const UNIQUE_XPATH_ATTRIBUTES = [
   'name',
   'content-desc',
   'id',
   'accessibility-id',
+];
+const UNIQUE_PREDICATE_ATTRIBUTES = [
+  'name',
+  'label',
+  'value',
 ];
 
 /**
@@ -33,7 +38,6 @@ export function xmlToJSON (source) {
     }
     return result;
   };
-
   const translateRecursively = (xmlNode, parentPath = '', index = null) => {
     const attributes = {};
     for (let attrIdx = 0; attrIdx < xmlNode.attributes.length; ++attrIdx) {
@@ -48,12 +52,15 @@ export function xmlToJSON (source) {
         .map((childNode, childIndex) => translateRecursively(childNode, path, childIndex)),
       tagName: xmlNode.tagName,
       attributes,
-      xpath: getOptimalXPath(xmlDoc, xmlNode, UNIQUE_ATTRIBUTES),
+      xpath: getOptimalXPath(xmlDoc, xmlNode, UNIQUE_XPATH_ATTRIBUTES),
+      ...(isIOS ? {classChain: `**${getOptimalClassChain(xmlDoc, xmlNode, UNIQUE_PREDICATE_ATTRIBUTES)}`} : {}),
       path,
     };
   };
-  const xmlDoc = new DOMParser().parseFromString(source);
+  const isIOS = source.includes('XCUIElement');
+  let xmlDoc = new DOMParser().parseFromString(source);
   const firstChild = childNodesOf(xmlDoc.documentElement)[0];
+
   return firstChild ? translateRecursively(firstChild) : {};
 }
 
@@ -95,7 +102,6 @@ export function getOptimalXPath (doc, domNode, uniqueAttributes = ['id']) {
       }
     }
 
-
     // Get the relative xpath of this node using tagName
     let xpath = `/${domNode.tagName}`;
 
@@ -115,6 +121,71 @@ export function getOptimalXPath (doc, domNode, uniqueAttributes = ['id']) {
 
     // Make a recursive call to this nodes parents and prepend it to this xpath
     return getOptimalXPath(doc, domNode.parentNode, uniqueAttributes) + xpath;
+  } catch (ign) {
+    // If there's an unexpected exception, abort and don't get an XPath
+    return null;
+  }
+}
+
+/**
+ * Get an optimal Class Chain for a DOMNode based on the getOptimalXPath method
+ *
+ * @param {DOMDocument} doc
+ * @param {DOMNode} domNode
+ * @param {Array<String>} uniqueAttributes Attributes we know are unique
+ * @returns {string}
+ */
+function getOptimalClassChain (doc, domNode, uniqueAttributes) {
+  try {
+    // BASE CASE #1: If this isn't an element, we're above the root, or this is `XCUIElementTypeApplication`,
+    // which is not an official XCUITest element, return empty string
+    if (!domNode.tagName || domNode.nodeType !== 1 || domNode.tagName === 'XCUIElementTypeApplication') {
+      return '';
+    }
+
+    // BASE CASE #2: If this node has a unique attribute, return an absolute XPath with that attribute
+    for (let attrName of uniqueAttributes) {
+      const attrValue = domNode.getAttribute(attrName);
+      if (attrValue) {
+        let xpath = `//${domNode.tagName || '*'}[@${attrName}="${attrValue}"]`;
+        let classChain = `/${domNode.tagName || '*'}[\`${attrName} == "${attrValue}"\`]`;
+        let othersWithAttr;
+
+        // If the XPath does not parse, move to the next unique attribute
+        try {
+          othersWithAttr = XPath.select(xpath, doc);
+        } catch (ign) {
+          continue;
+        }
+
+        // If the attribute isn't actually unique, get it's index too
+        if (othersWithAttr.length > 1) {
+          let index = othersWithAttr.indexOf(domNode);
+          classChain = `${classChain}[${index + 1}]`;
+        }
+        return classChain;
+      }
+    }
+
+    // Get the relative xpath of this node using tagName
+    let classChain = `/${domNode.tagName}`;
+
+    // If this node has siblings of the same tagName, get the index of this node
+    if (domNode.parentNode) {
+      // Get the siblings
+      const childNodes = Array.prototype.slice.call(domNode.parentNode.childNodes, 0).filter((childNode) => (
+        childNode.nodeType === 1 && childNode.tagName === domNode.tagName
+      ));
+
+      // If there's more than one sibling, append the index
+      if (childNodes.length > 1) {
+        let index = childNodes.indexOf(domNode);
+        classChain += `[${index + 1}]`;
+      }
+    }
+
+    // Make a recursive call to this nodes parents and prepend it to this xpath
+    return getOptimalClassChain(doc, domNode.parentNode, uniqueAttributes) + classChain;
   } catch (ign) {
     // If there's an unexpected exception, abort and don't get an XPath
     return null;
