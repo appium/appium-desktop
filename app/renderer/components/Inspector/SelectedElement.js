@@ -166,7 +166,7 @@ class SelectedElement extends Component {
 
     // Add predicate string to the data source as well
     if (predicateString && currentContext === NATIVE_APP) {
-      const predicateStringText = <Tooltip title={t('This selector is in BETA, it is the XML selector translated to `-ios class chain`.')}>
+      const predicateStringText = <Tooltip title={t('This selector is in BETA, it is the XML selector translated to `-ios predicate string`.')}>
         {/* eslint-disable-next-line shopify/jsx-no-hardcoded-content */}
         <span>
           -ios predicate string
