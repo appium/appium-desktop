@@ -71,7 +71,7 @@ class SelectedElement extends Component {
       elementInteractionsNotAvailable,
       t,
     } = this.props;
-    const {attributes, classChain, xpath} = selectedElement;
+    const {attributes, classChain, predicateString, xpath} = selectedElement;
     const isDisabled = !elementId || isFindingElementsTimes;
 
     // Get the columns for the attributes table
@@ -114,6 +114,8 @@ class SelectedElement extends Component {
       title: t('Time'),
       dataIndex: 'time',
       key: 'time',
+      align: 'right',
+      width: 100,
       render: selectedElementTableCell
     }];
 
@@ -158,6 +160,27 @@ class SelectedElement extends Component {
         key: '-ios class chain',
         find: classChainText,
         selector: classChain,
+        time: getTimeButton
+      });
+    }
+
+    // Add predicate string to the data source as well
+    if (predicateString && currentContext === NATIVE_APP) {
+      const predicateStringText = <Tooltip title={t('This selector is in BETA, it is the XML selector translated to `-ios class chain`.')}>
+        {/* eslint-disable-next-line shopify/jsx-no-hardcoded-content */}
+        <span>
+          -ios predicate string
+          <strong>
+            {/* eslint-disable-next-line shopify/jsx-no-hardcoded-content */}
+            <a onClick={(e) => e.preventDefault() || shell.openExternal('https://github.com/facebookarchive/WebDriverAgent/wiki/Predicate-Queries-Construction-Rules')}>(beta)</a>
+          </strong>
+        </span>
+      </Tooltip>;
+
+      findDataSource.push({
+        key: '-ios predicate string',
+        find: predicateStringText,
+        selector: predicateString,
         time: getTimeButton
       });
     }
@@ -224,6 +247,7 @@ class SelectedElement extends Component {
             columns={findColumns}
             dataSource={findDataSource}
             size="small"
+            tableLayout='fixed'
             pagination={false} />
         </Row>
       }

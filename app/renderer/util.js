@@ -11,10 +11,16 @@ const UNIQUE_XPATH_ATTRIBUTES = [
   'id',
   'accessibility-id',
 ];
-const UNIQUE_PREDICATE_ATTRIBUTES = [
-  'name',
+const UNIQUE_CLASS_CHAIN_ATTRIBUTES = [
   'label',
+  'name',
   'value',
+];
+const UNIQUE_PREDICATE_ATTRIBUTES = [
+  'label',
+  'name',
+  'value',
+  'type',
 ];
 
 /**
@@ -47,7 +53,9 @@ export function xmlToJSON (source) {
 
     // Dot Separated path of indices
     const path = _.isNil(index) ? '' : `${!parentPath ? '' : parentPath + '.'}${index}`;
-    const classChainSelector = isIOS ? getOptimalClassChain(xmlDoc, xmlNode, UNIQUE_PREDICATE_ATTRIBUTES) : '';
+    const classChainSelector = isIOS ? getOptimalClassChain(xmlDoc, xmlNode, UNIQUE_CLASS_CHAIN_ATTRIBUTES) : '';
+    const predicateStringSelector = isIOS ? getOptimalPredicateString(xmlDoc, xmlNode, UNIQUE_PREDICATE_ATTRIBUTES) : '';
+
     return {
       children: childNodesOf(xmlNode)
         .map((childNode, childIndex) => translateRecursively(childNode, path, childIndex)),
@@ -55,6 +63,7 @@ export function xmlToJSON (source) {
       attributes,
       xpath: getOptimalXPath(xmlDoc, xmlNode, UNIQUE_XPATH_ATTRIBUTES),
       ...(isIOS ? {classChain: classChainSelector ? `**${classChainSelector}` : ''} : {}),
+      ...(isIOS ? {predicateString: predicateStringSelector ? predicateStringSelector : ''} : {}),
       path,
     };
   };
@@ -144,7 +153,7 @@ function getOptimalClassChain (doc, domNode, uniqueAttributes) {
       return '';
     }
 
-    // BASE CASE #2: If this node has a unique attribute, return an absolute XPath with that attribute
+    // BASE CASE #2: If this node has a unique class chain based on attributes then return it
     for (let attrName of uniqueAttributes) {
       const attrValue = domNode.getAttribute(attrName);
       if (attrValue) {
@@ -187,6 +196,54 @@ function getOptimalClassChain (doc, domNode, uniqueAttributes) {
 
     // Make a recursive call to this nodes parents and prepend it to this xpath
     return getOptimalClassChain(doc, domNode.parentNode, uniqueAttributes) + classChain;
+  } catch (ign) {
+    // If there's an unexpected exception, abort and don't get an XPath
+    return null;
+  }
+}
+
+/**
+ * Get an optimal Predicate String for a DOMNode based on the getOptimalXPath method
+ * The `ios predicate string` can only search a single element, no parent child scope
+ *
+ * @param {DOMDocument} doc
+ * @param {DOMNode} domNode
+ * @param {Array<String>} uniqueAttributes Attributes we know are unique
+ * @returns {string}
+ */
+function getOptimalPredicateString (doc, domNode, uniqueAttributes) {
+  try {
+    // BASE CASE #1: If this isn't an element, we're above the root, or this is `XCUIElementTypeApplication`,
+    // which is not an official XCUITest element, return empty string
+    if (!domNode.tagName || domNode.nodeType !== 1 || domNode.tagName === 'XCUIElementTypeApplication') {
+      return '';
+    }
+
+    // BASE CASE #2: Check all attributes and try to find the best way
+    let xpathAttributes = [];
+    let predicateString = [];
+
+    for (let attrName of uniqueAttributes) {
+      const attrValue = domNode.getAttribute(attrName);
+      if (attrValue) {
+        xpathAttributes.push(`@${attrName}="${attrValue}"`);
+        let xpath = `//*[${xpathAttributes.join(' and ')}]`;
+        predicateString.push(`${attrName} == "${attrValue}"`);
+        let othersWithAttr;
+
+        // If the XPath does not parse, move to the next unique attribute
+        try {
+          othersWithAttr = XPath.select(xpath, doc);
+        } catch (ign) {
+          continue;
+        }
+
+        // If the attribute isn't actually unique, get it's index too
+        if (othersWithAttr.length === 1) {
+          return predicateString.join(' AND ');
+        }
+      }
+    }
   } catch (ign) {
     // If there's an unexpected exception, abort and don't get an XPath
     return null;
