@@ -177,21 +177,25 @@ export default class AppiumMethodHandler {
   /**
    * If the app under test can return contexts command.
    *
-   * @returns {boolean} True if the platformName support context switch
+   * @returns {boolean} True if the app under test supports contexts command.
    *
    */
-  async _hasContextCommands () {
-    const { error } = await this.driver.contexts();
-    return !error;
+  async _hasContextsCommand () {
+    try {
+      const { error } = await this.driver.contexts();
+      return !error;
+    } catch (ign) { }
+    // If the app under test returns non JSON format response
+    return false;
   }
 
   async _getContextsSourceAndScreenshot () {
     let contexts, contextsError, currentContext, currentContextError, platformName,
         source, sourceError, screenshot, screenshotError, statBarHeight, windowSize, windowSizeError;
 
-    if (!await this._hasContextCommands()) {
-      currentContext = NATIVE_APP;
-      contexts = [NATIVE_APP];
+    if (!await this._hasContextsCommand()) {
+      currentContext = null;
+      contexts = [];
     } else {
       try {
         currentContext = await this.driver.currentContext();
@@ -271,7 +275,7 @@ export default class AppiumMethodHandler {
    * Retrieve available contexts, along with the title associated with each webview
    */
   async _getContexts (platform) {
-    return platform.toLowerCase() === 'ios' ? await this.driver.execute('mobile:getContexts', []) : await this._getAndroidContexts();
+    return _.toLower(platform) === 'ios' ? await this.driver.execute('mobile:getContexts', []) : await this._getAndroidContexts();
   }
 
   /**
