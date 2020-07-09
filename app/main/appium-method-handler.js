@@ -175,30 +175,21 @@ export default class AppiumMethodHandler {
   }
 
   /**
-   * If the platformName has context switch command.
-   * Windows, macOS etc may have no an ability to calls contexts related commands.
-   * tvOS also has no ability to support WebView so far.
-   * So, for now, we want to avoid calling contexts related command to them.
+   * If the app under test can return contexts command.
    *
-   * @param {?string} platformName Platform name to check if it support contexts command
    * @returns {boolean} True if the platformName support context switch
    *
    */
-  _hasContextCommands (platformName) {
-    return (['android', 'ios'].includes(_.toLower(platformName)));
+  async _hasContextCommands () {
+    const { error } = await this.driver.contexts();
+    return !error;
   }
 
   async _getContextsSourceAndScreenshot () {
     let contexts, contextsError, currentContext, currentContextError, platformName,
         source, sourceError, screenshot, screenshotError, statBarHeight, windowSize, windowSizeError;
 
-    // Get current session capabilities is not in W3C spec,
-    // so potentially the request fails. Then, let's ignore the result.
-    try {
-      ({platformName, statBarHeight} = await this.driver.sessionCapabilities());
-    } catch (ign) { }
-
-    if (!this._hasContextCommands(platformName)) {
+    if (!await this._hasContextCommands()) {
       currentContext = NATIVE_APP;
       contexts = [NATIVE_APP];
     } else {
@@ -216,6 +207,7 @@ export default class AppiumMethodHandler {
         await this.driver.context(NATIVE_APP);
       }
 
+      ({platformName, statBarHeight} = await this.driver.sessionCapabilities());
 
       try {
         windowSize = await this.driver.getWindowSize();
