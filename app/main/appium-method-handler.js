@@ -176,7 +176,10 @@ export default class AppiumMethodHandler {
 
   /**
    * If the platformName has context switch command.
-   * tvOS, Windows an
+   * Windows, macOS etc may have no an ability to calls contexts related commands.
+   * tvOS also has no ability to support WebView so far.
+   * So, for now, we want to avoid calling contexts related command to them.
+   *
    * @param {?string} platformName Platform name to check if it support contexts command
    * @returns {boolean} True if the platformName support context switch
    *
