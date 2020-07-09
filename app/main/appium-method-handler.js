@@ -174,60 +174,81 @@ export default class AppiumMethodHandler {
     return await this._execute({methodName, args, skipRefresh});
   }
 
+  /**
+   * If the platformName has context switch command.
+   * tvOS, Windows an
+   * @param {?string} platformName Platform name to check if it support contexts command
+   * @returns {boolean} True if the platformName support context switch
+   *
+   */
+  _hasContextSwitch (platformName) {
+    return (['android', 'ios'].includes(_.toLower(platformName)));
+  }
+
   async _getContextsSourceAndScreenshot () {
     let contexts, contextsError, currentContext, currentContextError, platformName,
         source, sourceError, screenshot, screenshotError, statBarHeight, windowSize, windowSizeError;
 
+    // Get current session capabilities is not in W3C spec,
+    // so potentially the request fails. Then, let's ignore the result.
     try {
-      currentContext = await this.driver.currentContext();
-    } catch (e) {
-      if (e.status === 6) {
-        throw e;
+      ({platformName, statBarHeight} = await this.driver.sessionCapabilities());
+    } catch (ign) { }
+
+    if (!this._hasContextSwitch(platformName)) {
+      currentContext = NATIVE_APP;
+      contexts = [NATIVE_APP];
+    } else {
+      try {
+        currentContext = await this.driver.currentContext();
+      } catch (e) {
+        if (e.status === 6) {
+          throw e;
+        }
+        currentContextError = e;
       }
-      currentContextError = e;
-    }
 
-    // Note: These methods need to be executed in the native context because ChromeDriver behaves differently
-    if (currentContext !== NATIVE_APP) {
-      await this.driver.context(NATIVE_APP);
-    }
-
-    ({platformName, statBarHeight} = await this.driver.sessionCapabilities());
-
-    try {
-      windowSize = await this.driver.getWindowSize();
-    } catch (e) {
-      if (e.status === 6) {
-        throw e;
-      }
-      windowSizeError = e;
-    }
-
-    try {
-      contexts = await this._getContexts(platformName);
-    } catch (e) {
-      if (e.status === 6) {
-        throw e;
-      }
-      contextsError = e;
-    }
-
-    if (currentContext !== NATIVE_APP) {
-      await this.driver.context(currentContext);
-    }
-    // End of note
-
-    /**
-     * If its a webview then update the HTML with the element location
-     * so the source can be used in the native inspector
-     */
-    try {
+      // Note: These methods need to be executed in the native context because ChromeDriver behaves differently
       if (currentContext !== NATIVE_APP) {
-        const webviewStatusAddressBarHeight = await this.driver.execute(getWebviewStatusAddressBarHeight, [{platformName, statBarHeight}]);
-
-        await this.driver.execute(setHtmlElementAttributes, [{platformName, webviewStatusAddressBarHeight}]);
+        await this.driver.context(NATIVE_APP);
       }
-    } catch (ign) {}
+
+
+      try {
+        windowSize = await this.driver.getWindowSize();
+      } catch (e) {
+        if (e.status === 6) {
+          throw e;
+        }
+        windowSizeError = e;
+      }
+
+      try {
+        contexts = await this._getContexts(platformName);
+      } catch (e) {
+        if (e.status === 6) {
+          throw e;
+        }
+        contextsError = e;
+      }
+
+      if (currentContext !== NATIVE_APP) {
+        await this.driver.context(currentContext);
+      }
+      // End of note
+
+      /**
+       * If its a webview then update the HTML with the element location
+       * so the source can be used in the native inspector
+       */
+      try {
+        if (currentContext !== NATIVE_APP) {
+          const webviewStatusAddressBarHeight = await this.driver.execute(getWebviewStatusAddressBarHeight, [{platformName, statBarHeight}]);
+
+          await this.driver.execute(setHtmlElementAttributes, [{platformName, webviewStatusAddressBarHeight}]);
+        }
+      } catch (ign) {}
+    }
 
     try {
       source = parseSource(await this.driver.source());
