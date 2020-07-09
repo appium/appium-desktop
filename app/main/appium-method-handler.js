@@ -184,7 +184,7 @@ export default class AppiumMethodHandler {
    * @returns {boolean} True if the platformName support context switch
    *
    */
-  _hasContextSwitch (platformName) {
+  _hasContextCommands (platformName) {
     return (['android', 'ios'].includes(_.toLower(platformName)));
   }
 
@@ -198,7 +198,7 @@ export default class AppiumMethodHandler {
       ({platformName, statBarHeight} = await this.driver.sessionCapabilities());
     } catch (ign) { }
 
-    if (!this._hasContextSwitch(platformName)) {
+    if (!this._hasContextCommands(platformName)) {
       currentContext = NATIVE_APP;
       contexts = [NATIVE_APP];
     } else {
