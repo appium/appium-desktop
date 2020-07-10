@@ -174,60 +174,80 @@ export default class AppiumMethodHandler {
     return await this._execute({methodName, args, skipRefresh});
   }
 
+  /**
+   * If the app under test can return contexts command.
+   *
+   * @returns {boolean} True if the app under test supports contexts command.
+   *
+   */
+  async _hasContextsCommand () {
+    try {
+      const { error } = await this.driver.contexts();
+      return !error;
+    } catch (ign) { }
+    // If the app under test returns non JSON format response
+    return false;
+  }
+
   async _getContextsSourceAndScreenshot () {
     let contexts, contextsError, currentContext, currentContextError, platformName,
         source, sourceError, screenshot, screenshotError, statBarHeight, windowSize, windowSizeError;
 
-    try {
-      currentContext = await this.driver.currentContext();
-    } catch (e) {
-      if (e.status === 6) {
-        throw e;
+    if (!await this._hasContextsCommand()) {
+      currentContext = null;
+      contexts = [];
+    } else {
+      try {
+        currentContext = await this.driver.currentContext();
+      } catch (e) {
+        if (e.status === 6) {
+          throw e;
+        }
+        currentContextError = e;
       }
-      currentContextError = e;
-    }
 
-    // Note: These methods need to be executed in the native context because ChromeDriver behaves differently
-    if (currentContext !== NATIVE_APP) {
-      await this.driver.context(NATIVE_APP);
-    }
-
-    ({platformName, statBarHeight} = await this.driver.sessionCapabilities());
-
-    try {
-      windowSize = await this.driver.getWindowSize();
-    } catch (e) {
-      if (e.status === 6) {
-        throw e;
-      }
-      windowSizeError = e;
-    }
-
-    try {
-      contexts = await this._getContexts(platformName);
-    } catch (e) {
-      if (e.status === 6) {
-        throw e;
-      }
-      contextsError = e;
-    }
-
-    if (currentContext !== NATIVE_APP) {
-      await this.driver.context(currentContext);
-    }
-    // End of note
-
-    /**
-     * If its a webview then update the HTML with the element location
-     * so the source can be used in the native inspector
-     */
-    try {
+      // Note: These methods need to be executed in the native context because ChromeDriver behaves differently
       if (currentContext !== NATIVE_APP) {
-        const webviewStatusAddressBarHeight = await this.driver.execute(getWebviewStatusAddressBarHeight, [{platformName, statBarHeight}]);
-
-        await this.driver.execute(setHtmlElementAttributes, [{platformName, webviewStatusAddressBarHeight}]);
+        await this.driver.context(NATIVE_APP);
       }
-    } catch (ign) {}
+
+      ({platformName, statBarHeight} = await this.driver.sessionCapabilities());
+
+      try {
+        windowSize = await this.driver.getWindowSize();
+      } catch (e) {
+        if (e.status === 6) {
+          throw e;
+        }
+        windowSizeError = e;
+      }
+
+      try {
+        contexts = await this._getContexts(platformName);
+      } catch (e) {
+        if (e.status === 6) {
+          throw e;
+        }
+        contextsError = e;
+      }
+
+      if (currentContext !== NATIVE_APP) {
+        await this.driver.context(currentContext);
+      }
+      // End of note
+
+      /**
+       * If its a webview then update the HTML with the element location
+       * so the source can be used in the native inspector
+       */
+      try {
+        if (currentContext !== NATIVE_APP) {
+          const webviewStatusAddressBarHeight = await this.driver.execute(getWebviewStatusAddressBarHeight, [{platformName, statBarHeight}]);
+
+          await this.driver.execute(setHtmlElementAttributes, [{platformName, webviewStatusAddressBarHeight}]);
+        }
+      } catch (ign) {}
+    }
 
     try {
       source = parseSource(await this.driver.source());
@@ -255,7 +275,7 @@ export default class AppiumMethodHandler {
    * Retrieve available contexts, along with the title associated with each webview
    */
   async _getContexts (platform) {
-    return platform.toLowerCase() === 'ios' ? await this.driver.execute('mobile:getContexts', []) : await this._getAndroidContexts();
+    return _.toLower(platform) === 'ios' ? await this.driver.execute('mobile:getContexts', []) : await this._getAndroidContexts();
   }
 
   /**
