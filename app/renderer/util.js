@@ -225,28 +225,31 @@ function getOptimalPredicateString (doc, domNode, uniqueAttributes) {
 
     for (let attrName of uniqueAttributes) {
       const attrValue = domNode.getAttribute(attrName);
-      if (attrValue) {
-        xpathAttributes.push(`@${attrName}="${attrValue}"`);
-        let xpath = `//*[${xpathAttributes.join(' and ')}]`;
-        predicateString.push(`${attrName} == "${attrValue}"`);
-        let othersWithAttr;
 
-        // If the XPath does not parse, move to the next unique attribute
-        try {
-          othersWithAttr = XPath.select(xpath, doc);
-        } catch (ign) {
-          continue;
-        }
+      if (_.isNil(attrValue) || _.isString(attrValue) && attrValue.length === 0) {
+        continue;
+      }
 
-        // If the attribute isn't actually unique, get it's index too
-        if (othersWithAttr.length === 1) {
-          return predicateString.join(' AND ');
-        }
+      xpathAttributes.push(`@${attrName}="${attrValue}"`);
+      const xpath = `//*[${xpathAttributes.join(' and ')}]`;
+      predicateString.push(`${attrName} == "${attrValue}"`);
+      let othersWithAttr;
+
+      // If the XPath does not parse, move to the next unique attribute
+      try {
+        othersWithAttr = XPath.select(xpath, doc);
+      } catch (ign) {
+        continue;
+      }
+
+      // If the attribute isn't actually unique, get it's index too
+      if (othersWithAttr.length === 1) {
+        return predicateString.join(' AND ');
       }
     }
   } catch (ign) {
     // If there's an unexpected exception, abort and don't get an XPath
-    return null;
+    return '';
   }
 }
 
