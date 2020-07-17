@@ -1,7 +1,8 @@
 import XPath from 'xpath';
 import { withTranslation as wt } from 'react-i18next';
-import config from '../configs/app.config';
 import _ from 'lodash';
+import log from 'electron-log';
+import config from '../configs/app.config';
 import { DOMParser } from 'xmldom';
 
 // Attributes on nodes that we know are unique to the node
@@ -80,7 +81,7 @@ export function xmlToJSON (source) {
  * @param {DOMDocument} doc
  * @param {DOMNode} domNode
  * @param {Array<String>} uniqueAttributes Attributes we know are unique (defaults to just 'id')
- * @returns {string}
+ * @returns {string|null}
  */
 export function getOptimalXPath (doc, domNode, uniqueAttributes = ['id']) {
   try {
@@ -131,8 +132,10 @@ export function getOptimalXPath (doc, domNode, uniqueAttributes = ['id']) {
 
     // Make a recursive call to this nodes parents and prepend it to this xpath
     return getOptimalXPath(doc, domNode.parentNode, uniqueAttributes) + xpath;
-  } catch (ign) {
+  } catch (error) {
     // If there's an unexpected exception, abort and don't get an XPath
+    log.error(`The most optimal XPATH could not be determined because an error was thrown: '${JSON.stringify(error, null, 2)}'`);
+
     return null;
   }
 }
@@ -143,7 +146,7 @@ export function getOptimalXPath (doc, domNode, uniqueAttributes = ['id']) {
  * @param {DOMDocument} doc
  * @param {DOMNode} domNode
  * @param {Array<String>} uniqueAttributes Attributes we know are unique
- * @returns {string}
+ * @returns {string|null}
  */
 function getOptimalClassChain (doc, domNode, uniqueAttributes) {
   try {
@@ -196,8 +199,10 @@ function getOptimalClassChain (doc, domNode, uniqueAttributes) {
 
     // Make a recursive call to this nodes parents and prepend it to this xpath
     return getOptimalClassChain(doc, domNode.parentNode, uniqueAttributes) + classChain;
-  } catch (ign) {
+  } catch (error) {
     // If there's an unexpected exception, abort and don't get an XPath
+    log.error(`The most optimal '-ios class chain' could not be determined because an error was thrown: '${JSON.stringify(error, null, 2)}'`);
+
     return null;
   }
 }
@@ -209,7 +214,7 @@ function getOptimalClassChain (doc, domNode, uniqueAttributes) {
  * @param {DOMDocument} doc
  * @param {DOMNode} domNode
  * @param {Array<String>} uniqueAttributes Attributes we know are unique
- * @returns {string}
+ * @returns {string|null}
  */
 function getOptimalPredicateString (doc, domNode, uniqueAttributes) {
   try {
@@ -247,9 +252,11 @@ function getOptimalPredicateString (doc, domNode, uniqueAttributes) {
         return predicateString.join(' AND ');
       }
     }
-  } catch (ign) {
+  } catch (error) {
     // If there's an unexpected exception, abort and don't get an XPath
-    return '';
+    log.error(`The most optimal '-ios predicate string' could not be determined because an error was thrown: '${JSON.stringify(error, null, 2)}'`);
+
+    return null;
   }
 }
 
