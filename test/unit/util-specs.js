@@ -49,6 +49,8 @@ describe('util.js', function () {
           },
           xpath: '//XCUIElementTypeApplication[@name="🦋"]/XCUIElementTypeWindow',
           path: '0',
+          classChain: '**/XCUIElementTypeWindow',
+          predicateString: 'type == "XCUIElementTypeWindow"',
         }],
         tagName: 'XCUIElementTypeApplication',
         attributes: {
@@ -64,7 +66,380 @@ describe('util.js', function () {
         },
         xpath: '//XCUIElementTypeApplication[@name="🦋"]',
         path: '',
+        classChain: '',
+        predicateString: '',
       });
+    });
+
+    it('should convert xml to json for Android', function () {
+      const json = xmlToJSON(`<hierarchy index="0" class="hierarchy" rotation="0" width="1080" height="2028">
+        <android.widget.FrameLayout
+            index="0" 
+            package="com.appiumdesktop" 
+            class="android.widget.FrameLayout" 
+            text="" 
+            checkable="false" 
+            checked="false" 
+            clickable="false" 
+            enabled="true" 
+            focusable="false" 
+            focused="false" 
+            long-clickable="false" 
+            password="false" 
+            scrollable="false" 
+            selected="false" 
+            bounds="[0,0][1080,2028]" 
+            displayed="true">
+          <android.widget.LinearLayout 
+            index="0" 
+            package="com.appiumdesktop" 
+            class="android.widget.LinearLayout" 
+            text="" 
+            checkable="false" 
+            checked="false" 
+            clickable="false" 
+            enabled="true" 
+            focusable="false" 
+            focused="false" 
+            long-clickable="false" 
+            password="false" 
+            scrollable="false" 
+            selected="false" 
+            bounds="[0,0][1080,2028]" 
+            displayed="true">
+           </android.widget.LinearLayout>
+        </android.widget.FrameLayout>
+      </hierarchy>`);
+      json.should.eql({
+        children: [
+          {
+            children: [],
+            tagName: 'android.widget.LinearLayout',
+            attributes: {
+              index: '0',
+              package: 'com.appiumdesktop',
+              class: 'android.widget.LinearLayout',
+              text: '',
+              checkable: 'false',
+              checked: 'false',
+              clickable: 'false',
+              enabled: 'true',
+              focusable: 'false',
+              focused: 'false',
+              'long-clickable': 'false',
+              password: 'false',
+              scrollable: 'false',
+              selected: 'false',
+              bounds: '[0,0][1080,2028]',
+              displayed: 'true'
+            },
+            xpath: '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout',
+            path: '0'
+          }
+        ],
+        tagName: 'android.widget.FrameLayout',
+        attributes: {
+          index: '0',
+          package: 'com.appiumdesktop',
+          class: 'android.widget.FrameLayout',
+          text: '',
+          checkable: 'false',
+          checked: 'false',
+          clickable: 'false',
+          enabled: 'true',
+          focusable: 'false',
+          focused: 'false',
+          'long-clickable': 'false',
+          password: 'false',
+          scrollable: 'false',
+          selected: 'false',
+          bounds: '[0,0][1080,2028]',
+          displayed: 'true'
+        },
+        xpath: '/hierarchy/android.widget.FrameLayout',
+        path: ''
+      });
+    });
+
+    it('should convert xml to json and provide proper ios class chain and ios predicate string selectors', function () {
+      const json = xmlToJSON(`<hierarchy>
+        <XCUIElementTypeApplication type="XCUIElementTypeApplication" name="wdioDemoApp" label="wdioDemoApp" enabled="true" visible="true" x="0" y="0" width="414" height="896">
+          <XCUIElementTypeWindow type="XCUIElementTypeWindow" enabled="true" visible="true" x="0" y="0" width="414" height="896">
+            <XCUIElementTypeOther type="XCUIElementTypeOther" name="Appium Desktop" label="Appium Desktop" enabled="true" visible="true" x="0" y="0" width="414" height="896">
+              <XCUIElementTypeOther type="XCUIElementTypeOther" name="Appium Desktop" label="Appium Desktop" enabled="true" visible="true" x="0" y="0" width="414" height="802">
+                <XCUIElementTypeOther type="XCUIElementTypeOther" name="button-login-container" label="Login" enabled="true" visible="true" x="109" y="170" width="88" height="40">
+                  <XCUIElementTypeOther type="XCUIElementTypeOther" name="Login" label="Login" enabled="true" visible="true" x="109" y="170" width="88" height="40">
+                    <XCUIElementTypeStaticText type="XCUIElementTypeStaticText" value="Login" name="Login" label="Login" enabled="true" visible="true" x="124" y="175" width="58" height="30"/>
+                  </XCUIElementTypeOther>
+                </XCUIElementTypeOther>
+              </XCUIElementTypeOther>
+              <XCUIElementTypeOther type="XCUIElementTypeOther" name="Home WebView Login Forms Swipe" label="Home WebView Login Forms Swipe" enabled="true" visible="true" x="0" y="802" width="414" height="94">
+                <XCUIElementTypeOther type="XCUIElementTypeOther" name="Home WebView Login Forms Swipe" label="Home WebView Login Forms Swipe" enabled="true" visible="true" x="0" y="802" width="414" height="94">
+                  <XCUIElementTypeButton type="XCUIElementTypeButton" value="1" name="Login" label="Login" enabled="true" visible="true" x="165" y="812" width="84" height="50"/>
+                </XCUIElementTypeOther>
+              </XCUIElementTypeOther>
+            </XCUIElementTypeOther>
+          </XCUIElementTypeWindow>
+          <XCUIElementTypeWindow type="XCUIElementTypeWindow" enabled="true" visible="false" x="0" y="0" width="414" height="896">
+            <XCUIElementTypeOther type="XCUIElementTypeOther" enabled="true" visible="false" x="0" y="0" width="414" height="896">
+              <XCUIElementTypeOther type="XCUIElementTypeOther" enabled="true" visible="false" x="0" y="0" width="414" height="896"/>
+            </XCUIElementTypeOther>
+          </XCUIElementTypeWindow>
+        </XCUIElementTypeApplication>
+      </hierarchy>`);
+      json.should.eql(
+        {
+          children: [
+            {
+              children: [
+                {
+                  children: [
+                    {
+                      children: [
+                        {
+                          children: [
+                            {
+                              children: [
+                                {
+                                  children: [],
+                                  tagName: 'XCUIElementTypeStaticText',
+                                  attributes: {
+                                    type: 'XCUIElementTypeStaticText',
+                                    value: 'Login',
+                                    name: 'Login',
+                                    label: 'Login',
+                                    enabled: 'true',
+                                    visible: 'true',
+                                    x: '124',
+                                    y: '175',
+                                    width: '58',
+                                    height: '30'
+                                  },
+                                  xpath: '//XCUIElementTypeStaticText[@name="Login"]',
+                                  classChain: '**/XCUIElementTypeStaticText[`label == "Login"`]',
+                                  predicateString: 'label == "Login" AND name == "Login" AND value == "Login"',
+                                  path: '0.0.0.0.0.0'
+                                }
+                              ],
+                              tagName: 'XCUIElementTypeOther',
+                              attributes: {
+                                type: 'XCUIElementTypeOther',
+                                name: 'Login',
+                                label: 'Login',
+                                enabled: 'true',
+                                visible: 'true',
+                                x: '109',
+                                y: '170',
+                                width: '88',
+                                height: '40'
+                              },
+                              xpath: '//XCUIElementTypeOther[@name="Login"]',
+                              classChain: '**/XCUIElementTypeOther[`label == "Login"`][2]',
+                              predicateString: 'label == "Login" AND name == "Login" AND type == "XCUIElementTypeOther"',
+                              path: '0.0.0.0.0'
+                            }
+                          ],
+                          tagName: 'XCUIElementTypeOther',
+                          attributes: {
+                            type: 'XCUIElementTypeOther',
+                            name: 'button-login-container',
+                            label: 'Login',
+                            enabled: 'true',
+                            visible: 'true',
+                            x: '109',
+                            y: '170',
+                            width: '88',
+                            height: '40'
+                          },
+                          xpath: '//XCUIElementTypeOther[@name="button-login-container"]',
+                          classChain: '**/XCUIElementTypeOther[`label == "Login"`][1]',
+                          predicateString: 'label == "Login" AND name == "button-login-container"',
+                          path: '0.0.0.0'
+                        }
+                      ],
+                      tagName: 'XCUIElementTypeOther',
+                      attributes: {
+                        type: 'XCUIElementTypeOther',
+                        name: 'Appium Desktop',
+                        label: 'Appium Desktop',
+                        enabled: 'true',
+                        visible: 'true',
+                        x: '0',
+                        y: '0',
+                        width: '414',
+                        height: '802'
+                      },
+                      xpath: '(//XCUIElementTypeOther[@name="Appium Desktop"])[2]',
+                      classChain: '**/XCUIElementTypeOther[`label == "Appium Desktop"`][2]',
+                      predicateString: '',
+                      path: '0.0.0'
+                    },
+                    {
+                      children: [
+                        {
+                          children: [
+                            {
+                              children: [],
+                              tagName: 'XCUIElementTypeButton',
+                              attributes: {
+                                type: 'XCUIElementTypeButton',
+                                value: '1',
+                                name: 'Login',
+                                label: 'Login',
+                                enabled: 'true',
+                                visible: 'true',
+                                x: '165',
+                                y: '812',
+                                width: '84',
+                                height: '50'
+                              },
+                              xpath: '//XCUIElementTypeButton[@name="Login"]',
+                              classChain: '**/XCUIElementTypeButton[`label == "Login"`]',
+                              predicateString: 'label == "Login" AND name == "Login" AND value == "1"',
+                              path: '0.0.1.0.0'
+                            }
+                          ],
+                          tagName: 'XCUIElementTypeOther',
+                          attributes: {
+                            type: 'XCUIElementTypeOther',
+                            name: 'Home WebView Login Forms Swipe',
+                            label: 'Home WebView Login Forms Swipe',
+                            enabled: 'true',
+                            visible: 'true',
+                            x: '0',
+                            y: '802',
+                            width: '414',
+                            height: '94'
+                          },
+                          xpath: '(//XCUIElementTypeOther[@name="Home WebView Login Forms Swipe"])[2]',
+                          classChain: '**/XCUIElementTypeOther[`label == "Home WebView Login Forms Swipe"`][2]',
+                          predicateString: '',
+                          path: '0.0.1.0'
+                        }
+                      ],
+                      tagName: 'XCUIElementTypeOther',
+                      attributes: {
+                        type: 'XCUIElementTypeOther',
+                        name: 'Home WebView Login Forms Swipe',
+                        label: 'Home WebView Login Forms Swipe',
+                        enabled: 'true',
+                        visible: 'true',
+                        x: '0',
+                        y: '802',
+                        width: '414',
+                        height: '94'
+                      },
+                      xpath: '(//XCUIElementTypeOther[@name="Home WebView Login Forms Swipe"])[1]',
+                      classChain: '**/XCUIElementTypeOther[`label == "Home WebView Login Forms Swipe"`][1]',
+                      predicateString: '',
+                      path: '0.0.1'
+                    }
+                  ],
+                  tagName: 'XCUIElementTypeOther',
+                  attributes: {
+                    type: 'XCUIElementTypeOther',
+                    name: 'Appium Desktop',
+                    label: 'Appium Desktop',
+                    enabled: 'true',
+                    visible: 'true',
+                    x: '0',
+                    y: '0',
+                    width: '414',
+                    height: '896'
+                  },
+                  xpath: '(//XCUIElementTypeOther[@name="Appium Desktop"])[1]',
+                  classChain: '**/XCUIElementTypeOther[`label == "Appium Desktop"`][1]',
+                  predicateString: '',
+                  path: '0.0'
+                }
+              ],
+              tagName: 'XCUIElementTypeWindow',
+              attributes: {
+                type: 'XCUIElementTypeWindow',
+                enabled: 'true',
+                visible: 'true',
+                x: '0',
+                y: '0',
+                width: '414',
+                height: '896'
+              },
+              xpath: '//XCUIElementTypeApplication[@name="wdioDemoApp"]/XCUIElementTypeWindow[1]',
+              classChain: '**/XCUIElementTypeWindow[1]',
+              predicateString: '',
+              path: '0'
+            },
+            {
+              children: [
+                {
+                  children: [
+                    {
+                      children: [],
+                      tagName: 'XCUIElementTypeOther',
+                      attributes: {
+                        type: 'XCUIElementTypeOther',
+                        enabled: 'true',
+                        visible: 'false',
+                        x: '0',
+                        y: '0',
+                        width: '414',
+                        height: '896'
+                      },
+                      xpath: '//XCUIElementTypeApplication[@name="wdioDemoApp"]/XCUIElementTypeWindow[2]/XCUIElementTypeOther/XCUIElementTypeOther',
+                      classChain: '**/XCUIElementTypeWindow[2]/XCUIElementTypeOther/XCUIElementTypeOther',
+                      predicateString: '',
+                      path: '1.0.0'
+                    }
+                  ],
+                  tagName: 'XCUIElementTypeOther',
+                  attributes: {
+                    type: 'XCUIElementTypeOther',
+                    enabled: 'true',
+                    visible: 'false',
+                    x: '0',
+                    y: '0',
+                    width: '414',
+                    height: '896'
+                  },
+                  xpath: '//XCUIElementTypeApplication[@name="wdioDemoApp"]/XCUIElementTypeWindow[2]/XCUIElementTypeOther',
+                  classChain: '**/XCUIElementTypeWindow[2]/XCUIElementTypeOther',
+                  predicateString: '',
+                  path: '1.0'
+                }
+              ],
+              tagName: 'XCUIElementTypeWindow',
+              attributes: {
+                type: 'XCUIElementTypeWindow',
+                enabled: 'true',
+                visible: 'false',
+                x: '0',
+                y: '0',
+                width: '414',
+                height: '896'
+              },
+              xpath: '//XCUIElementTypeApplication[@name="wdioDemoApp"]/XCUIElementTypeWindow[2]',
+              classChain: '**/XCUIElementTypeWindow[2]',
+              predicateString: '',
+              path: '1'
+            }
+          ],
+          tagName: 'XCUIElementTypeApplication',
+          attributes: {
+            type: 'XCUIElementTypeApplication',
+            name: 'wdioDemoApp',
+            label: 'wdioDemoApp',
+            enabled: 'true',
+            visible: 'true',
+            x: '0',
+            y: '0',
+            width: '414',
+            height: '896'
+          },
+          xpath: '//XCUIElementTypeApplication[@name="wdioDemoApp"]',
+          classChain: '',
+          predicateString: '',
+          path: ''
+        }
+      );
     });
   });
 

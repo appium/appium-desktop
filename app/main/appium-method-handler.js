@@ -367,5 +367,4 @@ export function getSessionHandler (winId) {
   }
 }
 
-
 AppiumMethodHandler.appiumHandlers = {};
