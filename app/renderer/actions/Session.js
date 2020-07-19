@@ -81,8 +81,9 @@ export function getCapsObject (caps) {
 export function showError (e, methodName, secs = 5) {
   let errMessage;
   if (e['jsonwire-error'] && e['jsonwire-error'].status === 7) {
+    // FIXME: we probably should set 'findElement' as the method name
+    // if it is also number.
     if (methodName === 10) {
-      // It seems find elements is 10
       methodName = 'findElements';
     }
     errMessage = i18n.t('findElementFailure', {methodName});
