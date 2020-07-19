@@ -88,7 +88,7 @@ export function showError (e, methodName, secs = 5) {
     }
     errMessage = i18n.t('findElementFailure', {methodName});
     if (e.message) {
-      errMessage += ` Original error: ${e.message}`;
+      errMessage += ` Original error: '${e.message}'`;
     }
   } else if (e.data) {
     try {
