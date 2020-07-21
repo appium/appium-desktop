@@ -166,8 +166,7 @@ export function newSession (caps, attachSessId = null) {
     let desiredCapabilities = caps ? getCapsObject(caps) : null;
     let session = getState().session;
     let host, port, username, accessKey, https, path, token;
-    desiredCapabilities = includeSafariInWebviews(desiredCapabilities);
-    desiredCapabilities = setChromeDriverToJsonwp(desiredCapabilities);
+    desiredCapabilities = addCustomCaps(desiredCapabilities);
 
     switch (session.serverType) {
       case ServerTypes.local:
@@ -713,40 +712,35 @@ export function setVisibleProviders () {
 }
 
 /**
- * Check if Safari is started, if so add the includeSafariInWebviews
- * for future HTML detection
+ * Add custom capabilities
  *
  * @param {object} caps
  */
-function includeSafariInWebviews (caps) {
-  const {browserName = ''} = caps;
-  const safariCapabilities = {
+function addCustomCaps (caps) {
+  const {browserName = '', platformName = ''} = caps;
+  const safariCustomCaps = {
+    // Add the includeSafariInWebviews for future HTML detection
     includeSafariInWebviews: true,
   };
-
-  return {
-    ...caps,
-    ...(browserName.toLowerCase() === 'safari' ? safariCapabilities : {}),
-  };
-}
-
-/**
- * Check if Chrome is started, if so set the ChromeDriver to w3c:false because
- * all internal calls are still JSONWP calls
- *
- * @param {object} caps
- */
-function setChromeDriverToJsonwp (caps) {
-  const {browserName = ''} = caps;
-  const chromeCapabilities = {
+  const chromeCustomCaps = {
+    // Make sure the screenshot is taken of the whole screen when the ChromeDriver is used
     nativeWebScreenshot: true,
+    // Set the ChromeDriver to w3c:false because all internal calls are still JSONWP calls
     chromeOptions: {
       'w3c': false,
     },
   };
+  const androidCustomCaps = {
+    // @TODO: remove when this is defaulted in the newest Appium 1.8.x release
+    ensureWebviewsHavePages: true,
+  };
+  const iosCustomCaps = {};
 
   return {
     ...caps,
-    ...(browserName.toLowerCase() === 'chrome' ? chromeCapabilities : {}),
+    ...(browserName.toLowerCase() === 'safari' ? safariCustomCaps : {}),
+    ...(browserName.toLowerCase() === 'chrome' ? chromeCustomCaps : {}),
+    ...(platformName.toLowerCase() === 'android' ? androidCustomCaps : {}),
+    ...(platformName.toLowerCase() === 'ios' ? iosCustomCaps : {}),
   };
 }
