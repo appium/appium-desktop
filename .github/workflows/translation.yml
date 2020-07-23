@@ -1,9 +1,9 @@
-name: Weekly job
+name: Weekly Sync Translations job
 
 on:
   workflow_dispatch:
   schedule:
-    - cron: 0 0 * * 0
+    - cron: H 0 * * 0
 
 jobs:
   build:
@@ -30,6 +30,5 @@ jobs:
         token: ${{ github.token }}
         commit-message: 'chore: Update translations'
         title: 'chore: Update translations'
-        # The pull request branch name.
         branch: crowdin-sync-${{ github.run_id }}
         body: Update Crowdin Translations
