@@ -262,7 +262,7 @@ class SelectedElement extends Component {
           <br />
         </div>
       }
-      {currentContext === NATIVE_APP && contexts.length > 1 &&
+      {currentContext === NATIVE_APP && contexts && contexts.length > 1 &&
         <div>
           <Alert
             message={t('usingSwitchContextRecommended')}
@@ -282,7 +282,7 @@ class SelectedElement extends Component {
           <br />
         </div>
       }
-      {contexts.length > 1 &&
+      {contexts && contexts.length > 1 &&
         <div>
           {this.contextSelect()}
           <br /><br />
