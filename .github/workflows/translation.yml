@@ -30,6 +30,5 @@ jobs:
         token: ${{ github.token }}
         commit-message: 'chore: Update translations'
         title: 'chore: Update translations'
-        # The pull request branch name.
         branch: crowdin-sync-${{ github.run_id }}
         body: Update Crowdin Translations
