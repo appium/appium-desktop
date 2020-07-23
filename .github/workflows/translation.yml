@@ -1,4 +1,4 @@
-name: Weekly job
+name: Weekly Sync Translations job
 
 on:
   workflow_dispatch:
