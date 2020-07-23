@@ -1,0 +1,33 @@
+name: Weekly job
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: 0 0 * * 0
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js 12.x
+      uses: actions/setup-node@v1
+      with:
+        node-version: 12.x
+    - run: npm install request bluebird asyncbox
+      name: Install dependencies
+    - run: npm run crowdin-sync
+      name: Crowdin Sync
+      env:
+        CROWDIN_PROJECT_KEY: ${{ secrets.CROWDIN_PROJECT_KEY }}
+
+    - name: Create Pull Request
+      uses: peter-evans/create-pull-request@v2.8.1
+      with:
+        token: ${{ github.token }}
+        commit-message: 'chore: Update translations'
+        title: 'chore: Update translations'
+        # The pull request branch name.
+        branch: crowdin-sync-${{ github.run_id }}
