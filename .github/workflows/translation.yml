@@ -3,7 +3,7 @@ name: Weekly Sync Translations job
 on:
   workflow_dispatch:
   schedule:
-    - cron: 0 0 * * 0
+    - cron: H 0 * * 0
 
 jobs:
   build:
