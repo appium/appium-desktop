@@ -21,6 +21,7 @@ jobs:
     - run: npm run crowdin-sync
       name: Crowdin Sync
       env:
+        CROWDIN_PROJECT_ID: appium-desktop
         CROWDIN_PROJECT_KEY: ${{ secrets.CROWDIN_PROJECT_KEY }}
 
     - name: Create Pull Request
