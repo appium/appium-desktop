@@ -3,14 +3,16 @@ jobs:
 - template: templates/package.yml
   parameters:
     pool:
-      vmImage: 'macOS-10.14'
+      vmImage: 'macOS-10.15'
     name: 'osx_package'
 - template: templates/package.yml
   parameters:
-    pool: 'Hosted Windows 2019 with VS2019'
+    pool:
+      vmImage: 'windows-2019'
     name: 'windows_package'
     buildScript: 'npx electron-builder build -w --ia32 --x64 --publish always'
 - template: templates/package.yml
   parameters:
-    pool: 'Hosted Ubuntu 1604'
+    pool:
+      vmImage: 'ubuntu-18.04'
     name: 'linux_package'
