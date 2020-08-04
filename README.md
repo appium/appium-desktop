@@ -220,13 +220,13 @@ The below screenshot shows the HTML source of the Appium Desktop documentation w
 
 ![Inspector window for HTML](docs/images/screen-inspector-browser-dom.png).
 
-As of Appium Desktop version [`1.8.0`](https://github.com/appium/appium-desktop/releases/) it will automatically enable showing the HTML-source if a Chrome or Safari session is started.
+As of Appium Desktop version [`1.18.0`](https://github.com/appium/appium-desktop/releases/) it will automatically enable showing the HTML-source if a Chrome or Safari session is started.
 
 #### More selector options
 XML is not a native programming language for iOS as it is with Android. Appium will automatically translate the iOS-UIHierarchy into XML, but this is a time-consuming process. 
 The XML will be used to provide a XPATH that can be used to find elements. When you use that XPATH selector with iOS during automation, Appium always needs to do the translation which will slow down the test execution (for more info see [Appium Pro newsletter 8](https://appiumpro.com/editions/8-how-to-find-elements-in-ios-not-by-xpath)).
  
-As of Appium Desktop version [`1.8.0`](https://github.com/appium/appium-desktop/releases/) it will, if possible, also provide the:
+As of Appium Desktop version [`1.18.0`](https://github.com/appium/appium-desktop/releases/) it will, if possible, also provide the:
 
 - [`-ios predicate string`](https://github.com/facebookarchive/WebDriverAgent/wiki/Predicate-Queries-Construction-Rules)
 - [`-ios class chain`](https://github.com/facebookarchive/WebDriverAgent/wiki/Class-Chain-Queries-Construction-Rules)
