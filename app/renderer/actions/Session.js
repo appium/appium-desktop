@@ -171,7 +171,7 @@ export function newSession (caps, attachSessId = null) {
 
     dispatch({type: NEW_SESSION_REQUESTED, caps});
 
-    let desiredCapabilities = caps ? getCapsObject(caps) : null;
+    let desiredCapabilities = caps ? getCapsObject(caps) : {};
     let session = getState().session;
     let host, port, username, accessKey, https, path, token;
     desiredCapabilities = addCustomCaps(desiredCapabilities);
