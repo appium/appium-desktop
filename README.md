@@ -6,7 +6,7 @@
 Appium Desktop is an app for Mac, Windows, and Linux which gives you the power of the [Appium](http://appium.io) automation server in a beautiful and flexible UI. It is a combination of a few Appium-related tools:
 
 * A graphical interface for the Appium Server. You can set options, start/stop the server, see logs, etc... You also don't need to use Node/NPM to install Appium, as the Node runtime comes bundled with Appium Desktop.
-* An Inspector that you can use to look at your app's elements, get basic information about them, and perform basic interactions with them. This is useful as a way to learn about Appium or as a way to learn about your app so you can write tests for it.
+* An Inspector that you can use to look at your app's elements (Safari/Chrome browser, native or hybrid app), get basic information about them, and perform basic interactions with them. This is useful as a way to learn about Appium or as a way to learn about your app so you can write tests for it.
 
 ## Download Appium Desktop
 
@@ -41,7 +41,7 @@ Appium-related concepts. If you are new to Appium, please visit
 [appium.io](http://appium.io) and read our introductory material.
 
 This app provides a convenient way to download and run the Appium automation
-server, as well as a tool for inspecting your Android or iOS application. Its
+server, as well as a tool for inspecting elements in Chrome/Safari browser and your Android or iOS application. Its
 various capabilities are described in the following sections.
 
 ### The server start window
@@ -208,6 +208,38 @@ representing the ability to take certain actions in the Inspector:
 * Refresh (refresh the source and screenshot)
 * Start Recording (open the recorder, see the next section for more information on the recorder)
 * Quit the session (call `driver.quit` and close the Inspector)
+
+#### The inspector for Hybrid or Web apps
+Appium Desktop can also inspect the Webview of your Hybrid app or inspect elements in the Chrome of Safari browser.
+It will automatically determine for Android or iOS if a webview is detected and will notify you about this in the right part of the screen.
+
+![Webview selection](docs/images/webview-selection.png)
+
+A select box of all found contexts will be shown and after selecting a context the source will be updated and show the source.
+The below screenshot shows the HTML source of the Appium Desktop documentation website
+
+![Inspector window for HTML](docs/images/screen-inspector-browser-dom.png).
+
+As of Appium Desktop version [`1.18.0`](https://github.com/appium/appium-desktop/releases/) it will automatically enable showing the HTML-source if a Chrome or Safari session is started.
+
+#### More selector options
+XML is not a native programming language for iOS as it is with Android. Appium will automatically translate the iOS-UIHierarchy into XML, but this is a time-consuming process. 
+The XML will be used to provide a XPATH that can be used to find elements. When you use that XPATH selector with iOS during automation, Appium always needs to do the translation which will slow down the test execution (for more info see [Appium Pro newsletter 8](https://appiumpro.com/editions/8-how-to-find-elements-in-ios-not-by-xpath)).
+ 
+As of Appium Desktop version [`1.18.0`](https://github.com/appium/appium-desktop/releases/) it will, if possible, also provide the:
+
+- [`-ios predicate string`](https://github.com/facebookarchive/WebDriverAgent/wiki/Predicate-Queries-Construction-Rules)
+- [`-ios class chain`](https://github.com/facebookarchive/WebDriverAgent/wiki/Class-Chain-Queries-Construction-Rules)
+
+selector options together with a *Get Timing* button.
+
+![Inspector window](docs/images/selectors.png).
+ 
+When you select an iOS element in Appium Desktop and press the *Get Timing*-button it will provide you the time in milliseconds
+it will take per selector to find the element and will automatically sort them from fast to the slowest.
+In most cases you will see that XPATH is the slowest locator strategy in comparison to the other options.
+
+![Inspector window](docs/images/selectors-time.png). 
 
 ### The Recorder
 
