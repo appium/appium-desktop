@@ -137,6 +137,7 @@
     "i18next": "^19.0.1",
     "i18next-node-fs-backend": "^2.1.1",
     "lodash": "4.x",
+    "mjpeg-consumer": "^2.0.0",
     "moment": "^2.20.1",
     "postcss": "^7.0.4",
     "prop-types": "^15.6.2",
