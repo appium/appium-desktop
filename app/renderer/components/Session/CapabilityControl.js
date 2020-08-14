@@ -7,16 +7,16 @@ import { INPUT } from '../AntdTypes';
 
 const {dialog} = remote;
 
-
 export default class NewSessionForm extends Component {
 
-  getLocalFilePath (success) {
-    dialog.showOpenDialog((filepath) => {
-      if (filepath) {
-        success(filepath);
+  async getLocalFilePath (success) {
+    await dialog.showOpenDialog({
+      properties: ['openFile'],
+    }).then((files) => {
+      if (files.filePaths) {
+        success(files.filePaths);
       }
-    });
-    this.handleSetType = this.handleSetType.bind(this);
+    }).catch(/* ignore */);
   }
 
   render () {
@@ -24,7 +24,7 @@ export default class NewSessionForm extends Component {
 
     const buttonAfter = <FileOutlined
       className={SessionStyles['filepath-button']}
-      onClick={() => this.getLocalFilePath((filepath) => onSetCapabilityParam(filepath[0]))} />;
+      onClick={() => this.getLocalFilePath((filePaths) => onSetCapabilityParam(filePaths[0]))} />;
 
     switch (cap.type) {
       case 'text': return <Input disabled={isEditingDesiredCaps} id={id} placeholder={t('Value')} value={cap.value} onChange={(e) => onSetCapabilityParam(e.target.value)} />;
