@@ -213,14 +213,6 @@ export function newSession (caps, attachSessId = null) {
         }
         https = false;
         break;
-      case ServerTypes.testobject:
-        host = process.env.TESTOBJECT_HOST || `${session.server.testobject.dataCenter || 'us1'}.appium.testobject.com`;
-        port = 443;
-        https = true;
-        if (caps) {
-          desiredCapabilities.testobject_api_key = session.server.testobject.apiKey || process.env.TESTOBJECT_API_KEY;
-        }
-        break;
       case ServerTypes.headspin: {
         const headspinUrl = url.parse(session.server.headspin.webDriverUrl);
         host = session.server.headspin.hostname = headspinUrl.hostname;
@@ -579,7 +571,7 @@ export function setSavedServerParams () {
 export function getRunningSessions () {
   return (dispatch, getState) => {
     const avoidServerTypes = [
-      'sauce', 'testobject'
+      'sauce'
     ];
     // Get currently running sessions for this server
     const state = getState().session;

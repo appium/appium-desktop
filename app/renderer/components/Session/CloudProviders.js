@@ -1,5 +1,4 @@
 import React from 'react';
-import ServerTabTestobject from './ServerTabTestobject';
 import ServerTabHeadspin from './ServerTabHeadspin';
 import ServerTabBrowserstack from './ServerTabBrowserstack';
 import ServerTabBitbar from './ServerTabBitbar';
@@ -14,7 +13,6 @@ import SessionStyles from './Session.css';
 
 // ParcelJS handles image loading by exporting a path to the image
 import SauceLogo from '../../images/sauce_logo.svg';
-import TestObjectLogo from '../../images/testobject_logo.svg';
 import HeadSpinLogo from '../../images/headspin_logo.svg';
 import BrowserStackLogo from '../../images/browserstack_logo.svg';
 import BitBarLogo from '../../images/bitbar_logo.svg';
@@ -29,11 +27,6 @@ const CloudProviders = {
     tabhead: () => <span className={SessionStyles.tabText}><img src={SauceLogo} /></span>,
     tab: (props) => <ServerTabSauce {...props} />,
     logo: SauceLogo,
-  },
-  testobject: {
-    tabhead: () => <span className={SessionStyles.tabText}><img src={TestObjectLogo} /></span>,
-    tab: (props) => <ServerTabTestobject {...props} />,
-    logo: TestObjectLogo,
   },
   headspin: {
     tabhead: () => <span className={SessionStyles.tabText}><img src={HeadSpinLogo} /></span>,

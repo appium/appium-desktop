@@ -36,9 +36,6 @@ const INITIAL_STATE = {
     sauce: {
       dataCenter: 'us-west-1',
     },
-    testobject: {
-      dataCenter: 'US',
-    },
     headspin: {},
     browserstack: {},
     advanced: {},
@@ -202,7 +199,7 @@ export default function session (state = INITIAL_STATE, action) {
             // Copy current server state and extend it with new server state
             const nextServerState = _.cloneDeep(currentServerState || {});
 
-            // Extend each server (sauce, testobject, remote, kobiton, etc...)
+            // Extend each server (sauce, remote, kobiton, etc...)
             for (let serverName of _.keys(nextServerState)) {
               nextServerState[serverName] = {
                 ...(nextServerState[serverName] || {}),

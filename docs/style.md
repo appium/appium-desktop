@@ -9,7 +9,7 @@
 * Always extend the state and never overwrite it
 
 ```javascript
-// good 
+// good
 export default function session (state = initialState, action) {
   switch (action.type) {
     case CASE_NAME:
@@ -83,7 +83,6 @@ const initialState = {
     local: {},
     remote: {},
     sauce: {},
-    testobject: {},
   }
 };
 
@@ -108,7 +107,6 @@ const initialState = {
     local: {},
     remote: {},
     sauce: {},
-    testobject: {},
   }
 };
 
@@ -121,7 +119,6 @@ export default function session (state = INITIAL_STATE, action) {
           local: action.local,
           remote: action.remote,
           sauce: action.sauce,
-          testobject: action.testobject, 
         }, // What if a 5th property is added? It will be overwritten by this case.
       };
     default:

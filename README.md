@@ -120,7 +120,6 @@ These are the options for launching a session against a non-local Appium server:
 | Automatic server | Automatically utilizes the currently-running Appium server                                                                 |
 | Custom Server    | Launch a session on an Appium server running on another machine over the network                                           |
 | Sauce Labs       | Launch a session on the [Sauce Labs](https://saucelabs.com) cloud. [Documentation](https://wiki.saucelabs.com/)            |
-| TestObject       | Launch a session on the [TestObject](https://testobject.com) cloud. [Documentation](https://wiki.saucelabs.com/)           |
 | Headspin         | Launch a session on the [Headspin](https://headspin.io) cloud. [Documentation](https://headspin.io/)                 |
 | BrowserStack     | Launch a session on the [Browserstack](https://browserstack.com) cloud. [Documentation](https://www.browserstack.com/docs) |
 | Bitbar           | Launch a session on the [Bitbar](https://bitbar.com) cloud. [Documentation](http://docs.bitbar.com/)                       |
@@ -223,9 +222,9 @@ The below screenshot shows the HTML source of the Appium Desktop documentation w
 As of Appium Desktop version [`1.18.0`](https://github.com/appium/appium-desktop/releases/) it will automatically enable showing the HTML-source if a Chrome or Safari session is started.
 
 #### More selector options
-XML is not a native programming language for iOS as it is with Android. Appium will automatically translate the iOS-UIHierarchy into XML, but this is a time-consuming process. 
+XML is not a native programming language for iOS as it is with Android. Appium will automatically translate the iOS-UIHierarchy into XML, but this is a time-consuming process.
 The XML will be used to provide a XPATH that can be used to find elements. When you use that XPATH selector with iOS during automation, Appium always needs to do the translation which will slow down the test execution (for more info see [Appium Pro newsletter 8](https://appiumpro.com/editions/8-how-to-find-elements-in-ios-not-by-xpath)).
- 
+
 As of Appium Desktop version [`1.18.0`](https://github.com/appium/appium-desktop/releases/) it will, if possible, also provide the:
 
 - [`-ios predicate string`](https://github.com/facebookarchive/WebDriverAgent/wiki/Predicate-Queries-Construction-Rules)
@@ -234,12 +233,12 @@ As of Appium Desktop version [`1.18.0`](https://github.com/appium/appium-desktop
 selector options together with a *Get Timing* button.
 
 ![Inspector window](docs/images/selectors.png).
- 
+
 When you select an iOS element in Appium Desktop and press the *Get Timing*-button it will provide you the time in milliseconds
 it will take per selector to find the element and will automatically sort them from fast to the slowest.
 In most cases you will see that XPATH is the slowest locator strategy in comparison to the other options.
 
-![Inspector window](docs/images/selectors-time.png). 
+![Inspector window](docs/images/selectors-time.png).
 
 ### The Recorder
 
