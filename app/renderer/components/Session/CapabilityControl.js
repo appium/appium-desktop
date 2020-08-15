@@ -27,10 +27,7 @@ export default class NewSessionForm extends Component {
 
     const buttonAfter = (currentFilePath) => <FileOutlined
       className={SessionStyles['filepath-button']}
-      onClick={async () => {
-        const filePath = await this.getLocalFilePath();
-        onSetCapabilityParam(filePath ? filePath : currentFilePath) ;
-      }} />;
+      onClick={async () => {onSetCapabilityParam(await this.getLocalFilePath() || currentFilePath);}} />;
 
     switch (cap.type) {
       case 'text': return <Input disabled={isEditingDesiredCaps} id={id} placeholder={t('Value')} value={cap.value} onChange={(e) => onSetCapabilityParam(e.target.value)} />;
