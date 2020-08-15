@@ -4,27 +4,28 @@ import SessionStyles from './Session.css';
 import { remote } from 'electron';
 import { FileOutlined } from '@ant-design/icons';
 import { INPUT } from '../AntdTypes';
+import _ from 'lodash';
+import log from 'electron-log';
 
 const {dialog} = remote;
 
 export default class NewSessionForm extends Component {
 
-  getLocalFilePath (success) {
-    dialog.showOpenDialog({
-      properties: ['openFile'],
-    }).then((result) => {
-      if (result.filePaths) {
-        success(result.filePaths);
-      }
-    }).catch(/* ignore */);
-  }
-
   render () {
     const {cap, onSetCapabilityParam, isEditingDesiredCaps, id, t} = this.props;
 
-    const buttonAfter = <FileOutlined
+    const buttonAfter = (currentPath) => <FileOutlined
       className={SessionStyles['filepath-button']}
-      onClick={() => this.getLocalFilePath((filePaths) => onSetCapabilityParam(filePaths[0]))} />;
+      onClick={async () => {
+        try {
+          const {canceled, filePaths} = await dialog.showOpenDialog({properties: ['openFile']});
+          let returnPath = currentPath;
+          if (!canceled && !_.isEmpty(filePaths)) {returnPath = filePaths[0];}
+          onSetCapabilityParam(returnPath);
+        } catch (e) {
+          log.error(e);
+        }
+      }} />;
 
     switch (cap.type) {
       case 'text': return <Input disabled={isEditingDesiredCaps} id={id} placeholder={t('Value')} value={cap.value} onChange={(e) => onSetCapabilityParam(e.target.value)} />;
@@ -37,7 +38,7 @@ export default class NewSessionForm extends Component {
         return <Input disabled={isEditingDesiredCaps} id={id} type={INPUT.TEXTAREA} rows={4} placeholder={t('Value')} value={cap.value}
           onChange={(e) => onSetCapabilityParam(e.target.value)} />;
       case 'file': return <div className={SessionStyles.fileControlWrapper}>
-        <Input disabled={isEditingDesiredCaps} id={id} placeholder={t('Value')} value={cap.value} addonAfter={buttonAfter} />
+        <Input disabled={isEditingDesiredCaps} id={id} placeholder={t('Value')} value={cap.value} addonAfter={buttonAfter(cap.value)} />
       </div>;
 
       default:
