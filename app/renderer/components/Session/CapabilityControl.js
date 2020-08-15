@@ -9,12 +9,12 @@ const {dialog} = remote;
 
 export default class NewSessionForm extends Component {
 
-  async getLocalFilePath (success) {
-    await dialog.showOpenDialog({
+  getLocalFilePath (success) {
+    dialog.showOpenDialog({
       properties: ['openFile'],
-    }).then((files) => {
-      if (files.filePaths) {
-        success(files.filePaths);
+    }).then((result) => {
+      if (result.filePaths) {
+        success(result.filePaths);
       }
     }).catch(/* ignore */);
   }
