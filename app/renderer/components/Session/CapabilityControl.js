@@ -11,20 +11,25 @@ const {dialog} = remote;
 
 export default class NewSessionForm extends Component {
 
+  async getLocalFilePath () {
+    try {
+      const {canceled, filePaths} = await dialog.showOpenDialog({properties: ['openFile']});
+      if (!canceled && !_.isEmpty(filePaths)) {
+        return filePaths[0];
+      }
+    } catch (e) {
+      log.error(e);
+    }
+  }
+
   render () {
     const {cap, onSetCapabilityParam, isEditingDesiredCaps, id, t} = this.props;
 
     const buttonAfter = (currentPath) => <FileOutlined
       className={SessionStyles['filepath-button']}
       onClick={async () => {
-        try {
-          const {canceled, filePaths} = await dialog.showOpenDialog({properties: ['openFile']});
-          let returnPath = currentPath;
-          if (!canceled && !_.isEmpty(filePaths)) {returnPath = filePaths[0];}
-          onSetCapabilityParam(returnPath);
-        } catch (e) {
-          log.error(e);
-        }
+        const filePath = await this.getLocalFilePath();
+        onSetCapabilityParam(filePath ? filePath : currentPath) ;
       }} />;
 
     switch (cap.type) {
