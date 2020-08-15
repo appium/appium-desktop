@@ -25,11 +25,11 @@ export default class NewSessionForm extends Component {
   render () {
     const {cap, onSetCapabilityParam, isEditingDesiredCaps, id, t} = this.props;
 
-    const buttonAfter = (currentPath) => <FileOutlined
+    const buttonAfter = (currentFilePath) => <FileOutlined
       className={SessionStyles['filepath-button']}
       onClick={async () => {
         const filePath = await this.getLocalFilePath();
-        onSetCapabilityParam(filePath ? filePath : currentPath) ;
+        onSetCapabilityParam(filePath ? filePath : currentFilePath) ;
       }} />;
 
     switch (cap.type) {
