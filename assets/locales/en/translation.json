@@ -199,6 +199,7 @@
   "SauceLabs Data Center": "SauceLabs Data Center",
   "US": "US",
   "EU": "EU",
+  "UP": "Appium Desktop will use the new Sauce Labs Unified Platform endpoint the the US by default. If you want to use the old US endpoint then do the following: Go to 'Custom server', add 'ondemand.saucelabs.com' as a remote host, use port '433'<br/>, the remote path is ''/wd/hub<br/> and last but not least enable 'SSL'",
   "proxyThroughSC": "Proxy through Sauce Connect's Selenium Relay",
   "SSL": "SSL",
   "text": "text",

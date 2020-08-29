@@ -236,3 +236,9 @@
   height: 32px;
   border-right: 1px solid #d9d9d9 !important;
 }
+
+.addonDataCenterRadioContainer {
+  line-height: 32px;
+  display: table-cell;
+  padding-left: 11px;
+}
