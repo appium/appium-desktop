@@ -199,6 +199,7 @@
   "SauceLabs Data Center": "Centro de Dados do SauceLabs",
   "US": "EUA",
   "EU": "EU",
+  "UP": "Appium Desktop usará o novo Sauce Labs Unified Platform US por padrão. Se você quiser usar o antigo US endpoint, faça o seguinte: Vá para a aba 'Servidor personalizado', adicione 'ondemand. aucelabs.com' como um host remoto, use a porta '433', o caminho remoto é '/wd/hub' e por último, mas não menos ativando 'SSL'.",
   "proxyThroughSC": "Proxy através do Sauce Connect's Selenium Relay",
   "SSL": "SSL",
   "text": "texto",
