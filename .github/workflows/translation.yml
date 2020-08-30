@@ -31,4 +31,4 @@ jobs:
         commit-message: 'chore: Update translations'
         title: 'chore: Update translations'
         branch: crowdin-sync-${{ github.run_id }}
-        body: Update Crowdin Translations
+        body: 'Update Crowdin Translations: https://crowdin.com/project/appium-desktop'
