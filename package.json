@@ -166,7 +166,7 @@
     "@babel/plugin-transform-runtime": "^7.4.0",
     "@babel/register": "^7.4.0",
     "appium-fake-driver": "^1.0.0",
-    "asar": "^2.0.0",
+    "asar": "^3.0.3",
     "asyncbox": "^2.5.3",
     "babel-eslint": "^10.0.1",
     "babel-plugin-transform-class-properties": "^6.24.1",
