@@ -1,15 +1,14 @@
 import { ipcRenderer } from 'electron';
-import { notification } from 'antd';
-import { push } from 'connected-react-router';
 import _ from 'lodash';
-import B from 'bluebird';
-import { getLocators } from '../components/Inspector/shared';
+import { push } from 'connected-react-router';
+import { getLocators, APP_MODE } from '../components/Inspector/shared';
 import { showError } from './Session';
-import { bindClient, unbindClient, callClientMethod } from './shared';
 import { xmlToJSON } from '../util';
 import frameworks from '../lib/client-frameworks';
-import settings from '../../shared/settings';
+import settings, { SAVED_FRAMEWORK } from '../../shared/settings';
 import i18n from '../../configs/i18next.config.renderer';
+import AppiumClient from '../lib/appium-client';
+import { notification } from 'antd';
 
 export const SET_SESSION_DETAILS = 'SET_SESSION_DETAILS';
 export const SET_SOURCE_AND_SCREENSHOT = 'SET_SOURCE_AND_SCREENSHOT';
@@ -34,7 +33,6 @@ export const PAUSE_RECORDING = 'PAUSE_RECORDING';
 export const CLEAR_RECORDING = 'CLEAR_RECORDING';
 export const CLOSE_RECORDER = 'CLOSE_RECORDER';
 export const SET_ACTION_FRAMEWORK = 'SET_ACTION_FRAMEWORK';
-export const SAVED_FRAMEWORK = 'SAVED_FRAMEWORK';
 export const RECORD_ACTION = 'RECORD_ACTION';
 export const SET_SHOW_BOILERPLATE = 'SET_SHOW_BOILERPLATE';
 
@@ -51,6 +49,7 @@ export const CLEAR_SEARCH_RESULTS = 'CLEAR_SEARCH_RESULTS';
 export const ADD_ASSIGNED_VAR_CACHE = 'ADD_ASSIGNED_VAR_CACHE';
 export const CLEAR_ASSIGNED_VAR_CACHE = 'CLEAR_ASSIGNED_VAR_CACHE';
 export const SET_SCREENSHOT_INTERACTION_MODE = 'SET_SCREENSHOT_INTERACTION_MODE';
+export const SET_APP_MODE = 'SET_APP_MODE';
 export const SET_SEARCHED_FOR_ELEMENT_BOUNDS = 'SET_SEARCHED_FOR_ELEMENT_BOUNDS';
 export const CLEAR_SEARCHED_FOR_ELEMENT_BOUNDS = 'CLEAR_SEARCHED_FOR_ELEMENT_BOUNDS';
 
@@ -71,33 +70,13 @@ export const SET_ACTION_ARG = 'SET_ACTION_ARG';
 
 export const SET_CONTEXT = 'SET_CONTEXT';
 
-export function bindAppium () {
-  return (dispatch) => {
-    // Listen for session response messages from 'main'
-    bindClient();
+export const SET_KEEP_ALIVE_INTERVAL = 'SET_KEEP_ALIVE_INTERVAL';
+export const SET_USER_WAIT_TIMEOUT = 'SET_USER_WAIT_TIMEOUT';
+export const SET_LAST_ACTIVE_MOMENT = 'SET_LAST_ACTIVE_MOMENT';
 
-    // If user is inactive ask if they wish to keep session alive
-    ipcRenderer.on('appium-prompt-keep-alive', () => {
-      promptKeepAlive()(dispatch);
-    });
-
-    // When session is done, unbind them all
-    ipcRenderer.on('appium-session-done', (evt, {reason, killedByUser}) => {
-      ipcRenderer.removeAllListeners('appium-session-done');
-      ipcRenderer.removeAllListeners('appium-prompt-keep-alive');
-      unbindClient();
-      dispatch({type: QUIT_SESSION_DONE});
-      dispatch(push('/session'));
-      if (!killedByUser) {
-        notification.error({
-          message: 'Error',
-          description: reason || i18n.t('Session has been terminated'),
-          duration: 0
-        });
-      }
-    });
-  };
-}
+const KEEP_ALIVE_PING_INTERVAL = 5 * 1000;
+const NO_NEW_COMMAND_LIMIT = 24 * 60 * 60 * 1000; // Set timeout to 24 hours
+const WAIT_FOR_USER_KEEP_ALIVE = 60 * 60 * 1000; // Give user 1 hour to reply
 
 // A debounced function that calls findElement and gets info about the element
 const findElement = _.debounce(async function (strategyMap, dispatch, getState, path) {
@@ -106,7 +85,7 @@ const findElement = _.debounce(async function (strategyMap, dispatch, getState, 
     let {elementId, variableName, variableType} = await callClientMethod({
       strategy,
       selector,
-    });
+    })(dispatch, getState);
 
     // Set the elementId, variableName and variableType for the selected element
     // (check first that the selectedElementPath didn't change, to avoid race conditions)
@@ -172,14 +151,14 @@ export function unselectHoveredElement (path) {
 export function applyClientMethod (params) {
   return async (dispatch, getState) => {
     const isRecording = params.methodName !== 'quit' &&
-                      params.methodName !== 'source' &&
+                      params.methodName !== 'getPageSource' &&
                       getState().inspector.isRecording;
     try {
       dispatch({type: METHOD_CALL_REQUESTED});
       const {contexts, contextsError, currentContext, currentContextError,
              source, screenshot, windowSize, result, sourceError,
              screenshotError, windowSizeError, variableName,
-             variableIndex, strategy, selector} = await callClientMethod(params);
+             variableIndex, strategy, selector} = await callClientMethod(params)(dispatch, getState);
 
       if (isRecording) {
         // Add 'findAndAssign' line of code. Don't do it for arrays though. Arrays already have 'find' expression
@@ -212,6 +191,7 @@ export function applyClientMethod (params) {
       }
       return result;
     } catch (error) {
+      console.log(error); // eslint-disable-line no-console
       let methodName = params.methodName === 'click' ? 'tap' : params.methodName;
       showError(error, methodName, 10);
       dispatch({type: METHOD_CALL_DONE});
@@ -255,9 +235,19 @@ export function setExpandedPaths (paths) {
 /**
  * Quit the session and go back to the new session window
  */
-export function quitSession () {
-  return async (dispatch) => {
-    await applyClientMethod({methodName: 'quit'})(dispatch);
+export function quitSession (reason, killedByUser = true) {
+  return async (dispatch, getState) => {
+    killKeepAliveLoop()(dispatch, getState);
+    await applyClientMethod({methodName: 'quit'})(dispatch, getState);
+    dispatch({type: QUIT_SESSION_DONE});
+    dispatch(push('/session'));
+    if (!killedByUser) {
+      notification.error({
+        message: 'Error',
+        description: reason || i18n.t('Session has been terminated'),
+        duration: 0
+      });
+    }
   };
 }
 
@@ -317,9 +307,9 @@ export function toggleShowBoilerplate () {
   };
 }
 
-export function setSessionDetails (sessionDetails) {
+export function setSessionDetails (driver, sessionDetails) {
   return (dispatch) => {
-    dispatch({type: SET_SESSION_DETAILS, sessionDetails});
+    dispatch({type: SET_SESSION_DETAILS, driver, sessionDetails});
   };
 }
 
@@ -358,7 +348,7 @@ export function searchForElement (strategy, selector) {
   return async (dispatch, getState) => {
     dispatch({type: SEARCHING_FOR_ELEMENTS});
     try {
-      let {elements, variableName} = await callClientMethod({strategy, selector, fetchArray: true});
+      let {elements, variableName} = await callClientMethod({strategy, selector, fetchArray: true})(dispatch, getState);
       findAndAssign(strategy, selector, variableName, true)(dispatch, getState);
       elements = elements.map((el) => el.id);
       dispatch({type: SEARCHING_FOR_ELEMENTS_COMPLETED, elements});
@@ -373,13 +363,13 @@ export function searchForElement (strategy, selector) {
  * Get all the find element times based on the find data source
  */
 export function getFindElementsTimes (findDataSource) {
-  return async (dispatch) => {
+  return async (dispatch, getState) => {
     dispatch({type: GET_FIND_ELEMENTS_TIMES});
     try {
       const findElementsExecutionTimes = [];
       for (const element of findDataSource) {
         const {find, key, selector} = element;
-        const {executionTime} = await callClientMethod({strategy: key, selector});
+        const {executionTime} = await callClientMethod({strategy: key, selector})(dispatch, getState);
         findElementsExecutionTimes.push({find, key, selector, time: executionTime});
       }
 
@@ -407,16 +397,17 @@ export function findAndAssign (strategy, selector, variableName, isArray) {
 }
 
 export function setLocatorTestElement (elementId) {
-  return async (dispatch) => {
+  return async (dispatch, getState) => {
     dispatch({type: SET_LOCATOR_TEST_ELEMENT, elementId});
     dispatch({type: CLEAR_SEARCHED_FOR_ELEMENT_BOUNDS});
     if (elementId) {
       try {
-        const [location, size] = await (B.all([
-          callClientMethod({methodName: 'getLocation', args: [elementId], skipRefresh: true, skipRecord: true, ignoreResult: true}),
-          callClientMethod({methodName: 'getSize', args: [elementId], skipRefresh: true, skipRecord: true, ignoreResult: true}),
-        ]));
-        dispatch({type: SET_SEARCHED_FOR_ELEMENT_BOUNDS, location: location.res, size: size.res});
+        const rect = await callClientMethod({methodName: 'getRect', args: [elementId], skipRefresh: true, skipRecord: true, ignoreResult: true})(dispatch, getState);
+        dispatch({
+          type: SET_SEARCHED_FOR_ELEMENT_BOUNDS,
+          location: {x: rect.x, y: rect.y},
+          size: {width: rect.width, height: rect.height},
+        });
       } catch (ign) { }
     }
   };
@@ -431,6 +422,17 @@ export function clearSearchResults () {
 export function selectScreenshotInteractionMode (screenshotInteractionMode) {
   return (dispatch) => {
     dispatch({type: SET_SCREENSHOT_INTERACTION_MODE, screenshotInteractionMode });
+  };
+}
+
+export function selectAppMode (mode) {
+  return async (dispatch, getState) => {
+    const {appMode} = getState().inspector;
+    dispatch({type: SET_APP_MODE, mode});
+    // if we're transitioning to hybrid mode, do a pre-emptive search for contexts
+    if (appMode !== mode && mode === APP_MODE.WEB_HYBRID) {
+      await applyClientMethod({methodName: 'getPageSource'})(dispatch, getState);
+    }
   };
 }
 
@@ -458,10 +460,9 @@ export function promptKeepAlive () {
   };
 }
 
-export function keepSessionAlive () {
+export function hideKeepAlivePrompt () {
   return (dispatch) => {
     dispatch({type: HIDE_PROMPT_KEEP_ALIVE});
-    ipcRenderer.send('appium-keep-session-alive');
   };
 }
 
@@ -500,3 +501,99 @@ export function setActionArg (index, value) {
     dispatch({type: SET_ACTION_ARG, index, value});
   };
 }
+
+/**
+ * Ping server every 30 seconds to prevent `newCommandTimeout` from killing session
+ */
+export function runKeepAliveLoop () {
+  return (dispatch, getState) => {
+    dispatch({type: SET_LAST_ACTIVE_MOMENT, lastActiveMoment: +(new Date())});
+    const {driver} = getState().inspector;
+
+    const keepAliveInterval = setInterval(async () => {
+      const {lastActiveMoment} = getState().inspector;
+      console.log('Pinging Appium server to keep session active'); // eslint-disable-line no-console
+      try {
+        await driver.getTimeouts(); // Pings the Appium server to keep it alive
+      } catch (ign) {}
+      const now = +(new Date());
+
+      // If the new command limit has been surpassed, prompt user if they want to keep session going
+      // Give them WAIT_FOR_USER_KEEP_ALIVE ms to respond
+      if (now - lastActiveMoment > NO_NEW_COMMAND_LIMIT) {
+        promptKeepAlive()(dispatch);
+
+        // After the time limit kill the session (this timeout will be killed if they keep it alive)
+        const userWaitTimeout = setTimeout(() => {
+          quitSession('Session closed due to inactivity', false)(dispatch, getState);
+        }, WAIT_FOR_USER_KEEP_ALIVE);
+        dispatch({type: SET_USER_WAIT_TIMEOUT, userWaitTimeout});
+      }
+    }, KEEP_ALIVE_PING_INTERVAL);
+    dispatch({type: SET_KEEP_ALIVE_INTERVAL, keepAliveInterval});
+  };
+}
+
+/**
+ * Get rid of the intervals to keep the session alive
+ */
+export function killKeepAliveLoop () {
+  return (dispatch, getState) => {
+    const {keepAliveInterval, userWaitTimeout} = getState().inspector;
+    clearInterval(keepAliveInterval);
+    if (userWaitTimeout) {
+      clearTimeout(userWaitTimeout);
+    }
+    dispatch({type: SET_KEEP_ALIVE_INTERVAL, keepAliveInterval: null});
+    dispatch({type: SET_USER_WAIT_TIMEOUT, userWaitTimeout: null});
+  };
+}
+
+/**
+ * Reset the new command clock and kill the wait for user timeout
+ */
+export function keepSessionAlive () {
+  return (dispatch, getState) => {
+    const {userWaitTimeout} = getState().inspector;
+    hideKeepAlivePrompt()(dispatch);
+    dispatch({type: SET_LAST_ACTIVE_MOMENT, lastActiveMoment: +(new Date())});
+    if (userWaitTimeout) {
+      clearTimeout(userWaitTimeout);
+      dispatch({type: SET_USER_WAIT_TIMEOUT, userWaitTimeout: null});
+    }
+  };
+}
+
+export function callClientMethod (params) {
+  return async (dispatch, getState) => {
+    console.log(`Calling client method with params:`); // eslint-disable-line no-console
+    console.log(params); // eslint-disable-line no-console
+    const {driver, appMode} = getState().inspector;
+    const {methodName, ignoreResult = true} = params;
+    params.appMode = appMode;
+
+    keepSessionAlive()(dispatch, getState);
+    const client = AppiumClient.instance(driver);
+    const res = await client.run(params);
+    let {commandRes} = res;
+
+    // Ignore empty objects
+    if (_.isObject(res) && _.isEmpty(res)) {
+      commandRes = null;
+    }
+
+    if (!ignoreResult) {
+      const truncatedResult = _.truncate(JSON.stringify(commandRes), {length: 2000});
+      console.log(`Result of client command was:`); // eslint-disable-line no-console
+      console.log(truncatedResult); // eslint-disable-line no-console
+      notification.success({
+        message: i18n.t('methodCallResult', {methodName}),
+        description: truncatedResult,
+        duration: 0,
+      });
+    }
+    res.elementId = res.id;
+    return res;
+  };
+}
+

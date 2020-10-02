@@ -21,6 +21,10 @@ ${code}
 `;
   }
 
+  codeFor_executeScript (/*varNameIgnore, varIndexIgnore, args*/) {
+    return `/* TODO implement executeScript */`;
+  }
+
   codeFor_findAndAssign (strategy, locator, localVar, isArray) {
     // wdio has its own way of indicating the strategy in the locator string
     switch (strategy) {
@@ -74,11 +78,11 @@ ${code}
     return `let packageName = mob.getCurrentPackage();`;
   }
 
-  codeFor_installAppOnDevice (varNameIgnore, varIndexIgnore, app) {
+  codeFor_installApp (varNameIgnore, varIndexIgnore, app) {
     return `mob.installApp('${app}');`;
   }
 
-  codeFor_isAppInstalledOnDevice (varNameIgnore, varIndexIgnore, app) {
+  codeFor_isAppInstalled (varNameIgnore, varIndexIgnore, app) {
     return `let isAppInstalled = mob.isAppInstalled("${app}");`;
   }
 
@@ -86,7 +90,7 @@ ${code}
     return `mob.launchApp();`;
   }
 
-  codeFor_backgroundApp (varNameIgnore, varIndexIgnore, timeout) {
+  codeFor_background (varNameIgnore, varIndexIgnore, timeout) {
     return `mob.driver().background(${timeout});`;
   }
 
@@ -94,16 +98,16 @@ ${code}
     return `mob.closeApp();`;
   }
 
-  codeFor_resetApp () {
-    return `mob.resetApp();`;
+  codeFor_reset () {
+    return `mob.reset();`;
   }
 
-  codeFor_removeAppFromDevice (varNameIgnore, varIndexIgnore, app) {
+  codeFor_removeApp (varNameIgnore, varIndexIgnore, app) {
     return `mob.removeApp('${app}')`;
   }
 
-  codeFor_getAppStrings (varNameIgnore, varIndexIgnore, language, stringFile) {
-    return `let appStrings = mob.driver().getAppStrings(${language ? `${language}, ` : ''}${stringFile ? `"${stringFile}` : ''});`;
+  codeFor_getStrings (varNameIgnore, varIndexIgnore, language, stringFile) {
+    return `let appStrings = mob.driver().getStrings(${language ? `${language}, ` : ''}${stringFile ? `"${stringFile}` : ''});`;
   }
 
   codeFor_getClipboard () {
@@ -114,15 +118,15 @@ ${code}
     return `mob.driver().setClipboard('${clipboardText}')`;
   }
 
-  codeFor_pressKeycode (varNameIgnore, varIndexIgnore, keyCode, metaState, flags) {
+  codeFor_pressKeyCode (varNameIgnore, varIndexIgnore, keyCode, metaState, flags) {
     return `mob.driver().longPressKeyCode(${keyCode}, ${metaState}, ${flags});`;
   }
 
-  codeFor_longPressKeycode (varNameIgnore, varIndexIgnore, keyCode, metaState, flags) {
+  codeFor_longPressKeyCode (varNameIgnore, varIndexIgnore, keyCode, metaState, flags) {
     return `mob.driver().longPressKeyCode(${keyCode}, ${metaState}, ${flags});`;
   }
 
-  codeFor_hideDeviceKeyboard () {
+  codeFor_hideKeyboard () {
     return `mob.driver().hideKeyboard();`;
   }
 
@@ -130,7 +134,7 @@ ${code}
     return `//isKeyboardShown not supported`;
   }
 
-  codeFor_pushFileToDevice (varNameIgnore, varIndexIgnore, pathToInstallTo, fileContentString) {
+  codeFor_pushFile (varNameIgnore, varIndexIgnore, pathToInstallTo, fileContentString) {
     return `mob.driver().pushFile('${pathToInstallTo}', '${fileContentString}');`;
   }
 
@@ -198,15 +202,15 @@ ${code}
     return `// Not supported: getPerformanceData`;
   }
 
-  codeFor_getSupportedPerformanceDataTypes () {
-    return `// Not supported: getSupportedPerformanceDataTypes`;
+  codeFor_getPerformanceDataTypes () {
+    return `// Not supported: getPerformanceDataTypes`;
   }
 
-  codeFor_performTouchId (varNameIgnore, varIndexIgnore, match) {
+  codeFor_touchId (varNameIgnore, varIndexIgnore, match) {
     return `mob.driver().touchId(${match});`;
   }
 
-  codeFor_toggleTouchIdEnrollment (varNameIgnore, varIndexIgnore, enroll) {
+  codeFor_toggleEnrollTouchId (varNameIgnore, varIndexIgnore, enroll) {
     return `mob.driver().toggleEnrollTouchId(${enroll});`;
   }
 
@@ -222,20 +226,12 @@ ${code}
     return `mob.driver().fingerPrint(${fingerprintId});`;
   }
 
-  codeFor_sessionCapabilities () {
+  codeFor_getSession () {
     return `let caps = mob.driver().capabilities;`;
   }
 
-  codeFor_setPageLoadTimeout (varNameIgnore, varIndexIgnore, ms) {
-    return `mob.driver().setTimeout({'pageLoad': ${ms}});`;
-  }
-
-  codeFor_setAsyncScriptTimeout (varNameIgnore, varIndexIgnore, ms) {
-    return `mob.driver().setTimeout({'script': ${ms}});`;
-  }
-
-  codeFor_setImplicitWaitTimeout (varNameIgnore, varIndexIgnore, ms) {
-    return `mob.driver().setTimeout({'implicit': ${ms}});`;
+  codeFor_setTimeouts (/*varNameIgnore, varIndexIgnore, timeoutsJson*/) {
+    return '/* TODO implement setTimeouts */';
   }
 
   codeFor_setCommandTimeout () {
@@ -258,11 +254,11 @@ ${code}
     return `mob.driver().setGeoLocation({latitude: ${latitude}, longitude: ${longitude}, altitude: ${altitude}});`;
   }
 
-  codeFor_logTypes () {
-    return `let logTypes = mob.driver().getLogTypes();`;
+  codeFor_getLogTypes () {
+    return `let getLogTypes = mob.driver().getLogTypes();`;
   }
 
-  codeFor_log (varNameIgnore, varIndexIgnore, logType) {
+  codeFor_getLogs (varNameIgnore, varIndexIgnore, logType) {
     return `let logs = mob.driver().getLogs('${logType}');`;
   }
 
@@ -270,7 +266,7 @@ ${code}
     return `mob.driver().updateSettings(${settingsJson});`;
   }
 
-  codeFor_settings () {
+  codeFor_getSettings () {
     return `let settings = mob.driver().getSettings();`;
   }
 }

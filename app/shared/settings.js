@@ -1,8 +1,11 @@
 import settings from 'electron-settings';
-import { PRESETS } from '../renderer/actions/StartServer';
-import { SAVED_SESSIONS, SERVER_ARGS, SESSION_SERVER_PARAMS,
-         SESSION_SERVER_TYPE } from '../renderer/actions/Session';
-import { SAVED_FRAMEWORK } from '../renderer/actions/Inspector';
+
+export const PRESETS = 'presets';
+export const SAVED_SESSIONS = 'SAVED_SESSIONS';
+export const SERVER_ARGS = 'SERVER_ARGS';
+export const SESSION_SERVER_PARAMS = 'SESSION_SERVER_PARAMS';
+export const SESSION_SERVER_TYPE = 'SESSION_SERVER_TYPE';
+export const SAVED_FRAMEWORK = 'SAVED_FRAMEWORK';
 
 // set default persistent settings
 // do it here because settings are kind of like state!

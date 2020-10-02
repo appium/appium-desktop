@@ -47,7 +47,7 @@ class RecordedActions extends Component {
       t,
     } = this.props;
 
-    let frameworkOpts = Object.keys(frameworks).map((f) => <Option value={f}>
+    let frameworkOpts = Object.keys(frameworks).map((f) => <Option value={f} key={f}>
       {frameworks[f].readableName}
     </Option>);
 

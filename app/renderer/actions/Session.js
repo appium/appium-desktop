@@ -1,13 +1,15 @@
-import { ipcRenderer } from 'electron';
-import settings from '../../shared/settings';
+import settings, { SAVED_SESSIONS, SERVER_ARGS, SESSION_SERVER_TYPE, SESSION_SERVER_PARAMS
+} from '../../shared/settings';
 import { v4 as UUID } from 'uuid';
 import url from 'url';
 import { push } from 'connected-react-router';
 import { notification } from 'antd';
 import { debounce, toPairs, union, without, keys } from 'lodash';
-import { setSessionDetails } from './Inspector';
+import { setSessionDetails, quitSession } from './Inspector';
 import i18n from '../../configs/i18next.config.renderer';
 import CloudProviders from '../components/Session/CloudProviders';
+import { Web2Driver } from 'web2driver';
+import ky from 'ky/umd';
 
 export const NEW_SESSION_REQUESTED = 'NEW_SESSION_REQUESTED';
 export const NEW_SESSION_BEGAN = 'NEW_SESSION_BEGAN';
@@ -33,10 +35,6 @@ export const SET_SERVER = 'SET_SERVER';
 export const SESSION_LOADING = 'SESSION_LOADING';
 export const SESSION_LOADING_DONE = 'SESSION_LOADING_DONE';
 
-export const SAVED_SESSIONS = 'SAVED_SESSIONS';
-export const SESSION_SERVER_PARAMS = 'SESSION_SERVER_PARAMS';
-export const SESSION_SERVER_TYPE = 'SESSION_SERVER_TYPE';
-export const SERVER_ARGS = 'SERVER_ARGS';
 export const VISIBLE_PROVIDERS = 'VISIBLE_PROVIDERS';
 
 export const SET_ATTACH_SESS_ID = 'SET_ATTACH_SESS_ID';
@@ -54,6 +52,8 @@ export const SHOW_DESIRED_CAPS_JSON_ERROR = 'SHOW_DESIRED_CAPS_JSON_ERROR';
 export const IS_ADDING_CLOUD_PROVIDER = 'IS_ADDING_CLOUD_PROVIDER';
 
 export const SET_PROVIDERS = 'SET_PROVIDERS';
+
+export const CONN_RETRIES = 2;
 
 const serverTypes = {};
 for (const key of keys(CloudProviders)) {
@@ -350,54 +350,76 @@ export function newSession (caps, attachSessId = null) {
         break;
     }
 
-    let rejectUnauthorized = !session.server.advanced.allowUnauthorized;
-    let proxy;
-    if (session.server.advanced.useProxy && session.server.advanced.proxy) {
-      proxy = session.server.advanced.proxy;
+    // TODO W2D handle proxy and rejectUnauthorized cases
+    //let rejectUnauthorized = !session.server.advanced.allowUnauthorized;
+    //let proxy;
+    //if (session.server.advanced.useProxy && session.server.advanced.proxy) {
+    //  proxy = session.server.advanced.proxy;
+    //}
+
+    dispatch({type: SESSION_LOADING});
+
+
+    const hostname = username && accessKey ? `${username}:${accessKey}@${host}` : host;
+    const serverOpts = {
+      hostname,
+      port: parseInt(port, 10),
+      protocol: https ? 'https' : 'http',
+      path,
+      connectionRetryCount: CONN_RETRIES,
+    };
+
+    // If a newCommandTimeout wasn't provided, set it to 0 so that sessions don't close on users
+    if (!desiredCapabilities.newCommandTimeout) {
+      desiredCapabilities.newCommandTimeout = 0;
     }
 
-    // Start the session
-    ipcRenderer.send('appium-create-new-session', {
+    // If someone didn't specify connectHardwareKeyboard, set it to true by
+    // default
+    if (typeof desiredCapabilities.connectHardwareKeyboard === 'undefined') {
+      desiredCapabilities.connectHardwareKeyboard = true;
+    }
+
+    let driver = null;
+    try {
+      if (attachSessId) {
+        driver = await Web2Driver.attachToSession(attachSessId, serverOpts);
+        driver._isAttachedSession = true;
+      } else {
+        driver = await Web2Driver.remote(serverOpts, desiredCapabilities);
+      }
+    } catch (err) {
+      showError(err, 0);
+      return;
+    } finally {
+      dispatch({type: SESSION_LOADING_DONE});
+      // Save the current server settings
+      await settings.set(SESSION_SERVER_PARAMS, session.server);
+    }
+
+    // The homepage arg in ChromeDriver is not working with Appium. iOS can have a default url, but
+    // we want to keep the process equal to prevent complexity so we launch a default url here to make
+    // sure we don't start with an empty page which will not show proper HTML in the inspector
+    const {browserName = ''} = desiredCapabilities;
+
+    if (browserName.toLowerCase() !== '') {
+      try {
+        await driver.navigateTo('http://appium.io/docs/en/about-appium/intro/');
+      } catch (ign) {}
+    }
+
+    // pass some state to the inspector that it needs to build recorder
+    // code boilerplate
+    setSessionDetails(driver, {
       desiredCapabilities,
-      attachSessId,
       host,
       port,
       path,
       username,
       accessKey,
       https,
-      rejectUnauthorized,
-      proxy,
-    });
-
-    dispatch({type: SESSION_LOADING});
-
-    // If it failed, show an alert saying it failed
-    ipcRenderer.once('appium-new-session-failed', (evt, e) => {
-      dispatch({type: SESSION_LOADING_DONE});
-      removeNewSessionListeners();
-      showError(e, 0);
-    });
-
-    ipcRenderer.once('appium-new-session-ready', () => {
-      dispatch({type: SESSION_LOADING_DONE});
-      // pass some state to the inspector that it needs to build recorder
-      // code boilerplate
-      setSessionDetails({
-        desiredCapabilities,
-        host,
-        port,
-        path,
-        username,
-        accessKey,
-        https,
-      })(dispatch);
-      removeNewSessionListeners();
-      dispatch(push('/inspector'));
-    });
-
-    // Save the current server settings
-    await settings.set(SESSION_SERVER_PARAMS, session.server);
+    })(dispatch);
+    dispatch(push('/inspector'));
   };
 }
 
@@ -576,7 +598,7 @@ export function setSavedServerParams () {
 }
 
 export function getRunningSessions () {
-  return (dispatch, getState) => {
+  return async (dispatch, getState) => {
     const avoidServerTypes = [
       'sauce', 'testobject'
     ];
@@ -588,19 +610,18 @@ export function getRunningSessions () {
     dispatch({type: GET_SESSIONS_REQUESTED});
     if (avoidServerTypes.includes(serverType)) {
       dispatch({type: GET_SESSIONS_DONE});
-    } else {
-      ipcRenderer.send('appium-client-get-sessions', {
-        host: serverInfo.hostname, port: serverInfo.port, path: serverInfo.path, ssl: serverInfo.ssl
-      });
-      ipcRenderer.once('appium-client-get-sessions-response', (evt, e) => {
-        const res = JSON.parse(e.res);
-        dispatch({type: GET_SESSIONS_DONE, sessions: res.value});
-        removeRunningSessionsListeners();
-      });
-      ipcRenderer.once('appium-client-get-sessions-fail', () => {
-        dispatch({type: GET_SESSIONS_DONE});
-        removeRunningSessionsListeners();
-      });
+      return;
+    }
+
+    const {hostname, port, path, ssl} = serverInfo;
+    try {
+      const adjPath = path.endsWith('/') ? path : `${path}/`;
+      const res = await ky(`http${ssl ? 's' : ''}://${hostname}:${port}${adjPath}sessions`).json();
+      dispatch({type: GET_SESSIONS_DONE, sessions: res.value});
+    } catch (err) {
+      console.error(`Ignoring error in getting list of active sessions:`); // eslint-disable-line no-console
+      console.error(err); // eslint-disable-line no-console
+      dispatch({type: GET_SESSIONS_DONE});
     }
   };
 }
@@ -671,16 +692,6 @@ export function setRawDesiredCaps (rawDesiredCaps) {
   };
 }
 
-function removeNewSessionListeners () {
-  ipcRenderer.removeAllListeners('appium-new-session-failed');
-  ipcRenderer.removeAllListeners('appium-new-session-ready');
-}
-
-function removeRunningSessionsListeners () {
-  ipcRenderer.removeAllListeners('appium-client-get-sessions-fail');
-  ipcRenderer.removeAllListeners('appium-client-get-sessions-response');
-}
-
 export function addCloudProvider () {
   return (dispatch) => {
     dispatch({type: IS_ADDING_CLOUD_PROVIDER, isAddingProvider: true});
@@ -749,5 +760,20 @@ function addCustomCaps (caps) {
     ...(browserName.toLowerCase() === 'chrome' ? chromeCustomCaps : {}),
     ...(platformName.toLowerCase() === 'android' ? androidCustomCaps : {}),
     ...(platformName.toLowerCase() === 'ios' ? iosCustomCaps : {}),
+  };
+}
+
+export function bindWindowClose () {
+  return (dispatch, getState) => {
+    window.addEventListener('beforeunload', async (evt) => {
+      const {driver} = getState().inspector;
+      if (driver) {
+        try {
+          const action = quitSession('Window closed');
+          await action(dispatch, getState);
+        } catch (ign) {}
+      }
+      delete evt.returnValue;
+    });
   };
 }

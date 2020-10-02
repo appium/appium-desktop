@@ -57,6 +57,10 @@ ${this.indent(code, 4)}
 `;
   }
 
+  codeFor_executeScript (/*varNameIgnore, varIndexIgnore, args*/) {
+    return `/* TODO implement executeScript */`;
+  }
+
   codeFor_findAndAssign (strategy, locator, localVar, isArray) {
     let suffixMap = {
       xpath: 'XPath',
@@ -128,11 +132,11 @@ ${this.indent(code, 4)}
     return `driver.`;
   }
 
-  codeFor_installAppOnDevice (varNameIgnore, varIndexIgnore, app) {
+  codeFor_installApp (varNameIgnore, varIndexIgnore, app) {
     return `driver.installApp("${app}");`;
   }
 
-  codeFor_isAppInstalledOnDevice (varNameIgnore, varIndexIgnore, app) {
+  codeFor_isAppInstalled (varNameIgnore, varIndexIgnore, app) {
     return `boolean isAppInstalled = driver.isAppInstalled("${app}");`;
   }
 
@@ -140,7 +144,7 @@ ${this.indent(code, 4)}
     return `driver.launchApp();`;
   }
 
-  codeFor_backgroundApp (varNameIgnore, varIndexIgnore, timeout) {
+  codeFor_background (varNameIgnore, varIndexIgnore, timeout) {
     return `driver.runAppInBackground(Duration.ofSeconds(${timeout}));`;
   }
 
@@ -148,15 +152,15 @@ ${this.indent(code, 4)}
     return `driver.closeApp();`;
   }
 
-  codeFor_resetApp () {
-    return `driver.resetApp();`;
+  codeFor_reset () {
+    return `driver.reset();`;
   }
 
-  codeFor_removeAppFromDevice (varNameIgnore, varIndexIgnore, app) {
+  codeFor_removeApp (varNameIgnore, varIndexIgnore, app) {
     return `driver.removeApp("${app}");`;
   }
 
-  codeFor_getAppStrings (varNameIgnore, varIndexIgnore, language, stringFile) {
+  codeFor_getStrings (varNameIgnore, varIndexIgnore, language, stringFile) {
     return `Map<String, String> appStrings = driver.getAppStringMap(${language ? `${language}, ` : ''}${stringFile ? `"${stringFile}` : ''});`;
   }
 
@@ -168,15 +172,15 @@ ${this.indent(code, 4)}
     return `driver.setClipboardText("${clipboardText}");`;
   }
 
-  codeFor_pressKeycode (varNameIgnore, varIndexIgnore, keyCode, metaState, flags) {
+  codeFor_pressKeyCode (varNameIgnore, varIndexIgnore, keyCode, metaState, flags) {
     return `driver.pressKeyCode(${keyCode}, ${metaState}, ${flags});`;
   }
 
-  codeFor_longPressKeycode (varNameIgnore, varIndexIgnore, keyCode, metaState, flags) {
+  codeFor_longPressKeyCode (varNameIgnore, varIndexIgnore, keyCode, metaState, flags) {
     return `driver.longPressKeyCode(${keyCode}, ${metaState}, ${flags});`;
   }
 
-  codeFor_hideDeviceKeyboard () {
+  codeFor_hideKeyboard () {
     return `driver.hideKeyboard();`;
   }
 
@@ -184,7 +188,7 @@ ${this.indent(code, 4)}
     return `boolean isKeyboardShown = driver.isKeyboardShown();`;
   }
 
-  codeFor_pushFileToDevice (varNameIgnore, varIndexIgnore, pathToInstallTo, fileContentString) {
+  codeFor_pushFile (varNameIgnore, varIndexIgnore, pathToInstallTo, fileContentString) {
     return `driver.pushFile("${pathToInstallTo}", ${fileContentString})`;
   }
 
@@ -252,15 +256,15 @@ ${this.indent(code, 4)}
     return `List<List<Object>> performanceData = driver.getPerformanceData("${packageName}", "${dataType}", ${dataReadTimeout});`;
   }
 
-  codeFor_getSupportedPerformanceDataTypes () {
-    return `List<String> performanceTypes = driver.getSupportedPerformanceDataTypes();`;
+  codeFor_getPerformanceDataTypes () {
+    return `List<String> performanceTypes = driver.getPerformanceDataTypes();`;
   }
 
-  codeFor_performTouchId (varNameIgnore, varIndexIgnore, match) {
+  codeFor_touchId (varNameIgnore, varIndexIgnore, match) {
     return `driver.performTouchID(${match});`;
   }
 
-  codeFor_toggleTouchIdEnrollment (varNameIgnore, varIndexIgnore, enroll) {
+  codeFor_toggleEnrollTouchId (varNameIgnore, varIndexIgnore, enroll) {
     return `driver.toggleTouchIDEnrollment(${enroll});`;
   }
 
@@ -276,20 +280,12 @@ ${this.indent(code, 4)}
     return `driver.fingerPrint(${fingerprintId});`;
   }
 
-  codeFor_sessionCapabilities () {
+  codeFor_getSession () {
     return `Map<String, Object> caps = driver.getSessionDetails();`;
   }
 
-  codeFor_setPageLoadTimeout (varNameIgnore, varIndexIgnore, ms) {
-    return `driver.manage().timeouts().pageLoadTimeout(${ms / 1000}, TimeUnit.SECONDS);`;
-  }
-
-  codeFor_setAsyncScriptTimeout (varNameIgnore, varIndexIgnore, ms) {
-    return `driver.manage().timeouts().setScriptTimeout(${ms / 1000}, TimeUnit.SECONDS);`;
-  }
-
-  codeFor_setImplicitWaitTimeout (varNameIgnore, varIndexIgnore, ms) {
-    return `driver.manage().timeouts().implicitlyWait(${ms / 1000}, TimeUnit.SECONDS);`;
+  codeFor_setTimeouts (/*varNameIgnore, varIndexIgnore, timeoutsJson*/) {
+    return '/* TODO implement setTimeouts */';
   }
 
   codeFor_getOrientation () {
@@ -308,11 +304,11 @@ ${this.indent(code, 4)}
     return `driver.setLocation(new Location(${latitude}, ${longitude}, ${altitude}));`;
   }
 
-  codeFor_logTypes () {
-    return `Set<String> logTypes = driver.manage().logs().getAvailableLogTypes();`;
+  codeFor_getLogTypes () {
+    return `Set<String> getLogTypes = driver.manage().logs().getAvailableLogTypes();`;
   }
 
-  codeFor_log (varNameIgnore, varIndexIgnore, logType) {
+  codeFor_getLogs (varNameIgnore, varIndexIgnore, logType) {
     return `LogEntries logEntries = driver.manage().logs().get("${logType}");`;
   }
 
@@ -328,7 +324,7 @@ ${this.indent(code, 4)}
     }
   }
 
-  codeFor_settings () {
+  codeFor_getSettings () {
     return `Map<String, Object> settings = driver.getSettings();`;
   }
 
@@ -342,11 +338,11 @@ ${this.indent(code, 4)}
 
   // Web
 
-  codeFor_get (url) {
+  codeFor_navigateTo (url) {
     return `driver.get("${url}");`;
   }
 
-  codeFor_url () {
+  codeFor_getUrl () {
     return `String current_url = driver.getCurrentUrl();`;
   }
 
@@ -360,15 +356,15 @@ ${this.indent(code, 4)}
 
   // Context
 
-  codeFor_currentContext () {
+  codeFor_getContext () {
     return `driver.getContext()`;
   }
 
-  codeFor_contexts () {
+  codeFor_getContexts () {
     return `driver.getContextHandles();`;
   }
 
-  codeFor_context (name) {
+  codeFor_switchContexts (name) {
     return `driver.context("${name}");`;
   }
 }

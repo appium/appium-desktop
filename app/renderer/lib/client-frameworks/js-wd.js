@@ -26,6 +26,11 @@ main().catch(console.log);
 `;
   }
 
+  codeFor_executeScript (/*varNameIgnore, varIndexIgnore, args*/) {
+    return `/* TODO implement executeScript */`;
+  }
+
+
   codeFor_findAndAssign (strategy, locator, localVar, isArray) {
     let suffixMap = {
       xpath: 'XPath',
@@ -90,11 +95,11 @@ main().catch(console.log);
   }
 
 
-  codeFor_installAppOnDevice (varNameIgnore, varIndexIgnore, app) {
-    return `let isAppInstalled = await driver.installAppOnDevice('${app}');`;
+  codeFor_installApp (varNameIgnore, varIndexIgnore, app) {
+    return `let isAppInstalled = await driver.installApp('${app}');`;
   }
 
-  codeFor_isAppInstalledOnDevice (varNameIgnore, varIndexIgnore, app) {
+  codeFor_isAppInstalled (varNameIgnore, varIndexIgnore, app) {
     return `driver.isAppInstalled("${app}");`;
   }
 
@@ -102,24 +107,24 @@ main().catch(console.log);
     return `await driver.launchApp();`;
   }
 
-  codeFor_backgroundApp (varNameIgnore, varIndexIgnore, timeout) {
-    return `await driver.backgroundApp(${timeout});`;
+  codeFor_background (varNameIgnore, varIndexIgnore, timeout) {
+    return `await driver.background(${timeout});`;
   }
 
   codeFor_closeApp () {
     return `await driver.closeApp();`;
   }
 
-  codeFor_resetApp () {
-    return `await driver.resetApp();`;
+  codeFor_reset () {
+    return `await driver.reset();`;
   }
 
-  codeFor_removeAppFromDevice (varNameIgnore, varIndexIgnore, app) {
-    return `await driver.removeAppFromDevice('${app}');`;
+  codeFor_removeApp (varNameIgnore, varIndexIgnore, app) {
+    return `await driver.removeApp('${app}');`;
   }
 
-  codeFor_getAppStrings (varNameIgnore, varIndexIgnore, language, stringFile) {
-    return `let appStrings = await driver.getAppStrings(${language ? `${language}, ` : ''}${stringFile ? `"${stringFile}` : ''});`;
+  codeFor_getStrings (varNameIgnore, varIndexIgnore, language, stringFile) {
+    return `let appStrings = await driver.getStrings(${language ? `${language}, ` : ''}${stringFile ? `"${stringFile}` : ''});`;
   }
 
   codeFor_getClipboard () {
@@ -130,24 +135,24 @@ main().catch(console.log);
     return `await driver.setClipboard('${clipboardText}')`;
   }
 
-  codeFor_pressKeycode (varNameIgnore, varIndexIgnore, keyCode, metaState, flags) {
+  codeFor_pressKeyCode (varNameIgnore, varIndexIgnore, keyCode, metaState, flags) {
     return `await driver.longPressKeyCode(${keyCode}, ${metaState}, ${flags});`;
   }
 
-  codeFor_longPressKeycode (varNameIgnore, varIndexIgnore, keyCode, metaState, flags) {
+  codeFor_longPressKeyCode (varNameIgnore, varIndexIgnore, keyCode, metaState, flags) {
     return `await driver.longPressKeyCode(${keyCode}, ${metaState}, ${flags});`;
   }
 
-  codeFor_hideDeviceKeyboard () {
-    return `await driver.hideDeviceKeyboard();`;
+  codeFor_hideKeyboard () {
+    return `await driver.hideKeyboard();`;
   }
 
   codeFor_isKeyboardShown () {
     return `await driver.isKeyboardShown();`;
   }
 
-  codeFor_pushFileToDevice (varNameIgnore, varIndexIgnore, pathToInstallTo, fileContentString) {
-    return `await driver.pushFileToDevice('${pathToInstallTo}', '${fileContentString}');`;
+  codeFor_pushFile (varNameIgnore, varIndexIgnore, pathToInstallTo, fileContentString) {
+    return `await driver.pushFile('${pathToInstallTo}', '${fileContentString}');`;
   }
 
   codeFor_pullFile (varNameIgnore, varIndexIgnore, pathToPullFrom) {
@@ -214,16 +219,16 @@ main().catch(console.log);
     return `let performanceData = await driver.getPerformanceData('${packageName}', '${dataType}', ${dataReadTimeout});`;
   }
 
-  codeFor_getSupportedPerformanceDataTypes () {
-    return `let supportedPerformanceDataTypes = await driver.getSupportedPerformanceDataTypes();`;
+  codeFor_getPerformanceDataTypes () {
+    return `let supportedPerformanceDataTypes = await driver.getPerformanceDataTypes();`;
   }
 
-  codeFor_performTouchId (varNameIgnore, varIndexIgnore, match) {
+  codeFor_touchId (varNameIgnore, varIndexIgnore, match) {
     return `await driver.touchId(${match});`;
   }
 
-  codeFor_toggleTouchIdEnrollment (varNameIgnore, varIndexIgnore, enroll) {
-    return `await driver.toggleTouchIdEnrollment(${enroll});`;
+  codeFor_toggleEnrollTouchId (varNameIgnore, varIndexIgnore, enroll) {
+    return `await driver.toggleEnrollTouchId(${enroll});`;
   }
 
   codeFor_openNotifications () {
@@ -238,20 +243,12 @@ main().catch(console.log);
     return `await driver.fingerprint(${fingerprintId});`;
   }
 
-  codeFor_sessionCapabilities () {
-    return `let caps = await driver.sessionCapabilities();`;
+  codeFor_getSession () {
+    return `let caps = await driver.getSession();`;
   }
 
-  codeFor_setPageLoadTimeout (varNameIgnore, varIndexIgnore, ms) {
-    return `await setPageLoadTimeout(${ms})`;
-  }
-
-  codeFor_setAsyncScriptTimeout (varNameIgnore, varIndexIgnore, ms) {
-    return `await setAsyncScriptTimeout(${ms})`;
-  }
-
-  codeFor_setImplicitWaitTimeout (varNameIgnore, varIndexIgnore, ms) {
-    return `await setImplicitWaitTimeout(${ms})`;
+  codeFor_setTimeouts (/*varNameIgnore, varIndexIgnore, timeoutsJson*/) {
+    return '/* TODO implement setTimeouts */';
   }
 
   codeFor_getOrientation () {
@@ -270,11 +267,11 @@ main().catch(console.log);
     return `await driver.setGeoLocation(${latitude}, ${longitude}, ${altitude});`;
   }
 
-  codeFor_logTypes () {
-    return `let logTypes = await driver.logTypes();`;
+  codeFor_getLogTypes () {
+    return `let getLogTypes = await driver.getLogTypes();`;
   }
 
-  codeFor_log (varNameIgnore, varIndexIgnore, logType) {
+  codeFor_getLogs (varNameIgnore, varIndexIgnore, logType) {
     return `let logs = await driver.log('${logType}');`;
   }
 
@@ -282,17 +279,17 @@ main().catch(console.log);
     return `await driver.updateSettings(${settingsJson});`;
   }
 
-  codeFor_settings () {
+  codeFor_getSettings () {
     return `let settings = await driver.settings();`;
   }
 
   // Web
 
-  codeFor_get (url) {
+  codeFor_navigateTo (url) {
     return `driver.get('${url}');`;
   }
 
-  codeFor_url () {
+  codeFor_getUrl () {
     return `let current_url = driver.url();`;
   }
 
@@ -306,15 +303,15 @@ main().catch(console.log);
 
   // Context
 
-  codeFor_currentContext () {
+  codeFor_getContext () {
     return `driver.currentContext();`;
   }
 
-  codeFor_contexts () {
+  codeFor_getContexts () {
     return `driver.contexts();`;
   }
 
-  codeFor_context (name) {
+  codeFor_switchContexts (name) {
     return `driver.context('${name}');`;
   }
 }

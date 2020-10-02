@@ -10,7 +10,7 @@ export default class Actions extends Component {
   startPerformingAction (actionName, action) {
     const { startEnteringActionArgs, applyClientMethod } = this.props;
     if (_.isEmpty(action.args)) {
-      applyClientMethod({methodName: action.methodName, args: [], skipRefresh: !action.refresh});
+      applyClientMethod({methodName: action.methodName, args: [], skipRefresh: !action.refresh, ignoreResult: false});
     } else {
       startEnteringActionArgs(actionName, action);
     }
@@ -35,7 +35,7 @@ export default class Actions extends Component {
     }
 
     // Special case for 'execute'
-    if (action.methodName === 'execute') {
+    if (action.methodName === 'executeScript') {
       if (!_.isEmpty(args[1])) {
         try {
           args[1] = JSON.parse(args[1]);
@@ -62,7 +62,7 @@ export default class Actions extends Component {
       }
     }
 
-    applyClientMethod({methodName, args, skipRefresh: !action.refresh});
+    applyClientMethod({methodName, args, skipRefresh: !action.refresh, ignoreResult: false});
     cancelPendingAction();
   }
 
