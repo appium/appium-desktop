@@ -1,9 +1,9 @@
-import * as configActions from '../actions/Config';
-import * as inspectorActions from '../actions/Inspector';
-import * as serverMonitorActions from '../actions/ServerMonitor';
-import * as sessionActions from '../actions/Session';
-import * as startServerActions from '../actions/StartServer';
-import * as updaterActions from '../actions/Updater';
+import * as configActions from './Config';
+import * as inspectorActions from './Inspector';
+import * as serverMonitorActions from './ServerMonitor';
+import * as sessionActions from './Session';
+import * as startServerActions from './StartServer';
+import * as updaterActions from './Updater';
 
 export default {
   ...configActions,

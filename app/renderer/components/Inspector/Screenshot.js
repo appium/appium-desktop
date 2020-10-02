@@ -44,7 +44,7 @@ class Screenshot extends Component {
 
     if (screenshotInteractionMode === TAP) {
       applyClientMethod({
-        methodName: 'tap',
+        methodName: TAP,
         args: [x, y],
       });
     } else if (screenshotInteractionMode === SWIPE) {
@@ -86,7 +86,7 @@ class Screenshot extends Component {
   async handleDoSwipe () {
     const {swipeStart, swipeEnd, clearSwipeAction, applyClientMethod} = this.props;
     await applyClientMethod({
-      methodName: 'swipe',
+      methodName: SWIPE,
       args: [swipeStart.x, swipeStart.y, swipeEnd.x, swipeEnd.y],
     });
     clearSwipeAction();

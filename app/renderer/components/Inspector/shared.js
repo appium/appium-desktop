@@ -53,6 +53,11 @@ export const SCREENSHOT_INTERACTION_MODE = {
   TAP: 'tap',
 };
 
+export const APP_MODE = {
+  NATIVE: 'native',
+  WEB_HYBRID: 'web_hybrid',
+};
+
 export const actionArgTypes = {
   STRING: 'string',
   NUMBER: 'number',
@@ -64,7 +69,7 @@ const { STRING, NUMBER } = actionArgTypes;
 export const actionDefinitions = {
   'Device': {
     'Execute Mobile': {
-      'Execute': {methodName: 'execute', args: [['command', STRING], ['jsonArgument', STRING]]}
+      'Execute': {methodName: 'executeScript', args: [['command', STRING], ['jsonArgument', STRING]]}
     },
     'Android Activity': {
       'Start Activity': {methodName: 'startActivity', args: [
@@ -76,21 +81,21 @@ export const actionDefinitions = {
       'Current Package': {methodName: 'getCurrentPackage'},
     },
     'App': {
-      'Install App': {methodName: 'installAppOnDevice', args: [['appPathOrUrl', STRING]]},
-      'Is App Installed': {methodName: 'isAppInstalledOnDevice', args: [['appId', STRING]]},
+      'Install App': {methodName: 'installApp', args: [['appPathOrUrl', STRING]]},
+      'Is App Installed': {methodName: 'isAppInstalled', args: [['appId', STRING]]},
       'Launch App': {methodName: 'launchApp', refresh: true},
-      'Background App': {methodName: 'backgroundApp', args: [['timeout', NUMBER]], refresh: true},
+      'Background App': {methodName: 'background', args: [['timeout', NUMBER]], refresh: true},
       'Close App': {methodName: 'closeApp', refresh: true},
-      'Reset App': {methodName: 'resetApp', refresh: true},
-      'Remove App': {methodName: 'removeAppFromDevice', args: [['bundleId', STRING]]},
-      'Get App Strings': {methodName: 'getAppStrings', args: [['language', STRING], ['stringFile', STRING]], refresh: true},
+      'Reset App': {methodName: 'reset', refresh: true},
+      'Remove App': {methodName: 'removeApp', args: [['bundleId', STRING]]},
+      'Get App Strings': {methodName: 'getStrings', args: [['language', STRING], ['stringFile', STRING]], refresh: true},
     },
     'Clipboard': {
       'Get Clipboard': {methodName: 'getClipboard'},
       'Set Clipboard': {methodName: 'setClipboard', args: [['clipboardText', STRING]]},
     },
     'File': {
-      'Push File': {methodName: 'pushFileToDevice', args: [['pathToInstallTo', STRING], ['fileContentString', STRING]]},
+      'Push File': {methodName: 'pushFile', args: [['pathToInstallTo', STRING], ['fileContentString', STRING]]},
       'Pull File': {methodName: 'pullFile', args: [['pathToPullFrom', STRING]]},
       'Pull Folder': {methodName: 'pullFolder', args: [['folderToPullFrom', STRING]]},
     },
@@ -104,9 +109,9 @@ export const actionDefinitions = {
       ], refresh: true},
     },
     'Keys': {
-      'Press Key': {methodName: 'pressKeycode', args: [['keyCode', NUMBER], ['metaState', NUMBER], ['flags', NUMBER]], refresh: true},
-      'Long Press Key': {methodName: 'longPressKeycode', args: [['keyCode', NUMBER], ['metaState', NUMBER], ['flags', NUMBER]], refresh: true},
-      'Hide Keyboard': {methodName: 'hideDeviceKeyboard', refresh: true},
+      'Press Key': {methodName: 'pressKeyCode', args: [['keyCode', NUMBER], ['metaState', NUMBER], ['flags', NUMBER]], refresh: true},
+      'Long Press Key': {methodName: 'longPressKeyCode', args: [['keyCode', NUMBER], ['metaState', NUMBER], ['flags', NUMBER]], refresh: true},
+      'Hide Keyboard': {methodName: 'hideKeyboard', refresh: true},
       'Is Keyboard Shown': {methodName: 'isKeyboardShown'},
     },
     'Network': {
@@ -121,11 +126,11 @@ export const actionDefinitions = {
     },
     'Performance Data': {
       'Get Data': {methodName: 'getPerformanceData', args: [['packageName', STRING], ['dataType', STRING], ['dataReadTimeout', NUMBER]]},
-      'Get Data Types': {methodName: 'getSupportedPerformanceDataTypes'},
+      'Get Data Types': {methodName: 'getPerformanceDataTypes'},
     },
     'iOS Simulator': {
-      'Perform Touch Id': {methodName: 'performTouchId', args: [['match', STRING]], refresh: true},
-      'Toggle Touch Id Enrollment': {methodName: 'toggleTouchIdEnrollment', args: [['enroll', STRING]]},
+      'Perform Touch Id': {methodName: 'touchId', args: [['match', STRING]], refresh: true},
+      'Toggle Touch Id Enrollment': {methodName: 'toggleEnrollTouchId', args: [['enroll', STRING]]},
     },
     'System': {
       'Open Notifications': {methodName: 'openNotifications', refresh: true},
@@ -135,12 +140,10 @@ export const actionDefinitions = {
   },
   'Session': {
     'Session Capabilities': {
-      'Get Session Capabilities': {methodName: 'sessionCapabilities'}
+      'Get Session Capabilities': {methodName: 'getSession'}
     },
     'Timeouts': {
-      'Set Pageload Timeout': {methodName: 'setPageLoadTimeout', args: [['timeout', NUMBER]]},
-      'Set Script Timeout': {methodName: 'setAsyncScriptTimeout', args: [['timeout', NUMBER]]},
-      'Set Implicit Timeout': {methodName: 'setImplicitWaitTimeout', args: [['timeout', NUMBER]]},
+      'Set Timeouts': {methodName: 'setTimeouts', args: [['timeoutsJson', STRING]]},
     },
     'Orientation': {
       'Get Orientation': {methodName: 'getOrientation'},
@@ -151,18 +154,18 @@ export const actionDefinitions = {
       'Set Geolocation': {methodName: 'setGeoLocation', args: [['latitude', NUMBER], ['longitude', NUMBER], ['altitude', NUMBER]]},
     },
     'Logs': {
-      'Get Log Types': {methodName: 'logTypes'},
-      'Get Logs': {methodName: 'log', args: [['logType', STRING]]},
+      'Get Log Types': {methodName: 'getLogTypes'},
+      'Get Logs': {methodName: 'getLogs', args: [['logType', STRING]]},
     },
     'Settings': {
       'Update Settings': {methodName: 'updateSettings', args: [['settingsJson', STRING]]},
-      'Get Device Settings': {methodName: 'settings'},
+      'Get Device Settings': {methodName: 'getSettings'},
     },
   },
   'Web': {
     'Navigation': {
-      'Go to URL': {methodName: 'get', args: [['url', STRING]], refresh: true},
-      'Get URL': {methodName: 'url'},
+      'Go to URL': {methodName: 'navigateTo', args: [['url', STRING]], refresh: true},
+      'Get URL': {methodName: 'getUrl'},
       'Back': {methodName: 'back', refresh: true},
       'Forward': {methodName: 'forward', refresh: true},
       'Refresh': {methodName: 'refresh', refresh: true}
@@ -170,9 +173,9 @@ export const actionDefinitions = {
   },
   'Context': {
     'Context': {
-      'Get Context': {methodName: 'currentContext'},
-      'Get All Context': {methodName: 'contexts'},
-      'Set Context': {methodName: 'context', args: [['contextRef', STRING]], refresh: true}
+      'Get Context': {methodName: 'getContext'},
+      'Get All Context': {methodName: 'getContexts'},
+      'Set Context': {methodName: 'switchContexts', args: [['name', STRING]], refresh: true}
     }
   }
 };

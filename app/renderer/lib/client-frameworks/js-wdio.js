@@ -39,6 +39,11 @@ ${this.indent(this.chainifyCode(code), 2)}
 `;
   }
 
+  codeFor_executeScript (/*varNameIgnore, varIndexIgnore, args*/) {
+    return `/* TODO implement executeScript */`;
+  }
+
+
   codeFor_findAndAssign (strategy, locator, localVar, isArray) {
     // wdio has its own way of indicating the strategy in the locator string
     switch (strategy) {
@@ -98,11 +103,11 @@ ${this.indent(this.chainifyCode(code), 2)}
   }
 
 
-  codeFor_installAppOnDevice (varNameIgnore, varIndexIgnore, app) {
+  codeFor_installApp (varNameIgnore, varIndexIgnore, app) {
     return `await driver.installApp('${app}');`;
   }
 
-  codeFor_isAppInstalledOnDevice (varNameIgnore, varIndexIgnore, app) {
+  codeFor_isAppInstalled (varNameIgnore, varIndexIgnore, app) {
     return `let isAppInstalled = await driver.isAppInstalled("${app}");`;
   }
 
@@ -110,7 +115,7 @@ ${this.indent(this.chainifyCode(code), 2)}
     return `await driver.launch();`;
   }
 
-  codeFor_backgroundApp (varNameIgnore, varIndexIgnore, timeout) {
+  codeFor_background (varNameIgnore, varIndexIgnore, timeout) {
     return `await driver.background(${timeout});`;
   }
 
@@ -118,16 +123,16 @@ ${this.indent(this.chainifyCode(code), 2)}
     return `await driver.close_app();`;
   }
 
-  codeFor_resetApp () {
+  codeFor_reset () {
     return `await driver.reset();`;
   }
 
-  codeFor_removeAppFromDevice (varNameIgnore, varIndexIgnore, app) {
+  codeFor_removeApp (varNameIgnore, varIndexIgnore, app) {
     return `await driver.removeApp('${app}')`;
   }
 
-  codeFor_getAppStrings (varNameIgnore, varIndexIgnore, language, stringFile) {
-    return `let appStrings = await driver.getAppStrings(${language ? `${language}, ` : ''}${stringFile ? `"${stringFile}` : ''});`;
+  codeFor_getStrings (varNameIgnore, varIndexIgnore, language, stringFile) {
+    return `let appStrings = await driver.getStrings(${language ? `${language}, ` : ''}${stringFile ? `"${stringFile}` : ''});`;
   }
 
   codeFor_getClipboard () {
@@ -138,23 +143,23 @@ ${this.indent(this.chainifyCode(code), 2)}
     return `await driver.setClipboard('${clipboardText}')`;
   }
 
-  codeFor_pressKeycode (varNameIgnore, varIndexIgnore, keyCode, metaState, flags) {
+  codeFor_pressKeyCode (varNameIgnore, varIndexIgnore, keyCode, metaState, flags) {
     return `await driver.longPressKeyCode(${keyCode}, ${metaState}, ${flags});`;
   }
 
-  codeFor_longPressKeycode (varNameIgnore, varIndexIgnore, keyCode, metaState, flags) {
+  codeFor_longPressKeyCode (varNameIgnore, varIndexIgnore, keyCode, metaState, flags) {
     return `await driver.longPressKeyCode(${keyCode}, ${metaState}, ${flags});`;
   }
 
-  codeFor_hideDeviceKeyboard () {
-    return `await driver.hideDeviceKeyboard();`;
+  codeFor_hideKeyboard () {
+    return `await driver.hideKeyboard();`;
   }
 
   codeFor_isKeyboardShown () {
     return `await driver.isKeyboardShown();`;
   }
 
-  codeFor_pushFileToDevice (varNameIgnore, varIndexIgnore, pathToInstallTo, fileContentString) {
+  codeFor_pushFile (varNameIgnore, varIndexIgnore, pathToInstallTo, fileContentString) {
     return `await driver.pushFile('${pathToInstallTo}', '${fileContentString}');`;
   }
 
@@ -222,16 +227,16 @@ ${this.indent(this.chainifyCode(code), 2)}
     return `// Not supported: getPerformanceData`;
   }
 
-  codeFor_getSupportedPerformanceDataTypes () {
-    return `// Not supported: getSupportedPerformanceDataTypes`;
+  codeFor_getPerformanceDataTypes () {
+    return `// Not supported: getPerformanceDataTypes`;
   }
 
-  codeFor_performTouchId (varNameIgnore, varIndexIgnore, match) {
+  codeFor_touchId (varNameIgnore, varIndexIgnore, match) {
     return `await driver.touchId(${match});`;
   }
 
-  codeFor_toggleTouchIdEnrollment (varNameIgnore, varIndexIgnore, enroll) {
-    return `await driver.toggleTouchIdEnrollment(${enroll});`;
+  codeFor_toggleEnrollTouchId (varNameIgnore, varIndexIgnore, enroll) {
+    return `await driver.toggleEnrollTouchId(${enroll});`;
   }
 
   codeFor_openNotifications () {
@@ -246,20 +251,12 @@ ${this.indent(this.chainifyCode(code), 2)}
     return `await driver.fingerprint(${fingerprintId});`;
   }
 
-  codeFor_sessionCapabilities () {
+  codeFor_getSession () {
     return `let caps = await driver.session('c8db88a0-47a6-47a1-802d-164d746c06aa');`;
   }
 
-  codeFor_setPageLoadTimeout (varNameIgnore, varIndexIgnore, ms) {
-    return `await driver.timeouts('page load', ${ms})`;
-  }
-
-  codeFor_setAsyncScriptTimeout (varNameIgnore, varIndexIgnore, ms) {
-    return `await driver.timeouts('script', ${ms})`;
-  }
-
-  codeFor_setImplicitWaitTimeout (varNameIgnore, varIndexIgnore, ms) {
-    return `await driver.timeouts('implicit', ${ms})`;
+  codeFor_setTimeouts (/*varNameIgnore, varIndexIgnore, timeoutsJson*/) {
+    return '/* TODO implement setTimeouts */';
   }
 
   codeFor_setCommandTimeout (varNameIgnore, varIndexIgnore, ms) {
@@ -282,11 +279,11 @@ ${this.indent(this.chainifyCode(code), 2)}
     return `await driver.location({latitude: ${latitude}, longitude: ${longitude}, altitude: ${altitude}});`;
   }
 
-  codeFor_logTypes () {
-    return `let logTypes = await driver.log();`;
+  codeFor_getLogTypes () {
+    return `let getLogTypes = await driver.log();`;
   }
 
-  codeFor_log (varNameIgnore, varIndexIgnore, logType) {
+  codeFor_getLogs (varNameIgnore, varIndexIgnore, logType) {
     return `let logs = await driver.log('${logType}');`;
   }
 
@@ -294,17 +291,17 @@ ${this.indent(this.chainifyCode(code), 2)}
     return `await driver.settings(${settingsJson});`;
   }
 
-  codeFor_settings () {
+  codeFor_getSettings () {
     return `let settings = await driver.settings();`;
   }
 
   // Web
 
-  codeFor_get (url) {
+  codeFor_navigateTo (url) {
     return `driver.navigateTo('${url}');`;
   }
 
-  codeFor_url () {
+  codeFor_getUrl () {
     return `let current_url = driver.getUrl();`;
   }
 
@@ -318,15 +315,15 @@ ${this.indent(this.chainifyCode(code), 2)}
 
   // Context
 
-  codeFor_currentContext () {
+  codeFor_getContext () {
     return `let context = driver.getContext();`;
   }
 
-  codeFor_contexts () {
+  codeFor_getContexts () {
     return `driver.getContexts();`;
   }
 
-  codeFor_context (name) {
+  codeFor_switchContexts (name) {
     return `driver.switchContext('${name}');`;
   }
 }

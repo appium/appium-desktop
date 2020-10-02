@@ -2,7 +2,7 @@
 import { ipcRenderer } from 'electron';
 import { push } from 'connected-react-router';
 import { serverLogsReceived, clearLogs, setServerArgs } from './ServerMonitor';
-import settings from '../../shared/settings';
+import settings, { PRESETS } from '../../shared/settings';
 import i18n from '../../configs/i18next.config.renderer';
 
 export const SERVER_START_REQ = 'SERVER_START_REQ';
@@ -17,7 +17,6 @@ export const PRESET_DELETE_REQ = 'PRESET_DELETE_REQ';
 export const PRESET_DELETE_OK = 'PRESET_DELETE_OK';
 export const SET_LOGFILE_PATH = 'SET_LOGFILE_PATH';
 
-export const PRESETS = 'presets';
 
 export function startServer (evt) {
   evt.preventDefault();

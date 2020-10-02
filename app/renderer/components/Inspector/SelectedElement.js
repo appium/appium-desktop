@@ -35,13 +35,13 @@ class SelectedElement extends Component {
   }
 
   contextSelect () {
-    const {applyClientMethod, contexts, currentContext, setContext, t} = this.props;
+    let {applyClientMethod, contexts, currentContext, setContext, t} = this.props;
 
     return (
       <Tooltip title={t('contextSwitcher')}>
         <Select value={currentContext} onChange={(value) => {
           setContext(value);
-          applyClientMethod({methodName: 'context', args: [value]});
+          applyClientMethod({methodName: 'switchContext', args: [value]});
         }}
         className={styles['locator-strategy-selector']}>
           {contexts.map(({id, title}) =>
@@ -53,7 +53,7 @@ class SelectedElement extends Component {
   }
 
   render () {
-    const {
+    let {
       applyClientMethod,
       contexts,
       currentContext,
@@ -73,6 +73,10 @@ class SelectedElement extends Component {
     } = this.props;
     const {attributes, classChain, predicateString, xpath} = selectedElement;
     const isDisabled = !elementId || isFindingElementsTimes;
+
+    if (!currentContext) {
+      currentContext = NATIVE_APP;
+    }
 
     // Get the columns for the attributes table
     let attributeColumns = [{

@@ -72,6 +72,11 @@ ${this.indent(code, 4)}
     return `Open Application    \$\{REMOTE_URL\}   ${varString}`;
   }
 
+  codeFor_executeScript (/*varNameIgnore, varIndexIgnore, args*/) {
+    return `TODO implement executeScript`;
+  }
+
+
   codeFor_click (/*varName, varIndex*/) {
     return `Click Element    ${this.lastID}`;
   }
@@ -105,11 +110,11 @@ ${this.indent(code, 4)}
     return '';
   }
 
-  codeFor_installAppOnDevice () {
+  codeFor_installApp () {
     return ``;
   }
 
-  codeFor_isAppInstalledOnDevice () {
+  codeFor_isAppInstalled () {
     return ``;
   }
 
@@ -117,7 +122,7 @@ ${this.indent(code, 4)}
     return ``;
   }
 
-  codeFor_backgroundApp () {
+  codeFor_background () {
     return ``;
   }
 
@@ -125,15 +130,15 @@ ${this.indent(code, 4)}
     return ``;
   }
 
-  codeFor_resetApp () {
+  codeFor_reset () {
     return ``;
   }
 
-  codeFor_removeAppFromDevice () {
+  codeFor_removeApp () {
     return ``;
   }
 
-  codeFor_getAppStrings () {
+  codeFor_getStrings () {
     return ``;
   }
 
@@ -145,15 +150,15 @@ ${this.indent(code, 4)}
     return ``;
   }
 
-  codeFor_pressKeycode () {
+  codeFor_pressKeyCode () {
     return ``;
   }
 
-  codeFor_longPressKeycode () {
+  codeFor_longPressKeyCode () {
     return ``;
   }
 
-  codeFor_hideDeviceKeyboard () {
+  codeFor_hideKeyboard () {
     return ``;
   }
 
@@ -161,7 +166,7 @@ ${this.indent(code, 4)}
     return ``;
   }
 
-  codeFor_pushFileToDevice () {
+  codeFor_pushFile () {
     return ``;
   }
 
@@ -229,15 +234,15 @@ ${this.indent(code, 4)}
     return ``;
   }
 
-  codeFor_getSupportedPerformanceDataTypes () {
+  codeFor_getPerformanceDataTypes () {
     return ``;
   }
 
-  codeFor_performTouchId () {
+  codeFor_touchId () {
     return ``;
   }
 
-  codeFor_toggleTouchIdEnrollment () {
+  codeFor_toggleEnrollTouchId () {
     return ``;
   }
 
@@ -253,23 +258,11 @@ ${this.indent(code, 4)}
     return ``;
   }
 
-  codeFor_sessionCapabilities () {
+  codeFor_getSession () {
     return ``;
   }
 
-  codeFor_setPageLoadTimeout () {
-    return ``;
-  }
-
-  codeFor_setAsyncScriptTimeout () {
-    return ``;
-  }
-
-  codeFor_setImplicitWaitTimeout () {
-    return ``;
-  }
-
-  codeFor_setCommandTimeout () {
+  codeFor_setTimeouts () {
     return ``;
   }
 
@@ -289,11 +282,11 @@ ${this.indent(code, 4)}
     return ``;
   }
 
-  codeFor_logTypes () {
+  codeFor_getLogTypes () {
     return ``;
   }
 
-  codeFor_log () {
+  codeFor_getLogs () {
     return ``;
   }
 
@@ -301,17 +294,17 @@ ${this.indent(code, 4)}
     return ``;
   }
 
-  codeFor_settings () {
+  codeFor_getSettings () {
     return ``;
   }
 
   // Web
 
-  codeFor_get () {
+  codeFor_navigateTo () {
     return ``;
   }
 
-  codeFor_url () {
+  codeFor_getUrl () {
     return ``;
   }
 
@@ -325,15 +318,15 @@ ${this.indent(code, 4)}
 
   // Context
 
-  codeFor_currentContext () {
+  codeFor_getContext () {
     return ``;
   }
 
-  codeFor_contexts () {
+  codeFor_getContexts () {
     return ``;
   }
 
-  codeFor_context () {
+  codeFor_switchContexts () {
     return ``;
   }
 }
