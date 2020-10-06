@@ -42,7 +42,7 @@ function macMenuAppium () {
       label: i18n.t('New Session Window…'),
       accelerator: 'Command+N',
       click () {
-        createNewSessionWindow(mainWindow);
+        createNewSessionWindow();
       }
     }, {
       label: i18n.t('Configurations…'),
@@ -209,7 +209,7 @@ function otherMenuFile () {
     label: i18n.t('&New Session Window...'),
     accelerator: 'Ctrl+N',
     click () {
-      createNewSessionWindow(mainWindow);
+      createNewSessionWindow();
     }
   }, {
     label: i18n.t('&Close'),
