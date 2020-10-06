@@ -128,9 +128,9 @@ function connectGetDefaultArgs () {
 /**
  * Opens a new window for creating new sessions
  */
-function connectCreateNewSessionWindow (win) {
+function connectCreateNewSessionWindow () {
   ipcMain.on('create-new-session-window', () => {
-    createNewSessionWindow(win);
+    createNewSessionWindow();
   });
 }
 
@@ -140,7 +140,7 @@ function connectClearLogFile () {
   });
 }
 
-export function createNewSessionWindow (win) {
+export function createNewSessionWindow () {
   let sessionWin = openBrowserWindow('session', {
     title: 'Start Session',
     titleBarStyle: 'hidden',
@@ -148,11 +148,6 @@ export function createNewSessionWindow (win) {
 
   sessionWin.on('closed', () => {
     sessionWin = null;
-  });
-
-  // When the main window is closed, close the session window too
-  win.once('closed', () => {
-    sessionWin.close();
   });
 }
 
@@ -210,7 +205,7 @@ export function initializeIpc (win) {
   // listen for 'stop-server' from the renderer
   connectStopServer(win);
   // listen for 'create-new-session-window' from the renderer
-  connectCreateNewSessionWindow(win);
+  connectCreateNewSessionWindow();
   connectGetDefaultArgs();
   connectMoveToApplicationsFolder();
   connectClearLogFile();
