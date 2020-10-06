@@ -410,7 +410,7 @@ export function newSession (caps, attachSessId = null) {
 
     // pass some state to the inspector that it needs to build recorder
     // code boilerplate
-    setSessionDetails(driver, {
+    const action = setSessionDetails(driver, {
       desiredCapabilities,
       host,
       port,
@@ -418,7 +418,8 @@ export function newSession (caps, attachSessId = null) {
       username,
       accessKey,
       https,
-    })(dispatch);
+    });
+    action(dispatch);
     dispatch(push('/inspector'));
   };
 }
@@ -453,7 +454,8 @@ export function saveSession (caps, params) {
       }
     }
     await settings.set(SAVED_SESSIONS, savedSessions);
-    await getSavedSessions()(dispatch);
+    const action = getSavedSessions();
+    await action(dispatch);
     dispatch({type: SET_CAPS, caps, uuid});
     dispatch({type: SAVE_SESSION_DONE});
   };
@@ -536,7 +538,8 @@ export function changeServerType (serverType) {
   return async (dispatch, getState) => {
     await settings.set(SESSION_SERVER_TYPE, serverType);
     dispatch({type: CHANGE_SERVER_TYPE, serverType});
-    getRunningSessions()(dispatch, getState);
+    const action = getRunningSessions();
+    action(dispatch, getState);
   };
 }
 
@@ -569,7 +572,8 @@ export function setLocalServerParams () {
       dispatch({type: SET_SERVER_PARAM, serverType: ServerTypes.local, name: 'port', value: undefined});
       dispatch({type: SET_SERVER_PARAM, serverType: ServerTypes.local, name: 'hostname', value: undefined});
       if (getState().session.serverType === 'local') {
-        await changeServerType('remote')(dispatch, getState);
+        const action = changeServerType('remote');
+        await action(dispatch, getState);
       }
     }
   };
