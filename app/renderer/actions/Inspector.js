@@ -82,10 +82,11 @@ const WAIT_FOR_USER_KEEP_ALIVE = 60 * 60 * 1000; // Give user 1 hour to reply
 const findElement = _.debounce(async function (strategyMap, dispatch, getState, path) {
   for (let [strategy, selector] of strategyMap) {
     // Get the information about the element
-    let {elementId, variableName, variableType} = await callClientMethod({
+    const action = callClientMethod({
       strategy,
       selector,
-    })(dispatch, getState);
+    });
+    let {elementId, variableName, variableType} = await action(dispatch, getState);
 
     // Set the elementId, variableName and variableType for the selected element
     // (check first that the selectedElementPath didn't change, to avoid race conditions)
@@ -155,15 +156,17 @@ export function applyClientMethod (params) {
                       getState().inspector.isRecording;
     try {
       dispatch({type: METHOD_CALL_REQUESTED});
+      const callAction = callClientMethod(params);
       const {contexts, contextsError, currentContext, currentContextError,
              source, screenshot, windowSize, result, sourceError,
              screenshotError, windowSizeError, variableName,
-             variableIndex, strategy, selector} = await callClientMethod(params)(dispatch, getState);
+             variableIndex, strategy, selector} = await callAction(dispatch, getState);
 
       if (isRecording) {
         // Add 'findAndAssign' line of code. Don't do it for arrays though. Arrays already have 'find' expression
         if (strategy && selector && !variableIndex && variableIndex !== 0) {
-          findAndAssign(strategy, selector, variableName, false)(dispatch, getState);
+          const findAction = findAndAssign(strategy, selector, variableName, false);
+          findAction(dispatch, getState);
         }
 
         // now record the actual action
@@ -237,8 +240,10 @@ export function setExpandedPaths (paths) {
  */
 export function quitSession (reason, killedByUser = true) {
   return async (dispatch, getState) => {
-    killKeepAliveLoop()(dispatch, getState);
-    await applyClientMethod({methodName: 'quit'})(dispatch, getState);
+    const killAction = killKeepAliveLoop();
+    killAction(dispatch, getState);
+    const applyAction = applyClientMethod({methodName: 'quit'});
+    await applyAction(dispatch, getState);
     dispatch({type: QUIT_SESSION_DONE});
     dispatch(push('/session'));
     if (!killedByUser) {
@@ -348,8 +353,10 @@ export function searchForElement (strategy, selector) {
   return async (dispatch, getState) => {
     dispatch({type: SEARCHING_FOR_ELEMENTS});
     try {
-      let {elements, variableName} = await callClientMethod({strategy, selector, fetchArray: true})(dispatch, getState);
-      findAndAssign(strategy, selector, variableName, true)(dispatch, getState);
+      const callAction = callClientMethod({strategy, selector, fetchArray: true});
+      let {elements, variableName} = await callAction(dispatch, getState);
+      const findAction = findAndAssign(strategy, selector, variableName, true);
+      findAction(dispatch, getState);
       elements = elements.map((el) => el.id);
       dispatch({type: SEARCHING_FOR_ELEMENTS_COMPLETED, elements});
     } catch (error) {
@@ -369,7 +376,8 @@ export function getFindElementsTimes (findDataSource) {
       const findElementsExecutionTimes = [];
       for (const element of findDataSource) {
         const {find, key, selector} = element;
-        const {executionTime} = await callClientMethod({strategy: key, selector})(dispatch, getState);
+        const action = callClientMethod({strategy: key, selector});
+        const {executionTime} = await action(dispatch, getState);
         findElementsExecutionTimes.push({find, key, selector, time: executionTime});
       }
 
@@ -402,7 +410,14 @@ export function setLocatorTestElement (elementId) {
     dispatch({type: CLEAR_SEARCHED_FOR_ELEMENT_BOUNDS});
     if (elementId) {
       try {
-        const rect = await callClientMethod({methodName: 'getRect', args: [elementId], skipRefresh: true, skipRecord: true, ignoreResult: true})(dispatch, getState);
+        const action = callClientMethod({
+          methodName: 'getRect',
+          args: [elementId],
+          skipRefresh: true,
+          skipRecord: true,
+          ignoreResult: true
+        });
+        const rect = await action(dispatch, getState);
         dispatch({
           type: SET_SEARCHED_FOR_ELEMENT_BOUNDS,
           location: {x: rect.x, y: rect.y},
@@ -431,7 +446,8 @@ export function selectAppMode (mode) {
     dispatch({type: SET_APP_MODE, mode});
     // if we're transitioning to hybrid mode, do a pre-emptive search for contexts
     if (appMode !== mode && mode === APP_MODE.WEB_HYBRID) {
-      await applyClientMethod({methodName: 'getPageSource'})(dispatch, getState);
+      const action = applyClientMethod({methodName: 'getPageSource'});
+      await action(dispatch, getState);
     }
   };
 }
@@ -521,11 +537,13 @@ export function runKeepAliveLoop () {
       // If the new command limit has been surpassed, prompt user if they want to keep session going
       // Give them WAIT_FOR_USER_KEEP_ALIVE ms to respond
       if (now - lastActiveMoment > NO_NEW_COMMAND_LIMIT) {
-        promptKeepAlive()(dispatch);
+        const action = promptKeepAlive();
+        action(dispatch);
 
         // After the time limit kill the session (this timeout will be killed if they keep it alive)
         const userWaitTimeout = setTimeout(() => {
-          quitSession('Session closed due to inactivity', false)(dispatch, getState);
+          const action = quitSession('Session closed due to inactivity', false);
+          action(dispatch, getState);
         }, WAIT_FOR_USER_KEEP_ALIVE);
         dispatch({type: SET_USER_WAIT_TIMEOUT, userWaitTimeout});
       }
@@ -555,7 +573,8 @@ export function killKeepAliveLoop () {
 export function keepSessionAlive () {
   return (dispatch, getState) => {
     const {userWaitTimeout} = getState().inspector;
-    hideKeepAlivePrompt()(dispatch);
+    const action = hideKeepAlivePrompt();
+    action(dispatch);
     dispatch({type: SET_LAST_ACTIVE_MOMENT, lastActiveMoment: +(new Date())});
     if (userWaitTimeout) {
       clearTimeout(userWaitTimeout);
@@ -572,7 +591,8 @@ export function callClientMethod (params) {
     const {methodName, ignoreResult = true} = params;
     params.appMode = appMode;
 
-    keepSessionAlive()(dispatch, getState);
+    const action = keepSessionAlive();
+    action(dispatch, getState);
     const client = AppiumClient.instance(driver);
     const res = await client.run(params);
     let {commandRes} = res;
