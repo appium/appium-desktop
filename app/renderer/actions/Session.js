@@ -402,7 +402,7 @@ export function newSession (caps, attachSessId = null) {
     // sure we don't start with an empty page which will not show proper HTML in the inspector
     const {browserName = ''} = desiredCapabilities;
 
-    if (browserName.toLowerCase() !== '') {
+    if (browserName.trim() !== '') {
       try {
         await driver.navigateTo('http://appium.io/docs/en/about-appium/intro/');
       } catch (ign) {}
@@ -438,7 +438,7 @@ export function saveSession (caps, params) {
       // If it's a new session, add it to the list
       uuid = UUID();
       let newSavedSession = {
-        date: +(new Date()),
+        date: Date.now(),
         name,
         uuid,
         caps,
@@ -770,13 +770,18 @@ function addCustomCaps (caps) {
 export function bindWindowClose () {
   return (dispatch, getState) => {
     window.addEventListener('beforeunload', async (evt) => {
-      const {driver} = getState().inspector;
+      let {driver} = getState().inspector;
       if (driver) {
         try {
           const action = quitSession('Window closed');
           await action(dispatch, getState);
-        } catch (ign) {}
+        } finally {
+          driver = null;
+        }
       }
+
+      // to allow the window close to continue, the thing we must do is make sure the event no
+      // longer has any 'returnValue' property
       delete evt.returnValue;
     });
   };
