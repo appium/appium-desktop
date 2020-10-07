@@ -523,7 +523,7 @@ export function setActionArg (index, value) {
  */
 export function runKeepAliveLoop () {
   return (dispatch, getState) => {
-    dispatch({type: SET_LAST_ACTIVE_MOMENT, lastActiveMoment: +(new Date())});
+    dispatch({type: SET_LAST_ACTIVE_MOMENT, lastActiveMoment: Date.now()});
     const {driver} = getState().inspector;
 
     const keepAliveInterval = setInterval(async () => {
@@ -532,7 +532,7 @@ export function runKeepAliveLoop () {
       try {
         await driver.getTimeouts(); // Pings the Appium server to keep it alive
       } catch (ign) {}
-      const now = +(new Date());
+      const now = Date.now();
 
       // If the new command limit has been surpassed, prompt user if they want to keep session going
       // Give them WAIT_FOR_USER_KEEP_ALIVE ms to respond
