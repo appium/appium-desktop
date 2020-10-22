@@ -1,0 +1,62 @@
+{
+  "name": "appium-desktop-util",
+  "version": "0.1",
+  "description": "Utilities for Appium Desktop build",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/appium/appium-desktop.git"
+  },
+  "author": {
+    "name": "Appium Developers",
+    "email": "",
+    "url": "https://github.com/appium"
+  },
+  "license": "APACHE2",
+  "bugs": {
+    "url": "https://github.com/appium/appium-desktop/issues"
+  },
+  "keywords": [
+    "appium"
+  ],
+  "homepage": "https://github.com/appium/appium-desktop",
+  "scripts": {
+    "test": "npm run test:lint && npm run test:unit && npm run test:integration",
+    "test:server:integration": "cd server && npm run test:integration",
+    "test:server:unit": "cd server && npm run test:unit",
+    "test:server:lint": "cd server && npm run test:lint",
+    "test:inspector:integration": "cd inspector && npm run test:integration",
+    "test:inspector:unit": "cd inspector && npm run test:unit",
+    "test:inspector:lint": "cd inspector && npm run test:lint",
+    "test:integration": "npm run test:server:integration && npm run test:inspector:integration",
+    "test:unit": "npm run test:server:unit && npm run test:inspector:unit",
+    "test:lint": "npm test:server:lint && npm run test:inspector:lint",
+    "pre-commit": "npm run test:lint",
+    "pre-push": "npm test",
+    "crowdin-update": "node crowdin-update-resources.js",
+    "crowdin-sync": "node crowdin-sync-translations.js"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run pre-commit",
+      "pre-push": "npm run pre-push"
+    }
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "appium-support": "^2.49.0",
+    "asyncbox": "^2.6.0",
+    "bluebird": "^3.7.2",
+    "cross-env": "^7.0.0",
+    "husky": "^4.0.2",
+    "request": "^2.88.2",
+    "run-s": "0.0.0"
+  },
+  "devEngines": {
+    "node": ">=6.x",
+    "npm": ">=3.x"
+  },
+  "engines": {
+    "node": ">=10.x",
+    "npm": ">=5.x"
+  }
+}
