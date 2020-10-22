@@ -43,17 +43,7 @@
     "dev": "cross-env NODE_ENV=development npm run build-main-dev && npm run build-renderer-dev && concurrently --kill-others \"npm run start-dev\" \"npm run watch:main\" \"npm run watch:renderer\" ",
     "dev-wrong-folder": "cross-env WRONG_FOLDER=true npm run dev",
     "postinstall": "node ./check-engines package.json package.json && rimraf node_modules/jimp/browser",
-    "postversion": "git pull --tags && git push && git push --tags",
-    "pre-commit": "npm run test:lint",
-    "pre-push": "npm test",
-    "crowdin-update": "node crowdin-update-resources.js",
-    "crowdin-sync": "node crowdin-sync-translations.js"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run pre-commit",
-      "pre-push": "npm run pre-push"
-    }
+    "postversion": "git pull --tags && git push && git push --tags"
   },
   "build": {
     "productName": "Appium",
@@ -162,12 +152,10 @@
     "xpath": "0.0.27"
   },
   "devDependencies": {
-    "7zip": "0.0.6",
     "@babel/core": "^7.4.0",
     "@babel/plugin-transform-runtime": "^7.4.0",
     "@babel/register": "^7.4.0",
     "appium-fake-driver": "^1.0.0",
-    "asar": "^2.0.0",
     "asyncbox": "^2.5.3",
     "babel-eslint": "^10.0.1",
     "babel-plugin-transform-class-properties": "^6.24.1",
@@ -192,8 +180,6 @@
     "eslint-plugin-react": "^7.12.4",
     "eslint-plugin-react-native": "^3.6.0",
     "eslint-plugin-shopify": "^30.0.0",
-    "express": "^4.16.2",
-    "husky": "^4.0.2",
     "jquery": "^3.3.1",
     "jsdom": "^16.0.1",
     "less": "^2.7.3",
@@ -201,14 +187,12 @@
     "mocha-junit-reporter": "^1.18.0",
     "mocha-multi-reporters": "^1.1.7",
     "node-libs-browser": "^2.1.0",
-    "npm-run-all": "^4.1.5",
     "parcel-bundler": "^1.10.3",
     "parcel-plugin-asset-copier": "^1.0.0",
     "postcss-modules": "^1.4.1",
     "react-addons-test-utils": "^15.6.2",
     "release": "^6.0.1",
     "request": "^2.88.0",
-    "rewiremock": "^3.14.3",
     "rimraf": "^3.0.0",
     "run-s": "0.0.0",
     "sinon": "^9.0.0",
