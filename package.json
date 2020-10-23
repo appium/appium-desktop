@@ -1,6 +1,6 @@
 {
   "name": "appium-desktop-util",
-  "version": "0.1",
+  "version": "0.0.1",
   "description": "Utilities for Appium Desktop build",
   "repository": {
     "type": "git",
@@ -32,6 +32,10 @@
     "test:lint": "npm test:server:lint && npm run test:inspector:lint",
     "pre-commit": "npm run test:lint",
     "pre-push": "npm test",
+    "i18n-copy:server": "mkdirp server/assets/locales && ncp assets/locales server/assets/locales",
+    "i18n-copy:inspector": "mkdirp inspector/assets/locales && ncp assets/locales inspector/assets/locales",
+    "i18n-copy": "run-p i18n-copy:*",
+    "postinstall": "npm run i18n-copy",
     "crowdin-update": "node crowdin-update-resources.js",
     "crowdin-sync": "node crowdin-sync-translations.js"
   },
@@ -47,9 +51,12 @@
     "asyncbox": "^2.6.0",
     "bluebird": "^3.7.2",
     "cross-env": "^7.0.0",
+    "eslint-config-appium": "^4.5.0",
     "husky": "^4.0.2",
-    "request": "^2.88.2",
-    "run-s": "0.0.0"
+    "mkdirp": "^1.0.4",
+    "ncp": "^2.0.0",
+    "npm-run-all": "^4.1.5",
+    "request": "^2.88.2"
   },
   "devEngines": {
     "node": ">=6.x",
