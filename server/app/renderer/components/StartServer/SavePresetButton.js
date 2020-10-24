@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Button } from 'antd';
 import { withTranslation } from '../../util';
 import styles from './StartButton.css';
-import { BUTTON, INPUT } from '../AntdTypes';
+import { BUTTON, INPUT } from '../../../../../shared/components/AntdTypes';
 
 class SavePresetButton extends Component {
   render () {

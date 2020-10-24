@@ -15,7 +15,7 @@ import {
   CloseOutlined,
   CodeFilled
 } from '@ant-design/icons';
-import { BUTTON } from '../AntdTypes';
+import { BUTTON } from '../../../../../shared/components/AntdTypes';
 
 const convert = new AnsiConverter({fg: '#bbb', bg: '#222'});
 const MAX_LOGS_RENDERED = 1000;

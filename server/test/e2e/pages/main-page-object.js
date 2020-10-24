@@ -1,4 +1,4 @@
-import BasePage from './base-page-object';
+import BasePage from '../../../../shared/base-page-object';
 
 export default class MainPage extends BasePage {
   constructor (client) {

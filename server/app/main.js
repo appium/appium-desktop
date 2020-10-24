@@ -2,7 +2,9 @@ import i18n from './configs/i18next.config';
 import { app, BrowserWindow, Menu, webContents } from 'electron';
 import { initializeIpc } from './main/appium';
 import { setSavedEnv } from './main/helpers';
-import rebuildMenus from './main/menus';
+import { installExtensions } from '../../shared/debug';
+import { rebuildMenus } from './main/menus';
+import { setupMainWindow } from '../../shared/windows';
 import shellEnv from 'shell-env';
 import fixPath from 'fix-path';
 import settings from './shared/settings';
@@ -30,22 +32,6 @@ app.on('window-all-closed', () => {
 });
 
 
-const installExtensions = async () => {
-  if (isDev) {
-    const installer = require('electron-devtools-installer'); // eslint-disable-line global-require
-    const extensions = [
-      'REACT_DEVELOPER_TOOLS',
-      'REDUX_DEVTOOLS'
-    ];
-    const forceDownload = !!process.env.UPGRADE_EXTENSIONS;
-    for (const name of extensions) {
-      try {
-        await installer.default(installer[name], forceDownload);
-      } catch (e) {} // eslint-disable-line
-    }
-  }
-};
-
 app.on('ready', async () => {
   await installExtensions();
 
@@ -60,43 +46,16 @@ app.on('ready', async () => {
     }
   });
 
-  mainWindow.loadURL(`file://${__dirname}/index.html`);
-
-  mainWindow.webContents.on('did-finish-load', () => {
-    mainWindow.show();
-    mainWindow.focus();
+  setupMainWindow({
+    mainWindow,
+    mainUrl: `file://${__dirname}/index.html`,
+    isDev,
+    Menu,
+    i18n,
+    rebuildMenus,
+    settings,
+    webContents
   });
-
-  mainWindow.on('closed', () => {
-    mainWindow = null;
-  });
-
-  if (isDev) {
-    mainWindow.openDevTools();
-  }
-
-  mainWindow.webContents.on('context-menu', (e, props) => {
-    const {x, y} = props;
-
-    Menu.buildFromTemplate([{
-      label: i18n.t('Inspect element'),
-      click () {
-        mainWindow.inspectElement(x, y);
-      }
-    }]).popup(mainWindow);
-  });
-
-  i18n.on('languageChanged', async (languageCode) => {
-    rebuildMenus();
-    await settings.set('PREFERRED_LANGUAGE', languageCode);
-    webContents.getAllWebContents().forEach((wc) => {
-      wc.send('appium-language-changed', {
-        language: languageCode,
-      });
-    });
-  });
-
-  rebuildMenus(mainWindow);
 
   initializeIpc(mainWindow);
 });

@@ -125,29 +125,9 @@ function connectGetDefaultArgs () {
   });
 }
 
-/**
- * Opens a new window for creating new sessions
- */
-function connectCreateNewSessionWindow () {
-  ipcMain.on('create-new-session-window', () => {
-    createNewSessionWindow();
-  });
-}
-
 function connectClearLogFile () {
   ipcMain.on('appium-clear-logfile', async (event, {logfilePath}) => {
     await fs.writeFile(logfilePath, '');
-  });
-}
-
-export function createNewSessionWindow () {
-  let sessionWin = openBrowserWindow('session', {
-    title: 'Start Session',
-    titleBarStyle: 'hidden',
-  });
-
-  sessionWin.on('closed', () => {
-    sessionWin = null;
   });
 }
 
@@ -204,8 +184,6 @@ export function initializeIpc (win) {
   connectStartServer(win);
   // listen for 'stop-server' from the renderer
   connectStopServer(win);
-  // listen for 'create-new-session-window' from the renderer
-  connectCreateNewSessionWindow();
   connectGetDefaultArgs();
   connectMoveToApplicationsFolder();
   connectClearLogFile();
