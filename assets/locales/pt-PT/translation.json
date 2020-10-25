@@ -335,5 +335,7 @@
   "TestingBot Key": "TestingBot Key",
   "TestingBot Secret": "TestingBot Secret",
   "Select Cloud Providers": "Select Cloud Providers",
-  "Advanced Settings": "Opções Avançadas"
+  "Advanced Settings": "Opções Avançadas",
+  "Native App Mode": "Native App Mode",
+  "Web/Hybrid App Mode": "Web/Hybrid App Mode"
 }

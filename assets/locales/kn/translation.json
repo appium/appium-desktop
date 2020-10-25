@@ -335,5 +335,7 @@
   "TestingBot Key": "ಟೆಸ್ಟಿಂಗ್ ಬೋಟ್ ಕೀ",
   "TestingBot Secret": "ಟೆಸ್ಟಿಂಗ್ ಬೋಟ್ ಸೀಕ್ರೆಟ್",
   "Select Cloud Providers": "ಕ್ಲೌಡ್ ಸೇವೆ ಸೌಲಭ್ಯ ನೀಡುವವರನ್ನ ಆಯ್ಕೆಮಾಡಿ",
-  "Advanced Settings": "ಅಡ್ವಾನ್ಸ್ಡ್ ಸೆಟ್ಟಿಂಗ್ಸ್"
+  "Advanced Settings": "ಅಡ್ವಾನ್ಸ್ಡ್ ಸೆಟ್ಟಿಂಗ್ಸ್",
+  "Native App Mode": "Native App Mode",
+  "Web/Hybrid App Mode": "Web/Hybrid App Mode"
 }

@@ -199,7 +199,7 @@
   "SauceLabs Data Center": "SauceLabs データセンター",
   "US": "US",
   "EU": "EU",
-  "UP": "Appium Desktop will use the new Sauce Labs Unified Platform US endpoint by default. If you want to use the old US endpoint then do the following: Go to the 'Custom server'-tab, add 'ondemand.saucelabs.com' as a remote host, use port '433', the remote path is '/wd/hub' and last but not least enable 'SSL'.",
+  "UP": "Appium Desktopは、デフォルトで新しいSauce LabsのUnified Platform USエンドポイントを使用します。 古いUSエンドポイントを使用したい場合は、次の操作を行ってください: 'Custom server'タブに移動し、'ondemand.saucelabs.com'をリモートホスト、ポートとして'433'を追加、パスは '/wd/hub'に設定します。'SSL' を有効にする必要はありません。",
   "proxyThroughSC": "Sauce ConnectのSelenium Relayを通してプロキシする",
   "SSL": "SSL",
   "text": "テキスト",
@@ -335,5 +335,7 @@
   "TestingBot Key": "TestingBotキー",
   "TestingBot Secret": "TestingBotシークレット",
   "Select Cloud Providers": "クラウド事業者を選択する",
-  "Advanced Settings": "詳細設定"
+  "Advanced Settings": "詳細設定",
+  "Native App Mode": "ネイティブモード",
+  "Web/Hybrid App Mode": "Web/ハイブリッドモード"
 }
