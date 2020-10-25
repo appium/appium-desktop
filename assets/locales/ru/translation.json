@@ -335,5 +335,7 @@
   "TestingBot Key": "Ключ API TestingBot",
   "TestingBot Secret": "Секрет API TestingBot",
   "Select Cloud Providers": "Выбор облачных провайдеров",
-  "Advanced Settings": "Расширенные настройки"
+  "Advanced Settings": "Расширенные настройки",
+  "Native App Mode": "Native App Mode",
+  "Web/Hybrid App Mode": "Web/Hybrid App Mode"
 }
