@@ -335,5 +335,7 @@
   "TestingBot Key": "TestingBot 키",
   "TestingBot Secret": "TestingBot 시크릿",
   "Select Cloud Providers": "클라우스 서비스 선택",
-  "Advanced Settings": "고급 설정"
+  "Advanced Settings": "고급 설정",
+  "Native App Mode": "Native App Mode",
+  "Web/Hybrid App Mode": "Web/Hybrid App Mode"
 }
