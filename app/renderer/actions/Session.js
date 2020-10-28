@@ -53,8 +53,11 @@ export const IS_ADDING_CLOUD_PROVIDER = 'IS_ADDING_CLOUD_PROVIDER';
 
 export const SET_PROVIDERS = 'SET_PROVIDERS';
 
-// Multiple request sometimes send a new session request
-// after establishing a session
+// Multiple requests sometimes send a new session request
+// after establishing a session.
+// This situation could happen easier on cloud vendors,
+// so let's set zero so far.
+// TODO: increase this retry when we get issues
 export const CONN_RETRIES = 0;
 
 const serverTypes = {};
