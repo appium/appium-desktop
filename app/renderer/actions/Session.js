@@ -53,7 +53,12 @@ export const IS_ADDING_CLOUD_PROVIDER = 'IS_ADDING_CLOUD_PROVIDER';
 
 export const SET_PROVIDERS = 'SET_PROVIDERS';
 
-export const CONN_RETRIES = 2;
+// Multiple requests sometimes send a new session request
+// after establishing a session.
+// This situation could happen easier on cloud vendors,
+// so let's set zero so far.
+// TODO: increase this retry when we get issues
+export const CONN_RETRIES = 0;
 
 const serverTypes = {};
 for (const key of keys(CloudProviders)) {
@@ -747,10 +752,6 @@ function addCustomCaps (caps) {
   const chromeCustomCaps = {
     // Make sure the screenshot is taken of the whole screen when the ChromeDriver is used
     nativeWebScreenshot: true,
-    // Set the ChromeDriver to w3c:false because all internal calls are still JSONWP calls
-    chromeOptions: {
-      'w3c': false,
-    },
   };
   const androidCustomCaps = {
     // @TODO: remove when this is defaulted in the newest Appium 1.8.x release

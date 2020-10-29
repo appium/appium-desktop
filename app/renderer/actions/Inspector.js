@@ -616,4 +616,3 @@ export function callClientMethod (params) {
     return res;
   };
 }
-
