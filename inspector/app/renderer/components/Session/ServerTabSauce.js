@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Form, Row, Col, Input, Checkbox, Radio, Tooltip } from 'antd';
 import SessionStyles from './Session.css';
-import { INPUT } from '../AntdTypes';
+import { INPUT } from '../../../../../shared/components/AntdTypes';
 const FormItem = Form.Item;
 
 export default class ServerTabSauce extends Component {

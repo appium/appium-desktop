@@ -26,7 +26,7 @@ import {
   AppstoreOutlined,
   GlobalOutlined,
 } from '@ant-design/icons';
-import { BUTTON } from '../AntdTypes';
+import { BUTTON } from '../../../../../shared/components/AntdTypes';
 
 const {SELECT, SWIPE, TAP} = SCREENSHOT_INTERACTION_MODE;
 

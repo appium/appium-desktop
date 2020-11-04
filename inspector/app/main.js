@@ -22,10 +22,10 @@ app.on('ready', async () => {
 
   mainWindow = new BrowserWindow({
     show: false,
-    width: isDev ? 1200 : 650,
-    height: 600,
-    minWidth: 650,
-    minHeight: 600,
+    width: 1000,
+    height: 800,
+    minWidth: 1000,
+    minHeight: 800,
     webPreferences: {
       nodeIntegration: true
     }

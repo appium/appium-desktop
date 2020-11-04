@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Form, Input, Row, Col } from 'antd';
-import { INPUT } from '../AntdTypes';
+import { INPUT } from '../../../../../shared/components/AntdTypes';
 
 const FormItem = Form.Item;
 

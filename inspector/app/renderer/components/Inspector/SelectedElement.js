@@ -9,7 +9,7 @@ import {
   LoadingOutlined,
   CopyOutlined,
 } from '@ant-design/icons';
-import { ROW, ALERT } from '../AntdTypes';
+import { ROW, ALERT } from '../../../../../shared/components/AntdTypes';
 
 const ButtonGroup = Button.Group;
 const NATIVE_APP = 'NATIVE_APP';
