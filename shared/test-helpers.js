@@ -3,21 +3,21 @@ import os from 'os';
 
 const platform = os.platform();
 
-export function e2eBefore () {
-  async function before ({log, Application, fs}) {
+export function e2eBefore ({appName, log, Application, fs}) {
+  async function before () {
     let appPath;
     let args = [];
     if (process.env.SPECTRON_TEST_PROD_BINARIES) {
       if (platform === 'linux') {
-        appPath = path.join(__dirname, '..', '..', 'release', 'linux-unpacked', 'appium-desktop');
+        appPath = path.join(__dirname, '..', appName, 'release', 'linux-unpacked', 'appium-desktop');
       } else if (platform === 'darwin') {
-        appPath = path.join(__dirname, '..', '..', 'release', 'mac', 'Appium.app', 'Contents', 'MacOS', 'Appium');
+        appPath = path.join(__dirname, '..', appName, 'release', 'mac', 'Appium.app', 'Contents', 'MacOS', 'Appium');
       } else if (platform === 'win32') {
-        appPath = path.join(__dirname, '..', '..', 'release', 'win-ia32-unpacked', 'Appium.exe');
+        appPath = path.join(__dirname, '..', appName, 'release', 'win-ia32-unpacked', 'Appium.exe');
       }
     } else {
-      appPath = require('electron');
-      args = [path.join(__dirname, '..', '..')];
+      appPath = require(path.join(__dirname, '..', appName, 'node_modules', 'electron'));
+      args = [path.join(__dirname, '..', appName)];
     }
 
     this.timeout(process.env.E2E_TIMEOUT || 60 * 1000);

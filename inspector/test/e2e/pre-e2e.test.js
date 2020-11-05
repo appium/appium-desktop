@@ -9,5 +9,5 @@ const log = logger.getLogger('E2E Test');
 chai.should();
 chai.use(chaiAsPromised);
 
-before(e2eBefore({log, Application, fs}));
+before(e2eBefore({appName: 'inspector', log, Application, fs}));
 after(e2eAfter);

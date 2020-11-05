@@ -2,13 +2,14 @@
 module.exports = (api) => {
   api.cache(true);
   return {
-    plugins: ["@babel/plugin-transform-runtime", "transform-class-properties"],
+    plugins: ['@babel/plugin-transform-runtime', 'transform-class-properties'],
     presets: [
       [
-        require('@babel/preset-env'),
+        '@babel/preset-env',
         {
-          targets: { electron: require('electron/package.json').version },
-          useBuiltIns: 'usage'
+          targets: { electron: require('./inspector/node_modules/electron/package.json').version },
+          useBuiltIns: 'usage',
+          corejs: 2,
         }
       ],
     ],
