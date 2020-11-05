@@ -24,12 +24,16 @@ export default class Session extends Component {
     const {setLocalServerParams, getSavedSessions, setSavedServerParams, setVisibleProviders,
            getRunningSessions, bindWindowClose} = this.props;
     (async () => {
-      bindWindowClose();
-      await getSavedSessions();
-      await setSavedServerParams();
-      await setLocalServerParams();
-      await setVisibleProviders();
-      getRunningSessions();
+      try {
+        bindWindowClose();
+        await getSavedSessions();
+        await setSavedServerParams();
+        await setLocalServerParams();
+        await setVisibleProviders();
+        getRunningSessions();
+      } catch (e) {
+        console.error(e); // eslint-disable-line no-console
+      }
     })();
   }
 

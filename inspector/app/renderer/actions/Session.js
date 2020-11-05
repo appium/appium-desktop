@@ -610,6 +610,12 @@ export function getRunningSessions () {
     const state = getState().session;
     const {server, serverType} = state;
     const serverInfo = server[serverType];
+    const {hostname, port, path, ssl} = serverInfo;
+
+    if (!hostname || !port || !path) {
+      // no need to get sessions if we don't have complete server info
+      return;
+    }
 
     dispatch({type: GET_SESSIONS_REQUESTED});
     if (avoidServerTypes.includes(serverType)) {
@@ -617,7 +623,6 @@ export function getRunningSessions () {
       return;
     }
 
-    const {hostname, port, path, ssl} = serverInfo;
     try {
       const adjPath = path.endsWith('/') ? path : `${path}/`;
       const res = await ky(`http${ssl ? 's' : ''}://${hostname}:${port}${adjPath}sessions`).json();
