@@ -4,7 +4,7 @@ import { v4 as UUID } from 'uuid';
 import url from 'url';
 import { push } from 'connected-react-router';
 import { notification } from 'antd';
-import { debounce, toPairs, union, without, keys } from 'lodash';
+import { debounce, toPairs, union, without, keys, isUndefined } from 'lodash';
 import { setSessionDetails, quitSession } from './Inspector';
 import i18n from '../../configs/i18next.config.renderer';
 import CloudProviders from '../components/Session/CloudProviders';
@@ -52,6 +52,12 @@ export const SHOW_DESIRED_CAPS_JSON_ERROR = 'SHOW_DESIRED_CAPS_JSON_ERROR';
 export const IS_ADDING_CLOUD_PROVIDER = 'IS_ADDING_CLOUD_PROVIDER';
 
 export const SET_PROVIDERS = 'SET_PROVIDERS';
+
+
+const CAPS_NEW_COMMAND = 'appium:newCommandTimeout';
+const CAPS_CONNECT_HARDWARE_KEYBOARD = 'appium:connectHardwareKeyboard';
+const CAPS_NATIVE_WEB_SCREENSHOT = 'appium:nativeWebScreenshot';
+const CAPS_ENSURE_WEBVIEW_HAVE_PAGES = 'appium:ensureWebviewsHavePages';
 
 // Multiple requests sometimes send a new session request
 // after establishing a session.
@@ -375,14 +381,14 @@ export function newSession (caps, attachSessId = null) {
     };
 
     // If a newCommandTimeout wasn't provided, set it to 0 so that sessions don't close on users
-    if (!desiredCapabilities.newCommandTimeout) {
-      desiredCapabilities.newCommandTimeout = 0;
+    if (isUndefined(desiredCapabilities[CAPS_NEW_COMMAND])) {
+      desiredCapabilities[CAPS_NEW_COMMAND] = 0;
     }
 
     // If someone didn't specify connectHardwareKeyboard, set it to true by
     // default
-    if (typeof desiredCapabilities.connectHardwareKeyboard === 'undefined') {
-      desiredCapabilities.connectHardwareKeyboard = true;
+    if (isUndefined(desiredCapabilities[CAPS_CONNECT_HARDWARE_KEYBOARD])) {
+      desiredCapabilities[CAPS_CONNECT_HARDWARE_KEYBOARD] = true;
     }
 
     let driver = null;
@@ -633,8 +639,7 @@ export function getRunningSessions () {
       const res = await ky(`http${ssl ? 's' : ''}://${hostname}:${port}${adjPath}sessions`).json();
       dispatch({type: GET_SESSIONS_DONE, sessions: res.value});
     } catch (err) {
-      console.error(`Ignoring error in getting list of active sessions:`); // eslint-disable-line no-console
-      console.error(err); // eslint-disable-line no-console
+      console.warn(`Ignoring error in getting list of active sessions: ${err}`); // eslint-disable-line no-console
       dispatch({type: GET_SESSIONS_DONE});
     }
   };
@@ -754,14 +759,14 @@ function addCustomCaps (caps) {
     // Add the includeSafariInWebviews for future HTML detection
     includeSafariInWebviews: true,
   };
-  const chromeCustomCaps = {
-    // Make sure the screenshot is taken of the whole screen when the ChromeDriver is used
-    nativeWebScreenshot: true,
-  };
-  const androidCustomCaps = {
-    // @TODO: remove when this is defaulted in the newest Appium 1.8.x release
-    ensureWebviewsHavePages: true,
-  };
+  const chromeCustomCaps = {};
+  // Make sure the screenshot is taken of the whole screen when the ChromeDriver is used
+  chromeCustomCaps[CAPS_NATIVE_WEB_SCREENSHOT] = true;
+
+  const androidCustomCaps = {};
+  // @TODO: remove when this is defaulted in the newest Appium 1.8.x release
+  androidCustomCaps[CAPS_ENSURE_WEBVIEW_HAVE_PAGES] = true;
+
   const iosCustomCaps = {};
 
   return {
