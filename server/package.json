@@ -8,10 +8,9 @@
   },
   "author": {
     "name": "Appium Developers",
-    "email": "",
     "url": "https://github.com/appium"
   },
-  "license": "APACHE2",
+  "license": "Apache-2.0",
   "bugs": {
     "url": "https://github.com/appium/appium-desktop/issues"
   },
