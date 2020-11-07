@@ -46,9 +46,19 @@ app.on('ready', async () => {
     }
   });
 
+  const splashWindow = new BrowserWindow({
+    width: 300,
+    height: 300,
+    minWidth: 300,
+    minHeight: 300,
+    frame: false,
+  });
+
   setupMainWindow({
     mainWindow,
     mainUrl: `file://${__dirname}/index.html`,
+    splashWindow,
+    splashUrl: `file://${__dirname}/splash.html`,
     isDev,
     Menu,
     i18n,

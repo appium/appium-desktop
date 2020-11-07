@@ -1,18 +1,28 @@
-export function setupMainWindow ({mainWindow, mainUrl, isDev, Menu, i18n, rebuildMenus, settings, webContents}) {
+export function setupMainWindow ({splashWindow, splashUrl, mainWindow, mainUrl, isDev, Menu, i18n, rebuildMenus, settings, webContents}) {
+
+  if (splashWindow) {
+    splashWindow.loadURL(splashUrl);
+    splashWindow.show();
+  }
+
   mainWindow.loadURL(mainUrl);
 
   mainWindow.webContents.on('did-finish-load', () => {
+    if (splashWindow) {
+      splashWindow.destroy();
+    }
     mainWindow.show();
     mainWindow.focus();
+
+    if (isDev) {
+      mainWindow.openDevTools();
+    }
+
   });
 
   mainWindow.on('closed', () => {
     mainWindow = null;
   });
-
-  if (isDev) {
-    mainWindow.openDevTools();
-  }
 
   mainWindow.webContents.on('context-menu', (e, props) => {
     const {x, y} = props;
