@@ -30,6 +30,9 @@ export default class AppiumClient {
       try {
         await this.driver.quit();
       } catch (ign) {}
+
+      _instance = null;
+
       // when we've quit the session, there's no source/screenshot to send
       // back
       return {

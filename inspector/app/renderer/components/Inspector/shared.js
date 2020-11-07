@@ -176,6 +176,13 @@ export const actionDefinitions = {
       'Get Context': {methodName: 'getContext'},
       'Get All Context': {methodName: 'getContexts'},
       'Set Context': {methodName: 'switchContexts', args: [['name', STRING]], refresh: true}
+    },
+    'Window (W3C)': {
+      'Get Window Handle': {methodName: 'getWindowHandle'},
+      'Close Window': {methodName: 'closeWindow', refresh: true},
+      'Switch To Window': {methodName: 'switchToWindow', args: [['handle', STRING]], refresh: true},
+      'Get Window Handles': {methodName: 'getWindowHandles'},
+      'New Window': {methodName: 'createWindow', args: [['type', STRING]], refresh: true}
     }
   }
 };
