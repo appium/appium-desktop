@@ -3,14 +3,14 @@
 [![Crowdin](https://d322cqt584bo4o.cloudfront.net/appium-desktop/localized.svg)](https://crowdin.com/project/appium-desktop)
 ![Action screenshot](docs/images/screen-inspector-and-logs.png)
 
-Appium Desktop is an app for Mac, Windows, and Linux which gives you the power of the [Appium](http://appium.io) automation server in a beautiful and flexible UI. It is a combination of a few Appium-related tools:
+Appium Desktop is a suite of apps for Mac, Windows, and Linux which gives you the power of the [Appium](http://appium.io) automation server in a beautiful and flexible UI. It is a combination of a few Appium-related tools:
 
 * A graphical interface for the Appium Server. You can set options, start/stop the server, see logs, etc... You also don't need to use Node/NPM to install Appium, as the Node runtime comes bundled with Appium Desktop.
 * An Inspector that you can use to look at your app's elements (Safari/Chrome browser, native or hybrid app), get basic information about them, and perform basic interactions with them. This is useful as a way to learn about Appium or as a way to learn about your app so you can write tests for it.
 
 ## Download Appium Desktop
 
-You can always pick up the latest release at our
+You can always pick up the latest release of the Server GUI or the Inspector at our
 [Release](https://github.com/appium/appium-desktop/releases/latest) page on
 GitHub.
 
@@ -26,7 +26,7 @@ reporting an issue with Appium Desktop, always be sure to include _both_ the
 version of Appium Desktop and the version of the Appium Server which is in use
 (see below).
 
-If you're on macOS, you will need to install Appium Desktop by copying the app
+If you're on macOS, you will need to install Appium Desktop apps by copying the app
 from the downloaded DMG file to your own file system (the best place is the
 "Applications" folder). Running Appium from in side the attached DMG itself is
 not supported, and will not work.
@@ -36,15 +36,15 @@ not supported, and will not work.
 
 ## Usage Instructions
 
-These instructions assume you are already familiar with Appium and
-Appium-related concepts. If you are new to Appium, please visit
-[appium.io](http://appium.io) and read our introductory material.
+These instructions assume you are already familiar with Appium and Appium-related concepts. If you
+are new to Appium, please visit [appium.io](http://appium.io) and read our introductory material.
+They also assume that you have downloaded both the Server GUI and the Inspector apps.
 
 This app provides a convenient way to download and run the Appium automation
 server, as well as a tool for inspecting elements in Chrome/Safari browser and your Android or iOS application. Its
 various capabilities are described in the following sections.
 
-### The server start window
+### The Appium Desktop Server GUI
 
 #### Starting a simple server
 
@@ -84,24 +84,21 @@ This is fairly straightforward and no real interaction is possible, beyond
 using the button to stop the server. You can also copy-and-paste the logs from
 this window which is useful in reporting Appium issues.
 
-One other button is available: 'Start New Session'. Clicking this will open up
-the New Session window enabling you to start an Inspector session on the
-currently-running server.
+### The Appium Desktop Inspector
 
-### The New Session window
+The Inspector opens up with a New Session windows. This New Session window allows you to construct
+a set of Appium desired capabilities used to launch an Appium session. You can launch a session
+against the currently-running Appium CLI or Appium Server GUI server, or you can launch a session
+against a variety of other endpoints. Simply include the connection details for any server that you
+wish to connect to.
 
-The New Session window allows you to construct a set of Appium desired
-capabilities used to launch an Appium session. You can launch a session against
-the currently-running Appium Desktop server (which is the default), or you can
-launch a session against a variety of other endpoints.
+**IMPORTANT:** to ensure that the Inspector can talk to your Appium server, any Appium server you
+connect to from the Inspector may need to be started with the `--allow-cors` flag, so that
+Chrome/Electron's content security policies don't prevent the Inspector from making requests to the
+server (which may be running on a different host and port). If you get immediate errors when
+talking to your Appium server, ensure that this setting is configured on your server.
 
 ![New session window](docs/images/screen-new-session.png)
-
-Since it's not required to run against Appium Desktop's own server, you can get
-to the New Session window without starting an Appium Desktop server. Simply go
-to "File" (Windows/Linux) or "Appium" (Mac) and choose "New Session...", which
-will open the New Session window without having to start a local server. In
-this case, attaching to the local server will be disabled.
 
 You can add available cloud providers as new tabs.
 When you select _Select Cloud Providers_ tab on the view,
@@ -223,9 +220,9 @@ The below screenshot shows the HTML source of the Appium Desktop documentation w
 As of Appium Desktop version [`1.18.0`](https://github.com/appium/appium-desktop/releases/) it will automatically enable showing the HTML-source if a Chrome or Safari session is started.
 
 #### More selector options
-XML is not a native programming language for iOS as it is with Android. Appium will automatically translate the iOS-UIHierarchy into XML, but this is a time-consuming process. 
+XML is not a native programming language for iOS as it is with Android. Appium will automatically translate the iOS-UIHierarchy into XML, but this is a time-consuming process.
 The XML will be used to provide a XPATH that can be used to find elements. When you use that XPATH selector with iOS during automation, Appium always needs to do the translation which will slow down the test execution (for more info see [Appium Pro newsletter 8](https://appiumpro.com/editions/8-how-to-find-elements-in-ios-not-by-xpath)).
- 
+
 As of Appium Desktop version [`1.18.0`](https://github.com/appium/appium-desktop/releases/) it will, if possible, also provide the:
 
 - [`-ios predicate string`](https://github.com/facebookarchive/WebDriverAgent/wiki/Predicate-Queries-Construction-Rules)
@@ -234,12 +231,12 @@ As of Appium Desktop version [`1.18.0`](https://github.com/appium/appium-desktop
 selector options together with a *Get Timing* button.
 
 ![Inspector window](docs/images/selectors.png).
- 
+
 When you select an iOS element in Appium Desktop and press the *Get Timing*-button it will provide you the time in milliseconds
 it will take per selector to find the element and will automatically sort them from fast to the slowest.
 In most cases you will see that XPATH is the slowest locator strategy in comparison to the other options.
 
-![Inspector window](docs/images/selectors-time.png). 
+![Inspector window](docs/images/selectors-time.png).
 
 ### The Recorder
 
