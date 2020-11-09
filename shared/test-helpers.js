@@ -1,5 +1,6 @@
 import path from 'path';
 import os from 'os';
+import { retryInterval } from 'asyncbox';
 
 const platform = os.platform();
 
@@ -38,7 +39,14 @@ export function e2eBefore ({appName, log, Application, fs}) {
     });
     log.info(`Spectron Application instance created. Starting app`);
     await this.app.start();
-    log.info(`App started`);
+    const client = this.app.client;
+    log.info(`App started; waiting for splash page to go away`);
+    await retryInterval(20, 1000, async function () {
+      const handles = (await client.windowHandles()).value;
+      await client.window(handles[0]);
+      (await client.getUrl()).should.include('index.html');
+    });
+    log.info(`App ready for automation`);
   }
 
   return before;
