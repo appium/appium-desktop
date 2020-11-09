@@ -23,10 +23,20 @@ jobs:
         versionSpec: '10.x'
     - script: npm ci
       displayName: 'Install dependencies'
+    - script: npm ci
+      workingDirectory: 'server'
+      displayName: 'Install server app dependencies'
+    - script: npm ci
+      workingDirectory: 'inspector'
+      displayName: 'Install inspector app dependencies'
     - script: npm run build
       displayName: Build project
     - script: ${{ parameters.buildScript }}
-      displayName: Build application bundles
+      displayName: Build server application bundles
+      workingDirectory: server
+    - script: ${{ parameters.buildScript }}
+      displayName: Build inspector application bundles
+      workingDirectory: inspector
       env:
         GH_TOKEN: $(GH_TOKEN)
         CSC_LINK: $(CSC_LINK)

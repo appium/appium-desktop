@@ -29,6 +29,7 @@
     "test:integration": "npm run test:server:integration && npm run test:inspector:integration",
     "test:unit": "npm run test:server:unit && npm run test:inspector:unit",
     "test:lint": "npm run test:server:lint && npm run test:inspector:lint",
+    "e2e": "npm run e2e:inspector && npm run e2e:server",
     "e2e:inspector": "cross-env E2E_TIMEOUT=600000 NODE_ENV=test RUNNING_IN_SPECTRON=true mocha --reporter mocha-multi-reporters --reporter-options configFile=./inspector/test/mochareporters.json ./inspector/test/e2e",
     "e2e:server": "cross-env E2E_TIMEOUT=600000 NODE_ENV=test RUNNING_IN_SPECTRON=true mocha --reporter mocha-multi-reporters --reporter-options configFile=./server/test/mochareporters.json ./server/test/e2e",
     "build": "run-s build:*",
