@@ -73,7 +73,7 @@
     "eslint-plugin-promise": "^4.0.1",
     "eslint-plugin-react": "^7.12.4",
     "eslint-plugin-react-native": "^3.6.0",
-    "eslint-plugin-shopify": "^30.0.0",
+    "eslint-plugin-shopify": "^35.1.0",
     "husky": "^4.0.2",
     "mkdirp": "^1.0.4",
     "mocha": "^8.1.3",
