@@ -8,7 +8,13 @@ jobs:
       inputs:
         versionSpec: '11.x'
     - script: npm install
-      displayName: 'Install dependencies'
+      displayName: 'Install global dependencies'
+    - script: npm install
+      workingDirectory: 'server'
+      displayName: 'Install server app dependencies'
+    - script: npm install
+      workingDirectory: 'inspector'
+      displayName: 'Install inspector app dependencies'
     - script: npm run build
       displayName: Build project
     - script: npm test

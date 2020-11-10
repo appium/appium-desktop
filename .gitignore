@@ -12,3 +12,6 @@ Certificates.p12
 .idea/
 junit-test-results.xml
 junit-testresults.xml
+
+server/assets/locales
+inspector/assets/locales

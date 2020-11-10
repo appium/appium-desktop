@@ -8,8 +8,8 @@ Conduct](CONDUCT.md).
 
 ## Overview
 
-Appium Desktop is an [Electron](http://electron.atom.io) app. Electron apps
-have a basic architecture that consists of a _main_ process (which runs
+Appium Desktop is a set of [Electron](http://electron.atom.io) apps. Electron
+apps have a basic architecture that consists of a _main_ process (which runs
 Node.js) and possibly many _renderer_ processes (essentially browser windows
 which display HTML/CSS and can run JS---this is where the UI lives).
 Interactions between the two types of process are made possible by a built-in
@@ -36,11 +36,15 @@ use in an unmodified fashion. Many thanks to that project!
 ### Setting up
 
 0. Clone the repo
-0. Install dependencies (`npm install`)
+0. Install global dependencies (`npm install`)
+0. Install server GUI dependencies (`cd server && npm install`)
+0. Install inspector dependencies (`cd inspector && npm install`)
 
 ### Doing Development
 
-There is a handy script for preparing the code and launching a development version of the app:
+There is a handy script for preparing the code and launching a development
+version of the apps, which you can run in either the `server` or `inspector`
+directory based on which app you want to use:
 
 ```bash
 npm run dev
@@ -48,13 +52,14 @@ npm run dev
 
 This launches both the app and a development server which feeds UI code changes to the app as you make them (this is called 'hot reload'). In most cases, if you're simply making UI changes, you won't need to relaunch the app in order to see them reflected. If you do, simply kill this script and start again.
 
-Another important thing to do before committing is to run a lint tool on your code:
+Another important thing to do before committing is to run a lint tool on your
+code (you can do this from the main directory or one of the app directories):
 
 ```bash
 npm run test:lint
 ```
 
-Finally, you might want to run the app in a non-development mode in order to make sure that everything works as expected if you were to publish:
+Finally, you might want to run the app in a non-development mode in order to make sure that everything works as expected if you were to publish (run these from within `server` or `inspector` as appropriate):
 
 ```bash
 npm run build  # prepare resources
@@ -63,13 +68,13 @@ npm start  # start a production version of the app
 
 ### Running tests
 
-To run unit tests, run the command
+To run unit tests for an app, run the command
 
 ```bash
 npm test
 ```
 
-To run the e2e tests call
+To run the e2e tests call:
 
 ```bash
 npm run e2e
@@ -102,13 +107,13 @@ npm run e2e
 
 Appium Desktop uses [Electron Builder](https://github.com/electron-userland/electron-builder/) to build app. Read this document for instructions on how to set up your local environment so that you can build and package the app: https://github.com/electron-userland/electron-builder/wiki/Multi-Platform-Build
 
-To package the app for your platform, locally, run:
+To package the app for your platform, locally, run this command from within one of the app directories:
 
 ```bash
-npx build --publish never
+npx electron-builder build --publish never
 ```
 
-This will build the app and save the assets to `release/`.
+This will build the app and save the assets to `release/` within the appropriate app directory.
 
 Appium Desktop is published to Github Releases (at http://github.com/appium/appium-desktop/releases). Packaging and releasing gets triggered when a git tag is committed and the CI creates the assets for all platforms and uploads them. The changelog needs to be written manually.
 
