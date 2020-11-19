@@ -361,8 +361,6 @@ export function newSession (caps, attachSessId = null) {
         break;
     }
 
-    // TODO W2D handle proxy and rejectUnauthorized cases
-    //let rejectUnauthorized = !session.server.advanced.allowUnauthorized;
     //let proxy;
     //if (session.server.advanced.useProxy && session.server.advanced.proxy) {
     //  proxy = session.server.advanced.proxy;
@@ -378,6 +376,7 @@ export function newSession (caps, attachSessId = null) {
       protocol: https ? 'https' : 'http',
       path,
       connectionRetryCount: CONN_RETRIES,
+      strictSSL: !session.server.advanced.allowUnauthorized,
     };
 
     // If a newCommandTimeout wasn't provided, set it to 0 so that sessions don't close on users
