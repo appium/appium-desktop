@@ -1,6 +1,6 @@
 {
   "name": "appium-desktop",
-  "version": "1.19.0-beta.1",
+  "version": "1.19.1-beta.0",
   "description": "Graphical interface for the Appium server, and an app inspector",
   "repository": {
     "type": "git",
@@ -119,7 +119,7 @@
     "@babel/polyfill": "^7.4.0",
     "ansi-to-html": "~0.6.7",
     "antd": "~4.0.4",
-    "appium": "1.19.0",
+    "appium": "1.19.1",
     "appium-support": "^2.25.0",
     "bluebird": "^3.5.5",
     "cheerio": "^1.0.0-rc.3",
