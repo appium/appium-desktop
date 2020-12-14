@@ -59,7 +59,7 @@
     "@babel/preset-env": "^7.12.1",
     "@babel/register": "^7.4.0",
     "appium-support": "^2.49.0",
-    "asyncbox": "^2.6.0",
+    "asyncbox": "^2.8.0",
     "babel-plugin-transform-class-properties": "^6.24.1",
     "bluebird": "^3.7.2",
     "cross-env": "^7.0.3",
