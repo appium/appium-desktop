@@ -351,6 +351,11 @@ correctly install Appium Desktop, copy the application from the disk image to
 your local filesystem, to somewhere like `/Applications`. Then, run the app
 from that new location.
 
+#### Cannot open Appium Desktop
+
+It is because of macOS security system. 
+Please read [issue#1217](https://github.com/appium/appium-desktop/issues/1217) for more details.
+
 ## Developer Instructions
 
 Want to hack on Appium Desktop? Awesome! Head on over to our [Contributing
