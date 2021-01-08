@@ -1,17 +1,19 @@
-import _, {omit} from 'lodash';
+import _, { omit } from 'lodash';
 import formatJSON from 'format-json';
 
-import { NEW_SESSION_REQUESTED, NEW_SESSION_BEGAN, NEW_SESSION_DONE,
-         SAVE_SESSION_REQUESTED, SAVE_SESSION_DONE, GET_SAVED_SESSIONS_REQUESTED,
-         GET_SAVED_SESSIONS_DONE, SESSION_LOADING, SESSION_LOADING_DONE,
-         SET_CAPABILITY_PARAM, ADD_CAPABILITY, REMOVE_CAPABILITY, SET_CAPS,
-         SWITCHED_TABS, SAVE_AS_MODAL_REQUESTED, HIDE_SAVE_AS_MODAL_REQUESTED, SET_SAVE_AS_TEXT,
-         DELETE_SAVED_SESSION_REQUESTED, DELETE_SAVED_SESSION_DONE,
-         CHANGE_SERVER_TYPE, SET_SERVER_PARAM, SET_SERVER, SET_ATTACH_SESS_ID,
-         GET_SESSIONS_REQUESTED, GET_SESSIONS_DONE,
-         ENABLE_DESIRED_CAPS_EDITOR, ABORT_DESIRED_CAPS_EDITOR, SAVE_RAW_DESIRED_CAPS, SET_RAW_DESIRED_CAPS, SHOW_DESIRED_CAPS_JSON_ERROR,
-         IS_ADDING_CLOUD_PROVIDER, SET_PROVIDERS,
-         ServerTypes } from '../actions/Session';
+import {
+  NEW_SESSION_REQUESTED, NEW_SESSION_BEGAN, NEW_SESSION_DONE,
+  SAVE_SESSION_REQUESTED, SAVE_SESSION_DONE, GET_SAVED_SESSIONS_REQUESTED,
+  GET_SAVED_SESSIONS_DONE, SESSION_LOADING, SESSION_LOADING_DONE,
+  SET_CAPABILITY_PARAM, ADD_CAPABILITY, REMOVE_CAPABILITY, SET_CAPS,
+  SWITCHED_TABS, SAVE_AS_MODAL_REQUESTED, HIDE_SAVE_AS_MODAL_REQUESTED, SET_SAVE_AS_TEXT,
+  DELETE_SAVED_SESSION_REQUESTED, DELETE_SAVED_SESSION_DONE,
+  CHANGE_SERVER_TYPE, SET_SERVER_PARAM, SET_SERVER, SET_ATTACH_SESS_ID,
+  GET_SESSIONS_REQUESTED, GET_SESSIONS_DONE,
+  ENABLE_DESIRED_CAPS_EDITOR, ABORT_DESIRED_CAPS_EDITOR, SAVE_RAW_DESIRED_CAPS, SET_RAW_DESIRED_CAPS, SHOW_DESIRED_CAPS_JSON_ERROR,
+  IS_ADDING_CLOUD_PROVIDER, SET_PROVIDERS,
+  ServerTypes
+} from '../actions/Session';
 
 const visibleProviders = []; // Pull this from "electron-settings"
 const server = {
@@ -48,6 +50,7 @@ const INITIAL_STATE = {
     pcloudy: {},
     testingbot: {},
     experitest: {},
+    roboticmobi: {},
   },
   attachSessId: null,
 
@@ -67,7 +70,7 @@ const INITIAL_STATE = {
 
 let nextState;
 
-export default function session (state = INITIAL_STATE, action) {
+export default function session(state = INITIAL_STATE, action) {
   switch (action.type) {
     case NEW_SESSION_REQUESTED:
       return {
@@ -91,7 +94,7 @@ export default function session (state = INITIAL_STATE, action) {
         ...state,
         caps: [
           ...state.caps,
-          {type: 'text'},
+          { type: 'text' },
         ],
       };
 
@@ -198,7 +201,7 @@ export default function session (state = INITIAL_STATE, action) {
       return {
         ...state,
         server: {
-          ...(function extendCurrentServerStateWithNewServerState (currentServerState, newServerState) {
+          ...(function extendCurrentServerStateWithNewServerState(currentServerState, newServerState) {
             // Copy current server state and extend it with new server state
             const nextServerState = _.cloneDeep(currentServerState || {});
 
@@ -306,6 +309,6 @@ export default function session (state = INITIAL_STATE, action) {
       };
 
     default:
-      return {...state};
+      return { ...state };
   }
 }
