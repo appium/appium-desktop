@@ -345,6 +345,15 @@ export function newSession (caps, attachSessId = null) {
         port = session.server.experitest.port = experitestUrl.port;
         https = session.server.experitest.ssl = experitestUrl.protocol === 'https:';
         break;
+      } case ServerTypes.roboticmobi: {
+        host = 'api.robotic.mobi';
+        path = '/wd/hub';
+        port = 443;
+        https = 'https:';
+        if (caps) {
+          desiredCapabilities.robotic_mobi_token = session.server.roboticmobi.token || process.env.ROBOTIC_MOBI_TOKEN;
+        }
+        break;
       }
       default:
         break;
