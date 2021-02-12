@@ -12,6 +12,9 @@ function formatCaps (caps) {
   if (caps.automationName) {
     importantCaps.push(caps.automationName);
   }
+  if (caps.sessionName) {
+    importantCaps.push(caps.sessionName);
+  }
   return importantCaps.join(', ').trim();
 }
 
