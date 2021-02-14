@@ -331,14 +331,10 @@ function connectClientMethodListener () {
 
 const getCurrentSessions = _.debounce(async (evt, data) => {
   const {host, port, path: appiumPath = '/wd/hub', ssl, username, accessKey} = data;
-  let res;
   try {
-    if (username && accessKey) {
-      // Basic Authorization for some cloud providers
-      res = await request(`http${ssl ? 's' : ''}://${username}:${accessKey}@${host}:${port}${appiumPath}/sessions`);
-    } else {
-      res = await request(`http${ssl ? 's' : ''}://${host}:${port}${appiumPath}/sessions`);
-    }
+    const res = username && accessKey
+      ? await request(`http${ssl ? 's' : ''}://${username}:${accessKey}@${host}:${port}${appiumPath}/sessions`)
+      : await request(`http${ssl ? 's' : ''}://${host}:${port}${appiumPath}/sessions`);
     evt.sender.send('appium-client-get-sessions-response', {res});
   } catch (e) {
     evt.sender.send('appium-client-get-sessions-fail');
