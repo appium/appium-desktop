@@ -646,17 +646,11 @@ export function getRunningSessions () {
 
     try {
       const adjPath = path.endsWith('/') ? path : `${path}/`;
-      let res;
-      if (username && accessKey) {
-        // add basic auth for some cloud providers
-        res = await ky(`http${ssl ? 's' : ''}://${hostname}:${port}${adjPath}sessions`, {
-          headers: {
-            'Authorization': `Basic ${btoa(`${username}:${accessKey}`)}`
-          }
-        }).json();
-      } else {
-        res = await ky(`http${ssl ? 's' : ''}://${hostname}:${port}${adjPath}sessions`).json();
-      }
+      const res = username && accessKey
+        ? await ky(`http${ssl ? 's' : ''}://${hostname}:${port}${adjPath}sessions`, {
+          headers: {'Authorization': `Basic ${btoa(`${username}:${accessKey}`)}`}
+        }).json()
+        : await ky(`http${ssl ? 's' : ''}://${hostname}:${port}${adjPath}sessions`).json();
       dispatch({type: GET_SESSIONS_DONE, sessions: res.value});
     } catch (err) {
       console.warn(`Ignoring error in getting list of active sessions: ${err}`); // eslint-disable-line no-console
