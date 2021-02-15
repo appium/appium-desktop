@@ -256,8 +256,8 @@ export function newSession (caps, attachSessId = null) {
         https = session.server.perfecto.ssl = false;
         break;
       case ServerTypes.browserstack:
-        host = process.env.BROWSERSTACK_HOST || 'hub-cloud.browserstack.com';
-        port = session.server.browserstack.port = 443;
+        host = session.server.browserstack.hostname = process.env.BROWSERSTACK_HOST || 'hub-cloud.browserstack.com';
+        port = session.server.browserstack.port = process.env.BROWSERSTACK_PORT || 443;
         path = session.server.browserstack.path = '/wd/hub';
         username = session.server.browserstack.username || process.env.BROWSERSTACK_USERNAME;
         desiredCapabilities['browserstack.source'] = 'appiumdesktop';
@@ -270,7 +270,7 @@ export function newSession (caps, attachSessId = null) {
           });
           return;
         }
-        https = session.server.browserstack.ssl = true;
+        https = session.server.browserstack.ssl = (parseInt(port, 10) === 443);
         break;
       case ServerTypes.bitbar:
         host = process.env.BITBAR_HOST || 'appium.bitbar.com';
@@ -631,7 +631,7 @@ export function getRunningSessions () {
     const state = getState().session;
     const {server, serverType} = state;
     const serverInfo = server[serverType];
-    const {hostname, port, path, ssl} = serverInfo;
+    const {hostname, port, path, ssl, username, accessKey} = serverInfo;
 
     if (!hostname || !port || !path) {
       // no need to get sessions if we don't have complete server info
@@ -646,7 +646,11 @@ export function getRunningSessions () {
 
     try {
       const adjPath = path.endsWith('/') ? path : `${path}/`;
-      const res = await ky(`http${ssl ? 's' : ''}://${hostname}:${port}${adjPath}sessions`).json();
+      const res = username && accessKey
+        ? await ky(`http${ssl ? 's' : ''}://${hostname}:${port}${adjPath}sessions`, {
+          headers: {'Authorization': `Basic ${btoa(`${username}:${accessKey}`)}`}
+        }).json()
+        : await ky(`http${ssl ? 's' : ''}://${hostname}:${port}${adjPath}sessions`).json();
       dispatch({type: GET_SESSIONS_DONE, sessions: res.value});
     } catch (err) {
       console.warn(`Ignoring error in getting list of active sessions: ${err}`); // eslint-disable-line no-console
