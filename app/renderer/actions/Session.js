@@ -245,8 +245,8 @@ export function newSession (caps, attachSessId = null) {
         https = session.server.perfecto.ssl = false;
         break;
       case ServerTypes.browserstack:
-        host = process.env.BROWSERSTACK_HOST || 'hub-cloud.browserstack.com';
-        port = session.server.browserstack.port = 443;
+        host = session.server.browserstack.hostname = process.env.BROWSERSTACK_HOST || 'hub-cloud.browserstack.com';
+        port = session.server.browserstack.port = process.env.BROWSERSTACK_PORT || 443;
         path = session.server.browserstack.path = '/wd/hub';
         username = session.server.browserstack.username || process.env.BROWSERSTACK_USERNAME;
         desiredCapabilities['browserstack.source'] = 'appiumdesktop';
@@ -259,7 +259,7 @@ export function newSession (caps, attachSessId = null) {
           });
           return;
         }
-        https = session.server.browserstack.ssl = true;
+        https = session.server.browserstack.ssl = (parseInt(port, 10) === 443);
         break;
       case ServerTypes.bitbar:
         host = process.env.BITBAR_HOST || 'appium.bitbar.com';
@@ -599,7 +599,12 @@ export function getRunningSessions () {
       dispatch({type: GET_SESSIONS_DONE});
     } else {
       ipcRenderer.send('appium-client-get-sessions', {
-        host: serverInfo.hostname, port: serverInfo.port, path: serverInfo.path, ssl: serverInfo.ssl
+        host: serverInfo.hostname,
+        port: serverInfo.port,
+        path: serverInfo.path,
+        ssl: serverInfo.ssl,
+        username: serverInfo.username,
+        accessKey: serverInfo.accessKey
       });
       ipcRenderer.once('appium-client-get-sessions-response', (evt, e) => {
         const res = JSON.parse(e.res);
