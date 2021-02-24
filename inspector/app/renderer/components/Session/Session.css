@@ -76,13 +76,10 @@
   margin-top: -1em;
 }
 
-.serverTabs :global(.ant-tabs-content) {
-  height: 100px;
-}
-
 .scrollingTabCont {
   border-bottom: 1px solid #d9d9d9;
   margin-bottom: 15px;
+  margin-top: 15px;
   flex-grow: 1;
   display: flex;
   flex-direction: column;
@@ -92,9 +89,13 @@
   margin-bottom: 0px;
 }
 
+.scrollingTabCont :global(.ant-tabs-content) {
+  height: 100%;
+}
+
 .scrollingTab {
   overflow-y: scroll;
-  flex-grow: 1;
+  height: 100%;
   padding-top: 16px;
 }
 
@@ -110,7 +111,8 @@
 }
 
 .saved-sessions :global(.ant-table) {
-  overflow-y: scroll;
+  overflow-y: auto;
+  height: calc(100% - 15px);
 }
 
 .saved-sessions :global(.ant-table::-webkit-scrollbar) {
@@ -118,8 +120,13 @@
 }
 
 .newSessionForm {
-  overflow: auto;
+  overflow-y: auto;
   overflow-x: hidden;
+  height: calc(100% - 15px);
+}
+
+.capsFormattedCol {
+  height: 100%;
 }
 
 .formattedCapsCont {
@@ -127,9 +134,7 @@
 }
 
 .formattedCaps {
-  height: 100%;
-  width: 100%;
-  margin-bottom: 15px;
+  height: calc(100% - 15px);
   margin-left: 12px;
   display: flex;
   flex-flow: column;
@@ -138,8 +143,12 @@
 
 .formattedCaps :global(.ant-card-body) {
   flex: 1;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
+
+.formattedCaps :global(.ant-card-body::-webkit-scrollbar) {
+}
+
 
 .formattedCaps pre {
   white-space: pre-wrap;
@@ -157,10 +166,12 @@
 
 .capsFormCol {
     min-width: 476px;
+    height: 100%;
 }
 
 .capsFormRow {
   font-size: 14px;
+  height: 100%;
 }
 
 .capsFormRow :global(.ant-form-item) {
@@ -179,6 +190,8 @@
 .localDesc {
     font-style: italic;
     color: #666;
+    margin-top: 8px;
+    margin-left: 8px;
 }
 
 .selected {
@@ -206,7 +219,6 @@
 }
 
 .advancedSettingsContainer {
-  padding-top: 12px;
 }
 
 .add-desired-capability-button {

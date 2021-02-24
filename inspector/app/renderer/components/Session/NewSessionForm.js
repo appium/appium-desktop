@@ -7,8 +7,6 @@ import {
   DeleteOutlined,
   PlusOutlined
 } from '@ant-design/icons';
-import {remote} from 'electron';
-import { HEIGHT_OF_SESSION_CONFIG_AREA } from './Layout';
 import { ROW } from '../../../../../shared/components/AntdTypes';
 
 const {Item: FormItem} = Form;
@@ -58,12 +56,12 @@ export default class NewSessionForm extends Component {
     const {setCapabilityParam, caps, addCapability, removeCapability, saveSession, hideSaveAsModal,
            saveAsText, showSaveAsModal, setSaveAsText, isEditingDesiredCaps, t} = this.props;
 
-    return <div>
+    return <>
       <Row type={ROW.FLEX} align="top" justify="start" className={SessionStyles.capsFormRow}>
         <Col order={1} span={12} className={`${SessionStyles.capsFormCol} ${isEditingDesiredCaps ? SessionStyles.capsFormDisabled : ''}`}>
           <Form
             className={SessionStyles.newSessionForm}
-            style={{maxHeight: remote.getCurrentWindow().getSize()[1] - HEIGHT_OF_SESSION_CONFIG_AREA}}>
+          >
 
             {caps.map((cap, index) => <Row gutter={8} key={index}>
               <Col span={7}>
@@ -124,6 +122,6 @@ export default class NewSessionForm extends Component {
           </Modal>
         </Col>
       </Row>
-    </div>;
+    </>;
   }
 }
