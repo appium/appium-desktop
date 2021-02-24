@@ -1,11 +1,13 @@
 {
-  "parser": "babel-eslint",
-  "extends": "appium",
+  "parser": "@babel/eslint-parser",
+  "extends": [
+    "appium"
+  ],
   "plugins": [
     "import",
     "react",
     "react-native",
-    "shopify"
+    "@babel"
   ],
   "env": {
     "browser": true,
@@ -14,11 +16,8 @@
   },
   "rules": {
     "import/no-unresolved": [2, {"ignore": ["electron"]}],
-    "babel/arrow-parens": 0,
+    "@babel/arrow-parens": 0,
     "require-await": 2,
-    "shopify/jsx-no-hardcoded-content": [2, {
-      "checkProps": ["tab", "placeholder", "addonBefore", "addonAfter", "title", "header"]
-    }],
     "react-native/no-inline-styles": 2
   }
 }

@@ -12,6 +12,7 @@ module.exports = (api) => {
           corejs: 2,
         }
       ],
+      ['@babel/preset-react'],
     ],
   };
 };
