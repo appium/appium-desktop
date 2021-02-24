@@ -4,7 +4,6 @@ import _ from 'lodash';
 import NewSessionForm from './NewSessionForm';
 import SavedSessions from './SavedSessions';
 import AttachToSession from './AttachToSession';
-import ServerTabAutomatic from './ServerTabAutomatic';
 import ServerTabCustom from './ServerTabCustom';
 import { Tabs, Button, Spin } from 'antd';
 import AdvancedServerParams from './AdvancedServerParams';
@@ -53,7 +52,7 @@ export default class Session extends Component {
 
   render () {
     const {newSessionBegan, savedSessions, tabKey, switchTabs,
-           serverType, server,
+           serverType,
            requestSaveAsModal, newSession, caps, capsUUID, saveSession,
            visibleProviders = [],
            isCapsDirty, sessionLoading, attachSessId, t} = this.props;
@@ -66,10 +65,7 @@ export default class Session extends Component {
           <div id='serverTypeTabs' className={SessionStyles.serverTab}>
             <Tabs activeKey={serverType} onChange={(tab) => this.handleSelectServerTab(tab)} className={SessionStyles.serverTabs}>
               {[
-                <TabPane disabled={!server.local.port} tab={t('Automatic Server')} key="local">
-                  <ServerTabAutomatic {...this.props} />
-                </TabPane>,
-                <TabPane tab={t('Custom Server')} key="remote">
+                <TabPane tab={t('Appium Server')} key="remote">
                   <ServerTabCustom {...this.props} />
                 </TabPane>,
                 ..._(visibleProviders).map((providerName) => {
