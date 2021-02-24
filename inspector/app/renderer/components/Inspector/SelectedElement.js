@@ -150,11 +150,9 @@ class SelectedElement extends Component {
     // Add class chain to the data source as well
     if (classChain && currentContext === NATIVE_APP) {
       const classChainText = <Tooltip title={t('This selector is in BETA, it is the XML selector translated to `-ios class chain`.')}>
-        {/* eslint-disable-next-line shopify/jsx-no-hardcoded-content */}
         <span>
           -ios class chain
           <strong>
-            {/* eslint-disable-next-line shopify/jsx-no-hardcoded-content */}
             <a onClick={(e) => e.preventDefault() || shell.openExternal('https://github.com/facebookarchive/WebDriverAgent/wiki/Class-Chain-Queries-Construction-Rules')}>(beta)</a>
           </strong>
         </span>
@@ -171,11 +169,9 @@ class SelectedElement extends Component {
     // Add predicate string to the data source as well
     if (predicateString && currentContext === NATIVE_APP) {
       const predicateStringText = <Tooltip title={t('This selector is in BETA, it is the XML selector translated to `-ios predicate string`.')}>
-        {/* eslint-disable-next-line shopify/jsx-no-hardcoded-content */}
         <span>
           -ios predicate string
           <strong>
-            {/* eslint-disable-next-line shopify/jsx-no-hardcoded-content */}
             <a onClick={(e) => e.preventDefault() || shell.openExternal('https://github.com/facebookarchive/WebDriverAgent/wiki/Predicate-Queries-Construction-Rules')}>(beta)</a>
           </strong>
         </span>

@@ -22,7 +22,6 @@ class Source extends Component {
     let attrs = [];
 
     // Don't do translations on Source XML
-    /* eslint-disable shopify/jsx-no-hardcoded-content */
     for (let attr of IMPORTANT_ATTRS) {
       if (attributes[attr]) {
         attrs.push(<span key={attr}>&nbsp;
@@ -37,7 +36,6 @@ class Source extends Component {
     return <span>
       &lt;<b className={InspectorStyles.sourceTag}>{tagName}</b>{attrs}&gt;
     </span>;
-    /* eslint-enable shopify/jsx-no-hardcoded-content */
   }
 
   /**

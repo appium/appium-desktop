@@ -57,7 +57,7 @@ class PresetsTab extends Component {
 
     const preset = this.selectedPresetData(presetName);
 
-    for (let [argName, newVal] of _.toPairs(preset)) {
+    for (let [argName, newVal] of _.toPairs(preset)) { // eslint-disable-line no-unused-vars
       if (serverArgs[argName] !== newVal) {
         updateArgs({[argName]: newVal});
       }
@@ -111,7 +111,7 @@ class PresetsTab extends Component {
         dataIndex: 'val',
       }];
       let data = [];
-      for (let [arg, val] of _.toPairs(preset)) {
+      for (let [arg, val] of _.toPairs(preset)) { // eslint-disable-line no-unused-vars
         data.push({
           key: arg,
           arg,
