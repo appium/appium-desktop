@@ -92,11 +92,9 @@ export default class SavedSessions extends Component {
       }));
     }
 
-    const windowSizeHeight = remote.getCurrentWindow().getSize()[1] - HEIGHT_OF_SESSION_CONFIG_AREA;
-    return (<Row gutter={20} className={SessionCSS['saved-sessions']}>
+    return (<Row className={SessionCSS['saved-sessions']}>
       <Col span={12}>
         <Table
-          scroll={{ y: windowSizeHeight }}
           pagination={false}
           dataSource={dataSource}
           columns={columns}
