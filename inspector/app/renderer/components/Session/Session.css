@@ -59,8 +59,6 @@
 
 .tabText img {
   height: 20px;
-  position: relative;
-  top: 4px;
   filter: grayscale(100%);
 }
 
