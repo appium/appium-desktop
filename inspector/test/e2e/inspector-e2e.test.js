@@ -58,6 +58,7 @@ describe('inspector window', function () {
     await client.waitForExist(inspector.sourceTreeNode);
     await client.click(inspector.sourceTreeNode);
     await client.waitForExist(inspector.tapSelectedElementButton);
+    await client.waitForEnabled(inspector.tapSelectedElementButton);
     await client.getHTML(inspector.selectedElementBody).should.eventually.contain('btnTapElement');
     await client.click(inspector.tapSelectedElementButton);
     await inspector.closeNotification();
