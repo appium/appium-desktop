@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import moment from 'moment';
-import { remote } from 'electron';
 import { Button, Row, Col, Table } from 'antd';
 import FormattedCaps from './FormattedCaps';
 import SessionCSS from './Session.css';
@@ -8,8 +7,6 @@ import {
   EditOutlined,
   DeleteOutlined
 } from '@ant-design/icons';
-
-import { HEIGHT_OF_SESSION_CONFIG_AREA } from './Layout';
 
 export default class SavedSessions extends Component {
 

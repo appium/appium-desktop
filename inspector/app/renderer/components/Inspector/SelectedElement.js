@@ -8,6 +8,10 @@ import {clipboard, shell} from 'electron';
 import {
   LoadingOutlined,
   CopyOutlined,
+  AimOutlined,
+  EditOutlined,
+  UndoOutlined,
+  HourglassOutlined,
 } from '@ant-design/icons';
 import { ROW, ALERT } from '../../../../../shared/components/AntdTypes';
 
@@ -114,31 +118,24 @@ class SelectedElement extends Component {
       dataIndex: 'selector',
       key: 'selector',
       render: selectedElementTableCell
-    }, {
-      title: t('Time'),
-      dataIndex: 'time',
-      key: 'time',
-      align: 'right',
-      width: 100,
-      render: selectedElementTableCell
     }];
 
-    const getTimeButton = (<Tooltip title={t('getTimes')}>
-      <Button
-        disabled={isDisabled}
-        id='btnGetTimings'
-        onClick={() => getFindElementsTimes(findDataSource)}
-      >
-        {t('Get Timing')}
-      </Button>
-    </Tooltip>);
+    if (findElementsExecutionTimes.length > 0) {
+      findColumns.push({
+        title: t('Time'),
+        dataIndex: 'time',
+        key: 'time',
+        align: 'right',
+        width: 100,
+        render: selectedElementTableCell
+      });
+    }
 
     // Get the data for the strategies table
     let findDataSource = _.toPairs(getLocators(attributes, sourceXML)).map(([key, selector]) => ({
       key,
       selector,
       find: key,
-      time: getTimeButton,
     }));
 
     // If XPath is the only provided data source, warn the user about it's brittleness
@@ -162,7 +159,6 @@ class SelectedElement extends Component {
         key: '-ios class chain',
         find: classChainText,
         selector: classChain,
-        time: getTimeButton
       });
     }
 
@@ -181,7 +177,6 @@ class SelectedElement extends Component {
         key: '-ios predicate string',
         find: predicateStringText,
         selector: predicateString,
-        time: getTimeButton
       });
     }
 
@@ -191,13 +186,17 @@ class SelectedElement extends Component {
         key: 'xpath',
         find: 'xpath',
         selector: xpath,
-        time: getTimeButton,
       });
     }
 
     // Replace table data with table data that has the times
     if (findElementsExecutionTimes.length > 0) {
       findDataSource = findElementsExecutionTimes;
+    }
+
+    let tapIcon = <AimOutlined/>;
+    if (!(elementInteractionsNotAvailable || elementId)) {
+      tapIcon = <LoadingOutlined/>;
     }
 
     return <div>
@@ -208,35 +207,45 @@ class SelectedElement extends Component {
       </Row>}
       <Row justify="center" type={ROW.FLEX} align="middle" gutter={10} className={styles.elementActions}>
         <Col>
-          <ButtonGroup size="small">
-            <Button
-              disabled={isDisabled}
-              icon={!elementInteractionsNotAvailable && !elementId && <LoadingOutlined/>}
-              id='btnTapElement'
-              onClick={() => applyClientMethod({methodName: 'click', elementId})}
-            >
-              {t('Tap')}
-            </Button>
-            <Button
-              disabled={isDisabled}
-              id='btnSendKeysToElement'
-              onClick={() => showSendKeysModal()}
-            >
-              {t('Send Keys')}
-            </Button>
-            <Button
-              disabled={isDisabled}
-              id='btnClearElement'
-              onClick={() => applyClientMethod({methodName: 'clear', elementId})}
-            >
-              {t('Clear')}
-            </Button>
+          <ButtonGroup>
+            <Tooltip title={t('Tap')}>
+              <Button
+                disabled={isDisabled}
+                icon={tapIcon}
+                id='btnTapElement'
+                onClick={() => applyClientMethod({methodName: 'click', elementId})}
+              />
+            </Tooltip>
+            <Tooltip title={t('Send Keys')}>
+              <Button
+                disabled={isDisabled}
+                id='btnSendKeysToElement'
+                icon={<EditOutlined/>}
+                onClick={() => showSendKeysModal()}
+              />
+            </Tooltip>
+            <Tooltip title={t('Clear')}>
+              <Button
+                disabled={isDisabled}
+                id='btnClearElement'
+                icon={<UndoOutlined/>}
+                onClick={() => applyClientMethod({methodName: 'clear', elementId})}
+              />
+            </Tooltip>
             <Tooltip title={t('Copy Attributes to Clipboard')}>
               <Button
                 disabled={isDisabled}
                 id='btnCopyAttributes'
                 icon={<CopyOutlined/>}
                 onClick={() => clipboard.writeText(JSON.stringify(dataSource))}/>
+            </Tooltip>
+            <Tooltip title={t('Get Timing')}>
+              <Button
+                disabled={isDisabled}
+                id='btnGetTiming'
+                icon={<HourglassOutlined/>}
+                onClick={() => getFindElementsTimes(findDataSource)}
+              />
             </Tooltip>
           </ButtonGroup>
         </Col>
