@@ -120,7 +120,7 @@ export default class Session extends Component {
           </div>
         </div>
       </Spin>,
-      <CloudProviderSelector {...this.props} />
+      <CloudProviderSelector {...this.props} key="cloud-selector" />
     ];
   }
 }

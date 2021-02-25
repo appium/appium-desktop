@@ -14,6 +14,9 @@ const isDev = process.env.NODE_ENV === 'development';
 
 if (isDev) {
   require('electron-debug')(); // eslint-disable-line global-require
+  if (module.hot) {
+    module.hot.accept();
+  }
 }
 
 if (!isDev) {

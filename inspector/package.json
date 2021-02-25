@@ -19,30 +19,51 @@
   ],
   "assetsPath": "assets",
   "homepage": "https://github.com/appium/appium-desktop",
-  "main": "dist/main.js",
   "scripts": {
     "test": "run-s test:*",
     "test:integration": "cd .. && npm run test:inspector:integration",
     "test:unit": "cd .. && npm run test:inspector:unit",
     "test:lint": "cd .. && npm run test:inspector:lint",
     "e2e": "cd .. && npm run e2e:inspector",
-    "build": "run-s build:*",
-    "build:main": "cross-env NODE_ENV=production parcel build --target node --public-url . --out-dir ./dist --out-file main.js ./app/main.js",
-    "build:renderer": "cross-env NODE_ENV=production parcel build --no-content-hash --out-dir ./dist --target electron --public-url . ./app/renderer/*.html",
-    "watch": "concurrently \"npm run watch-main\" \"npm run watch-renderer\"",
-    "watch:main": "cross-env NODE_ENV=development parcel --target node --out-dir ./dist --out-file main.js ./app/main.js",
-    "watch:renderer": "cross-env NODE_ENV=development parcel --out-dir ./dist --target electron --public-url . ./app/renderer/*.html",
+    "build": "run-s build:main build:renderer",
+    "build:main": "cross-env NODE_ENV=production parcel build ./app/main.js --target main",
+    "build:renderer": "cross-env NODE_ENV=production parcel build ./app/renderer/*.html --target renderer",
+    "build:main:dev": "cross-env NODE_ENV=development parcel build ./app/main.js --target main --no-optimize",
+    "build:renderer:dev": "cross-env NODE_ENV=development parcel build ./app/renderer/*.html --target renderer --no-optimize",
+    "watch": "concurrently \"npm run build:main:dev\" \"npm run watch:renderer\"",
+    "watch:renderer": "cross-env NODE_ENV=development parcel ./app/renderer/*.html -p 3124 --hmr-port 3125 --target renderer-hmr",
     "start": "cross-env RUNNING_LOCALLY=true electron ./",
+    "start:dev": "cross-env RUNNING_LOCALLY=true FORCE_NO_WRONG_FOLDER=true NODE_ENV=development electron --inspect ./",
     "clean": "run-s clean:*",
-    "clean:electron": "rimraf dist/ && rimraf .cache",
+    "clean:electron": "rimraf dist*/ && rimraf .*cache",
     "clean:npm": "rimraf package-lock.json && rimraf node_modules && npm install",
-    "watch-main": "cross-env NODE_ENV=development parcel --target node --out-dir ./dist --out-file main.js ./app/main.js",
-    "watch-renderer": "cross-env NODE_ENV=development parcel --out-dir ./dist --target electron --public-url . ./app/renderer/*.html",
-    "build-main-dev": "cross-env NODE_ENV=development parcel build --target node --out-dir ./dist --out-file main.js ./app/main.js",
-    "build-renderer-dev": "cross-env NODE_ENV=development parcel build --out-dir ./dist --target electron --public-url . ./app/renderer/*.html",
-    "start-dev": "cross-env RUNNING_LOCALLY=true FORCE_NO_WRONG_FOLDER=true NODE_ENV=development electron --inspect ./",
-    "dev": "cross-env NODE_ENV=development npm run build-main-dev && npm run build-renderer-dev && concurrently --kill-others \"npm run start-dev\" \"npm run watch:main\" \"npm run watch:renderer\" ",
+    "dev": "npm run clean:electron && npm run build:main:dev && cross-env concurrently --kill-others \"sleep 20 && npm run start:dev\" \"npm run watch:renderer\"",
     "postversion": "git pull --tags && git push && git push --tags"
+  },
+  "main": "./dist/main.js",
+  "targets": {
+    "main": {
+      "distDir": "./dist",
+      "context": "electron-main",
+      "engines": {
+        "node": ">=12.x"
+      }
+    },
+    "renderer": {
+      "distDir": "./dist",
+      "context": "electron-renderer",
+      "publicUrl": ".",
+      "engines": {
+        "electron": ">=7.x"
+      }
+    },
+    "renderer-hmr": {
+      "context": "electron-renderer",
+      "publicUrl": ".",
+      "engines": {
+        "electron": ">=7.x"
+      }
+    }
   },
   "build": {
     "productName": "Appium Inspector",
@@ -125,7 +146,6 @@
     "prop-types": "^15.6.2",
     "react": "^16.13.0",
     "react-dom": "^16.9.0",
-    "react-hot-loader": "^4.3.12",
     "react-i18next": "^11.0.0",
     "react-redux": "^7.0.0",
     "react-router": "^5.0.0",
@@ -140,8 +160,19 @@
     "xpath": "0.0.32"
   },
   "devDependencies": {
+    "@parcel/optimizer-cssnano": "^2.0.0-nightly.609",
+    "@parcel/optimizer-htmlnano": "^2.0.0-nightly.609",
+    "@parcel/packager-css": "^2.0.0-nightly.609",
+    "@parcel/packager-html": "^2.0.0-nightly.609",
+    "@parcel/transformer-css": "^2.0.0-nightly.609",
+    "@parcel/transformer-html": "^2.0.0-nightly.609",
+    "@parcel/transformer-less": "^2.0.0-nightly.609",
+    "@parcel/transformer-postcss": "^2.0.0-nightly.609",
+    "@parcel/transformer-posthtml": "^2.0.0-nightly.609",
+    "@parcel/transformer-svg-react": "^2.0.0-nightly.1739",
     "appium-fake-driver": "^1.0.1",
     "asyncbox": "^2.5.3",
+    "autoprefixer": "^10.2.4",
     "chai": "^4.2.0",
     "chai-as-promised": "^7.1.1",
     "check-engines": "^1.5.0",
@@ -155,8 +186,9 @@
     "less": "^3.12.2",
     "node-libs-browser": "^2.1.0",
     "npm-run-all": "^4.1.5",
-    "parcel-bundler": "^1.10.3",
+    "parcel": "^2.0.0-beta.1",
     "parcel-plugin-asset-copier": "^1.0.0",
+    "postcss": "^8.2.6",
     "postcss-modules": "^1.5.0",
     "release": "^6.0.1",
     "rimraf": "^3.0.0",

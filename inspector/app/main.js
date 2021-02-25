@@ -43,7 +43,7 @@ app.on('ready', async () => {
   setupMainWindow({
     mainWindow,
     splashWindow,
-    mainUrl: `file://${__dirname}/index.html`,
+    mainUrl: isDev ? 'http://localhost:3124' : `file://${__dirname}/index.html`,
     splashUrl: `file://${__dirname}/splash.html`,
     isDev,
     Menu,
