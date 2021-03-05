@@ -5,10 +5,9 @@ export const overrideHttpsUserAgent = () => {
         originalHttpsRequest = https.request;
 
   https.request = function (options, callback) {
-    let _options = options;
-    _options.headers['User-Agent'] = `${wdPackageJson.name}/${wdPackageJson.version} ${packageJson.name}/${packageJson.version}`;
+    options.headers['User-Agent'] = `${wdPackageJson.name}/${wdPackageJson.version} ${packageJson.name}/${packageJson.version}`;
 
-    return originalHttpsRequest(_options, function (res) {
+    return originalHttpsRequest(options, function (res) {
       if (callback) {
         callback(res);
       }
