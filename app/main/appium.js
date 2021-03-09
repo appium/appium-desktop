@@ -195,6 +195,9 @@ function connectCreateNewSession () {
         // get the session capabilities to prove things are working
         await driver.sessionCapabilities();
         event.sender.send('appium-new-session-ready');
+        if (host !== '127.0.0.1' && host !== 'localhost') {
+          handler.runKeepAliveLoop();
+        }
         return;
       }
 
