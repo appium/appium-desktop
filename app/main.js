@@ -1,3 +1,4 @@
+import './override';
 import i18n from './configs/i18next.config';
 import { app, BrowserWindow, Menu, webContents } from 'electron';
 import { initializeIpc } from './main/appium';
