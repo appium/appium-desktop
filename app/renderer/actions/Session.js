@@ -164,6 +164,142 @@ export function removeCapability (index) {
 }
 
 /**
+ * Get the server info for the current serverType
+ */
+export function getServerInfo (session) {
+  let host, port, username, accessKey, https, path, token;
+  switch (session.serverType) {
+    case ServerTypes.local:
+      host = session.server.local.hostname;
+      if (host === '0.0.0.0') {
+        // if we're on windows, we won't be able to connect directly to '0.0.0.0'
+        // so just connect to localhost; if we're listening on all interfaces,
+        // that will of course include 127.0.0.1 on all platforms
+        host = 'localhost';
+      }
+      port = session.server.local.port;
+      break;
+    case ServerTypes.remote:
+      host = session.server.remote.hostname || '127.0.0.1';
+      port = session.server.remote.port || 4723;
+      path = session.server.remote.path;
+      https = session.server.remote.ssl;
+      break;
+    case ServerTypes.sauce:
+      host = `ondemand.${session.server.sauce.dataCenter}.saucelabs.com`;
+      port = 80;
+      if (session.server.sauce.useSCProxy) {
+        host = session.server.sauce.scHost || 'localhost';
+        port = parseInt(session.server.sauce.scPort, 10) || 4445;
+      }
+      username = session.server.sauce.username || process.env.SAUCE_USERNAME;
+      accessKey = session.server.sauce.accessKey || process.env.SAUCE_ACCESS_KEY;
+      if (!username || !accessKey) {
+        return;
+      }
+      https = false;
+      break;
+    case ServerTypes.testobject:
+      host = process.env.TESTOBJECT_HOST || `${session.server.testobject.dataCenter || 'us1'}.appium.testobject.com`;
+      port = 443;
+      https = true;
+      break;
+    case ServerTypes.headspin: {
+      const headspinUrl = url.parse(session.server.headspin.webDriverUrl);
+      host = session.server.headspin.hostname = headspinUrl.hostname;
+      port = session.server.headspin.port = headspinUrl.port;
+      path = session.server.headspin.path = headspinUrl.pathname;
+      https = session.server.headspin.ssl = headspinUrl.protocol === 'https:';
+      break;
+    }
+    case ServerTypes.perfecto:
+      host = session.server.perfecto.hostname;
+      port = session.server.perfecto.port || 80;
+      token = session.server.perfecto.token || process.env.PERFECTO_TOKEN;
+      path = session.server.perfecto.path = '/nexperience/perfectomobile/wd/hub';
+      if (!token) {
+        return;
+      }
+      https = session.server.perfecto.ssl = false;
+      break;
+    case ServerTypes.browserstack:
+      host = session.server.browserstack.hostname = process.env.BROWSERSTACK_HOST || 'hub-cloud.browserstack.com';
+      port = session.server.browserstack.port = process.env.BROWSERSTACK_PORT || 443;
+      path = session.server.browserstack.path = '/wd/hub';
+      username = session.server.browserstack.username || process.env.BROWSERSTACK_USERNAME;
+      accessKey = session.server.browserstack.accessKey || process.env.BROWSERSTACK_ACCESS_KEY;
+      if (!username || !accessKey) {
+        return;
+      }
+      https = session.server.browserstack.ssl = (parseInt(port, 10) === 443);
+      break;
+    case ServerTypes.bitbar:
+      host = process.env.BITBAR_HOST || 'appium.bitbar.com';
+      port = session.server.bitbar.port = 443;
+      path = session.server.bitbar.path = '/wd/hub';
+      accessKey = session.server.bitbar.apiKey || process.env.BITBAR_API_KEY;
+      if (!accessKey) {
+        return;
+      }
+      https = session.server.bitbar.ssl = true;
+      break;
+    case ServerTypes.kobiton:
+      host = process.env.KOBITON_HOST || 'api.kobiton.com';
+      port = session.server.kobiton.port = 443;
+      path = session.server.kobiton.path = '/wd/hub';
+      username = session.server.kobiton.username || process.env.KOBITON_USERNAME;
+      accessKey = session.server.kobiton.accessKey || process.env.KOBITON_ACCESS_KEY;
+      if (!username || !accessKey) {
+        return;
+      }
+      https = session.server.kobiton.ssl = true;
+      break;
+    case ServerTypes.pcloudy:
+      host = session.server.pcloudy.hostname;
+      port = session.server.pcloudy.port = 443;
+      path = session.server.pcloudy.path = '/objectspy/wd/hub';
+      username = session.server.pcloudy.username || process.env.PCLOUDY_USERNAME;
+      accessKey = session.server.pcloudy.accessKey || process.env.PCLOUDY_ACCESS_KEY;
+      if (!username || !accessKey) {
+        return;
+      }
+      https = session.server.pcloudy.ssl = true;
+      break;
+    case ServerTypes.testingbot:
+      host = session.server.testingbot.hostname = process.env.TB_HOST || 'hub.testingbot.com';
+      port = session.server.testingbot.port = 443;
+      username = session.server.testingbot.key || process.env.TB_KEY;
+      accessKey = session.server.testingbot.secret || process.env.TB_SECRET;
+      if (!username || !accessKey) {
+        return;
+      }
+      https = session.server.testingbot.ssl = true;
+      break;
+    case ServerTypes.experitest: {
+      if (!session.server.experitest.url || !session.server.experitest.accessKey) {
+        return;
+      }
+      let experitestUrl = url.parse(session.server.experitest.url);
+      host = session.server.experitest.hostname = experitestUrl.hostname;
+      path = session.server.experitest.path = '/wd/hub';
+      port = session.server.experitest.port = experitestUrl.port;
+      https = session.server.experitest.ssl = experitestUrl.protocol === 'https:';
+      break;
+    }
+    case ServerTypes.roboticmobi: {
+      host = 'api.robotic.mobi';
+      path = '/wd/hub';
+      port = 443;
+      https = 'https:';
+      break;
+    }
+    default:
+      break;
+  }
+  return {host, port, username, accessKey, https, path, token};
+}
+
+/**
  * Start a new appium session with the given caps
  */
 export function newSession (caps, attachSessId = null) {
@@ -173,35 +309,15 @@ export function newSession (caps, attachSessId = null) {
 
     let desiredCapabilities = caps ? getCapsObject(caps) : {};
     let session = getState().session;
-    let host, port, username, accessKey, https, path, token;
+    let {host, port, username, accessKey, https, path, token} = getServerInfo(session);
     desiredCapabilities = addCustomCaps(desiredCapabilities);
 
     switch (session.serverType) {
       case ServerTypes.local:
-        host = session.server.local.hostname;
-        if (host === '0.0.0.0') {
-          // if we're on windows, we won't be able to connect directly to '0.0.0.0'
-          // so just connect to localhost; if we're listening on all interfaces,
-          // that will of course include 127.0.0.1 on all platforms
-          host = 'localhost';
-        }
-        port = session.server.local.port;
         break;
       case ServerTypes.remote:
-        host = session.server.remote.hostname || '127.0.0.1';
-        port = session.server.remote.port || 4723;
-        path = session.server.remote.path;
-        https = session.server.remote.ssl;
         break;
       case ServerTypes.sauce:
-        host = `ondemand.${session.server.sauce.dataCenter}.saucelabs.com`;
-        port = 80;
-        if (session.server.sauce.useSCProxy) {
-          host = session.server.sauce.scHost || 'localhost';
-          port = parseInt(session.server.sauce.scPort, 10) || 4445;
-        }
-        username = session.server.sauce.username || process.env.SAUCE_USERNAME;
-        accessKey = session.server.sauce.accessKey || process.env.SAUCE_ACCESS_KEY;
         if (!username || !accessKey) {
           notification.error({
             message: i18n.t('Error'),
@@ -210,29 +326,16 @@ export function newSession (caps, attachSessId = null) {
           });
           return;
         }
-        https = false;
         break;
       case ServerTypes.testobject:
-        host = process.env.TESTOBJECT_HOST || `${session.server.testobject.dataCenter || 'us1'}.appium.testobject.com`;
-        port = 443;
-        https = true;
         if (caps) {
           desiredCapabilities.testobject_api_key = session.server.testobject.apiKey || process.env.TESTOBJECT_API_KEY;
         }
         break;
       case ServerTypes.headspin: {
-        const headspinUrl = url.parse(session.server.headspin.webDriverUrl);
-        host = session.server.headspin.hostname = headspinUrl.hostname;
-        port = session.server.headspin.port = headspinUrl.port;
-        path = session.server.headspin.path = headspinUrl.pathname;
-        https = session.server.headspin.ssl = headspinUrl.protocol === 'https:';
         break;
       }
       case ServerTypes.perfecto:
-        host = session.server.perfecto.hostname;
-        port = session.server.perfecto.port || 80;
-        token = session.server.perfecto.token || process.env.PERFECTO_TOKEN;
-        path = session.server.perfecto.path = '/nexperience/perfectomobile/wd/hub';
         if (!token) {
           notification.error({
             message: i18n.t('Error'),
@@ -242,15 +345,9 @@ export function newSession (caps, attachSessId = null) {
           return;
         }
         desiredCapabilities.securityToken = token;
-        https = session.server.perfecto.ssl = false;
         break;
       case ServerTypes.browserstack:
-        host = session.server.browserstack.hostname = process.env.BROWSERSTACK_HOST || 'hub-cloud.browserstack.com';
-        port = session.server.browserstack.port = process.env.BROWSERSTACK_PORT || 443;
-        path = session.server.browserstack.path = '/wd/hub';
-        username = session.server.browserstack.username || process.env.BROWSERSTACK_USERNAME;
         desiredCapabilities['browserstack.source'] = 'appiumdesktop';
-        accessKey = session.server.browserstack.accessKey || process.env.BROWSERSTACK_ACCESS_KEY;
         if (!username || !accessKey) {
           notification.error({
             message: i18n.t('Error'),
@@ -259,13 +356,8 @@ export function newSession (caps, attachSessId = null) {
           });
           return;
         }
-        https = session.server.browserstack.ssl = (parseInt(port, 10) === 443);
         break;
       case ServerTypes.bitbar:
-        host = process.env.BITBAR_HOST || 'appium.bitbar.com';
-        port = session.server.bitbar.port = 443;
-        path = session.server.bitbar.path = '/wd/hub';
-        accessKey = session.server.bitbar.apiKey || process.env.BITBAR_API_KEY;
         if (!accessKey) {
           notification.error({
             message: i18n.t('Error'),
@@ -276,15 +368,9 @@ export function newSession (caps, attachSessId = null) {
         }
         desiredCapabilities.testdroid_source = 'appiumdesktop';
         desiredCapabilities.testdroid_apiKey = accessKey;
-        https = session.server.bitbar.ssl = true;
         break;
       case ServerTypes.kobiton:
-        host = process.env.KOBITON_HOST || 'api.kobiton.com';
-        port = session.server.kobiton.port = 443;
-        path = session.server.kobiton.path = '/wd/hub';
-        username = session.server.kobiton.username || process.env.KOBITON_USERNAME;
         desiredCapabilities['kobiton.source'] = 'appiumdesktop';
-        accessKey = session.server.kobiton.accessKey || process.env.KOBITON_ACCESS_KEY;
         if (!username || !accessKey) {
           notification.error({
             message: i18n.t('Error'),
@@ -293,15 +379,9 @@ export function newSession (caps, attachSessId = null) {
           });
           return;
         }
-        https = session.server.kobiton.ssl = true;
         break;
       case ServerTypes.pcloudy:
-        host = session.server.pcloudy.hostname;
-        port = session.server.pcloudy.port = 443;
-        path = session.server.pcloudy.path = '/objectspy/wd/hub';
-        username = session.server.pcloudy.username || process.env.PCLOUDY_USERNAME;
         desiredCapabilities.pCloudy_Username = username;
-        accessKey = session.server.pcloudy.accessKey || process.env.PCLOUDY_ACCESS_KEY;
         desiredCapabilities.pCloudy_ApiKey = accessKey;
         if (!username || !accessKey) {
           notification.error({
@@ -311,13 +391,8 @@ export function newSession (caps, attachSessId = null) {
           });
           return;
         }
-        https = session.server.pcloudy.ssl = true;
         break;
       case ServerTypes.testingbot:
-        host = session.server.testingbot.hostname = process.env.TB_HOST || 'hub.testingbot.com';
-        port = session.server.testingbot.port = 443;
-        username = session.server.testingbot.key || process.env.TB_KEY;
-        accessKey = session.server.testingbot.secret || process.env.TB_SECRET;
         desiredCapabilities['tb.source'] = 'appiumdesktop';
         if (!username || !accessKey) {
           notification.error({
@@ -327,7 +402,6 @@ export function newSession (caps, attachSessId = null) {
           });
           return;
         }
-        https = session.server.testingbot.ssl = true;
         break;
       case ServerTypes.experitest: {
         if (!session.server.experitest.url || !session.server.experitest.accessKey) {
@@ -339,17 +413,8 @@ export function newSession (caps, attachSessId = null) {
           return;
         }
         desiredCapabilities['experitest:accessKey'] = session.server.experitest.accessKey;
-        let experitestUrl = url.parse(session.server.experitest.url);
-        host = session.server.experitest.hostname = experitestUrl.hostname;
-        path = session.server.experitest.path = '/wd/hub';
-        port = session.server.experitest.port = experitestUrl.port;
-        https = session.server.experitest.ssl = experitestUrl.protocol === 'https:';
         break;
       } case ServerTypes.roboticmobi: {
-        host = 'api.robotic.mobi';
-        path = '/wd/hub';
-        port = 443;
-        https = 'https:';
         if (caps) {
           desiredCapabilities.robotic_mobi_token = session.server.roboticmobi.token || process.env.ROBOTIC_MOBI_TOKEN;
         }
@@ -591,20 +656,19 @@ export function getRunningSessions () {
     ];
     // Get currently running sessions for this server
     const state = getState().session;
-    const {server, serverType} = state;
-    const serverInfo = server[serverType];
+    const {host, port, username, accessKey, https, path} = getServerInfo(state);
 
     dispatch({type: GET_SESSIONS_REQUESTED});
-    if (avoidServerTypes.includes(serverType)) {
+    if (avoidServerTypes.includes(state.serverType)) {
       dispatch({type: GET_SESSIONS_DONE});
     } else {
       ipcRenderer.send('appium-client-get-sessions', {
-        host: serverInfo.hostname,
-        port: serverInfo.port,
-        path: serverInfo.path,
-        ssl: serverInfo.ssl,
-        username: serverInfo.username,
-        accessKey: serverInfo.accessKey
+        host,
+        port,
+        path,
+        ssl: https,
+        username,
+        accessKey
       });
       ipcRenderer.once('appium-client-get-sessions-response', (evt, e) => {
         const res = JSON.parse(e.res);
