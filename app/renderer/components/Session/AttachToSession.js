@@ -27,10 +27,11 @@ function formatCapsBrowserstack (caps) {
 export default class AttachToSession extends Component {
 
   getSessionInfo (session, serverType) {
-    if (serverType === ServerTypes.browserstack) {
-      return `${session.id} — ${formatCapsBrowserstack(session.capabilities)}`;
-    } else {
-      return `${session.id} — ${formatCaps(session.capabilities)}`;
+    switch (serverType) {
+      case ServerTypes.browserstack:
+        return `${session.id} — ${formatCapsBrowserstack(session.capabilities)}`;
+      default:
+        return `${session.id} — ${formatCaps(session.capabilities)}`;
     }
   }
 
