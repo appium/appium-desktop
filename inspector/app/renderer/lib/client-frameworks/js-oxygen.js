@@ -6,23 +6,45 @@ class JsOxygenFramework extends Framework {
     return 'js';
   }
 
+  get type () {
+    if (this.caps && this.caps.platformName) {
+      const platformName = this.caps.platformName.toLowerCase();
+      if (platformName === 'windows') {
+        return 'win';
+      }
+      if (['android', 'androiddriver'].includes(platformName)) {
+        return 'mob';
+      }
+      if (['ios', 'iosdriver'].includes(platformName)) {
+        return 'mob';
+      }
+    }
+    return 'mob';
+  }
+
   wrapWithBoilerplate (code) {
-    let caps = JSON.stringify(this.caps);
+    if (code && code.includes('mob.open')) {
+      this.caps.browserName = '__chrome_or_safari__';
+    } else {
+      this.caps.app = '__application_path_or_name__';
+    }
+    let caps = JSON.stringify(this.caps, null, 2);
     let url = JSON.stringify(`${this.scheme}://${this.host}:${this.port}${this.path}`);
     return `// Requires the Oxygen HQ client library
 // (npm install oxygen-cli -g)
 // Then paste this into a .js file and run with:
 // oxygen <file>.js
-
-mob.init(${caps}, ${url});
+const capabilities = ${caps};
+const appiumUrl = ${url};
+${this.type}.init(capabilities, appiumUrl);
 
 ${code}
 
 `;
   }
 
-  codeFor_executeScript (/*varNameIgnore, varIndexIgnore, args*/) {
-    return `/* TODO implement executeScript */`;
+  codeFor_executeScript (varNameIgnore, varIndexIgnore, args) {
+    return `${this.type}.execute(${args})`;
   }
 
   codeFor_findAndAssign (strategy, locator, localVar, isArray) {
@@ -47,187 +69,187 @@ ${code}
   }
 
   codeFor_click (varName, varIndex) {
-    return `mob.click(${this.getVarName(varName, varIndex)});`;
+    return `${this.type}.click(${this.getVarName(varName, varIndex)});`;
   }
 
   codeFor_clear (varName, varIndex) {
-    return `mob.clear(${this.getVarName(varName, varIndex)});`;
+    return `${this.type}.clear(${this.getVarName(varName, varIndex)});`;
   }
 
   codeFor_sendKeys (varName, varIndex, text) {
-    return `mob.type(${this.getVarName(varName, varIndex)}, ${JSON.stringify(text)});`;
+    return `${this.type}.type(${this.getVarName(varName, varIndex)}, ${JSON.stringify(text)});`;
   }
 
   codeFor_back () {
-    return `mob.back();`;
+    return `${this.type}.back();`;
   }
 
   codeFor_tap (varNameIgnore, varIndexIgnore, x, y) {
-    return `mob.tap(${x}, ${y});`;
+    return `${this.type}.tap(${x}, ${y});`;
   }
 
   codeFor_swipe (varNameIgnore, varIndexIgnore, x1, y1, x2, y2) {
-    return `mob.swipeScreen(${x1}, ${y1}, ${x2}, ${y2});`;
+    return `${this.type}.swipeScreen(${x1}, ${y1}, ${x2}, ${y2});`;
   }
 
   codeFor_getCurrentActivity () {
-    return `let activityName = mob.getCurrentActivity();`;
+    return `let activityName = ${this.type}.getCurrentActivity();`;
   }
 
   codeFor_getCurrentPackage () {
-    return `let packageName = mob.getCurrentPackage();`;
+    return `let packageName = ${this.type}.getCurrentPackage();`;
   }
 
   codeFor_installApp (varNameIgnore, varIndexIgnore, app) {
-    return `mob.installApp('${app}');`;
+    return `${this.type}.installApp('${app}');`;
   }
 
   codeFor_isAppInstalled (varNameIgnore, varIndexIgnore, app) {
-    return `let isAppInstalled = mob.isAppInstalled("${app}");`;
+    return `let isAppInstalled = ${this.type}.isAppInstalled("${app}");`;
   }
 
   codeFor_launchApp () {
-    return `mob.launchApp();`;
+    return `${this.type}.launchApp();`;
   }
 
   codeFor_background (varNameIgnore, varIndexIgnore, timeout) {
-    return `mob.driver().background(${timeout});`;
+    return `${this.type}.getDriver().background(${timeout});`;
   }
 
   codeFor_closeApp () {
-    return `mob.closeApp();`;
+    return `${this.type}.closeApp();`;
   }
 
   codeFor_reset () {
-    return `mob.reset();`;
+    return `${this.type}.resetApp();`;
   }
 
   codeFor_removeApp (varNameIgnore, varIndexIgnore, app) {
-    return `mob.removeApp('${app}')`;
+    return `${this.type}.removeApp('${app}')`;
   }
 
   codeFor_getStrings (varNameIgnore, varIndexIgnore, language, stringFile) {
-    return `let appStrings = mob.driver().getStrings(${language ? `${language}, ` : ''}${stringFile ? `"${stringFile}` : ''});`;
+    return `let appStrings = ${this.type}.getDriver().getStrings(${language ? `${language}, ` : ''}${stringFile ? `"${stringFile}` : ''});`;
   }
 
   codeFor_getClipboard () {
-    return `let clipboardText = mob.driver().getClipboard();`;
+    return `let clipboardText = ${this.type}.getDriver().getClipboard();`;
   }
 
   codeFor_setClipboard (varNameIgnore, varIndexIgnore, clipboardText) {
-    return `mob.driver().setClipboard('${clipboardText}')`;
+    return `${this.type}.getDriver().setClipboard('${clipboardText}')`;
   }
 
-  codeFor_pressKeyCode (varNameIgnore, varIndexIgnore, keyCode, metaState, flags) {
-    return `mob.driver().longPressKeyCode(${keyCode}, ${metaState}, ${flags});`;
+  codeFor_pressKeyCode (varNameIgnore, varIndexIgnore, keyCode) {
+    return `${this.type}.pressKeyCode(${keyCode});`;
   }
 
-  codeFor_longPressKeyCode (varNameIgnore, varIndexIgnore, keyCode, metaState, flags) {
-    return `mob.driver().longPressKeyCode(${keyCode}, ${metaState}, ${flags});`;
+  codeFor_longPressKeyCode (varNameIgnore, varIndexIgnore, keyCode) {
+    return `${this.type}.longPressKeyCode(${keyCode});`;
   }
 
   codeFor_hideKeyboard () {
-    return `mob.driver().hideKeyboard();`;
+    return `${this.type}.hideKeyboard();`;
   }
 
   codeFor_isKeyboardShown () {
-    return `//isKeyboardShown not supported`;
+    return `let isKeyboardShown = ${this.type}.getDriver().isKeyboardShown();`;
   }
 
   codeFor_pushFile (varNameIgnore, varIndexIgnore, pathToInstallTo, fileContentString) {
-    return `mob.driver().pushFile('${pathToInstallTo}', '${fileContentString}');`;
+    return `${this.type}.getDriver().pushFile('${pathToInstallTo}', '${fileContentString}');`;
   }
 
   codeFor_pullFile (varNameIgnore, varIndexIgnore, pathToPullFrom) {
-    return `let data = mob.driver().pullFile('${pathToPullFrom}');`;
+    return `let fileBase64 = ${this.type}.getDriver().pullFile('${pathToPullFrom}');`;
   }
 
   codeFor_pullFolder (varNameIgnore, varIndexIgnore, folderToPullFrom) {
-    return `let data = mob.driver().pullFolder('${folderToPullFrom}');`;
+    return `let fileBase64 = ${this.type}.getDriver().pullFolder('${folderToPullFrom}');`;
   }
 
   codeFor_toggleAirplaneMode () {
-    return `mob.driver().toggleAirplaneMode();`;
+    return `${this.type}.getDriver().toggleAirplaneMode();`;
   }
 
   codeFor_toggleData () {
-    return `mob.driver().toggleData();`;
+    return `${this.type}.getDriver().toggleData();`;
   }
 
   codeFor_toggleWiFi () {
-    return `mob.driver().toggleWiFi();`;
+    return `${this.type}.getDriver().toggleWiFi();`;
   }
 
   codeFor_toggleLocationServices () {
-    return `mob.driver().toggleLocationServices();`;
+    return `${this.type}.getDriver().toggleLocationServices();`;
   }
 
-  codeFor_sendSMS () {
-    return `// Not supported: sendSms;`;
+  codeFor_sendSMS (varNameIgnore, varIndexIgnore, phoneNumber, text) {
+    return `${this.type}.getDriver().sendSms('${phoneNumber}', '${text}');`;
   }
 
-  codeFor_gsmCall () {
-    return `// Not supported: gsmCall`;
+  codeFor_gsmCall (varNameIgnore, varIndexIgnore, phoneNumber, action) {
+    return `${this.type}.getDriver().gsmCall('${phoneNumber}', '${action}');`;
   }
 
-  codeFor_gsmSignal () {
-    return `// Not supported: gsmSignal`;
+  codeFor_gsmSignal (varNameIgnore, varIndexIgnore, signalStrength) {
+    return `${this.type}.getDriver().gsmSignal(${signalStrength});`;
   }
 
-  codeFor_gsmVoice () {
-    return `// Not supported: gsmVoice`;
+  codeFor_gsmVoice (varNameIgnore, varIndexIgnore, state) {
+    return `${this.type}.getDriver().gsmVoice('${state}');`;
   }
 
   codeFor_shake () {
-    return `mob.shake();`;
+    return `${this.type}.shake();`;
   }
 
   codeFor_lock (varNameIgnore, varIndexIgnore, seconds) {
-    return `mob.driver().lock(${seconds});`;
+    return `${this.type}.getDriver().lock(${seconds});`;
   }
 
   codeFor_unlock () {
-    return `mob.driver().unlock();`;
+    return `${this.type}.getDriver().unlock();`;
   }
 
   codeFor_isLocked () {
-    return `let isLocked = mob.driver().isLocked();`;
+    return `let isLocked = ${this.type}.getDriver().isLocked();`;
   }
 
   codeFor_rotateDevice (varNameIgnore, varIndexIgnore, x, y, radius, rotation, touchCount, duration) {
-    return `mob.driver().rotateDevice(${x}, ${y}, ${radius}, ${rotation}, ${touchCount}, ${duration});`;
+    return `${this.type}.getDriver().rotateDevice({x: ${x}, y: ${y}, duration: ${duration}, radius: ${radius}, rotation: ${rotation}, touchCount: ${touchCount}});`;
   }
 
-  codeFor_getPerformanceData () {
-    return `// Not supported: getPerformanceData`;
+  codeFor_getPerformanceData (varNameIgnore, varIndexIgnore, packageName, dataType, dataReadTimeout) {
+    return `let performanceData = ${this.type}.getDriver().getPerformanceData('${packageName}', '${dataType}', ${dataReadTimeout});`;
   }
 
   codeFor_getPerformanceDataTypes () {
-    return `// Not supported: getPerformanceDataTypes`;
+    return `let supportedPerformanceDataTypes = ${this.type}.getDriver().getPerformanceDataTypes();`;
   }
 
   codeFor_touchId (varNameIgnore, varIndexIgnore, match) {
-    return `mob.driver().touchId(${match});`;
+    return `${this.type}.getDriver().touchId(${match});`;
   }
 
   codeFor_toggleEnrollTouchId (varNameIgnore, varIndexIgnore, enroll) {
-    return `mob.driver().toggleEnrollTouchId(${enroll});`;
+    return `${this.type}.getDriver().toggleEnrollTouchId(${enroll});`;
   }
 
   codeFor_openNotifications () {
-    return `mob.driver().openNotifications();`;
+    return `${this.type}.getDriver().openNotifications();`;
   }
 
   codeFor_getDeviceTime () {
-    return `let time = mob.getDeviceTime();`;
+    return `let time = ${this.type}.getDeviceTime();`;
   }
 
   codeFor_fingerprint (varNameIgnore, varIndexIgnore, fingerprintId) {
-    return `mob.driver().fingerPrint(${fingerprintId});`;
+    return `${this.type}.getDriver().fingerPrint(${fingerprintId});`;
   }
 
   codeFor_getSession () {
-    return `let caps = mob.driver().capabilities;`;
+    return `let caps = ${this.type}.getDriver().capabilities;`;
   }
 
   codeFor_setTimeouts (/*varNameIgnore, varIndexIgnore, timeoutsJson*/) {
@@ -239,35 +261,35 @@ ${code}
   }
 
   codeFor_getOrientation () {
-    return `let orientation = mob.driver().getOrientation();`;
+    return `let orientation = ${this.type}.getDriver().getOrientation();`;
   }
 
   codeFor_setOrientation (varNameIgnore, varIndexIgnore, orientation) {
-    return `mob.driver().setOrientation("${orientation}");`;
+    return `${this.type}.getDriver().setOrientation("${orientation}");`;
   }
 
   codeFor_getGeoLocation () {
-    return `let location = mob.driver().getGeoLocation();`;
+    return `let location = ${this.type}.getDriver().getGeoLocation();`;
   }
 
   codeFor_setGeoLocation (varNameIgnore, varIndexIgnore, latitude, longitude, altitude) {
-    return `mob.driver().setGeoLocation({latitude: ${latitude}, longitude: ${longitude}, altitude: ${altitude}});`;
+    return `${this.type}.getDriver().setGeoLocation({latitude: ${latitude}, longitude: ${longitude}, altitude: ${altitude}});`;
   }
 
   codeFor_getLogTypes () {
-    return `let getLogTypes = mob.driver().getLogTypes();`;
+    return `let getLogTypes = ${this.type}.getDriver().getLogTypes();`;
   }
 
   codeFor_getLogs (varNameIgnore, varIndexIgnore, logType) {
-    return `let logs = mob.driver().getLogs('${logType}');`;
+    return `let logs = ${this.type}.getDriver().getLogs('${logType}');`;
   }
 
   codeFor_updateSettings (varNameIgnore, varIndexIgnore, settingsJson) {
-    return `mob.driver().updateSettings(${settingsJson});`;
+    return `${this.type}.getDriver().updateSettings(${settingsJson});`;
   }
 
   codeFor_getSettings () {
-    return `let settings = mob.driver().getSettings();`;
+    return `let settings = ${this.type}.getDriver().getSettings();`;
   }
 }
 
