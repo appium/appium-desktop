@@ -1,6 +1,6 @@
 {
   "name": "appium-inspector",
-  "version": "2.0.0-beta.0",
+  "version": "2021.3.1",
   "description": "An app inspector for use with an Appium server",
   "repository": {
     "type": "git",
@@ -50,6 +50,10 @@
     "asar": true,
     "directories": {
       "output": "release"
+    },
+    "mac": {
+      "category": "public.app-category.developer-tools",
+      "target": ["dmg", "zip"]
     },
     "dmg": {
       "artifactName": "${productName}-mac-${version}.${ext}",
@@ -149,8 +153,7 @@
     "cross-env": "^7.0.0",
     "devtron": "^1.4.0",
     "electron": "^7.1.2",
-    "electron-builder": "^22.1.0",
-    "electron-builder-lib": "^20.15.3",
+    "electron-builder": "^22.10.5",
     "electron-devtools-installer": "^3.0.0",
     "less": "^3.12.2",
     "node-libs-browser": "^2.1.0",

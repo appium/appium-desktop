@@ -1,6 +1,6 @@
 {
   "name": "appium-desktop",
-  "version": "1.19.0-beta.0",
+  "version": "2021.3.1",
   "description": "Graphical interface for the Appium server, and an app inspector",
   "repository": {
     "type": "git",
@@ -47,11 +47,15 @@
     "postversion": "git pull --tags && git push && git push --tags"
   },
   "build": {
-    "productName": "Appium",
+    "productName": "Appium Server GUI",
     "appId": "io.appium.desktop",
     "asar": false,
     "directories": {
       "output": "release"
+    },
+    "mac": {
+      "category": "public.app-category.developer-tools",
+      "target": ["dmg", "zip"]
     },
     "dmg": {
       "artifactName": "${productName}-mac-${version}.${ext}",
@@ -109,7 +113,7 @@
   "dependencies": {
     "ansi-to-html": "~0.6.7",
     "antd": "~4.0.4",
-    "appium": "^1.19.0-beta.0",
+    "appium": "1.20.2",
     "appium-support": "^2.25.0",
     "bluebird": "^3.5.5",
     "connected-react-router": "^6.0.0",
@@ -149,8 +153,7 @@
     "devtron": "^1.4.0",
     "dir-compare": "^2.3.0",
     "electron": "^7.1.2",
-    "electron-builder": "^22.1.0",
-    "electron-builder-lib": "^20.15.3",
+    "electron-builder": "^22.10.5",
     "electron-devtools-installer": "^3.0.0",
     "less": "^3.12.2",
     "node-libs-browser": "^2.1.0",
