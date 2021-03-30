@@ -17,26 +17,37 @@ jobs:
       E2E_TIMEOUT: 600000
       CI: true
       CSC_IDENTITY_AUTO_DISCOVERY: true
+      USE_HARD_LINKS: 'false'
     steps:
     - task: NodeTool@0
       inputs:
         versionSpec: '10.x'
+    - script: |
+        npm install npm-run-all mkdirp ncp
+        npm run i18n-copy
+      displayName: Copy i18n files
     - script: npm ci
-      displayName: 'Install dependencies'
-    - script: npm ci
-      workingDirectory: 'server'
-      displayName: 'Install server app dependencies'
-    - script: npm ci
-      workingDirectory: 'inspector'
-      displayName: 'Install inspector app dependencies'
+      workingDirectory: inspector
+      displayName: Install inspector dependencies
     - script: npm run build
-      displayName: Build project
+      displayName: Build inspector
+      workingDirectory: inspector
     - script: ${{ parameters.buildScript }}
-      displayName: Build server application bundles
+      displayName: Bundle inspector
+      workingDirectory: inspector
+      env:
+        GH_TOKEN: $(GH_TOKEN)
+        CSC_LINK: $(CSC_LINK)
+        CSC_KEY_PASSWORD: $(CSC_KEY_PASSWORD)
+    - script: npm ci
+      workingDirectory: server
+      displayName: Install server dependencies
+    - script: npm run build
+      displayName: Build server
       workingDirectory: server
     - script: ${{ parameters.buildScript }}
-      displayName: Build inspector application bundles
-      workingDirectory: inspector
+      displayName: Bundle server
+      workingDirectory: server
       env:
         GH_TOKEN: $(GH_TOKEN)
         CSC_LINK: $(CSC_LINK)
