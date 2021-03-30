@@ -1,6 +1,6 @@
 {
   "name": "appium-desktop-monorepo",
-  "version": "0.0.1",
+  "version": "2021.3.1",
   "description": "Appium Desktop Monorepo",
   "repository": {
     "type": "git",

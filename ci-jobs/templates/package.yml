@@ -41,3 +41,4 @@ jobs:
         GH_TOKEN: $(GH_TOKEN)
         CSC_LINK: $(CSC_LINK)
         CSC_KEY_PASSWORD: $(CSC_KEY_PASSWORD)
+        USE_HARD_LINKS: "false"
