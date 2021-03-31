@@ -7,7 +7,7 @@ parameters:
   pool: ''
   xvfb: false
   target: ''
-  buildScript: 'USE_HARD_LINKS=false npx electron-builder build --publish always'
+  buildScript: 'npx electron-builder build --publish always'
 jobs:
   - job: ${{parameters.name}}
     pool: ${{parameters.pool}}
@@ -41,4 +41,4 @@ jobs:
         GH_TOKEN: $(GH_TOKEN)
         CSC_LINK: $(CSC_LINK)
         CSC_KEY_PASSWORD: $(CSC_KEY_PASSWORD)
-        USE_HARD_LINKS: "false"
+        USE_HARD_LINKS: false
