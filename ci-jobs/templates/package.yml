@@ -21,24 +21,30 @@ jobs:
     - task: NodeTool@0
       inputs:
         versionSpec: '10.x'
+    - script: |
+        npm install npm-run-all mkdirp ncp
+        npm run i18n-copy
+      displayName: Copy i18n files
     - script: npm ci
-      displayName: 'Install dependencies'
-    - script: npm ci
-      workingDirectory: 'server'
-      displayName: 'Install server app dependencies'
-    - script: npm ci
-      workingDirectory: 'inspector'
-      displayName: 'Install inspector app dependencies'
+      workingDirectory: server
+      displayName: Install server dependencies
     - script: npm run build
-      displayName: Build project
-    - script: ${{ parameters.buildScript }}
-      displayName: Build server application bundles
+      displayName: Build server
       workingDirectory: server
     - script: ${{ parameters.buildScript }}
-      displayName: Build inspector application bundles
+      displayName: Bundle server
+      workingDirectory: server
+    - script: npm ci
+      workingDirectory: inspector
+      displayName: Install inspector dependencies
+    - script: npm run build
+      displayName: Build inspector
+      workingDirectory: inspector
+    - script: ${{ parameters.buildScript }}
+      displayName: Bundle inspector
       workingDirectory: inspector
       env:
         GH_TOKEN: $(GH_TOKEN)
         CSC_LINK: $(CSC_LINK)
         CSC_KEY_PASSWORD: $(CSC_KEY_PASSWORD)
-        USE_HARD_LINKS: false
+        USE_HARD_LINKS: "false"
