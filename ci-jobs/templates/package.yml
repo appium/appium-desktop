@@ -17,6 +17,7 @@ jobs:
       E2E_TIMEOUT: 600000
       CI: true
       CSC_IDENTITY_AUTO_DISCOVERY: true
+      USE_HARD_LINKS: 'false'
     steps:
     - task: NodeTool@0
       inputs:
@@ -34,6 +35,10 @@ jobs:
     - script: ${{ parameters.buildScript }}
       displayName: Bundle inspector
       workingDirectory: inspector
+      env:
+        GH_TOKEN: $(GH_TOKEN)
+        CSC_LINK: $(CSC_LINK)
+        CSC_KEY_PASSWORD: $(CSC_KEY_PASSWORD)
     - script: npm ci
       workingDirectory: server
       displayName: Install server dependencies
@@ -47,4 +52,3 @@ jobs:
         GH_TOKEN: $(GH_TOKEN)
         CSC_LINK: $(CSC_LINK)
         CSC_KEY_PASSWORD: $(CSC_KEY_PASSWORD)
-        USE_HARD_LINKS: "false"
