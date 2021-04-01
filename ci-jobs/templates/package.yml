@@ -26,15 +26,6 @@ jobs:
         npm run i18n-copy
       displayName: Copy i18n files
     - script: npm ci
-      workingDirectory: server
-      displayName: Install server dependencies
-    - script: npm run build
-      displayName: Build server
-      workingDirectory: server
-    - script: ${{ parameters.buildScript }}
-      displayName: Bundle server
-      workingDirectory: server
-    - script: npm ci
       workingDirectory: inspector
       displayName: Install inspector dependencies
     - script: npm run build
@@ -43,6 +34,15 @@ jobs:
     - script: ${{ parameters.buildScript }}
       displayName: Bundle inspector
       workingDirectory: inspector
+    - script: npm ci
+      workingDirectory: server
+      displayName: Install server dependencies
+    - script: npm run build
+      displayName: Build server
+      workingDirectory: server
+    - script: ${{ parameters.buildScript }}
+      displayName: Bundle server
+      workingDirectory: server
       env:
         GH_TOKEN: $(GH_TOKEN)
         CSC_LINK: $(CSC_LINK)
