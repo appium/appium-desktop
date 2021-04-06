@@ -1,9 +1,0 @@
-{
-  "rules": {
-    "no-unused-vars": ["error", {"varsIgnorePattern": "React"}],
-    "react/jsx-uses-vars": 1
-  },
-  "globals": {
-    "document": "false"
-  }
-}
