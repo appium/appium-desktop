@@ -2,7 +2,7 @@ import { Application } from 'spectron';
 import { fs, logger } from 'appium-support';
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import { e2eBefore, e2eAfter } from '../../../shared/test-helpers';
+import { e2eBefore, e2eAfter } from '@appium/gui-libs/lib/test-helpers';
 
 const log = logger.getLogger('E2E Test');
 
