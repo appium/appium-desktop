@@ -37,7 +37,7 @@
     "build:dev:main": "cross-env NODE_ENV=development parcel build --target node --out-dir ./dist --out-file main.js ./app/main.js",
     "build:dev:renderer": "cross-env NODE_ENV=development parcel build --out-dir ./dist --target electron --public-url . ./app/renderer/*.html",
     "start:dev": "cross-env RUNNING_LOCALLY=true FORCE_NO_WRONG_FOLDER=true NODE_ENV=development electron --inspect ./",
-    "dev": "cross-env NODE_ENV=development npm run build-main-dev && npm run build-renderer-dev && concurrently --kill-others \"npm run start:dev\" \"npm run watch:main\" \"npm run watch:renderer\" ",
+    "dev": "cross-env NODE_ENV=development npm run build:dev:main && npm run build:dev:renderer && concurrently --kill-others \"npm run start:dev\" \"npm run watch:main\" \"npm run watch:renderer\" ",
     "dev-wrong-folder": "cross-env WRONG_FOLDER=true npm run dev",
     "postinstall": "node ./check-engines package.json package.json && rimraf node_modules/jimp/browser",
     "postversion": "git pull --tags && git push && git push --tags",
@@ -114,7 +114,7 @@
     "electron": "./node_modules/.bin/electron"
   },
   "dependencies": {
-    "@appium/gui-libs": "^1.0.0-beta.0",
+    "@appium/gui-libs": "^1.0.0-beta.3",
     "ansi-to-html": "~0.6.7",
     "antd": "~4.0.4",
     "appium": "1.20.2",
