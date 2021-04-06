@@ -1,7 +1,7 @@
 import React, { Component, Suspense } from 'react';
 import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'connected-react-router';
-import Spinner from '../../../../shared/components/Spinner/Spinner';
+import Spinner from '@appium/gui-libs/lib/components/Spinner/Spinner';
 import Routes from '../routes';
 import WrongFolder from '../components/WrongFolder/WrongFolder';
 import electron from 'electron';

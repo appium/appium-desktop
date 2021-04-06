@@ -6,7 +6,7 @@ import { propTypes, updateArg } from './shared';
 import StartButton from './StartButton';
 import SavePresetButton from './SavePresetButton';
 import styles from './AdvancedTab.css';
-import { INPUT } from '../../../../../shared/components/AntdTypes';
+import { INPUT } from '@appium/gui-libs/lib/components/AntdTypes';
 
 // args we build a UI for:
 // ipa, address, port, callbackAddress, callbackPort,
