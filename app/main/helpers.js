@@ -1,7 +1,7 @@
 import {BrowserWindow, Menu} from 'electron';
 import settings from '../shared/settings';
 import i18n from '../configs/i18next.config';
-import { makeOpenBrowserWindow, makeSetSavedEnv } from '@appium/gui-libs/lib/util';
+import { makeOpenBrowserWindow, makeSetSavedEnv } from '@appium/gui-libs/dist/util';
 
 export function openBrowserWindow (route, opts) {
   const open = makeOpenBrowserWindow({BrowserWindow, Menu, i18n});

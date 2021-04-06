@@ -13,7 +13,7 @@ import { getFeedUrl } from './config';
 import _ from 'lodash';
 import env from '../../env';
 import i18n from '../../configs/i18next.config';
-import { setUpAutoUpdater } from '@appium/gui-libs/lib/util';
+import { setUpAutoUpdater } from '@appium/gui-libs/dist/util';
 
 const isDev = process.env.NODE_ENV === 'development';
 const runningLocally = isDev || process.env.RUNNING_LOCALLY;

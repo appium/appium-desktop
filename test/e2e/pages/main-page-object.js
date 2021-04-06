@@ -1,4 +1,4 @@
-import BasePage from '@appium/gui-libs/lib/base-page-object';
+import BasePage from '@appium/gui-libs/dist/base-page-object';
 
 export default class MainPage extends BasePage {
   constructor (client) {
