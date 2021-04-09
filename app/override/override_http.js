@@ -5,7 +5,7 @@ export const overrideHttpUserAgent = () => {
         originalHttpRequest = http.request;
 
   http.request = function (options, callback) {
-    options.headers['User-Agent'] = `admc/${wdPackageJson.name}/${wdPackageJson.version} ${packageJson.name}/${packageJson.version}`;
+    options.headers['User-Agent'] = `admc/${wdPackageJson.name}/${wdPackageJson.version} appium-inspector/${packageJson.version}`;
 
     return originalHttpRequest(options, function (res) {
       if (callback) {
