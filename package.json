@@ -51,7 +51,7 @@
     "@babel/plugin-transform-runtime": "^7.4.0",
     "@babel/preset-env": "^7.12.1",
     "@babel/preset-react": "^7.12.13",
-    "@babel/register": "^7.4.0",
+    "@babel/register": "^7.13.16",
     "appium-support": "^2.49.0",
     "asyncbox": "^2.6.0",
     "babel-plugin-transform-class-properties": "^6.24.1",
