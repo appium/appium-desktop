@@ -3,7 +3,7 @@ import { initReactI18next } from 'react-i18next';
 import config from './app.config';
 import settings from '../shared/settings';
 import i18nextBackend from 'i18next-node-fs-backend';
-import { getI18NextOptions } from '@appium/gui-libs/lib/configs/app.config.default';
+import { getI18NextOptions } from '../../gui-common/configs/app.config.default';
 
 const i18nextOptions = getI18NextOptions(settings, config);
 

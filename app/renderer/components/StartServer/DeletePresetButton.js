@@ -4,7 +4,7 @@ import { Button } from 'antd';
 import { withTranslation } from '../../util';
 
 import styles from './StartButton.css';
-import { BUTTON } from '@appium/gui-libs/lib/components/AntdTypes';
+import { BUTTON } from '../../../../gui-common/components/AntdTypes';
 
 class DeletePresetButton extends Component {
   render () {

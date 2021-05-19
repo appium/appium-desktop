@@ -1,4 +1,4 @@
-import { getAutoUpdaterFeedUrl } from '@appium/gui-libs/dist/util';
+import { getAutoUpdaterFeedUrl } from '../../../gui-common/util';
 
 const baseFeedUrl = `https://hazel-server-pxufsrwofl.now.sh`;
 

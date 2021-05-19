@@ -4,7 +4,7 @@ import App from './containers/App';
 import StartServerPage from './containers/StartServerPage';
 import ServerMonitorPage from './containers/ServerMonitorPage';
 import ConfigPage from './containers/ConfigPage';
-import Spinner from '@appium/gui-libs/lib/components/Spinner/Spinner';
+import Spinner from '../../gui-common/components/Spinner/Spinner';
 import { ipcRenderer } from 'electron';
 import i18n from '../configs/i18next.config.renderer';
 

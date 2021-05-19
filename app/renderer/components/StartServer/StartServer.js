@@ -9,7 +9,7 @@ import PresetsTab from './PresetsTab';
 import styles from './StartServer.css';
 
 import AppiumLogo from '../../images/appium_logo.png';
-import { BUTTON } from '@appium/gui-libs/lib/components/AntdTypes';
+import { BUTTON } from '../../../../gui-common/components/AntdTypes';
 
 const TAB_SIMPLE = 0, TAB_ADVANCED = 1, TAB_PRESETS = 2;
 
