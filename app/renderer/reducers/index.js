@@ -2,7 +2,7 @@ import { combineReducers } from 'redux';
 import { connectRouter } from 'connected-react-router';
 import startServer from './StartServer';
 import serverMonitor from './ServerMonitor';
-import updater from '@appium/gui-libs/lib/reducers/Updater';
+import updater from '../../../gui-common/reducers/Updater';
 import config from './Config';
 
 // create our root reducer

@@ -15,7 +15,7 @@ import {
   CloseOutlined,
   CodeFilled
 } from '@ant-design/icons';
-import { BUTTON } from '@appium/gui-libs/lib/components/AntdTypes';
+import { BUTTON } from '../../../../gui-common/components/AntdTypes';
 
 const convert = new AnsiConverter({fg: '#bbb', bg: '#222'});
 const MAX_LOGS_RENDERED = 1000;
