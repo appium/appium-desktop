@@ -23,7 +23,7 @@
   "scripts": {
     "test": "run-s test:*",
     "test:lint": "eslint app test",
-    "e2e": "cross-env E2E_TIMEOUT=600000 NODE_ENV=test RUNNING_IN_SPECTRON=true mocha --reporter mocha-multi-reporters --reporter-options configFile=./server/test/mochareporters.json ./server/test/e2e",
+    "e2e": "cross-env E2E_TIMEOUT=600000 NODE_ENV=test RUNNING_IN_SPECTRON=true mocha --reporter mocha-multi-reporters --reporter-options configFile=./test/mochareporters.json ./test/e2e",
     "build": "run-s build:prod:*",
     "build:prod:main": "cross-env NODE_ENV=production parcel build --target node --public-url . --out-dir ./dist --out-file main.js ./app/main.js",
     "build:prod:renderer": "cross-env NODE_ENV=production parcel build --no-content-hash --out-dir ./dist --target electron --public-url . ./app/renderer/*.html",

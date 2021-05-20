@@ -5,13 +5,13 @@ jobs:
     pool:
       vmImage: 'macOS-10.15'
     name: 'osx_build'
-    e2e: false
+    e2e: true
 - template: templates/pr-validation.yml
   parameters:
     pool:
       vmImage: 'windows-2019'
     name: 'windows_build'
-    e2e: false
+    e2e: true
 - template: templates/pr-validation.yml
   parameters:
     pool:
