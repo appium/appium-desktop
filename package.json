@@ -44,7 +44,7 @@
     "pre-commit": "npm run test:lint",
     "pre-push": "npm test",
     "crowdin-update": "node crowdin-update-resources.js",
-    "crowdin-sync": "node crowdin-sync-translations.js"
+    "crowdin-sync": "node ./gui-common/crowdin-sync-translations.js"
   },
   "build": {
     "productName": "Appium Server GUI",
