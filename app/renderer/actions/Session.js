@@ -290,7 +290,7 @@ export function getServerInfo (session) {
       host = 'api.robotic.mobi';
       path = '/wd/hub';
       port = 443;
-      https = 'https:';
+      https = session.server.roboticmobi.ssl = true;
       break;
     }
     default:
