@@ -21,6 +21,9 @@ jobs:
     - task: NodeTool@0
       inputs:
         versionSpec: '10.x'
+    - checkout: self
+      submodules: true
+      persistCredentials: true
     - script: npm ci
       displayName: Install dependencies
     - script: npm run build

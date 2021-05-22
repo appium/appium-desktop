@@ -15,6 +15,9 @@ jobs:
       TARGET: ${{ parameters.target }}
       E2E_TIMEOUT: 600000
     steps:
+    - checkout: self
+      submodules: true
+      persistCredentials: true
     - task: NodeTool@0
       inputs:
         versionSpec: '11.x'
