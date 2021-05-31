@@ -127,7 +127,7 @@
     "fix-path": "^3.0.0",
     "font-awesome": "4.x",
     "history": "^4.7.2",
-    "i18next": "^19.0.1",
+    "i18next": "^20.3.1",
     "i18next-node-fs-backend": "^2.1.1",
     "lodash": "4.x",
     "moment": "^2.20.1",
