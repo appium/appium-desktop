@@ -115,7 +115,7 @@
   },
   "dependencies": {
     "ansi-to-html": "~0.6.7",
-    "antd": "~4.0.4",
+    "antd": "~4.16.1",
     "appium": "1.20.2",
     "appium-support": "^2.25.0",
     "bluebird": "^3.5.5",
