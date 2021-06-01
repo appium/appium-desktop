@@ -168,7 +168,7 @@
     "eslint-config-appium": "^4.5.0",
     "eslint-plugin-import": "^2.8.0",
     "eslint-plugin-jsx-a11y": "^6.1.2",
-    "eslint-plugin-mocha": "^8.0.0",
+    "eslint-plugin-mocha": "^9.0.0",
     "eslint-plugin-promise": "^5.1.0",
     "eslint-plugin-react": "^7.12.4",
     "eslint-plugin-react-native": "^3.6.0",
@@ -185,7 +185,7 @@
     "release": "^6.0.1",
     "request": "^2.88.2",
     "rimraf": "^3.0.0",
-    "sinon": "^9.0.0",
+    "sinon": "^11.1.1",
     "spectron": "^9.0.0"
   },
   "devEngines": {
