@@ -35,7 +35,7 @@ use in an unmodified fashion. Many thanks to that project!
 
 ### Setting up
 
-0. Clone the repo
+0. Clone the repo (`git clone --recursive git@github.com:appium/appium-desktop.git`) 
 0. Install global dependencies (`npm install`)
 0. Install server GUI dependencies (`cd server && npm install`)
 0. Install inspector dependencies (`cd inspector && npm install`)
