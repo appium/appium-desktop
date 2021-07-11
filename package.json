@@ -186,7 +186,7 @@
     "request": "^2.88.2",
     "rimraf": "^3.0.0",
     "sinon": "^11.1.1",
-    "spectron": "^9.0.0"
+    "spectron": "^15.0.0"
   },
   "devEngines": {
     "node": ">=6.x",
