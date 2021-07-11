@@ -337,5 +337,6 @@
   "Select Cloud Providers": "क्लॉउड प्रदाताओं का चयन करें",
   "Advanced Settings": "एडव्हान्स सेटिंग्ज",
   "Native App Mode": "Native App Mode",
-  "Web/Hybrid App Mode": "Web/Hybrid App Mode"
+  "Web/Hybrid App Mode": "Web/Hybrid App Mode",
+  "autoAddPrefixes": "प्रारंभ में आवश्यक Appium विक्रेता उपसर्गों को स्वचालित रूप से जोड़ें"
 }
