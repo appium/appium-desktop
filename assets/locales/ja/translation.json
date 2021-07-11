@@ -337,5 +337,6 @@
   "Select Cloud Providers": "クラウド事業者を選択する",
   "Advanced Settings": "詳細設定",
   "Native App Mode": "ネイティブモード",
-  "Web/Hybrid App Mode": "Web/ハイブリッドモード"
+  "Web/Hybrid App Mode": "Web/ハイブリッドモード",
+  "autoAddPrefixes": "Automatically add necessary Appium vendor prefixes on start"
 }

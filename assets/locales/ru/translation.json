@@ -337,5 +337,6 @@
   "Select Cloud Providers": "Выбор облачных провайдеров",
   "Advanced Settings": "Расширенные настройки",
   "Native App Mode": "Режим нативного приложения",
-  "Web/Hybrid App Mode": "Гибридное/Веб-приложение"
+  "Web/Hybrid App Mode": "Гибридное/Веб-приложение",
+  "autoAddPrefixes": "Automatically add necessary Appium vendor prefixes on start"
 }
