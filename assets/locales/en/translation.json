@@ -342,5 +342,6 @@
   "jsonArgument": "JSON argument array",
   "executeScriptCommand": "Script to execute",
   "appPathOrUrl": "Path or URL for app",
-  "fileContentString": "File contents as Base64-encoded string"
+  "fileContentString": "File contents as Base64-encoded string",
+  "inspectorMoved": "The Inspector is now released as a separate app. Please visit {{url}}"
 }

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { shell } from 'electron';
 import PropTypes from 'prop-types';
 import { Button, Tooltip } from 'antd';
 import { STATUS_RUNNING, STATUS_STOPPING,
@@ -19,6 +20,7 @@ import { BUTTON } from '../../../../gui-common/components/AntdTypes';
 
 const convert = new AnsiConverter({fg: '#bbb', bg: '#222'});
 const MAX_LOGS_RENDERED = 1000;
+const INSPECTOR_URL = 'https://github.com/appium/appium-inspector';
 
 function leveler (level) {
   switch (level) {
@@ -74,13 +76,16 @@ const StopButton = withTranslation(StopButtonComponent);
 
 class StartSessionButtonComponent extends Component {
   render () {
-    const {serverStatus, startSession, t} = this.props;
+    const {serverStatus, t} = this.props;
+    const openInspector = () => shell.openExternal(INSPECTOR_URL);
+
     if (serverStatus !== STATUS_STOPPED && serverStatus !== STATUS_STOPPING) {
-      return <Tooltip title={t('Start Inspector Session')}>
+      return <Tooltip title={t('inspectorMoved', {url: INSPECTOR_URL})}>
         <Button
           className={styles.serverButton} id='startNewSessionBtn'
           icon={<SearchOutlined/>}
-          onClick={startSession} />
+          onClick={openInspector}
+        />
       </Tooltip>;
     } else {
       return null;
