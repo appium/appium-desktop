@@ -108,7 +108,7 @@
   "logsNotAvailableError": "出现错误: 日志不可用",
   "findElementFailure": "找不到 '{{methodName}}' 的元素。请刷新页面并重试。",
   "Could not start session": "无法启动会话",
-  "couldNotConnect": "无法连接到服务器；您确定要运行吗？",
+  "couldNotConnect": "Could not connect to server; are you sure it's running? If you are using the browser version, also ensure your Appium server has been started with --allow-cors.",
   "sauceCredentialsRequired": "需要 Sauce 用户名和访问密钥！",
   "testingbotCredentialsRequired": "TestingBot key 与 secret是必需的!",
   "Perfecto SecurityToken is required": "需要填写 Security Token",
@@ -338,5 +338,10 @@
   "Advanced Settings": "高级设置",
   "Native App Mode": "Native App Mode",
   "Web/Hybrid App Mode": "Web/Hybrid App Mode",
-  "autoAddPrefixes": "Automatically add necessary Appium vendor prefixes on start"
+  "autoAddPrefixes": "启动时自动添加必要的 Appium 供应商前缀",
+  "jsonArgument": "JSON 参数数组",
+  "executeScriptCommand": "执行脚本",
+  "appPathOrUrl": "应用路径或 URL",
+  "fileContentString": "文件内容为 Base64 编码字符串",
+  "inspectorMoved": "检查员现在作为一个单独的应用程序发布。请访问 {{url}}"
 }

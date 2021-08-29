@@ -108,7 +108,7 @@
   "logsNotAvailableError": "Ошибка: журналы недоступны",
   "findElementFailure": "Не удалось найти элемент для '{{methodName}}'. Пожалуйста, обновите страницу и повторите попытку.",
   "Could not start session": "Не удалось запустить сессию",
-  "couldNotConnect": "Не удалось подключиться к серверу; вы уверены, что он запущен?",
+  "couldNotConnect": "Could not connect to server; are you sure it's running? If you are using the browser version, also ensure your Appium server has been started with --allow-cors.",
   "sauceCredentialsRequired": "Требуется имя пользователя и ключ доступа к Sauce!",
   "testingbotCredentialsRequired": "Требуется ключ и секрет API TestingBot!",
   "Perfecto SecurityToken is required": "Требуется SecurityToken Perfecto",
@@ -338,5 +338,10 @@
   "Advanced Settings": "Расширенные настройки",
   "Native App Mode": "Режим нативного приложения",
   "Web/Hybrid App Mode": "Гибридное/Веб-приложение",
-  "autoAddPrefixes": "Automatically add necessary Appium vendor prefixes on start"
+  "autoAddPrefixes": "Automatically add necessary Appium vendor prefixes on start",
+  "jsonArgument": "Массив аргументов JSON",
+  "executeScriptCommand": "Script to execute",
+  "appPathOrUrl": "Path or URL for app",
+  "fileContentString": "Файл в виде строки Base64",
+  "inspectorMoved": "The Inspector is now released as a separate app. Please visit {{url}}"
 }

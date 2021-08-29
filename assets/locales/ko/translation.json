@@ -108,7 +108,7 @@
   "logsNotAvailableError": "오류가 발생했습니다: 로그가 존재하지 않습니다",
   "findElementFailure": "'{{methodName}}'에 대한 element를 찾지 못했습니다. 페이지를 새로고침하고 다시 시도해보세요.",
   "Could not start session": "세션을 시작할 수 없습니다",
-  "couldNotConnect": "서버에 연결할 수 없습니다; 서버가 시작되었나요?",
+  "couldNotConnect": "Could not connect to server; are you sure it's running? If you are using the browser version, also ensure your Appium server has been started with --allow-cors.",
   "sauceCredentialsRequired": "Sauce 사용자 이름과 엑세스 키가 필요합니다!",
   "testingbotCredentialsRequired": "TestingBot 키와 시크릿이 필요합니다!",
   "Perfecto SecurityToken is required": "Perfecto 보안 토큰이 필요합니다!",
@@ -338,5 +338,10 @@
   "Advanced Settings": "고급 설정",
   "Native App Mode": "Native App Mode",
   "Web/Hybrid App Mode": "Web/Hybrid App Mode",
-  "autoAddPrefixes": "Automatically add necessary Appium vendor prefixes on start"
+  "autoAddPrefixes": "Automatically add necessary Appium vendor prefixes on start",
+  "jsonArgument": "JSON argument array",
+  "executeScriptCommand": "Script to execute",
+  "appPathOrUrl": "Path or URL for app",
+  "fileContentString": "File contents as Base64-encoded string",
+  "inspectorMoved": "The Inspector is now released as a separate app. Please visit {{url}}"
 }
