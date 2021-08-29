@@ -108,7 +108,7 @@
   "logsNotAvailableError": "एक त्रुटि हुई है: लॉग उपलब्ध नहीं है",
   "findElementFailure": "{{methodName}} के लिए तत्व खोजने में विफल। कृपया पृष्ठ ताज़ा करें और पुनः प्रयास करें।",
   "Could not start session": "सत्र शुरू नहीं हो सका",
-  "couldNotConnect": "सर्वर से कनेक्ट नहीं कर सकते; क्या आप सुनिश्चित हैं कि यह चल रहा है?",
+  "couldNotConnect": "Could not connect to server; are you sure it's running? If you are using the browser version, also ensure your Appium server has been started with --allow-cors.",
   "sauceCredentialsRequired": "सॉस उपयोगकर्ता नाम और एक्सेस कुंजी की आवश्यकता है!",
   "testingbotCredentialsRequired": "टेस्टिंगबोट कुंजी और रहस्य की आवश्यकता है!",
   "Perfecto SecurityToken is required": "परफेक्टो सिक्योरिटी टोकन की आवश्यकता है",
@@ -338,5 +338,10 @@
   "Advanced Settings": "एडव्हान्स सेटिंग्ज",
   "Native App Mode": "Native App Mode",
   "Web/Hybrid App Mode": "Web/Hybrid App Mode",
-  "autoAddPrefixes": "प्रारंभ में आवश्यक Appium विक्रेता उपसर्गों को स्वचालित रूप से जोड़ें"
+  "autoAddPrefixes": "प्रारंभ में आवश्यक Appium विक्रेता उपसर्गों को स्वचालित रूप से जोड़ें",
+  "jsonArgument": "JSON argument array",
+  "executeScriptCommand": "Script to execute",
+  "appPathOrUrl": "Path or URL for app",
+  "fileContentString": "File contents as Base64-encoded string",
+  "inspectorMoved": "The Inspector is now released as a separate app. Please visit {{url}}"
 }

@@ -108,7 +108,7 @@
   "logsNotAvailableError": "ತಪ್ಪೊಂದು ಸಂಭವಿಸಿದೆ: ಲಾಗ್ಸ್ ಲಭ್ಯವಿಲ್ಲ",
   "findElementFailure": "'{{methodName}}' ಗೆ ಎಲಿಮೆಂಟ್ ಹುಡುಕಲು ವಿಫಲವಾಗಿದೆ. ದಯಮಾಡಿ ಪೇಜ್ನನ್ನು ಮರುಲಾಂಚಿಸಿ ಮತ್ತೆ ಪ್ರಯತ್ನ ಮಾಡಿ.",
   "Could not start session": "ಸೆಷನ್ ಶುರು ಮಾಡಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ",
-  "couldNotConnect": "ಸರ್ವರ್ ಜೊತೆ ಸಂಪರ್ಕ ಸಾಧ್ಯವಾಗಲಿಲ್ಲ; ಸರ್ವರ್ ಚಾಲ್ತಿಯಲ್ಲಿರುವುದು ನಿಮಗೆ ಖಚಿತವಾಗಿ ತಿಳಿದಿದ್ಯಾ?",
+  "couldNotConnect": "Could not connect to server; are you sure it's running? If you are using the browser version, also ensure your Appium server has been started with --allow-cors.",
   "sauceCredentialsRequired": "ಸೌಸ್ ವ್ಯವಹಾರಾಂಕಿತ ಮತ್ತು ಆಕ್ಸೆಸ್ ಕೀ ಅವಶ್ಯ ಬೇಕಿದೆ!",
   "testingbotCredentialsRequired": "ಟೆಸ್ಟಿಂಗ್ ಬೋಟ್ ಕೀ ಮತ್ತು ಸೀಕ್ರೆಟ್ ಕೀ ಅವಶ್ಯ ಬೇಕಿದೆ!",
   "Perfecto SecurityToken is required": "ಪೆರ್ಫೆಕ್ಟೋ ಸೆಕ್ಯೂರಿಟಿ ಟೋಕನ್ ಅವಶ್ಯ ಬೇಕಿದೆ",
@@ -338,5 +338,10 @@
   "Advanced Settings": "ಅಡ್ವಾನ್ಸ್ಡ್ ಸೆಟ್ಟಿಂಗ್ಸ್",
   "Native App Mode": "Native App Mode",
   "Web/Hybrid App Mode": "Web/Hybrid App Mode",
-  "autoAddPrefixes": "Automatically add necessary Appium vendor prefixes on start"
+  "autoAddPrefixes": "Automatically add necessary Appium vendor prefixes on start",
+  "jsonArgument": "JSON argument array",
+  "executeScriptCommand": "Script to execute",
+  "appPathOrUrl": "Path or URL for app",
+  "fileContentString": "File contents as Base64-encoded string",
+  "inspectorMoved": "The Inspector is now released as a separate app. Please visit {{url}}"
 }
