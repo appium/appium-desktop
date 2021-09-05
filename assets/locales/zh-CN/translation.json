@@ -108,7 +108,7 @@
   "logsNotAvailableError": "出现错误: 日志不可用",
   "findElementFailure": "找不到 '{{methodName}}' 的元素。请刷新页面并重试。",
   "Could not start session": "无法启动会话",
-  "couldNotConnect": "Could not connect to server; are you sure it's running? If you are using the browser version, also ensure your Appium server has been started with --allow-cors.",
+  "couldNotConnect": "无法连接到服务器；您确定它正在运行吗？ 如果您正在使用浏览器版本，同时也确保您的 Appium 服务器使用 --allow-cors 启动。",
   "sauceCredentialsRequired": "需要 Sauce 用户名和访问密钥！",
   "testingbotCredentialsRequired": "TestingBot key 与 secret是必需的!",
   "Perfecto SecurityToken is required": "需要填写 Security Token",

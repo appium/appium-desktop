@@ -108,7 +108,7 @@
   "logsNotAvailableError": "エラーが発生しました: ログが取得できません",
   "findElementFailure": "'{{methodName}}' の要素検索に失敗しました。ページを更新しやり直してください。",
   "Could not start session": "セッションを開始できませんでした。",
-  "couldNotConnect": "Could not connect to server; are you sure it's running? If you are using the browser version, also ensure your Appium server has been started with --allow-cors.",
+  "couldNotConnect": "サーバーに接続できませんでした。サーバーは実行中ですか？ブラウザー版を使用している場合はAppiumサーバーが\"--allow-cors\"で起動されていることを確認してください。",
   "sauceCredentialsRequired": "Sauceのユーザー名とアクセス キーが必要です",
   "testingbotCredentialsRequired": "TestingBotのキーとシークレットが必要です",
   "Perfecto SecurityToken is required": "PerfectoのSecurityTokenが必要です",
@@ -338,10 +338,10 @@
   "Advanced Settings": "詳細設定",
   "Native App Mode": "ネイティブモード",
   "Web/Hybrid App Mode": "Web/ハイブリッドモード",
-  "autoAddPrefixes": "Automatically add necessary Appium vendor prefixes on start",
-  "jsonArgument": "JSON argument array",
-  "executeScriptCommand": "Script to execute",
-  "appPathOrUrl": "Path or URL for app",
-  "fileContentString": "File contents as Base64-encoded string",
-  "inspectorMoved": "The Inspector is now released as a separate app. Please visit {{url}}"
+  "autoAddPrefixes": "セッション接続時にAppiumベンダープレフィックスを自動的に追加する",
+  "jsonArgument": "配列のJSON引数",
+  "executeScriptCommand": "実行スクリプト",
+  "appPathOrUrl": "アプリのURLパス",
+  "fileContentString": "Base64エンコード文字列のファイルコンテンツ",
+  "inspectorMoved": "インスペクターは別アプリとしてリリースされました。 {{url}} を確認してください。"
 }
