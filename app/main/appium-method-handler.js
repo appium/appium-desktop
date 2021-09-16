@@ -239,7 +239,7 @@ export default class AppiumMethodHandler {
             isAndroid ? 'xpath' : '-ios class chain',
             isAndroid ? '//android.webkit.WebView' : '**/XCUIElementTypeWebView'
           );
-          if (!webViewPosition) {
+          if (el) {
             webViewPosition = await this.driver.getLocation(el.value);
           }
         } catch (ign) {}
