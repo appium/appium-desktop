@@ -191,7 +191,7 @@ export default class AppiumMethodHandler {
 
   async _getContextsSourceAndScreenshot () {
     let contexts, contextsError, currentContext, currentContextError, platformName,
-        source, sourceError, screenshot, screenshotError, statBarHeight, windowSize, windowSizeError;
+        source, sourceError, screenshot, screenshotError, statBarHeight, windowSize, windowSizeError, webViewPosition;
 
     if (!await this._hasContextsCommand()) {
       currentContext = null;
@@ -232,6 +232,15 @@ export default class AppiumMethodHandler {
       }
 
       if (currentContext !== NATIVE_APP) {
+        const isAndroid = _.toLower(platformName) === 'android';
+        try {
+          // Get the webview offset
+          const el = await this.driver.elementOrNull(
+            isAndroid ? 'xpath' : '-ios class chain',
+            isAndroid ? '//android.webkit.WebView' : '**/XCUIElementTypeWebView'
+          );
+          webViewPosition = await this.driver.getLocation(el.value);
+        } catch (ign) {}
         await this.driver.context(currentContext);
       }
       // End of note
@@ -242,9 +251,15 @@ export default class AppiumMethodHandler {
        */
       try {
         if (currentContext !== NATIVE_APP) {
-          const webviewStatusAddressBarHeight = await this.driver.execute(getWebviewStatusAddressBarHeight, [{platformName, statBarHeight}]);
-
-          await this.driver.execute(setHtmlElementAttributes, [{platformName, webviewStatusAddressBarHeight}]);
+          // Fallback if the webview position can't be determined,
+          // then do it based on the web context
+          if (!webViewPosition) {
+            webViewPosition = {
+              x: 0,
+              y: await this.driver.execute(getWebviewStatusAddressBarHeight, [{platformName, statBarHeight}]),
+            };
+          }
+          await this.driver.execute(setHtmlElementAttributes, [{platformName, webviewStatusAddressBarHeight: webViewPosition.y}]);
         }
       } catch (ign) {}
     }
