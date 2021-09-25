@@ -6,7 +6,7 @@ jobs:
     steps:
     - task: NodeTool@0
       inputs:
-        versionSpec: '16.x'
+        versionSpec: '14.x'
     - checkout: self
       submodules: true
       persistCredentials: true
