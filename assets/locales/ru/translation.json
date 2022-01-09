@@ -340,5 +340,5 @@
   "executeScriptCommand": "Script to execute",
   "appPathOrUrl": "Path or URL for app",
   "fileContentString": "Файл в виде строки Base64",
-  "inspectorMoved": "Инспектор Appium выпущен как отдельное приложение. Пожалуйста, посетите {{url}}"
+  "inspectorMoved": "Инспектор выпущен как отдельное приложение. Пожалуйста, посетите {{url}}"
 }
