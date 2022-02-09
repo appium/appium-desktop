@@ -114,7 +114,7 @@
     "electron": "./node_modules/.bin/electron"
   },
   "dependencies": {
-    "ansi-to-html": "~0.6.7",
+    "ansi-to-html": "~0.7.2",
     "antd": "~4.16.1",
     "appium": "1.22.2",
     "appium-support": "^2.25.0",
