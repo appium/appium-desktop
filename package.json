@@ -189,11 +189,11 @@
     "spectron": "^9.0.0"
   },
   "devEngines": {
-    "node": ">=6.x",
-    "npm": ">=3.x"
+    "node": ">=12.x",
+    "npm": ">=6.x"
   },
   "engines": {
-    "node": ">=10.x",
-    "npm": ">=5.x"
+    "node": ">=12.x",
+    "npm": ">=6.x"
   }
 }
