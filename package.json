@@ -172,7 +172,7 @@
     "eslint-plugin-promise": "^5.1.0",
     "eslint-plugin-react": "^7.12.4",
     "eslint-plugin-react-native": "^3.6.0",
-    "husky": "^5.1.1",
+    "husky": "^7.0.4",
     "less": "^3.12.2",
     "mocha": "^9.2.0",
     "mocha-junit-reporter": "^2.0.0",
