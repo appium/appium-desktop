@@ -116,7 +116,7 @@
   "dependencies": {
     "ansi-to-html": "~0.7.2",
     "antd": "~4.16.1",
-    "appium": "1.22.2",
+    "appium": "1.22.3",
     "appium-support": "^2.25.0",
     "bluebird": "^3.5.5",
     "connected-react-router": "^6.0.0",
