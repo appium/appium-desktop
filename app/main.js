@@ -42,7 +42,8 @@ app.on('ready', async () => {
     minWidth: 650,
     minHeight: 600,
     webPreferences: {
-      nodeIntegration: true
+      nodeIntegration: true,
+      enableRemoteModule: true
     }
   });
 

@@ -162,7 +162,7 @@
     "cross-env": "^7.0.3",
     "devtron": "^1.4.0",
     "dir-compare": "^3.3.0",
-    "electron": "^9.0",
+    "electron": "^10.0",
     "electron-builder": "^22.10.5",
     "electron-devtools-installer": "^3.0.0",
     "eslint-config-appium": "^4.5.0",
