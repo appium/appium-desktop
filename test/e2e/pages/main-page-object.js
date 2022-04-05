@@ -7,11 +7,11 @@ export default class MainPage extends BasePage {
   }
 
   async startServer () {
-    await this.client.click(this.startServerButton);
+    (await this.client.$(this.startServerButton)).click();
   }
 
   async startNewSession () {
-    await this.client.click(this.startNewSessionButton);
+    (await this.client.this.startNewSessionButton).click();
   }
 }
 
