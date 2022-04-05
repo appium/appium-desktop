@@ -24,14 +24,14 @@ describe('application launch', function () {
 
   it('starts the server', async function () {
     // Start the server
-    await client.waitForExist(main.startServerButton);
+    (await client.$(main.startServerButton)).waitForExist();
     await main.startServer();
 
     // Wait for the server monitor container to be present
-    await client.waitForExist(main.serverMonitorContainer);
+    (await client.$(main.serverMonitorContainer)).waitForExist();
     await B.delay(5000);
-    const source = await client.source();
-    source.value.indexOf('Welcome to Appium').should.be.above(0);
+    const source = await client.getPageSource();
+    source.indexOf('Welcome to Appium').should.be.above(0);
   });
 
   it('check that WebDriverAgent folder is the same in /releases as it is in /node_modules (regression test for https://github.com/appium/appium-desktop/issues/417)', async function () {
