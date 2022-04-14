@@ -32,5 +32,5 @@ jobs:
       displayName: Bundle
       env:
         GH_TOKEN: $(GH_TOKEN)
-        CSC_LINK: $(CSC_LINK)
-        CSC_KEY_PASSWORD: $(CSC_KEY_PASSWORD)
+        # CSC_LINK: $(CSC_LINK)
+        # CSC_KEY_PASSWORD: $(CSC_KEY_PASSWORD)
