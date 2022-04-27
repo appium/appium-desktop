@@ -33,7 +33,7 @@ not supported, and will not work.
 
 ### Installing on macOS
 
-If you're using the desktop app on macOS, when you run it you will likely be greeted with some error about the app not being able to be opened, or not verified by Apple, or something similar. The easiest way to get around this is to run `xattr -cr` on the file you downloaded. So let's say you downloaded `Appium-Server-GUI-mac-<version>.dmg` and copy `Appium Inspector.app` in `/Applications` inside the disk image. Then you would run `xattr -cr "/Applications/Appium Server GUI.app"` before opening it. The same goes for the zip version (or the .app itself).
+If you're using the desktop app on macOS, when you run it you will likely be greeted with some error about the app not being able to be opened, or not verified by Apple, or something similar. The easiest way to get around this is to run `xattr -cr` on the file you downloaded. So let's say you downloaded `Appium-Server-GUI-mac-<version>.dmg` and copy `Appium Server GUI.app` in `/Applications` inside the disk image. Then you would run `xattr -cr "/Applications/Appium Server GUI.app"` before opening it. The same goes for the zip version (or the .app itself).
 
 The reason for this is that the Appium team does not have a paid Apple developer account and so our app isn't signed by a certificate they recognize, so the OS attempts to prevent it from running. Running the command above gets around this security limitation.
 
