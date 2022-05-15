@@ -37,7 +37,7 @@ If you're using the desktop app on macOS, when you run it you will likely be gre
 
 The reason for this is that the Appium team does not have a paid Apple developer account and so our app isn't signed by a certificate they recognize, so the OS attempts to prevent it from running. Running the command above gets around this security limitation.
 
-Please try to call `codesign --deep --sign - /Applications/Appium\ Server\ GUI.app` in case you gets a crash in the app starts.
+~~Please try to call `codesign --deep --sign - /Applications/Appium\ Server\ GUI.app` in case you gets a crash in the app starts.~~ <= should be resplved since **v1.22.3-4**
 
 ## Known Issues
 
