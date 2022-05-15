@@ -3,7 +3,7 @@ jobs:
 - template: templates/package.yml
   parameters:
     pool:
-      vmImage: 'macOS-10.15'
+      vmImage: 'macOS-latest'
     name: 'osx_package'
 - template: templates/package.yml
   parameters:
