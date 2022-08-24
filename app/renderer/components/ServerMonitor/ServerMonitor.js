@@ -149,7 +149,7 @@ class IncreaseFontSizeButtonComponent extends Component {
     if (serverStatus !== STATUS_STOPPED && serverStatus !== STATUS_STOPPING) {
       return <Tooltip title={t('Increase log text size')}>
         <Button
-          className={styles.serverButton} id='startNewSessionBtn'
+          className={styles.serverButton} id='increaseFontSizeBtn'
           icon={<PlusOutlined/>}
           onClick={increaseFontSize}
         />
