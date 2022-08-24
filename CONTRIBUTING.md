@@ -36,15 +36,9 @@ use in an unmodified fashion. Many thanks to that project!
 ### Setting up
 
 0. Clone the repo
-0. Install global dependencies (`npm install`)
-0. Install server GUI dependencies (`cd server && npm install`)
-0. Install inspector dependencies (`cd inspector && npm install`)
+0. Install dependencies (`npm install`)
 
 ### Doing Development
-
-There is a handy script for preparing the code and launching a development
-version of the apps, which you can run in either the `server` or `inspector`
-directory based on which app you want to use:
 
 ```bash
 npm run dev

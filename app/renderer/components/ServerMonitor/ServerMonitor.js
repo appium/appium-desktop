@@ -14,7 +14,9 @@ import {
   SearchOutlined,
   DownloadOutlined,
   CloseOutlined,
-  CodeFilled
+  CodeFilled,
+  MinusOutlined,
+  PlusOutlined
 } from '@ant-design/icons';
 import { BUTTON } from '../../../../gui-common/components/AntdTypes';
 
@@ -100,6 +102,67 @@ StartSessionButtonComponent.propTypes = {
 
 const StartSessionButton = withTranslation(StartSessionButtonComponent);
 
+class DecreaseFontSizeButtonComponent extends Component {
+  render () {
+    const {serverStatus, t} = this.props;
+    const decreaseFontSize = () => {
+      let fontSize = document.querySelector("div[class*='_term_']").style['font-size'];
+      if (!fontSize) {
+        fontSize = '12px';
+      }
+      let fontSizeNumerals = fontSize.replace(/px/g, '');
+      let smallerFontSize = parseFloat(fontSizeNumerals) * 0.9;
+      document.querySelector("div[class*='_term_']").style['font-size'] = smallerFontSize + 'px';
+    };
+
+    if (serverStatus !== STATUS_STOPPED && serverStatus !== STATUS_STOPPING) {
+      return <Tooltip title={t('Decrease log text size')}>
+        <Button
+          className={styles.serverButton} id='decreaseFontSizeBtn'
+          icon={<MinusOutlined/>}
+          onClick={decreaseFontSize}
+        />
+      </Tooltip>;
+    } else {
+      return null;
+    }
+  }
+}
+
+DecreaseFontSizeButtonComponent.propTypes = {};
+
+const DecreaseFontSizeButton = withTranslation(DecreaseFontSizeButtonComponent);
+
+class IncreaseFontSizeButtonComponent extends Component {
+  render () {
+    const {serverStatus, t} = this.props;
+    const increaseFontSize = () => {
+      let fontSize = document.querySelector("div[class*='_term_']").style['font-size'];
+      if (!fontSize) {
+        fontSize = '12px';
+      }
+      let fontSizeNumerals = fontSize.replace(/px/g, '');
+      let largerFontSize = parseFloat(fontSizeNumerals) * 1.1;
+      document.querySelector("div[class*='_term_']").style['font-size'] = largerFontSize + 'px';
+    };
+
+    if (serverStatus !== STATUS_STOPPED && serverStatus !== STATUS_STOPPING) {
+      return <Tooltip title={t('Increase log text size')}>
+        <Button
+          className={styles.serverButton} id='startNewSessionBtn'
+          icon={<PlusOutlined/>}
+          onClick={increaseFontSize}
+        />
+      </Tooltip>;
+    } else {
+      return null;
+    }
+  }
+}
+
+IncreaseFontSizeButtonComponent.propTypes = {};
+
+const IncreaseFontSizeButton = withTranslation(IncreaseFontSizeButtonComponent);
 class GetRawLogsButtonComponent extends Component {
   render () {
     const {t, getRawLogs} = this.props;
@@ -196,7 +259,6 @@ export default class ServerMonitor extends Component {
       lastSection = <div className={styles.last} />;
     }
 
-
     return (
       <div className={styles.container} id='serverMonitorContainer'>
         <div className={`${styles.bar} ${styles['bar-' + serverStatus]}`}>
@@ -209,6 +271,8 @@ export default class ServerMonitor extends Component {
             <StartSessionButton {...this.props} />
             <GetRawLogsButton {...this.props} />
             <StopButton {...this.props} />
+            <DecreaseFontSizeButton {...this.props} />
+            <IncreaseFontSizeButton {...this.props} />
           </div>
         </div>
         <div className={termClass} ref={(c) => this._term = c}>
