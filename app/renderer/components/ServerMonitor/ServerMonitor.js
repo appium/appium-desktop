@@ -16,7 +16,12 @@ import {
   CloseOutlined,
   CodeFilled,
   MinusOutlined,
-  PlusOutlined
+  PlusOutlined,
+  InfoCircleFilled,
+  ExclamationCircleFilled,
+  MessageFilled,
+  PaperClipFilled,
+  CloseCircleFilled
 } from '@ant-design/icons';
 import { BUTTON } from '../../../../gui-common/components/AntdTypes';
 
@@ -32,8 +37,6 @@ function leveler (level) {
       return 'exclamation-circle';
     case 'error':
       return 'close-circle';
-    case 'silly':
-      return 'paper-clip';
     case 'info':
     default:
       return 'info-circle';
@@ -235,20 +238,53 @@ export default class ServerMonitor extends Component {
     let logLineSection = logLines.slice(logLines.length - MAX_LOGS_RENDERED).map((line, i) => {
       let icn = leveler(line.level);
 
-      return (
+      let lineHtml = convert.toHtml(line.msg);
+      // using colors defined in: https://terminal.sexy/
+      if (lineHtml.includes('[Appium]') || lineHtml.includes('[Instrumentation]')) {
+        lineHtml = lineHtml.replace('color:#A0A', 'color:#AA759F'); // INFO: better terminal-friendly "magenta"
+      } else if (lineHtml.includes('[HTTP]')) {
+        lineHtml = lineHtml.replace('color:#A0A', 'color:#75B5AA');
+      } else if (lineHtml.includes('[BaseDriver]') || lineHtml.includes('[WD Proxy]') || lineHtml.includes('[W3C')) {
+        lineHtml = lineHtml.replace('color:#A0A', 'color:#F4BF75');
+      } else if (lineHtml.includes('[UiAutomator2]') || lineHtml.includes('[AndroidDriver]')) {
+        lineHtml = lineHtml.replace('color:#A0A', 'color:#90A959');
+      } else if (lineHtml.includes('[ADB]') || lineHtml.includes('[Logcat]')) {
+        lineHtml = lineHtml.replace('color:#A0A', 'color:#90A959');
+      } else if (lineHtml.includes('[tvOSSim]') || lineHtml.includes('[WebDriverAgent]') || lineHtml.includes('[XCUITest]')) {
+        lineHtml = lineHtml.replace('color:#A0A', 'color:#6A9FB5');
+      } else if (lineHtml.includes('[DevCon Factory]') || lineHtml.includes('[IOSSimulatorLog]')) {
+        lineHtml = lineHtml.replace('color:#A0A', 'color:#6A9FB5');
+      }
+
+      let levelsToNumber = {
+        'debug': 0,
+        'info': 1,
+        'warn': 2,
+        'error': 3
+      };
+
+      let html = (
         <div key={i}>
-          <CodeFilled type={icn} />
           {
-            serverArgs.logTimestamp &&
-            <span className={styles.timestamp}>
-              [{line.timestamp}]
-            </span>
+            serverArgs.logTimestamp && <span className={styles.timestamp}> [{line.timestamp}] </span>
           }
-          <span dangerouslySetInnerHTML={{__html: convert.toHtml(line.msg)}} />
+          {
+            levelsToNumber[line.level] >= levelsToNumber[serverArgs.loglevel] ?
+              <>
+                {icn === 'info-circle' ? <InfoCircleFilled id="messageIcon" /> : <></> }
+                {icn === 'exclamation-circle' ? <ExclamationCircleFilled id="messageIcon" /> : <></> }
+                {icn === 'message' ? <MessageFilled id="messageIcon" /> : <></> }
+                {icn === 'silly' ? <PaperClipFilled id="messageIcon" /> : <></> }
+                {icn === 'close-circle' ? <CloseCircleFilled id="messageIcon" /> : <></>}
+                <span dangerouslySetInnerHTML={{ __html: lineHtml }} />
+              </>
+              : <></>
+          }
         </div>
       );
-    });
 
+      return html;
+    });
     let termClass = styles.term;
     if (serverStatus === STATUS_STOPPED || serverStatus === STATUS_STOPPING) {
       termClass += ` ${styles['term-stopped']}`;
