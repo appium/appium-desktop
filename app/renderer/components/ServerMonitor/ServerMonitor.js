@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, { Component } from 'react';
 import { shell } from 'electron';
 import PropTypes from 'prop-types';
@@ -5,7 +6,6 @@ import { Button, Tooltip } from 'antd';
 import { STATUS_RUNNING, STATUS_STOPPING,
          STATUS_STOPPED } from '../../reducers/ServerMonitor';
 import styles from './ServerMonitor.css';
-import AnsiConverter from 'ansi-to-html';
 import { withTranslation } from '../../util';
 
 import AppiumSmallMagenta from '../../images/appium_small_magenta.png';
@@ -20,12 +20,11 @@ import {
   InfoCircleFilled,
   ExclamationCircleFilled,
   MessageFilled,
-  PaperClipFilled,
   CloseCircleFilled
 } from '@ant-design/icons';
 import { BUTTON } from '../../../../gui-common/components/AntdTypes';
+import { replace } from 'lodash';
 
-const convert = new AnsiConverter({fg: '#bbb', bg: '#222'});
 const MAX_LOGS_RENDERED = 1000;
 const INSPECTOR_URL = 'https://github.com/appium/appium-inspector';
 
@@ -234,28 +233,16 @@ export default class ServerMonitor extends Component {
       default:
         throw new Error(t('badStatus', {serverStatus}));
     }
-
     let logLineSection = logLines.slice(logLines.length - MAX_LOGS_RENDERED).map((line, i) => {
+      const { parse } = require('ansicolor');
       let icn = leveler(line.level);
-
-      let lineHtml = convert.toHtml(line.msg);
-      // using colors defined in: https://terminal.sexy/
-      if (lineHtml.includes('[Appium]') || lineHtml.includes('[Instrumentation]')) {
-        lineHtml = lineHtml.replace('color:#A0A', 'color:#AA759F'); // INFO: better terminal-friendly "magenta"
-      } else if (lineHtml.includes('[HTTP]')) {
-        lineHtml = lineHtml.replace('color:#A0A', 'color:#75B5AA');
-      } else if (lineHtml.includes('[BaseDriver]') || lineHtml.includes('[WD Proxy]') || lineHtml.includes('[W3C')) {
-        lineHtml = lineHtml.replace('color:#A0A', 'color:#F4BF75');
-      } else if (lineHtml.includes('[UiAutomator2]') || lineHtml.includes('[AndroidDriver]')) {
-        lineHtml = lineHtml.replace('color:#A0A', 'color:#90A959');
-      } else if (lineHtml.includes('[ADB]') || lineHtml.includes('[Logcat]')) {
-        lineHtml = lineHtml.replace('color:#A0A', 'color:#90A959');
-      } else if (lineHtml.includes('[tvOSSim]') || lineHtml.includes('[WebDriverAgent]') || lineHtml.includes('[XCUITest]')) {
-        lineHtml = lineHtml.replace('color:#A0A', 'color:#6A9FB5');
-      } else if (lineHtml.includes('[DevCon Factory]') || lineHtml.includes('[IOSSimulatorLog]')) {
-        lineHtml = lineHtml.replace('color:#A0A', 'color:#6A9FB5');
-      }
-
+      const lineColor = parse(line.msg);
+      let lineHtml = (<>
+        <span>
+          <span style={{ color: lineColor.spans[0].css.replace('color:', '').replace(';', '').replace('\n', '') || '#bbb' }}>{lineColor.spans[0].text}</span>
+          <span style={{ color: '#bbb' }}>{lineColor.spans[1].text}</span>
+        </span>
+      </>);
       let levelsToNumber = {
         'debug': 0,
         'info': 1,
@@ -271,12 +258,11 @@ export default class ServerMonitor extends Component {
           {
             levelsToNumber[line.level] >= levelsToNumber[serverArgs.loglevel] ?
               <>
-                {icn === 'info-circle' ? <InfoCircleFilled id="messageIcon" /> : <></> }
-                {icn === 'exclamation-circle' ? <ExclamationCircleFilled id="messageIcon" /> : <></> }
+                {icn === 'info-circle' ? <InfoCircleFilled id="infoCircleIcon" /> : <></> }
+                {icn === 'exclamation-circle' ? <ExclamationCircleFilled id="exclamationCircleIcon" /> : <></> }
                 {icn === 'message' ? <MessageFilled id="messageIcon" /> : <></> }
-                {icn === 'silly' ? <PaperClipFilled id="messageIcon" /> : <></> }
-                {icn === 'close-circle' ? <CloseCircleFilled id="messageIcon" /> : <></>}
-                <span dangerouslySetInnerHTML={{ __html: lineHtml }} />
+                {icn === 'close-circle' ? <CloseCircleFilled id="closeCircleIcon" /> : <></>}
+                {lineHtml}
               </>
               : <></>
           }
