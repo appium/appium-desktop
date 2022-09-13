@@ -1,4 +1,3 @@
-/* eslint-disable react-native/no-inline-styles */
 import React, { Component } from 'react';
 import { shell } from 'electron';
 import PropTypes from 'prop-types';
@@ -235,14 +234,9 @@ export default class ServerMonitor extends Component {
         throw new Error(t('badStatus', {serverStatus}));
     }
     let logLineSection = logLines.slice(logLines.length - MAX_LOGS_RENDERED).map((line, i) => {
-      let icn = leveler(line.level);
       const ansiToHtml = new AnsiToHtml();
-      // let lineHtml = (<>
-      //   <span>
-      //     <span style={{ color: lineColor.spans[0].css.split('|')[0].replace('color:', '').replace(';', '').replace('\n', '') }}>{lineColor.spans[0].text}</span>
-      //     <span style={{ color: '#bbb' }}>{lineColor.spans[1].text}</span>
-      //   </span>
-      // </>);
+      let icn = leveler(line.level);
+
       let levelsToNumber = {
         'debug': 0,
         'info': 1,
