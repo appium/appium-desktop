@@ -7,6 +7,7 @@ import { STATUS_RUNNING, STATUS_STOPPING,
          STATUS_STOPPED } from '../../reducers/ServerMonitor';
 import styles from './ServerMonitor.css';
 import { withTranslation } from '../../util';
+import AnsiToHtml from 'ansi-to-html';
 
 import AppiumSmallMagenta from '../../images/appium_small_magenta.png';
 import {
@@ -234,15 +235,14 @@ export default class ServerMonitor extends Component {
         throw new Error(t('badStatus', {serverStatus}));
     }
     let logLineSection = logLines.slice(logLines.length - MAX_LOGS_RENDERED).map((line, i) => {
-      const { parse } = require('ansicolor');
       let icn = leveler(line.level);
-      const lineColor = parse(line.msg);
-      let lineHtml = (<>
-        <span>
-          <span style={{ color: lineColor.spans[0].css.replace('color:', '').replace(';', '').replace('\n', '') || '#bbb' }}>{lineColor.spans[0].text}</span>
-          <span style={{ color: '#bbb' }}>{lineColor.spans[1].text}</span>
-        </span>
-      </>);
+      const ansiToHtml = new AnsiToHtml();
+      // let lineHtml = (<>
+      //   <span>
+      //     <span style={{ color: lineColor.spans[0].css.split('|')[0].replace('color:', '').replace(';', '').replace('\n', '') }}>{lineColor.spans[0].text}</span>
+      //     <span style={{ color: '#bbb' }}>{lineColor.spans[1].text}</span>
+      //   </span>
+      // </>);
       let levelsToNumber = {
         'debug': 0,
         'info': 1,
@@ -262,7 +262,7 @@ export default class ServerMonitor extends Component {
                 {icn === 'exclamation-circle' ? <ExclamationCircleFilled id="exclamationCircleIcon" /> : <></> }
                 {icn === 'message' ? <MessageFilled id="messageIcon" /> : <></> }
                 {icn === 'close-circle' ? <CloseCircleFilled id="closeCircleIcon" /> : <></>}
-                {lineHtml}
+                <span dangerouslySetInnerHTML={{ __html: ansiToHtml.toHtml(line.msg) }} />
               </>
               : <></>
           }
