@@ -62,8 +62,7 @@
     },
     "dmg": {
       "artifactName": "${productName}-mac-${version}.${ext}",
-      "contents": [
-        {
+      "contents": [{
           "x": 410,
           "y": 150,
           "type": "link",
@@ -114,7 +113,7 @@
     "electron": "./node_modules/.bin/electron"
   },
   "dependencies": {
-    "ansi-to-html": "~0.7.2",
+    "ansi-to-html": "^0.7.2",
     "antd": "~4.16.1",
     "appium": "1.22.3",
     "appium-support": "^2.25.0",

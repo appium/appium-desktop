@@ -5,8 +5,8 @@ import { Button, Tooltip } from 'antd';
 import { STATUS_RUNNING, STATUS_STOPPING,
          STATUS_STOPPED } from '../../reducers/ServerMonitor';
 import styles from './ServerMonitor.css';
-import AnsiConverter from 'ansi-to-html';
 import { withTranslation } from '../../util';
+import AnsiToHtml from 'ansi-to-html';
 
 import AppiumSmallMagenta from '../../images/appium_small_magenta.png';
 import {
@@ -16,11 +16,14 @@ import {
   CloseOutlined,
   CodeFilled,
   MinusOutlined,
-  PlusOutlined
+  PlusOutlined,
+  InfoCircleFilled,
+  ExclamationCircleFilled,
+  MessageFilled,
+  CloseCircleFilled
 } from '@ant-design/icons';
 import { BUTTON } from '../../../../gui-common/components/AntdTypes';
 
-const convert = new AnsiConverter({fg: '#bbb', bg: '#222'});
 const MAX_LOGS_RENDERED = 1000;
 const INSPECTOR_URL = 'https://github.com/appium/appium-inspector';
 
@@ -32,8 +35,6 @@ function leveler (level) {
       return 'exclamation-circle';
     case 'error':
       return 'close-circle';
-    case 'silly':
-      return 'paper-clip';
     case 'info':
     default:
       return 'info-circle';
@@ -231,24 +232,38 @@ export default class ServerMonitor extends Component {
       default:
         throw new Error(t('badStatus', {serverStatus}));
     }
-
     let logLineSection = logLines.slice(logLines.length - MAX_LOGS_RENDERED).map((line, i) => {
+      const ansiToHtml = new AnsiToHtml();
       let icn = leveler(line.level);
 
-      return (
+      let levelsToNumber = {
+        'debug': 0,
+        'info': 1,
+        'warn': 2,
+        'error': 3
+      };
+
+      let html = (
         <div key={i}>
-          <CodeFilled type={icn} />
           {
-            serverArgs.logTimestamp &&
-            <span className={styles.timestamp}>
-              [{line.timestamp}]
-            </span>
+            serverArgs.logTimestamp && <span className={styles.timestamp}> [{line.timestamp}] </span>
           }
-          <span dangerouslySetInnerHTML={{__html: convert.toHtml(line.msg)}} />
+          {
+            levelsToNumber[line.level] >= levelsToNumber[serverArgs.loglevel] ?
+              <>
+                {icn === 'info-circle' ? <InfoCircleFilled id="infoCircleIcon" /> : <></> }
+                {icn === 'exclamation-circle' ? <ExclamationCircleFilled id="exclamationCircleIcon" /> : <></> }
+                {icn === 'message' ? <MessageFilled id="messageIcon" /> : <></> }
+                {icn === 'close-circle' ? <CloseCircleFilled id="closeCircleIcon" /> : <></>}
+                <span dangerouslySetInnerHTML={{ __html: ansiToHtml.toHtml(line.msg) }} />
+              </>
+              : <></>
+          }
         </div>
       );
-    });
 
+      return html;
+    });
     let termClass = styles.term;
     if (serverStatus === STATUS_STOPPED || serverStatus === STATUS_STOPPING) {
       termClass += ` ${styles['term-stopped']}`;
