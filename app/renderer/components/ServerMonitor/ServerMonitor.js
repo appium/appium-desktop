@@ -23,7 +23,6 @@ import {
   CloseCircleFilled
 } from '@ant-design/icons';
 import { BUTTON } from '../../../../gui-common/components/AntdTypes';
-import { replace } from 'lodash';
 
 const MAX_LOGS_RENDERED = 1000;
 const INSPECTOR_URL = 'https://github.com/appium/appium-inspector';
