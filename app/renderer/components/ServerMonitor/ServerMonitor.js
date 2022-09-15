@@ -10,7 +10,7 @@ import AnsiToHtml from 'ansi-to-html';
 
 import AppiumSmallMagenta from '../../images/appium_small_magenta.png';
 import {
-  PauseOutlined,
+  StopOutlined,
   SearchOutlined,
   DownloadOutlined,
   CloseOutlined,
@@ -47,7 +47,7 @@ class StopButtonComponent extends Component {
     let btn = <Tooltip title={t('Stop Server')}
       placement="bottomLeft">
       <Button
-        icon={<PauseOutlined/>}
+        icon={<StopOutlined/>}
         className={styles.serverButton}
         onClick={stopServer} />
     </Tooltip>;
@@ -62,7 +62,7 @@ class StopButtonComponent extends Component {
       btn = <Tooltip title={t('Stopping…')} visible={true}
         placement="bottomLeft">
         <Button
-          icon={<PauseOutlined/>}
+          icon={<StopOutlined/>}
           className={styles.serverButton}
           type={BUTTON.DISABLED} />
       </Tooltip>;
