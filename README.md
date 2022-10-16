@@ -1,4 +1,7 @@
 # Appium Desktop
+
+**Please use [Appium Inspector](https://github.com/appium/appium-inspector) and [Appium](https://github.com/appium/appium) to inspect elements for Appium 2.0**.
+
 [![Build Status](https://dev.azure.com/AppiumCI/Appium%20Desktop/_apis/build/status/appium.appium-desktop)](https://dev.azure.com/AppiumCI/Appium%20Desktop/_build/latest?definitionId=1)
 [![Crowdin](https://d322cqt584bo4o.cloudfront.net/appium-desktop/localized.svg)](https://crowdin.com/project/appium-desktop)
 
