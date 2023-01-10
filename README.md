@@ -1,5 +1,9 @@
 # Please use [Appium Inspector](https://github.com/appium/appium-inspector) and [Appium](https://github.com/appium/appium) to inspect elements for Appium 2.0.
 
+❗❗ This project is no longer maintained since it is not compatible with Appium 2.0+. For Appium 2.0+, use the command line Appium server (see the [Appium docs](https://appium.github.io/appium/docs/en/latest/) for installation and setup information), in combination with [Appium Inspector](https://github.com/appium/appium-inspector).
+
+The old documentation for this project remains below.
+
 # Appium Desktop
 
 
