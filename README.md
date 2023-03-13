@@ -1,11 +1,11 @@
-# Please use [Appium Inspector](https://github.com/appium/appium-inspector) and [Appium](https://github.com/appium/appium) to inspect elements for Appium 2.0.
+# [DEPRECATED] 
+# Please use [Appium Inspector](https://github.com/appium/appium-inspector) and the command line version of [Appium](https://github.com/appium/appium) to inspect elements.
 
-❗❗ This project is no longer maintained since it is not compatible with Appium 2.0+. For Appium 2.0+, use the command line Appium server (see the [Appium docs](https://appium.github.io/appium/docs/en/latest/) for installation and setup information), in combination with [Appium Inspector](https://github.com/appium/appium-inspector).
+❗❗ This project is no longer maintained since it is not compatible with Appium 2.0+. For Appium 1.x and 2.0+, use the command line Appium server (see the [Appium docs](https://appium.github.io/appium/docs/en/latest/) for installation and setup information), in combination with [Appium Inspector](https://github.com/appium/appium-inspector).
 
 The old documentation for this project remains below.
 
 # Appium Desktop
-
 
 [![Build Status](https://dev.azure.com/AppiumCI/Appium%20Desktop/_apis/build/status/appium.appium-desktop)](https://dev.azure.com/AppiumCI/Appium%20Desktop/_build/latest?definitionId=1)
 [![Crowdin](https://d322cqt584bo4o.cloudfront.net/appium-desktop/localized.svg)](https://crowdin.com/project/appium-desktop)
