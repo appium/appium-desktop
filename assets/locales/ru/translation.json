@@ -11,7 +11,7 @@
   "pa-IN": "Punjabi",
   "te": "Telugu",
   "pt-BR": "Português (Brasil)",
-  "it": "Italiano",
+  "it": "Итальянский",
   "appiumDesktop": "Appium Desktop",
   "Edit": "Изменить",
   "Redo": "Возврат",
@@ -139,8 +139,8 @@
   "selector": "Селектор:",
   "couldNotObtainScreenshot": "Не удалось получить скриншот: {{screenshotError}}",
   "selectElementInSource": "Выберите элемент в источнике.",
-  "Show Element Handles": "Show Element Handles",
-  "Hide Element Handles": "Hide Element Handles",
+  "Show Element Handles": "Показать обработчики элементов",
+  "Hide Element Handles": "Скрыть обработчики элементов",
   "Select Elements": "Выбрать элементы",
   "Swipe By Coordinates": "Провести пальцем (указать координаты)",
   "Tap By Coordinates": "Нажать на координаты",
@@ -344,7 +344,7 @@
   "autoAddPrefixes": "Automatically add necessary Appium vendor prefixes on start",
   "jsonArgument": "Массив аргументов JSON",
   "executeScriptCommand": "Script to execute",
-  "appPathOrUrl": "Path or URL for app",
+  "appPathOrUrl": "Путь или URL для приложения",
   "fileContentString": "Файл в виде строки Base64",
   "inspectorMoved": "Инспектор выпущен как отдельное приложение. Пожалуйста, посетите {{url}}"
 }
