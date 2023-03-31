@@ -217,7 +217,7 @@
   "Automatic Server": "سرور خودکار",
   "Custom Server": "سرور سفارشی",
   "Desired Capabilities": "قابلیت های مورد نظر",
-  "Saved Capability Sets": "مجموعه قابلیت های ذخیره شده {{savedSessionsCount}}",
+  "Saved Capability Sets": "مجموعه قابلیت های ذخیره شده",
   "Attach to Session": "اتصال به یک Session…",
   "localhost": "localhost",
   "Host": "میزبان",
