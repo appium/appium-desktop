@@ -217,7 +217,7 @@
   "Automatic Server": "Сервер по умолчанию",
   "Custom Server": "Пользовательский сервер",
   "Desired Capabilities": "Желаемые возможности",
-  "Saved Capability Sets": "Сохраненные наборы возможностей ({{savedSessionsCount}})",
+  "Saved Capability Sets": "Сохраненные наборы возможностей",
   "Attach to Session": "Прикрепиться к сессии…",
   "localhost": "localhost",
   "Host": "Хост",
