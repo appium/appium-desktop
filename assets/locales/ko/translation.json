@@ -217,7 +217,7 @@
   "Automatic Server": "자동 서버",
   "Custom Server": "사용자 정의 서버",
   "Desired Capabilities": "Desired Capabilities",
-  "Saved Capability Sets": "저장된 Capability 셋 {{savedSessionsCount}}",
+  "Saved Capability Sets": "저장된 Capability 셋",
   "Attach to Session": "세션에 연결하기…",
   "localhost": "localhost",
   "Host": "호스트",

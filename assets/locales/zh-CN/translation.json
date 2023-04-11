@@ -217,7 +217,7 @@
   "Automatic Server": "自动设定",
   "Custom Server": "自定义服务器",
   "Desired Capabilities": "所需能力",
-  "Saved Capability Sets": "保存的能力设置 {{savedSessionsCount}}",
+  "Saved Capability Sets": "保存的能力设置",
   "Attach to Session": "附加到会话…",
   "localhost": "本地主机",
   "Host": "主机",

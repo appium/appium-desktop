@@ -217,7 +217,7 @@
   "Automatic Server": "自動設定",
   "Custom Server": "カスタムサーバー",
   "Desired Capabilities": "Desired Capabilities",
-  "Saved Capability Sets": "保存済みCapability {{savedSessionsCount}} 件",
+  "Saved Capability Sets": "保存済みCapability件",
   "Attach to Session": "実行中のセッションに接続…",
   "localhost": "ローカルホスト",
   "Host": "ホスト",

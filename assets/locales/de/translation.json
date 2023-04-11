@@ -217,7 +217,7 @@
   "Automatic Server": "Automatischer Server",
   "Custom Server": "Benutzerdefinierter Server",
   "Desired Capabilities": "Desired Capabilities",
-  "Saved Capability Sets": "Saved Capability Sets {{savedSessionsCount}}",
+  "Saved Capability Sets": "Saved Capability Sets",
   "Attach to Session": "Attach to Session…",
   "localhost": "localhost",
   "Host": "Host",

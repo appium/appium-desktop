@@ -217,7 +217,7 @@
   "Automatic Server": "स्वचालित सर्वर",
   "Custom Server": "कस्टम सर्वर",
   "Desired Capabilities": "वांछित क्षमताये",
-  "Saved Capability Sets": "बचाये हुए क्षमता सेट {{savedSessionsCount}}",
+  "Saved Capability Sets": "बचाये हुए क्षमता सेट",
   "Attach to Session": "सत्र के लिए संलग्न करें",
   "localhost": "लोकलहोस्ट",
   "Host": "होस्ट",
