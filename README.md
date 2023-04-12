@@ -3,7 +3,9 @@
 
 ❗❗ This project is no longer maintained since it is not compatible with Appium 2.0+. For Appium 1.x and 2.0+, use the command line Appium server (see the [Appium docs](https://appium.github.io/appium/docs/en/latest/) for installation and setup information), in combination with [Appium Inspector](https://github.com/appium/appium-inspector).
 
-The old documentation for this project remains below.
+❗❗ Since this project was deprecated at least one security vulnerability was discovered that could allow remote code execution by a malicious party if Appium Desktop's open ports are exposed to the wider internet. This project is unsupported and no fixes are planned. Again, please do not use Appium Desktop anymore. Use Appium and the Appium Inspector instead.
+
+_The old documentation for this project remains below._
 
 # Appium Desktop
 
